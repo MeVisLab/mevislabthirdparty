@@ -1,0 +1,409 @@
+diff --git i/dcmpstat/apps/dcmprscu.cc w/dcmpstat/apps/dcmprscu.cc
+index 399af7a..289b354 100644
+--- i/dcmpstat/apps/dcmprscu.cc
++++ w/dcmpstat/apps/dcmprscu.cc
+@@ -71,6 +71,13 @@ END_EXTERN_C
+ #include "dcmtk/dcmtls/tlslayer.h"
+ #endif
+ 
++// jj20041012 - directory deletion
++#ifdef WIN32
++#include "direct.h"
++#else
++#include <unistd.h> 
++#endif
++
+ #ifdef WITH_ZLIB
+ #include <zlib.h>        /* for zlibVersion() */
+ #endif
+@@ -117,6 +124,14 @@ static OFBool         deletePrintJobs       = OFFalse;
+ static OFBool         deleteTerminateJobs   = OFFalse;
+ static OFBool         useTLS                = OFFalse;
+ 
++// jj20030225
++// want to handle configuration files separately from the rest
++// since each print scu has its own configuration, which shall be deleted
++// except for one
++static OFBool        deleteConfiguration   = OFFalse;
++// jj20030307 Bug# 1656
++static OFBool         deleteIntermediateFiles = OFFalse;
++
+ /* helper class printJob */
+ 
+ class printJob
+@@ -194,14 +209,17 @@ static OFCondition spoolStoredPrintFile(
+ 
+   if (opt_spoolMode)
+   {
+-    OFLOG_WARN(dcmprscuLogger, OFDateTime::getCurrentDateTime() << OFendl << "processing " << filename);
++    OFLOG_INFO(dcmprscuLogger, OFDateTime::getCurrentDateTime());
++    OFLOG_INFO(dcmprscuLogger, "spooler: processing " << filename);
+   }
+ 
+   if (filename==NULL) return EC_IllegalCall;
+   OFCondition result = DVPSHelper::loadFileFormat(filename, ffile);
+   if (EC_Normal != result)
+   {
+-    OFLOG_ERROR(dcmprscuLogger, "spooler: unable to load file '" << filename << "'");
++    // jj20020725: we need more information on error
++    OFString temp_str;
++    OFLOG_ERROR(dcmprscuLogger, "spooler: unable to load file '" << filename << "'" << DimseCondition::dump(temp_str, result));
+   }
+   if (ffile) dset = ffile->getDataset();
+ 
+@@ -213,7 +231,9 @@ static OFCondition spoolStoredPrintFile(
+   }
+   if (EC_Normal != result)
+   {
+-    OFLOG_ERROR(dcmprscuLogger, "spooler: file '" << filename << "' is not a valid Stored Print object");
++    // jj20020725: we need more information on error
++    OFString temp_str;
++    OFLOG_ERROR(dcmprscuLogger, "spooler: file '" << filename << "' is not a valid Stored Print object" << DimseCondition::dump(temp_str, result));
+   }
+   delete ffile;
+ 
+@@ -234,20 +254,28 @@ static OFCondition spoolStoredPrintFile(
+     } else {
+       if (EC_Normal != (result = stprint.printSCUgetPrinterInstance(printHandler)))
+       {
+-        OFLOG_ERROR(dcmprscuLogger, "spooler: printer communication failed, unable to request printer settings");
++        // jj20020725: we need more information on error
++        OFString temp_str;
++        OFLOG_ERROR(dcmprscuLogger, "spooler: printer communication failed, unable to request printer settings" << DimseCondition::dump(temp_str, result));
+       }
+       if (EC_Normal==result) if (EC_Normal != (result = stprint.printSCUpreparePresentationLUT(
+         printHandler, targetRequiresMatchingLUT, targetPreferSCPLUTRendering, targetSupports12bit)))
+       {
+-        OFLOG_ERROR(dcmprscuLogger, "spooler: printer communication failed, unable to create presentation LUT");
++        // jj20020725: we need more information on error
++        OFString temp_str;
++        OFLOG_ERROR(dcmprscuLogger, "spooler: printer communication failed, unable to create presentation LUT" << DimseCondition::dump(temp_str, result));
+       }
+       if (EC_Normal==result) if (EC_Normal != (result = dvi.printSCUcreateBasicFilmSession(printHandler, targetPLUTinFilmSession)))
+       {
+-        OFLOG_ERROR(dcmprscuLogger, "spooler: printer communication failed, unable to create basic film session");
++        // jj20020725: we need more information on error
++        OFString temp_str;
++        OFLOG_ERROR(dcmprscuLogger, "spooler: printer communication failed, unable to create basic film session" << DimseCondition::dump(temp_str, result));
+       }
+       if (EC_Normal==result) if (EC_Normal != (result = stprint.printSCUcreateBasicFilmBox(printHandler, targetPLUTinFilmSession)))
+       {
+-        OFLOG_ERROR(dcmprscuLogger, "spooler: printer communication failed, unable to create basic film box");
++        // jj20020725: we need more information on error
++        OFString temp_str;
++        OFLOG_ERROR(dcmprscuLogger, "spooler: printer communication failed, unable to create basic film box" << DimseCondition::dump(temp_str, result));
+       }
+       // Process images
+       size_t numberOfImages = stprint.getNumberOfImages();
+@@ -295,7 +323,9 @@ static OFCondition spoolStoredPrintFile(
+         {
+           if (EC_Normal != (result = stprint.printSCUsetBasicAnnotationBox(printHandler, currentAnnotation)))
+           {
+-            OFLOG_ERROR(dcmprscuLogger, "spooler: printer communication failed, unable to transmit basic annotation box");
++            // jj20020725: we need more information on error
++            OFString temp_str;
++            OFLOG_ERROR(dcmprscuLogger, "spooler: printer communication failed, unable to transmit basic annotation box" << DimseCondition::dump(temp_str, result));
+           }
+         }
+       }
+@@ -306,18 +336,24 @@ static OFCondition spoolStoredPrintFile(
+         {
+           if (EC_Normal==result) if (EC_Normal != (result = stprint.printSCUprintBasicFilmSession(printHandler)))
+           {
+-            OFLOG_ERROR(dcmprscuLogger, "spooler: printer communication failed, unable to print (at film session level)");
++            // jj20020725: we need more information on error
++            OFString temp_str;
++            OFLOG_ERROR(dcmprscuLogger, "spooler: printer communication failed, unable to print (at film session level)" << DimseCondition::dump(temp_str, result));
+           }
+         } else {
+           if (EC_Normal==result) if (EC_Normal != (result = stprint.printSCUprintBasicFilmBox(printHandler)))
+           {
+-            OFLOG_ERROR(dcmprscuLogger, "spooler: printer communication failed, unable to print");
++            // jj20020725: we need more information on error
++            OFString temp_str;
++            OFLOG_ERROR(dcmprscuLogger, "spooler: printer communication failed, unable to print" << DimseCondition::dump(temp_str, result));
+           }
+         }
+       }
+       if (EC_Normal==result) if (EC_Normal != (result = stprint.printSCUdelete(printHandler)))
+       {
+-        OFLOG_ERROR(dcmprscuLogger, "spooler: printer communication failed, unable to delete print objects");
++        // jj20020725: we need more information on error
++        OFString temp_str;
++        OFLOG_ERROR(dcmprscuLogger, "spooler: printer communication failed, unable to delete print objects" << DimseCondition::dump(temp_str, result));
+       }
+ 
+       result = printHandler.releaseAssociation();
+@@ -332,10 +368,12 @@ static OFCondition spoolStoredPrintFile(
+   return result;
+ }
+ 
++// jj20030226: added fileList, that will be deleted after spooling the printJob
+ static OFCondition spoolJobList(
+   OFList<printJob *>&jobList,
+   DVInterface &dvi,
+-  DcmTransportLayer *tlayer)
++  DcmTransportLayer *tlayer,
++  OFList<OFString> &fileList)
+ {
+   OFCondition result = EC_Normal;
+   OFCondition result2 = EC_Normal;
+@@ -366,14 +404,27 @@ static OFCondition spoolJobList(
+       if (currentJob->illumination != (unsigned long)-1) dvi.setPrintIllumination((Uint16)(currentJob->illumination));
+       if (currentJob->reflectedAmbientLight != (unsigned long)-1) dvi.setPrintReflectedAmbientLight((Uint16)(currentJob->reflectedAmbientLight));
+ #endif
++
++
++
++      // jj20020820
++      // delete printed files from offis db
++      // first create a list of all files
++      // to be deleted
++      fileList.push_back( currentJob->studyUID );
++
+       result2 = spoolStoredPrintFile(currentJob->storedPrintFilename.c_str(), dvi, tlayer);
+       if (result2 != EC_Normal)
+       {
+-        OFLOG_ERROR(dcmprscuLogger, "spooler: error occurred during spooling of Stored Print object '" << currentJob->storedPrintFilename << "'");
++        // jj20020725: we need more information on error
++        OFString temp_str;
++        OFLOG_ERROR(dcmprscuLogger, "spooler: error occurred during spooling of Stored Print object '" << currentJob->storedPrintFilename << "'" << DimseCondition::dump(temp_str, result));
+       }
+       if (result == EC_Normal) result = result2; // forward error codes, but do not erase
+     } else {
+-      OFLOG_ERROR(dcmprscuLogger, "spooler: unable to find Stored Print object for print job in database");
++      // jj20020725: we need more information on error
++      OFString temp_str;
++      OFLOG_ERROR(dcmprscuLogger, "spooler: unable to find Stored Print object for print job in database" << DimseCondition::dump(temp_str, result));
+       result = EC_IllegalCall;
+     }
+     delete currentJob;
+@@ -611,6 +662,172 @@ static OFCondition updateJobList(
+   return result;
+ }
+ 
++
++
++// jj20020820
++// now we delete
++
++static void deleteFolder ( const char* folder )
++{
++  int result;
++  OFString currentFile;
++
++#ifdef HAVE_WINDOWS_H
++  WIN32_FIND_DATA stWin32FindData;
++  OFString currentdir = folder;
++  currentdir += "\\*";
++    
++  HANDLE hFile = FindFirstFile( currentdir.c_str(), &stWin32FindData );
++  int ret = (hFile != INVALID_HANDLE_VALUE);
++  while( ret ) {
++    OFString file = stWin32FindData.cFileName;
++
++    if( file != "." && file != ".." ) {
++      currentFile = folder;
++      currentFile += "\\";
++      currentFile += file;
++
++      if( !DeleteFile(currentFile.c_str()) ) {
++        char msg[128];
++        FormatMessage( FORMAT_MESSAGE_FROM_SYSTEM,
++                       NULL, GetLastError(), 0, msg, 128, NULL );
++
++        OFLOG_WARN(dcmprscuLogger, "Could not delete file " << currentFile);
++        OFLOG_WARN(dcmprscuLogger, msg);
++      }
++    }
++
++    ret = FindNextFile( hFile, &stWin32FindData );
++  } /* while */
++  if( hFile != INVALID_HANDLE_VALUE ) {
++    FindClose(hFile);
++  }
++#else
++  DIR *dirp = NULL;
++  struct dirent *dp = NULL;
++  if( (dirp = opendir(folder)) != NULL ) {
++    for( dp=readdir(dirp); (dp != NULL); dp=readdir(dirp) ) {
++      OFString file = dp->d_name;
++
++      if( file != "." && file != ".." ) {
++        currentFile = folder;
++        currentFile += "/";
++        currentFile += file;
++
++        if( !unlink(currentFile.c_str()) ) {
++          OFLOG_WARN(dcmprscuLogger, "Could not delete file " << currentFile);
++        }
++      }
++    } /* for */
++    closedir( dirp );
++  }
++#endif
++
++  OFLOG_INFO(dcmprscuLogger, "spooler: deleting directory " << folder);
++
++#ifdef WIN32
++  result = _rmdir( folder );
++
++  if( result == ENOTEMPTY ) {
++    OFLOG_WARN(dcmprscuLogger, folder
++               << " is not a directory, is not empty, or is either current working directory or root directory.");
++    OFLOG_WARN(dcmprscuLogger, "Could not delete " << folder);
++  }
++  else if( result == ENOENT ) {
++    OFLOG_WARN(dcmprscuLogger, "Path " << folder << " is not valid.");
++    OFLOG_WARN(dcmprscuLogger, "Could not delete " << folder);
++  }
++#else
++  result = rmdir( folder );
++
++  if( result == EACCES ) {
++    OFLOG_WARN(dcmprscuLogger, "Could not delete " << folder << ": insufficient permissions");
++  }
++  else if( result == EBUSY ) {
++    OFLOG_WARN(dcmprscuLogger, "Could not delete " << folder << ": currently opened by another process");
++  }
++  else if( result == EINVAL || result == ELOOP || result == ENAMETOOLONG || result == ENOENT ) {
++    OFLOG_WARN(dcmprscuLogger, "Path " << folder << " is not valid.");
++    OFLOG_WARN(dcmprscuLogger, "Could not delete " << folder);
++  }
++  else if( result == ENOTDIR ) {
++    OFLOG_WARN(dcmprscuLogger, "Could not delete " << folder << ": Path is not a directory");
++  }
++  else if( result == ENOTEMPTY ) {
++    OFLOG_WARN(dcmprscuLogger, folder << " is not empty.");
++    OFLOG_WARN(dcmprscuLogger, "Could not delete " << folder);
++  }
++#endif
++}
++
++static void deleteImageFilesFromDB( const char* dbFolder, OFList<OFString> &fileList )
++{
++  OFString file;
++  OFListIterator(OFString) first = fileList.begin();
++  OFListIterator(OFString) last = fileList.end();
++
++  // jj20030307 Bug# 1656
++  if( deleteIntermediateFiles ) {
++    OFCondition result;
++    DcmQueryRetrieveIndexDatabaseHandle handle(dbFolder, PSTAT_MAXSTUDYCOUNT, PSTAT_STUDYSIZE, result);
++    if (!result.good())
++      return;
++
++    if( !handle.DB_lock(OFFalse).good() )
++      return;
++
++    // delete each file, that has been handled during printing
++    while( first != last ) {
++      file = *first;
++      first = fileList.erase( first );
++
++      if( file.c_str() != NULL ) {
++        int idx = 0;
++        IdxRecord idxRec;
++        int n = strlen( file.c_str() );
++
++        OFLOG_INFO(dcmprscuLogger, "spooler: deleting files for studyInstanceUID " << file.c_str());
++
++        // find entry in DB
++        while( handle.DB_IdxRead(idx, &idxRec) == EC_Normal ) {
++          if( !strncmp(idxRec.StudyInstanceUID, file.c_str(), n) ) {
++            OFLOG_INFO(dcmprscuLogger, "spooler: deleting file " << idxRec.filename);
++            handle.DB_IdxRemove( idx );
++            handle.deleteImageFile( idxRec.filename );
++          }
++          idx++;
++        }
++      }
++    }
++
++
++    handle.DB_unlock();
++
++    // now delete the entire directory
++    deleteFolder( dbFolder );
++  }
++
++  // jj20030225
++  // want to handle configuration files separately from the rest
++  // since each print scu has its own configuration, which shall be deleted
++  // except for one
++  // if printJobs are to be deleted,
++  // then delete the configuration file, too
++  if( deleteConfiguration ) {
++    OFLOG_INFO(dcmprscuLogger, "spooler: deleting configuration file " << opt_cfgName);
++    unlink( opt_cfgName );
++  }
++}
++
++
++static void deleteLUTFilesFromDB ( const char* lutFolder )
++{
++  // jj20030307 Bug# 1656
++  if( deleteIntermediateFiles ) {
++    deleteFolder( lutFolder );
++  }
++}
++
+ #define SHORTCOL 3
+ #define LONGCOL 15
+ 
+@@ -649,6 +866,11 @@ int main(int argc, char *argv[])
+     cmd.addGroup("spooler options (only with --spool):");
+      cmd.addOption("--sleep",             1, "[d]elay: integer (default: 1)",
+                                              "sleep d seconds between spooler checks");
++
++    // jj20040701: use one logfile for print clients
++    cmd.addOption( "--logFile",             "[l]ogFilePath: string" );
++    cmd.addOption( "--clientID",            "[i]d: string. identifies print client" );
++
+     cmd.addGroup("basic film session options (not with --spool):");
+      cmd.addOption("--copies",            1, "[v]alue: integer (1..100, default: 1)",
+                                              "set number of copies to v");
+@@ -806,6 +1028,13 @@ int main(int argc, char *argv[])
+     targetPreferSCPLUTRendering = dvi.getTargetPrinterPresentationLUTPreferSCPRendering(opt_printer);
+     deletePrintJobs             = dvi.getSpoolerDeletePrintJobs();
+     deleteTerminateJobs         = dvi.getSpoolerAlwaysDeleteTerminateJobs();
++    // jj20030225
++    // want to handle configuration files separately from the rest
++    // since each print scu has its own configuration, which shall be deleted
++    // except for one
++    deleteConfiguration         = dvi.getSpoolerDeleteConfiguration();
++    // jj20030307 Bug# 1656
++    deleteIntermediateFiles     = dvi.getSpoolerDeleteIntermediateFiles();
+     useTLS                      = dvi.getTargetUseTLS(opt_printer);
+ 
+     Sint32 timeout = dvi.getTargetTimeout(opt_printer);
+@@ -1062,6 +1291,10 @@ int main(int argc, char *argv[])
+       jobNamePrefix += "_";
+       OFList<printJob *> jobList;
+       OFBool terminateFlag = OFFalse;
++      // jj20020820
++      // create a list of files that will be deleted as soon
++      // as the printing has finished
++      OFList<OFString> fileList;
+       do
+       {
+         OFStandard::sleep((unsigned int)opt_sleep);
+@@ -1071,8 +1304,17 @@ int main(int argc, char *argv[])
+           return 10;
+         }
+         // static OFCondition updateJobList(jobList, dvi, terminateFlag, jobNamePrefix.c_str());
+-        if (EC_Normal != spoolJobList(jobList, dvi, tLayer)) { /* ignore */ }
++        // jj20030226: added fileList, that will be deleted after spooling the printJob
++        if (EC_Normal != spoolJobList(jobList, dvi, tLayer, fileList)) { /* ignore */ }
+       } while (! terminateFlag);
++
++      // jj20020820
++      // now try to delete the files
++      // stored in the file list
++      // lets see what will happen
++      deleteImageFilesFromDB( dvi.getDatabaseFolder(), fileList );
++      deleteLUTFilesFromDB( dvi.getLUTFolder() );
++
+       OFLOG_INFO(dcmprscuLogger, "spooler is terminating, goodbye!");
+    } else {
+       // printer mode

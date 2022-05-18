@@ -1,0 +1,22 @@
+Version 1.0:
+
+Initial release
+
+Version 1.1:
+
+- Removed QGLFormat::setDepthBufferSize() because it specifies the minimum
+depth buffer size and not the preferred.
+- Restrict the amount by which one can zoom in to the origin of the scene (it
+can get hard to get out of extreme zoom levels again).
+- Add ability to set color depth of the viewer (if Qt and OpenGL driver permit
+it).
+- Introduce new method renderToCurrentContext as a hack to conveniently render
+to pre-existing contexts.
+- One must now actively enable redrawRequested signals when the widget is not
+visible.
+- Additionally updateGL is only called in the renderCB if the widget is visible.
+- Add option to always initialize GL context in renderToCurrentContext.
+- Reduced minimum x/y sizes for the inner render window from 100/100 to 10/10.
+- Added focus setting of the QGLWidget in a mouse button press.
+- Put pick mode and view mode buttons in a mutually exclusive button group, so
+one can't de-select both.

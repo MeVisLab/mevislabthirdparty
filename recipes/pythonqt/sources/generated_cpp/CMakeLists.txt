@@ -1,0 +1,2 @@
+add_subdirectory(com_trolltech_qt_core_builtin)
+add_subdirectory(com_trolltech_qt_gui_builtin)

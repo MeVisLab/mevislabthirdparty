@@ -1,0 +1,40 @@
+diff --git i/qtbase/src/widgets/kernel/qopenglwidget.cpp w/qtbase/src/widgets/kernel/qopenglwidget.cpp
+index e58994b04..b677784ae 100644
+--- i/qtbase/src/widgets/kernel/qopenglwidget.cpp
++++ w/qtbase/src/widgets/kernel/qopenglwidget.cpp
+@@ -746,6 +746,12 @@ void QOpenGLWidgetPrivate::recreateFbo()
+     format.setSamples(samples);
+     if (textureFormat)
+         format.setInternalTextureFormat(textureFormat);
++    // MeVis: Check if GL context supports more than 8 bit color depth:
++    else if ((samples <= 1) && (context->format().redBufferSize() > 8)) {
++        // we need an internal texture format which can store the higher bit depth:
++        format.setInternalTextureFormat(GL_RGB10_A2);
++    }
++    // MeVis end
+ 
+     const QSize deviceSize = q->size() * q->devicePixelRatioF();
+     fbo = new QOpenGLFramebufferObject(deviceSize, format);
+@@ -755,6 +761,11 @@ void QOpenGLWidgetPrivate::recreateFbo()
+     textureFormat = fbo->format().internalTextureFormat();
+ 
+     fbo->bind();
++    // MeVis: set the clear color to the background color
++    QColor c = q->palette().brush(q->backgroundRole()).color();
++    float alpha = c.alphaF();
++    context->functions()->glClearColor(c.redF() * alpha, c.greenF() * alpha, c.blueF() * alpha, alpha);
++    // MeVis end
+     context->functions()->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+     flushPending = true; // Make sure the FBO is initialized before use
+ 
+@@ -951,7 +962,9 @@ QImage QOpenGLWidgetPrivate::grabFramebuffer()
+         q->makeCurrent();
+     }
+ 
+-    const bool hasAlpha = q->format().hasAlpha();
++// MEVIS patch begin
++    const bool hasAlpha = q->format().hasAlpha() && requestedFormat.hasAlpha();
++// MEVIS patch end
+     QImage res = qt_gl_read_framebuffer(q->size() * q->devicePixelRatioF(), hasAlpha, hasAlpha);
+     res.setDevicePixelRatio(q->devicePixelRatioF());
+ 

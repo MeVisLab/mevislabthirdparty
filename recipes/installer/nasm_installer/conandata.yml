@@ -1,0 +1,15 @@
+type: installer
+name: "nasm_installer"
+version: "2.15.5"
+homepage: "https://www.nasm.us"
+description: "groovy little assembler"
+license: "BSD-2-Clause"
+
+# nasm is installed on mac and linux
+pipeline: "windows:vs15:release"
+
+sources:
+  "2.15.5":
+    sha256: "f5c93c146f52b4f1664fa3ce6579f961a910e869ab0dae431bd871bdd2584ef2"
+    url: "https://www.nasm.us/pub/nasm/releasebuilds/2.15.05/win64/nasm-2.15.05-win64.zip"
+    base_path: "nasm-2.15.05"

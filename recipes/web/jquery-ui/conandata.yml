@@ -1,0 +1,9 @@
+type: header_only
+name: "jquery-ui"
+display_name: "jQuery UI"
+version: "1.13.1"
+homepage: "https://jqueryui.com"
+description: "A curated set of user interface interactions, effects, widgets, and themes built on top of the jQuery JavaScript Library"
+license: "MIT"
+
+pipeline: "linux:gcc10:release"

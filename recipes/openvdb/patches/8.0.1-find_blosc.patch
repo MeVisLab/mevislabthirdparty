@@ -1,0 +1,13 @@
+diff --git i/cmake/FindBlosc.cmake w/cmake/FindBlosc.cmake
+index 35cd3d9..249ca70 100644
+--- i/cmake/FindBlosc.cmake
++++ w/cmake/FindBlosc.cmake
+@@ -186,7 +186,7 @@ endif()
+ 
+ # libblosc is the name of the blosc static lib on windows
+ 
+-find_library(Blosc_LIBRARY blosc libblosc
++find_library(Blosc_LIBRARY blosc bloscd libblosc libbloscd
+   ${_FIND_BLOSC_ADDITIONAL_OPTIONS}
+   PATHS ${_BLOSC_LIBRARYDIR_SEARCH_DIRS}
+   PATH_SUFFIXES ${CMAKE_INSTALL_LIBDIR} lib64 lib

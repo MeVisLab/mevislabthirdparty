@@ -1,0 +1,51 @@
+<typesystem package="Inventor.sensors">
+
+  <rejection class="SoSensor" function-name="SoSensor"/>
+  <rejection class="SoSensor" function-name="setFunction"/>
+  <rejection class="SoSensor" function-name="setData"/>
+  <rejection class="SoSensor" function-name="getFunction"/>
+  <rejection class="SoSensor" function-name="getData"/>
+
+  <rejection class="SoDelayQueueSensor" function-name="SoDelayQueueSensor"/>
+  <rejection class="SoTimerQueueSensor" function-name="SoTimerQueueSensor"/>
+  <rejection class="SoDataSensor" function-name="SoDataSensor"/>
+  <rejection class="SoNodeSensor" function-name="SoNodeSensor"/>
+  <rejection class="SoFieldSensor" function-name="SoFieldSensor"/>
+  <rejection class="SoPathSensor" function-name="SoPathSensor"/>
+  <rejection class="SoIdleSensor" function-name="SoIdleSensor"/>
+  <rejection class="SoAlarmSensor" function-name="SoAlarmSensor"/>
+  <rejection class="SoTimerSensor" function-name="SoTimerSensor"/>
+  <rejection class="SoDataSensor" function-name="setDeleteCallback"/>
+
+  <object-type name="SoSensor" create-shell="no" create-promoter="no" >
+    <modify-function signature="SoSensor()" remove="all"/>  
+  </object-type>
+  <object-type name="SoDelayQueueSensor" create-shell="no" create-promoter="no" >
+    <modify-function signature="SoDelayQueueSensor()" remove="all"/>  
+  </object-type>
+  <object-type name="SoTimerQueueSensor" create-shell="no" create-promoter="no" >
+    <modify-function signature="SoTimerQueueSensor()" remove="all"/>  
+  </object-type>
+  <object-type name="SoDataSensor"  create-shell="no" create-promoter="no" >
+    <modify-function signature="SoDataSensor()" remove="all"/>  
+  </object-type>
+  <object-type name="SoNodeSensor"  create-shell="no" create-promoter="no" >
+    <modify-function signature="SoNodeSensor()" remove="all"/>  
+  </object-type>
+  <object-type name="SoFieldSensor"  create-shell="no" create-promoter="no" >
+    <modify-function signature="SoFieldSensor()" remove="all"/>  
+  </object-type>
+  <object-type name="SoPathSensor"  create-shell="no" create-promoter="no" >
+    <modify-function signature="SoPathSensor()" remove="all"/>  
+  </object-type>
+  <object-type name="SoIdleSensor"  create-shell="no" create-promoter="no" >
+    <modify-function signature="SoIdleSensor()" remove="all"/>  
+  </object-type>
+  <object-type name="SoAlarmSensor"  create-shell="no" create-promoter="no" >
+    <modify-function signature="SoAlarmSensor()" remove="all"/>  
+  </object-type>
+  <object-type name="SoTimerSensor"  create-shell="no" create-promoter="no" >
+    <modify-function signature="SoTimerSensor()" remove="all"/>  
+  </object-type>
+
+ </typesystem>

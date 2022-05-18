@@ -1,0 +1,17 @@
+type: pure_c
+name: "libpq"
+version: "13.3"
+homepage: "https://www.postgresql.org/docs/current/static/libpq.html"
+description: "C interface library for the PostgreSQL RDBMS"
+license: "PostgreSQL"
+
+sources:
+  "13.3":
+    sha256: "3cd9454fa8c7a6255b6743b767700925ead1b9ab0d7a0f9dcb1151010f8eb4a1"
+    url: "https://ftp.postgresql.org/pub/source/v${version}/postgresql-${version}.tar.bz2"
+    base_path: "postgresql-${version}"
+
+  "12.3":
+    sha256: "94ed64a6179048190695c86ec707cc25d016056ce10fc9d229267d9a8f1dcf41"
+    url: "https://ftp.postgresql.org/pub/source/v${version}/postgresql-${version}.tar.bz2"
+    base_path: "postgresql-${version}"

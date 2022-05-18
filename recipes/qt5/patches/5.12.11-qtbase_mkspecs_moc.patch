@@ -1,0 +1,16 @@
+diff --git c/qtbase/mkspecs/features/moc.prf i/qtbase/mkspecs/features/moc.prf
+index d07518302..2991e8ad9 100644
+--- c/qtbase/mkspecs/features/moc.prf
++++ i/qtbase/mkspecs/features/moc.prf
+@@ -15,7 +15,10 @@ MOC_INCLUDEPATH = $$QMAKESPEC $$_PRO_FILE_PWD_ $$MOC_INCLUDEPATH $$QMAKE_DEFAULT
+ # On Windows, put the includes into a .inc file which moc will read, if the project
+ # has too many includes. We do this to overcome a command-line limit on Win < XP
+ WIN_INCLUDETEMP=
+-win32:count(MOC_INCLUDEPATH, 40, >) {
++# 2010-01-04 ikl: Effectively disable the mocinclude.tmp hack by changing the limit to 4000
++#                 since we do not need to support Win < XP; this fixes problems with failed
++#                 concurrent access to mocinclude.tmp during parallel builds
++win32:count(MOC_INCLUDEPATH, 4000, >) {
+     WIN_INCLUDETEMP = $$MOC_DIR/mocinclude.opt
+ 
+     WIN_INCLUDETEMP_CONT =

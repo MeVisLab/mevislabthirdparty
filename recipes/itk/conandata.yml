@@ -1,0 +1,33 @@
+name: itk
+cmake_name: ITK
+display_name: "Insight Toolkit (ITK)"
+version: "4.6.0"
+homepage: "https://www.itk.org"
+description: "An open-source, cross-platform library that provides developers with an extensive suite of software tools for image analysis"
+license: "MPL-2.0"
+
+sources:
+  "5.1.1":
+    sha256: "39e2a63840054361b728878a35b21bbe38374682ffb4b5c4f8f8f7514dedb58e"
+    url: "https://github.com/InsightSoftwareConsortium/ITK/releases/download/v${version}/InsightToolkit-${version}.tar.gz"
+    base_path: "InsightToolkit-${version}"
+
+  "4.6.0":
+    sha256: "c7717a3ce6fcec76e1ced68405556fdedd51fc145aa746c90ba03f8fb2628c13"
+    url: "https://github.com/InsightSoftwareConsortium/ITK/archive/v${version}.tar.gz"
+    base_path: "ITK-${version}"
+
+patches:
+  "4.6.0":
+    - patch_file: "patches/${version}-accept_higher_gcc.patch"
+    - patch_file: "patches/${version}-ITK-3204.patch"
+    - patch_file: "patches/${version}-vs2015_incompatibilities.patch"
+    - patch_file: "patches/${version}-double_conversion.patch"
+    - patch_file: "patches/${version}-disable_externaldata_tests.patch"
+    - patch_file: "patches/${version}-nout.patch"
+    - patch_file: "patches/${version}-make_system.patch"
+    - patch_file: "patches/${version}-lrintf.patch"
+    - patch_file: "patches/${version}-cxx17_no_dynamic_exception_specification.patch"
+    - patch_file: "patches/${version}-unary_function.patch"
+    - patch_file: "patches/${version}-typedef_with_alignas_not_allowed_clang.patch"
+    - patch_file: "patches/${version}-windows_allow_long_path.patch"

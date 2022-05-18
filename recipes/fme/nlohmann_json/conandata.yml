@@ -1,0 +1,24 @@
+type: header_only
+name: nlohmann_json
+cmake_name: nlohmann_json
+display_name: "JSON for Modern C++"
+version: 3.10.5
+homepage: "https://github.com/nlohmann/json"
+description: "A C++11 header-only JSON library with intuitive syntax, trivial integration and serious testing"
+license: MIT
+
+sources:
+  3.10.5:
+    sha256: 5daca6ca216495edf89d167f808d1d03c4a4d929cef7da5e10f135ae1540c7e4
+    url: "https://github.com/nlohmann/json/archive/v${version}.tar.gz"
+    base_path: "json-${version}"
+
+  3.10.4:
+    sha256: 1155fd1a83049767360e9a120c43c578145db3204d2b309eba49fbbedd0f4ed3
+    url: "https://github.com/nlohmann/json/archive/v${version}.tar.gz"
+    base_path: "json-${version}"
+
+  3.10.2:
+    sha256: 081ed0f9f89805c2d96335c3acfa993b39a0a5b4b4cef7edb68dd2210a13458c
+    url: "https://github.com/nlohmann/json/archive/v${version}.tar.gz"
+    base_path: "json-${version}"

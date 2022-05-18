@@ -1,0 +1,8 @@
+type: cpp
+name: "hunspell"
+cmake_name: "Hunspell"
+display_name: "Hunspell"
+version: "1.7.0"
+homepage: "http://hunspell.github.io"
+description: "Hunspell spell checker - an improved replacement for myspell"
+license: "LGPL-2.1-or-later"

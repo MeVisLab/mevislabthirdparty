@@ -1,0 +1,11 @@
+diff --git i/cmake/protoc.cmake w/cmake/protoc.cmake
+index c86d662..ec42db7 100644
+--- i/cmake/protoc.cmake
++++ w/cmake/protoc.cmake
+@@ -14,3 +14,5 @@ add_executable(protobuf::protoc ALIAS protoc)
+ 
+ set_target_properties(protoc PROPERTIES
+     VERSION ${protobuf_VERSION})
++
++set_target_properties(protoc PROPERTIES DEBUG_POSTFIX ${protobuf_DEBUG_POSTFIX})
+\ No newline at end of file

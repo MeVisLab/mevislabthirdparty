@@ -1,0 +1,34 @@
+type: cpp
+name: protobuf
+cmake_name: ProtobufDummy
+display_name: Protocol Buffers
+version: "3.19.4"
+homepage: https://developers.google.com/protocol-buffers
+description: "Google's Protocol Buffers are a language-neutral, platform-neutral extensible mechanism for serializing structured data"
+license: BSD-3-Clause
+
+sources:
+  "3.19.4":
+    sha256: 3bd7828aa5af4b13b99c191e8b1e884ebfa9ad371b0ce264605d347f135d2568
+    url: "https://github.com/protocolbuffers/protobuf/archive/v${version}.tar.gz"
+    base_path: "protobuf-${version}"
+
+  "3.19.1":
+    sha256: 87407cd28e7a9c95d9f61a098a53cf031109d451a7763e7dd1253abf8b4df422
+    url: "https://github.com/protocolbuffers/protobuf/archive/v${version}.tar.gz"
+    base_path: "protobuf-${version}"
+
+  "3.17.1":
+    sha256: 036d66d6eec216160dd898cfb162e9d82c1904627642667cc32b104d407bb411
+    url: "https://github.com/protocolbuffers/protobuf/archive/v${version}.tar.gz"
+    base_path: "protobuf-${version}"
+
+patches:
+  "3.19.4":
+    - patch_file: "patches/${version}-protoc_debug_suffix.patch"
+
+  "3.19.1":
+    - patch_file: "patches/${version}-protoc_debug_suffix.patch"
+
+  "3.17.1":
+    - patch_file: "patches/${version}-protoc_debug_suffix.patch"

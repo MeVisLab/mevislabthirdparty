@@ -1,0 +1,50 @@
+diff --git i/CMakeLists.txt w/CMakeLists.txt
+index 247ad36d..a4340d38 100644
+--- i/CMakeLists.txt
++++ w/CMakeLists.txt
+@@ -58,6 +58,29 @@ project(LLVM
+   VERSION ${LLVM_VERSION_MAJOR}.${LLVM_VERSION_MINOR}.${LLVM_VERSION_PATCH}
+   LANGUAGES C CXX ASM)
+ 
++set(_unused
++    ${CMAKE_EXPORT_NO_PACKAGE_REGISTRY}
++    ${CMAKE_INSTALL_BINDIR}
++    ${CMAKE_INSTALL_DATAROOTDIR}
++    ${CMAKE_INSTALL_INCLUDEDIR}
++    ${CMAKE_INSTALL_LIBDIR}
++    ${CMAKE_INSTALL_LIBEXECDIR}
++    ${CMAKE_INSTALL_OLDINCLUDEDIR}
++    ${CMAKE_INSTALL_SBINDIR}
++    ${CMAKE_VS_PLATFORM_TOOLSET_HOST_ARCHITECTURE}
++    ${CONAN_COMPILER}
++    ${CONAN_COMPILER_VERSION}
++    ${CONAN_CXX_FLAGS}
++    ${CONAN_C_FLAGS}
++    ${CONAN_EXPORTED}
++    ${CONAN_IN_LOCAL_CACHE}
++    ${CONAN_LIBCXX}
++    ${CONAN_SHARED_LINKER_FLAGS}
++)
++
++include(${CMAKE_BINARY_DIR}/../conanbuildinfo.cmake)
++conan_basic_setup()
++
+ set(CMAKE_CXX_STANDARD 14 CACHE STRING "C++ standard to conform to")
+ set(CMAKE_CXX_STANDARD_REQUIRED YES)
+ set(CMAKE_CXX_EXTENSIONS NO)
+@@ -375,13 +398,13 @@ option(LLVM_ENABLE_Z3_SOLVER
+ 
+ if (LLVM_ENABLE_Z3_SOLVER)
+   find_package(Z3 4.7.1)
+-  
++
+   if (LLVM_Z3_INSTALL_DIR)
+     if (NOT Z3_FOUND)
+       message(FATAL_ERROR "Z3 >= 4.7.1 has not been found in LLVM_Z3_INSTALL_DIR: ${LLVM_Z3_INSTALL_DIR}.")
+     endif()
+   endif()
+-  
++
+   if (NOT Z3_FOUND)
+     message(FATAL_ERROR "LLVM_ENABLE_Z3_SOLVER cannot be enabled when Z3 is not available.")
+   endif()

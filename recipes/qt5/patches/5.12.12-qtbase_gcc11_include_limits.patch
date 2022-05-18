@@ -1,0 +1,12 @@
+diff --git i/qtbase/src/corelib/global/qglobal.h w/qtbase/src/corelib/global/qglobal.h
+index ccab228804..e2c08e7f7c 100644
+--- i/qtbase/src/corelib/global/qglobal.h
++++ w/qtbase/src/corelib/global/qglobal.h
+@@ -45,6 +45,7 @@
+ #  include <type_traits>
+ #  include <cstddef>
+ #  include <utility>
++#  include <limits>
+ #endif
+ #ifndef __ASSEMBLER__
+ #  include <assert.h>

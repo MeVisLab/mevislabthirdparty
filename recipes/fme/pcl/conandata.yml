@@ -1,0 +1,28 @@
+type: cpp
+name: pcl
+cmake_name: PCL
+display_name: "Point Cloud Library"
+version: "1.12.1"
+homepage: "https://pointclouds.org/"
+description: "The Point Cloud Library (PCL) is a standalone, large scale, open project for 2D/3D image and point cloud processing."
+license: "BSD-3-Clause"
+
+sources:
+  "1.12.1":
+    sha256: a9573efad5e024c02f2cc9180bb8f82605c3772c62463efbe25c5d6e634b91dc
+    url: https://github.com/PointCloudLibrary/pcl/releases/download/pcl-${version}/source.tar.gz
+    base_path: pcl
+
+  "1.12.0":
+    sha256: 606a2d5c7af304791731d6b8ea79365bc8f2cd75908006484d71ecee01d9b51c
+    url: https://github.com/PointCloudLibrary/pcl/releases/download/pcl-${version}/source.tar.gz
+    base_path: pcl
+
+patches:
+  "1.12.1":
+    - patch_file: "patches/${version}-boost_no_mpi.patch"
+    - patch_file: "patches/${version}-windows_bigobj.patch"
+
+  "1.12.0":
+    - patch_file: "patches/${version}-find_flann.patch"
+    - patch_file: "patches/${version}-find_boost.patch"

@@ -1,0 +1,18 @@
+type: cpp
+name: "embree"
+cmake_name: "Embree"
+display_name: "Embree"
+version: "2.17.7"
+homepage: "https://github.com/embree/embree"
+description: "Provides ray tracing kernels and BVH building"
+license: "Apache-2.0"
+
+sources:
+  "2.17.7":
+    sha256: "c0694f287fa1fbb382aba3a895702e248d92f7e89c0e5f64aefee965482ec04c"
+    url: "https://github.com/embree/embree/archive/v${version}.tar.gz"
+    base_path: "embree-${version}"
+
+patches:
+  "2.17.7":
+    - patch_file: "patches/${version}-find_tbb.patch"

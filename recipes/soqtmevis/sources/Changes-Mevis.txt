@@ -1,0 +1,24 @@
+Changes for the MeVis version of SoQt:
+======================================
+
+Version 1.0:
+
+- setDrawToFrontBufferEnable and friends was removed
+(it is expected that current graphics systems are fast enough)
+
+- cut&paste was removed
+(did anyone use this?)
+
+- handling of devices was changed
+(mouse and key handling should not be done by "external" devices)
+
+- the real GL widget is not created in the constructor
+(this allows us to change properties first - probably should somehow
+ be automatic anyway)
+ 
+- cursor shapes and mapping of mouse buttons to scene functions (in
+viewing mode) can be changed for the SoQtExaminerViewer
+
+- ability to set pre- and post-scene callbacks in SoQtRenderArea
+
+- many small changes - too many to mention them here

@@ -1,0 +1,18 @@
+type: cpp
+name: "qhttpserver"
+cmake_name: "QHttpServer"
+display_name: "QHttpServer"
+version: "2020.12.29"
+homepage: "https://github.com/nikhilm/qhttpserver"
+description: "Qt based HTTP Server based on Joyent's HTTP Parser library (deprecated and unmaintained)"
+license: "MIT"
+
+sources:
+  "2020.12.29":
+    sha256: "4c74387a2da04cb8a9f3b516ee2d960fed390a17b319860a394efc3f27f74a9d"
+    url: "https://github.com/nikhilm/qhttpserver/archive/30ac5715d123030b01bbac7383fb73d1d00d932b.zip"
+    base_path: "qhttpserver-30ac5715d123030b01bbac7383fb73d1d00d932b"
+
+patches:
+  "2020.12.29":
+    - patch_file: "patches/2020.12.29-allow_set_qtcpserver.patch"

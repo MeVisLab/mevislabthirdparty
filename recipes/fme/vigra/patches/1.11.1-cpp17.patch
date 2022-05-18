@@ -1,0 +1,753 @@
+diff --git i/include/vigra/config.hxx w/include/vigra/config.hxx
+index 8854abd..e279a7f 100644
+--- i/include/vigra/config.hxx
++++ w/include/vigra/config.hxx
+@@ -167,7 +167,7 @@
+ 
+     #if defined(__GXX_EXPERIMENTAL_CXX0X__) || __cplusplus >= 201103L
+         #if defined(__APPLE__)
+-            #define VIGRA_NO_UNIQUE_PTR
++            //#define VIGRA_NO_UNIQUE_PTR
+         #endif
+     #else
+         // C++98 mode.  No native unique_ptr support
+@@ -187,7 +187,7 @@
+     #if defined(__apple_build_version__)
+         // (For Apple builds of clang, __clang_major__ tracks the XCode version.)
+         // For Apple builds, C++11 only works well with libc++, not stdlibc++
+-        #define VIGRA_NO_UNIQUE_PTR
++        //#define VIGRA_NO_UNIQUE_PTR
+         #if __cplusplus >= 201103L
+             // Must have at least XCode 4 and use libc++ to use std::shared_ptr, etc.
+             // Otherwise, use tr1.
+diff --git i/include/vigra/fftw3.hxx w/include/vigra/fftw3.hxx
+index 00146f7..1f216ce 100644
+--- i/include/vigra/fftw3.hxx
++++ w/include/vigra/fftw3.hxx
+@@ -1489,7 +1489,7 @@ class FFTWPhaseAccessor
+ 
+     // do not forget to normalize the result according to the image size
+     transformImage(srcImageRange(spatial), destImage(spatial),
+-                   std::bind1st(std::multiplies<FFTWComplex>(), 1.0 / width / height));
++                   std::bind(std::multiplies<FFTWComplex>(), 1.0 / width / height, std::placeholders::_1));
+     \endcode
+ 
+     Note that in the creation of a plan, the height must be given
+@@ -2785,7 +2785,7 @@ fourierTransformRealImpl(
+ 
+     if(norm != 1.0)
+         transformImage(srcImageRange(res), destIter(dul, dest),
+-                       std::bind1st(std::multiplies<fftw_real>(), 1.0 / norm));
++                       std::bind(std::multiplies<fftw_real>(), 1.0 / norm, std::placeholders::_1));
+     else
+         copyImage(srcImageRange(res), destIter(dul, dest));
+ }
+diff --git i/include/vigra/functorexpression.hxx w/include/vigra/functorexpression.hxx
+index 022df50..0e809ce 100644
+--- i/include/vigra/functorexpression.hxx
++++ w/include/vigra/functorexpression.hxx
+@@ -119,7 +119,7 @@
+     
+     vigra::transformImage(srcImageRange(src), destImage(dest), 
+                    std::compose1(std::ptr_fun(exp),
+-                                 std::bind1st(std::multiplies<float>(), -beta)));
++                                 std::bind(std::multiplies<float>(), -beta, std::placeholdes::_1)));
+     \endcode
+  
+     I won't go into details on how this works. Suffice it to say that
+diff --git i/include/vigra/functortraits.hxx w/include/vigra/functortraits.hxx
+index 175ffbf..63a7730 100644
+--- i/include/vigra/functortraits.hxx
++++ w/include/vigra/functortraits.hxx
+@@ -195,8 +195,6 @@ VIGRA_DEFINE_STL_FUNCTOR(std::binary_negate, VigraFalseType, VigraTrueType)
+ VIGRA_DEFINE_STL_FUNCTOR(std::negate, VigraTrueType, VigraFalseType)
+ VIGRA_DEFINE_STL_FUNCTOR(std::logical_not, VigraTrueType, VigraFalseType)
+ VIGRA_DEFINE_STL_FUNCTOR(std::unary_negate, VigraTrueType, VigraFalseType)
+-VIGRA_DEFINE_STL_FUNCTOR(std::binder1st, VigraTrueType, VigraFalseType)
+-VIGRA_DEFINE_STL_FUNCTOR(std::binder2nd, VigraTrueType, VigraFalseType)
+ #undef VIGRA_DEFINE_STL_FUNCTOR
+ 
+ template <class R>
+diff --git i/include/vigra/numpy_array_traits.hxx w/include/vigra/numpy_array_traits.hxx
+index adc0006..64f0a56 100644
+--- i/include/vigra/numpy_array_traits.hxx
++++ w/include/vigra/numpy_array_traits.hxx
+@@ -762,7 +762,7 @@ struct NumpyArrayTraits<N, TinyVector<T, M>, StridedArrayTag>
+         TinyVector<npy_intp, N+1> npyStride;
+         std::transform(
+             stride.begin(), stride.end(), npyStride.begin(),
+-            std::bind2nd(std::multiplies<npy_intp>(), sizeof(value_type)));
++            std::bind(std::multiplies<npy_intp>(), sizeof(value_type), std::placeholders::_2));
+         npyStride[N] = sizeof(T);
+ 
+         return constructNumpyArrayFromData(npyShape, npyStride.begin(),
+diff --git i/src/impex/tiff.cxx w/src/impex/tiff.cxx
+index d85c8d5..643781a 100644
+--- i/src/impex/tiff.cxx
++++ w/src/impex/tiff.cxx
+@@ -64,6 +64,7 @@
+ #include <iostream>
+ #include <iomanip>
+ #include <sstream>
++#include <cstdint>
+ 
+ extern "C"
+ {
+@@ -77,16 +78,16 @@ static void vigraWarningHandler(char* module, char* fmt, va_list ap)
+     static const std::string ignore("Unknown field with tag");
+     if(ignore.compare(0, ignore.size(), fmt, ignore.size()) == 0)
+         return;
+-    
++
+     if (module != NULL)
+     {
+         static const std::string ignore("TIFFFetchNormalTag");
+         if(ignore.compare(module) == 0)
+             return;
+-            
++
+         fprintf(stderr, "%s: ", module);
+     }
+-    
++
+     fprintf(stderr, "Warning, ");
+     vfprintf(stderr, fmt, ap);
+     fprintf(stderr, ".\n");
+@@ -187,9 +188,9 @@ namespace vigra {
+         tdata_t * stripbuffer;
+         tstrip_t strip;
+ 
+-        uint32 stripindex, stripheight;
+-        uint32 width, height;
+-        uint16 samples_per_pixel, bits_per_sample,
++        std::uint32_t stripindex, stripheight;
++        std::uint32_t width, height;
++        std::uint16_t samples_per_pixel, bits_per_sample,
+             photometric, planarconfig, fillorder, extra_samples_per_pixel;
+         float x_resolution, y_resolution;
+         Diff2D position;
+@@ -276,7 +277,7 @@ namespace vigra {
+ 
+     std::string TIFFDecoderImpl::get_pixeltype_by_sampleformat() const
+     {
+-        uint16 sampleformat;
++        std::uint16_t sampleformat;
+ 
+         if ( TIFFGetField( tiff, TIFFTAG_SAMPLEFORMAT, &sampleformat ) ) {
+ 
+@@ -320,7 +321,7 @@ namespace vigra {
+ 
+     std::string TIFFDecoderImpl::get_pixeltype_by_datatype() const
+     {
+-        uint16 datatype;
++        std::uint16_t datatype;
+ 
+         if ( TIFFGetField( tiff, TIFFTAG_DATATYPE, &datatype ) ) {
+             // dangelo: correct parsing of INT/UINT (given in tiff.h)
+@@ -361,7 +362,7 @@ namespace vigra {
+         TIFFGetField( tiff, TIFFTAG_IMAGELENGTH, &height );
+ 
+         // check for tiled TIFFs
+-        uint32 tileWidth, tileHeight;
++        std::uint32_t tileWidth, tileHeight;
+         if( TIFFGetField( tiff, TIFFTAG_TILEWIDTH, &tileWidth ) &&
+             TIFFGetField( tiff, TIFFTAG_TILELENGTH, &tileHeight ) )
+             vigra_precondition( (tileWidth == width) && (tileHeight == height),
+@@ -380,7 +381,7 @@ namespace vigra {
+                         " A suitable default was not found." );
+ 
+         // read extra samples (# of alpha channels)
+-        uint16 *extra_sample_types=0;
++        std::uint16_t *extra_sample_types=0;
+         if (TIFFGetField( tiff, TIFFTAG_EXTRASAMPLES,
+                           &extra_samples_per_pixel, &extra_sample_types )!=1)
+         {
+@@ -421,7 +422,7 @@ namespace vigra {
+                             " A suitable default was not found." );
+             }
+         }
+-        
++
+         // check photometric preconditions
+         switch ( photometric )
+         {
+@@ -450,7 +451,7 @@ namespace vigra {
+             case PHOTOMETRIC_LOGL:
+             case PHOTOMETRIC_LOGLUV:
+             {
+-                uint16 tiffcomp;
++                std::uint16_t tiffcomp;
+                 TIFFGetFieldDefaulted( tiff, TIFFTAG_COMPRESSION, &tiffcomp );
+                 if (tiffcomp != COMPRESSION_SGILOG && tiffcomp != COMPRESSION_SGILOG24)
+                     vigra_fail("TIFFDecoder:"
+@@ -532,8 +533,8 @@ namespace vigra {
+         }
+ 
+         // other fields
+-        uint16 u16value;
+-        uint32 u32value;
++        std::uint16_t u16value;
++        std::uint32_t u32value;
+         float unitLength = 1.0f;
+         if (TIFFGetField( tiff, TIFFTAG_RESOLUTIONUNIT, &u16value )) {
+             switch (u16value) {
+@@ -579,7 +580,7 @@ namespace vigra {
+             canvasSize.y = u32value;
+         }
+ 
+-        if ((uint32)canvasSize.x < position.x + width || (uint32)canvasSize.y < position.y + height)
++        if ((std::uint32_t)canvasSize.x < position.x + width || (std::uint32_t)canvasSize.y < position.y + height)
+         {
+             canvasSize.x = canvasSize.y = 0;
+         }
+@@ -956,7 +957,7 @@ namespace vigra {
+         TIFFSetField( tiff, TIFFTAG_BITSPERSAMPLE, bits_per_sample );
+ 
+        if (extra_samples_per_pixel > 0) {
+-              uint16 * types = new  uint16[extra_samples_per_pixel];
++           std::uint16_t * types = new  std::uint16_t[extra_samples_per_pixel];
+            for ( int i=0; i < extra_samples_per_pixel; i++ ) {
+               types[i] = EXTRASAMPLE_UNASSALPHA;
+             }
+@@ -990,8 +991,8 @@ namespace vigra {
+             TIFFSetField( tiff, TIFFTAG_YPOSITION, position.y / y_resolution);
+         }
+ 
+-        if ((uint32)canvasSize.x >= position.x + width
+-            && (uint32)canvasSize.y >= position.y + height)
++        if ((std::uint32_t)canvasSize.x >= position.x + width
++            && (std::uint32_t)canvasSize.y >= position.y + height)
+         {
+             TIFFSetField( tiff, TIFFTAG_PIXAR_IMAGEFULLWIDTH, canvasSize.x);
+             TIFFSetField( tiff, TIFFTAG_PIXAR_IMAGEFULLLENGTH, canvasSize.y);
+diff --git i/test/classifier/test.cxx w/test/classifier/test.cxx
+index 1e26292..1327a01 100644
+--- i/test/classifier/test.cxx
++++ w/test/classifier/test.cxx
+@@ -533,7 +533,7 @@ struct ClassifierTest
+             totalWeight = std::accumulate(a, a + data.ClassIter(ii).size(),
+                                           totalWeight);
+             std::transform(tmp.begin(), tmp.end(),tmp.begin(), 
+-                           std::bind2nd(std::divides<double>(), totalWeight));
++                           std::bind(std::divides<double>(), totalWeight, std::placeholders::_2));
+             MultiArrayView<2, double> 
+                 should_resp(Shp(1, data.ClassIter(ii).size()), tmp.data());
+ 
+diff --git i/test/imagehierarchy/basic_image_test.hxx w/test/imagehierarchy/basic_image_test.hxx
+index 9c1ec5a..5d44cf2 100644
+--- i/test/imagehierarchy/basic_image_test.hxx
++++ w/test/imagehierarchy/basic_image_test.hxx
+@@ -19,10 +19,10 @@ public:
+     void testOperatorAssignmentPixel()
+     {
+         (*image1_) = data[4];
+-        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[4])));
++        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind(Pixels_not_equal_to<value_type>(), data[4], std::placeholders::_2)));
+         
+         (*image0_) = data[5];
+-        should(image0_->end() == std::find_if(image0_->begin(), image0_->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[5])));
++        should(image0_->end() == std::find_if(image0_->begin(), image0_->end(), std::bind(Pixels_not_equal_to<value_type>(), data[5], std::placeholders::_2)));
+     }
+     
+     void testResizeInt()
+@@ -57,13 +57,13 @@ public:
+         should(image1_->height() == 6);
+         should(image1_->width() == 4);
+         should(image1_->size() == vigra::Diff2D(4,6));
+-        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[9])));
++        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind(Pixels_not_equal_to<value_type>(), data[9], std::placeholders::_2)));
+         
+         image0_->resize(1, 4, data[10]);
+         should(image0_->height() == 4);
+         should(image0_->width() == 1);
+         should(image0_->size() == vigra::Diff2D(1,4));
+-        should(image0_->end() == std::find_if(image0_->begin(), image0_->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[10])));      
++        should(image0_->end() == std::find_if(image0_->begin(), image0_->end(), std::bind(Pixels_not_equal_to<value_type>(), data[10], std::placeholders::_2)));      
+     }
+     
+     /** testet die Methode resizeCopy(BasicImage img) an Instanzen der Klasse BasicImage.
+diff --git i/test/imagehierarchy/imagehierarchy_test.hxx w/test/imagehierarchy/imagehierarchy_test.hxx
+index 4cd371d..0a5a9f8 100644
+--- i/test/imagehierarchy/imagehierarchy_test.hxx
++++ w/test/imagehierarchy/imagehierarchy_test.hxx
+@@ -22,13 +22,13 @@ public:
+         should(image1->height() == 4);
+         should(image1->width() == 3);
+         should(image1->size() == vigra::Diff2D(3,4));
+-        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), child_data[0])));    
++        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind(Pixels_not_equal_to<value_type>(), child_data[0], std::placeholders::_2)));    
+         
+         std::auto_ptr<Image> image2(Policy::factory(new typename ChildImage::InnerImage(0, 0, child_data[1])));
+         should(image2->height() == 0);
+         should(image2->width() == 0);
+         should(image2->size() == vigra::Diff2D(0,0));
+-        should(image2->end() == std::find_if(image2->begin(), image2->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), child_data[1])));    
++        should(image2->end() == std::find_if(image2->begin(), image2->end(), std::bind(Pixels_not_equal_to<value_type>(), child_data[1], std::placeholders::_2)));    
+     }
+     
+     /** testet die clone() Methode der Klasse aus imagehierarchy
+@@ -47,11 +47,11 @@ public:
+         */
+         image1->init(data[5]); 
+         should((*image1_->begin()) != static_cast<typename Image::PixelType> (data[5]));
+-        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[5])));
++        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind(Pixels_not_equal_to<value_type>(), data[5], std::placeholders::_2)));
+         
+         image1_->init(data[6]);
+-        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[5])));
+-        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[6])));
++        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind(Pixels_not_equal_to<value_type>(), data[5], std::placeholders::_2)));
++        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind(Pixels_not_equal_to<value_type>(), data[6], std::placeholders::_2)));
+         
+         std::auto_ptr<typename Image::CloneType> image0(image0_->clone());
+         should(equal(*image0, *image0_));
+@@ -84,12 +84,12 @@ public:
+         /* Aenderung mit der init-Funktion
+         */
+         image1->init(data[7]);
+-        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[7])));
+-        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[7])));
++        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind(Pixels_not_equal_to<value_type>(), data[7], std::placeholders::_2)));
++        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind(Pixels_not_equal_to<value_type>(), data[7], std::placeholders::_2)));
+         
+         image1->init(data[8]);
+-        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[8])));
+-        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[8])));
++        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind(Pixels_not_equal_to<value_type>(), data[8], std::placeholders::_2)));
++        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind(Pixels_not_equal_to<value_type>(), data[8], std::placeholders::_2)));
+         
+         /* Eine shallowCopy zeigt auf die selben Daten des kopierten Objektes
+         */
+@@ -98,9 +98,9 @@ public:
+         should(&(*image1Copy) != &(*image1_));
+         
+         image1Copy->init(data[9]);
+-        should(image1Copy->end() == std::find_if(image1Copy->begin(), image1Copy->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[9])));
+-        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[9])));
+-        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[9])));
++        should(image1Copy->end() == std::find_if(image1Copy->begin(), image1Copy->end(), std::bind(Pixels_not_equal_to<value_type>(), data[9], std::placeholders::_2)));
++        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind(Pixels_not_equal_to<value_type>(), data[9], std::placeholders::_2)));
++        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind(Pixels_not_equal_to<value_type>(), data[9], std::placeholders::_2)));
+         
+         std::auto_ptr<Image> image0(image0_->shallowCopy());
+         should(equal(*image0, *image0_));
+@@ -213,7 +213,7 @@ public:
+         */
+         image1_->init(data[7]);
+         
+-        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[7])));
++        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind(Pixels_not_equal_to<value_type>(), data[7], std::placeholders::_2)));
+                     
+         for(int x = 0; x < image1_->width(); x++)
+             for(int y = 0; y < image1_->height(); y++)
+diff --git i/test/imagehierarchy/parent_test_class.hxx w/test/imagehierarchy/parent_test_class.hxx
+index 65e6377..892da9c 100644
+--- i/test/imagehierarchy/parent_test_class.hxx
++++ w/test/imagehierarchy/parent_test_class.hxx
+@@ -217,13 +217,13 @@ public:
+         should(image1->height() == 3);
+         should(image1->width() == 2);
+         should(image1->size() == vigra::Diff2D(2,3));
+-        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), child_data[0])));    
++        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind(Pixels_not_equal_to<value_type>(), child_data[0], std::placeholders::_2)));    
+         
+         std::auto_ptr<Image> image2(Policy::factory(0, 0, child_data[1]));
+         should(image2->height() == 0);
+         should(image2->width() == 0);
+         should(image2->size() == vigra::Diff2D(0,0));
+-        should(image2->end() == std::find_if(image2->begin(), image2->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), child_data[1])));    
++        should(image2->end() == std::find_if(image2->begin(), image2->end(), std::bind(Pixels_not_equal_to<value_type>(), child_data[1], std::placeholders::_2)));    
+     }
+     
+     /** Testet den Copy Konstruktor ( Image(Image img) ).
+@@ -266,13 +266,13 @@ public:
+     void testInit()
+     {
+         image1_->init(data[6]);
+-        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[6])));
++        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind(Pixels_not_equal_to<value_type>(), data[6], std::placeholders::_2)));
+         image1_->init(data[7]);
+-        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[7])));
+-        should(image1_->end() != std::find_if(image1_->begin(), image1_->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[6])));
++        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind(Pixels_not_equal_to<value_type>(), data[7], std::placeholders::_2)));
++        should(image1_->end() != std::find_if(image1_->begin(), image1_->end(), std::bind(Pixels_not_equal_to<value_type>(), data[6], std::placeholders::_2)));
+         
+         image0_->init(data[8]);
+-        should(image0_->end() == std::find_if(image0_->begin(), image0_->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[8])));
++        should(image0_->end() == std::find_if(image0_->begin(), image0_->end(), std::bind(Pixels_not_equal_to<value_type>(), data[8], std::placeholders::_2)));
+     }
+     
+     void testWidth()
+diff --git i/test/imagehierarchy/select_image_test.hxx w/test/imagehierarchy/select_image_test.hxx
+index c2df9f0..259902b 100644
+--- i/test/imagehierarchy/select_image_test.hxx
++++ w/test/imagehierarchy/select_image_test.hxx
+@@ -23,7 +23,7 @@ public:
+         should(image1->size() == vigra::Diff2D(2,3));
+     
+         // Bei SelectBandImage wird nur der selektierte Band mit dem Pixel child_data[0] initialisiert   
+-        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), child_data[0][Policy::n])));
++        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind(Pixels_not_equal_to<value_type>(), child_data[0][Policy::n], std::placeholders::_2)));
+         
+         std::auto_ptr<Image> image2(Policy::factory(0, 0, child_data[1]));
+         should(image2->height() == 0);
+@@ -31,7 +31,7 @@ public:
+         should(image2->size() == vigra::Diff2D(0,0));
+     
+         // Bei SelectBandImage wird nur der selektierte Band mit dem Pixel child_data[1] initialisiert   
+-        should(image2->end() == std::find_if(image2->begin(), image2->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), child_data[1][Policy::n])));
++        should(image2->end() == std::find_if(image2->begin(), image2->end(), std::bind(Pixels_not_equal_to<value_type>(), child_data[1][Policy::n], std::placeholders::_2)));
+     }
+     
+     /** Testet den Copy Konstruktor ( Image(Image img) ).
+@@ -62,13 +62,13 @@ public:
+         should(image1->height() == 4);
+         should(image1->width() == 3);
+         should(image1->size() == vigra::Diff2D(3,4));
+-        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), child_data[0][Policy::n])));
++        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind(Pixels_not_equal_to<value_type>(), child_data[0][Policy::n], std::placeholders::_2)));
+ 
+         std::auto_ptr<Image> image2(Policy::factory(new typename ChildImage::InnerImage(0, 0, child_data[1])));
+         should(image2->height() == 0);
+         should(image2->width() == 0);
+         should(image2->size() == vigra::Diff2D(0,0));
+-        should(image2->end() == std::find_if(image2->begin(), image2->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), child_data[1][Policy::n])));
++        should(image2->end() == std::find_if(image2->begin(), image2->end(), std::bind(Pixels_not_equal_to<value_type>(), child_data[1][Policy::n], std::placeholders::_2)));
+     }
+     
+     /** testet die clone() Methode der Klasse aus imagehierarchy
+@@ -87,11 +87,11 @@ public:
+         */
+         image1->init(data[5]); 
+         should((*image1_->begin()) != static_cast<typename Image::PixelType> (data[5]));
+-        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[5])));
++        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind(Pixels_not_equal_to<value_type>(), data[5], std::placeholders::_2)));
+         
+         image1_->init(data[6]);
+-        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[5])));
+-        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[6])));
++        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind(Pixels_not_equal_to<value_type>(), data[5], std::placeholders::_2)));
++        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind(Pixels_not_equal_to<value_type>(), data[6], std::placeholders::_2)));
+         
+         std::auto_ptr<typename Image::CloneType> image0(image0_->clone());
+         should(equal(*image0, *image0_));
+diff --git i/test/imagehierarchy/single_band_image_test.hxx w/test/imagehierarchy/single_band_image_test.hxx
+index 5002fde..cc7a62d 100644
+--- i/test/imagehierarchy/single_band_image_test.hxx
++++ w/test/imagehierarchy/single_band_image_test.hxx
+@@ -29,11 +29,11 @@ public:
+         */
+         image1->init(data[5]); 
+         should((*image1_->begin()) != static_cast<typename Image::PixelType> (data[5]));
+-        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[5])));
++        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind(Pixels_not_equal_to<value_type>(), data[5], std::placeholders::_2)));
+         
+         image1_->init(data[6]);
+-        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[5])));
+-        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[6])));
++        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind(Pixels_not_equal_to<value_type>(), data[5])));
++        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind(Pixels_not_equal_to<value_type>(), data[6], std::placeholders::_2)));
+         
+         std::auto_ptr<typename Image::CloneType> image0(image0_->clone());
+         should(equal(*image0, *image0_));
+@@ -58,12 +58,12 @@ public:
+         /* Aenderung mit der init-Funktion
+         */
+         image1->init(data[7]);
+-        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[7])));
+-        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[7])));
++        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind(Pixels_not_equal_to<value_type>(), data[7], std::placeholders::_2)));
++        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind(Pixels_not_equal_to<value_type>(), data[7], std::placeholders::_2)));
+         
+         image1->init(data[8]);
+-        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[8])));
+-        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[8])));
++        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind(Pixels_not_equal_to<value_type>(), data[8], std::placeholders::_2)));
++        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind(Pixels_not_equal_to<value_type>(), data[8], std::placeholders::_2)));
+         
+         /* Eine shallowCopy zeigt auf die selben Daten des kopierten Objektes
+         */
+@@ -72,9 +72,9 @@ public:
+         should(&(*image1Copy) != &(*image1_));
+         
+         image1Copy->init(data[9]);
+-        should(image1Copy->end() == std::find_if(image1Copy->begin(), image1Copy->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[9])));
+-        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[9])));
+-        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[9])));
++        should(image1Copy->end() == std::find_if(image1Copy->begin(), image1Copy->end(), std::bind(Pixels_not_equal_to<value_type>(), data[9], std::placeholders::_2)));
++        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind(Pixels_not_equal_to<value_type>(), data[9], std::placeholders::_2)));
++        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind(Pixels_not_equal_to<value_type>(), data[9], std::placeholders::_2)));
+         
+         std::auto_ptr<Image> image0(image0_->shallowCopy());
+         should(equal(*image0, *image0_));
+diff --git i/test/imagehierarchy/variable_bands_image_test.hxx w/test/imagehierarchy/variable_bands_image_test.hxx
+index 96c72e6..87ef198 100644
+--- i/test/imagehierarchy/variable_bands_image_test.hxx
++++ w/test/imagehierarchy/variable_bands_image_test.hxx
+@@ -29,11 +29,11 @@ public:
+         */
+         image1->init(data[5]); 
+         should((*image1_->begin()) != static_cast<typename Image::PixelType> (data[5]));
+-        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[5])));
++        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind(Pixels_not_equal_to<value_type>(), data[5], std::placeholders::_2)));
+         
+         image1_->init(data[6]);
+-        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[5])));
+-        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[6])));
++        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind(Pixels_not_equal_to<value_type>(), data[5], std::placeholders::_2)));
++        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind(Pixels_not_equal_to<value_type>(), data[6], std::placeholders::_2)));
+         
+         std::auto_ptr<typename Image::CloneType> image0(image0_->clone());
+         should(equal(*image0, *image0_));
+@@ -58,12 +58,12 @@ public:
+         /* Aenderung mit der init-Funktion
+         */
+         image1->init(data[7]);
+-        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[7])));
+-        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[7])));
++        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind(Pixels_not_equal_to<value_type>(), data[7], std::placeholders::_2)));
++        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind(Pixels_not_equal_to<value_type>(), data[7], std::placeholders::_2)));
+         
+         image1->init(data[8]);
+-        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[8])));
+-        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[8])));
++        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind(Pixels_not_equal_to<value_type>(), data[8], std::placeholders::_2)));
++        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind(Pixels_not_equal_to<value_type>(), data[8], std::placeholders::_2)));
+         
+         /* Eine shallowCopy zeigt auf die selben Daten des kopierten Objektes
+         */
+@@ -72,9 +72,9 @@ public:
+         should(&(*image1Copy) != &(*image1_));
+         
+         image1Copy->init(data[9]);
+-        should(image1Copy->end() == std::find_if(image1Copy->begin(), image1Copy->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[9])));
+-        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[9])));
+-        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind2nd(Pixels_not_equal_to<value_type>(), data[9])));
++        should(image1Copy->end() == std::find_if(image1Copy->begin(), image1Copy->end(), std::bind(Pixels_not_equal_to<value_type>(), data[9], std::placeholders::_2)));
++        should(image1_->end() == std::find_if(image1_->begin(), image1_->end(), std::bind(Pixels_not_equal_to<value_type>(), data[9], std::placeholders::_2)));
++        should(image1->end() == std::find_if(image1->begin(), image1->end(), std::bind(Pixels_not_equal_to<value_type>(), data[9], std::placeholders::_2)));
+         
+         std::auto_ptr<Image> image0(image0_->shallowCopy());
+         should(equal(*image0, *image0_));
+
+diff --git i/include/vigra/multi_handle.hxx w/include/vigra/multi_handle.hxx
+index f291a9c..b8ce34c 100644
+--- i/include/vigra/multi_handle.hxx
++++ w/include/vigra/multi_handle.hxx
+@@ -45,7 +45,7 @@ namespace vigra {
+ template <unsigned TARGET_INDEX, class Handle, unsigned int INDEX=Handle::index>
+ struct CoupledHandleCast;
+ 
+-#ifndef _MSC_VER  // Visual Studio doesn't like these forward declarations
++#if !defined(_MSC_VER)  || (_MSC_VER >=  1916) // Older (pre VS 2017.9) Visual Studio doesn't like these forward declarations
+ template <unsigned int TARGET_INDEX, class Handle>
+ typename CoupledHandleCast<TARGET_INDEX, Handle>::reference
+ get(Handle & handle);
+diff --git i/include/vigra/random_forest/rf_algorithm.hxx w/include/vigra/random_forest/rf_algorithm.hxx
+index 850859f..fb98e3b 100644
+--- i/include/vigra/random_forest/rf_algorithm.hxx
++++ w/include/vigra/random_forest/rf_algorithm.hxx
+@@ -1150,8 +1150,12 @@ class ClusterImportanceVisitor : public visitors::VisitorBase
+             ArrayVector<int> cts(2, 0);
+             ArrayVector<Int32> indices(pr.features().shape(0));
+             for(int ii = 0; ii < pr.features().shape(0); ++ii)
+-               indices.push_back(ii); 
+-            std::random_shuffle(indices.begin(), indices.end());
++               indices.push_back(ii);
++
++            std::random_device rd;
++            std::mt19937 g(rd());
++
++            std::shuffle(indices.begin(), indices.end(), g);
+             for(int ii = 0; ii < rf.ext_param_.row_count_; ++ii)
+             {
+                 if(!sm.is_used()[indices[ii]] && cts[pr.response()(indices[ii], 0)] < 3000)
+diff --git i/include/vigra/random_forest/rf_visitors.hxx w/include/vigra/random_forest/rf_visitors.hxx
+index 92e028e..c9d3269 100644
+--- i/include/vigra/random_forest/rf_visitors.hxx
++++ w/include/vigra/random_forest/rf_visitors.hxx
+@@ -39,8 +39,10 @@
+ # include "vigra/hdf5impex.hxx"
+ #endif // HasHDF5
+ #include <vigra/windows.h>
++#include <algorithm>
+ #include <iostream>
+ #include <iomanip>
++#include <random>
+ 
+ #include <vigra/metaprogramming.hxx>
+ #include <vigra/multi_pointoperators.hxx>
+@@ -920,7 +922,11 @@ class OOB_Error : public VisitorBase
+         {
+             ArrayVector<int> oob_indices;
+             ArrayVector<int> cts(class_count, 0);
+-            std::random_shuffle(indices.begin(), indices.end());
++        
++            std::random_device rd;
++            std::mt19937 g(rd());
++            
++            std::shuffle(indices.begin(), indices.end(), g);
+             for(int ii = 0; ii < rf.ext_param_.row_count_; ++ii)
+             {
+                 if(!sm.is_used()[indices[ii]] && cts[pr.response()(indices[ii], 0)] < 40000)
+
+diff --git i/include/vigra/mathutil.hxx w/include/vigra/mathutil.hxx
+index f370f45..efa7ecd 100644
+--- i/include/vigra/mathutil.hxx
++++ w/include/vigra/mathutil.hxx
+@@ -1748,6 +1748,11 @@ inline bool greaterEqualAtTolerance(T1 l, T2 r)
+ #pragma GCC diagnostic ignored "-Wtype-limits"
+ #endif
+ 
++#ifdef _MSC_VER
++#pragma warning( push )
++#pragma warning(disable : 4296)
++#endif
++
+ VIGRA_MATH_FUNC_HELPER(unsigned char)
+ VIGRA_MATH_FUNC_HELPER(unsigned short)
+ VIGRA_MATH_FUNC_HELPER(unsigned int)
+@@ -1762,6 +1767,10 @@ VIGRA_MATH_FUNC_HELPER(float)
+ VIGRA_MATH_FUNC_HELPER(double)
+ VIGRA_MATH_FUNC_HELPER(long double)
+ 
++#ifdef _MSC_VER
++#pragma warning( pop )
++#endif
++
+ #ifdef __GNUC__
+ #pragma GCC diagnostic pop
+ #endif
+diff --git i/include/vigra/error.hxx w/include/vigra/error.hxx
+index 881bc46..4b1bd40 100644
+--- i/include/vigra/error.hxx
++++ w/include/vigra/error.hxx
+@@ -140,7 +140,7 @@ class ContractViolation : public StdException
+         (*this) << "\n" << prefix << "\n" << message << "\n";
+     }
+     
+-    ~ContractViolation() throw()
++    ~ContractViolation()
+     {}
+     
+     template<class T>
+@@ -152,16 +152,9 @@ class ContractViolation : public StdException
+         return *this;
+     }
+ 
+-    virtual const char * what() const throw()
++    virtual const char * what() const noexcept
+     {
+-        try
+-        {
+-            return what_.c_str();
+-        }
+-        catch(...)
+-        {
+-            return "vigra::ContractViolation: error message was lost, sorry.";
+-        }
++        return what_.c_str();
+     }
+   
+   private:
+diff --git i/include/vigra/fftw3.hxx w/include/vigra/fftw3.hxx
+index 1f216ce..03d3e29 100644
+--- i/include/vigra/fftw3.hxx
++++ w/include/vigra/fftw3.hxx
+@@ -689,11 +689,11 @@ class FFTWAllocator
+         typedef FFTWAllocator<Other> other;
+     };
+     
+-    FFTWAllocator() throw()
++    FFTWAllocator() noexcept
+     {}
+     
+     template<class Other>
+-    FFTWAllocator(const FFTWAllocator<Other>& /*right*/) throw()
++    FFTWAllocator(const FFTWAllocator<Other>& /*right*/) noexcept
+     {}
+     
+     template<class Other>
+@@ -723,7 +723,7 @@ class FFTWAllocator
+         ptr->~Ty();
+     }
+     
+-    size_type max_size() const throw()
++    size_type max_size() const noexcept
+     {
+         return NumericTraits<std::ptrdiff_t>::max() / sizeof(Ty);
+     }
+@@ -757,11 +757,11 @@ class allocator<vigra::FFTWComplex<Real> >
+         typedef allocator<Other> other;
+     };
+     
+-    allocator() throw()
++    allocator() noexcept
+     {}
+     
+     template<class Other>
+-    allocator(const allocator<Other>& /*right*/) throw()
++    allocator(const allocator<Other>& /*right*/) noexcept
+     {}
+     
+     template<class Other>
+@@ -791,7 +791,7 @@ class allocator<vigra::FFTWComplex<Real> >
+         ptr->~value_type();
+     }
+     
+-    size_type max_size() const throw()
++    size_type max_size() const noexcept
+     {
+         return vigra::NumericTraits<std::ptrdiff_t>::max() / sizeof(value_type);
+     }
+diff --git i/include/vigra/separableconvolution.hxx w/include/vigra/separableconvolution.hxx
+index 7ee33c0..2aca01c 100644
+--- i/include/vigra/separableconvolution.hxx
++++ w/include/vigra/separableconvolution.hxx
+@@ -1409,11 +1409,6 @@ class Kernel1D
+         {}
+ 
+         ~InitProxy()
+-#ifndef _MSC_VER
+-            throw(PreconditionViolation)
+-#elif _MSC_VER >= 1900
+-            noexcept(false)
+-#endif
+         {
+             vigra_precondition(count_ == 1 || count_ == sum_,
+                   "Kernel1D::initExplicitly(): "
+diff --git i/include/vigra/stdconvolution.hxx w/include/vigra/stdconvolution.hxx
+index 76d61a5..827d4fe 100644
+--- i/include/vigra/stdconvolution.hxx
++++ w/include/vigra/stdconvolution.hxx
+@@ -792,11 +792,6 @@ public:
+         {}
+ 
+         ~InitProxy()
+-#ifndef _MSC_VER
+-            throw(PreconditionViolation)
+-#elif _MSC_VER >= 1900
+-            noexcept(false)
+-#endif
+         {
+             vigra_precondition(count_ == 1 || count_ == sum_,
+                                "Kernel2D::initExplicitly(): "
+diff --git i/include/vigra/unittest.hxx w/include/vigra/unittest.hxx
+index a14812b..c2f1f45 100644
+--- i/include/vigra/unittest.hxx
++++ w/include/vigra/unittest.hxx
+@@ -442,11 +442,11 @@ struct unit_test_failed
+     : what_(message)
+     {}
+ 
+-    virtual ~unit_test_failed() throw()
++    virtual ~unit_test_failed()
+     {
+     }
+ 
+-    virtual const char * what() const throw()
++    virtual const char * what() noexcept const 
+     {
+         return what_.c_str();
+     }
+-- 

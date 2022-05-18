@@ -1,0 +1,12 @@
+type: cpp
+name: "lzma_sdk"
+cmake_name: "lzma_sdk"
+display_name: "LZMA SDK"
+version: "19.00"
+description: "LZMA SDK"
+license: "publicdomain"
+
+sources:
+  "19.00":
+    sha256: "00F569E624B3D9ED89CF8D40136662C4C5207EACEB92A70B1044C77F84234BAD"
+    url: "https://7-zip.org/a/lzma1900.7z"

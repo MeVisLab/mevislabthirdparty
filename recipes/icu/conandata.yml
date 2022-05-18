@@ -1,0 +1,7 @@
+type: cpp
+name: "icu"
+display_name: "ICU"
+version: "70.1"
+homepage: "http://site.icu-project.org"
+description: "Unicode support, software internationalization, and software globalization"
+license: "ICU"

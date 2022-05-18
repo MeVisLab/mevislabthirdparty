@@ -1,0 +1,32 @@
+diff --git i/CMakeLists.txt w/CMakeLists.txt
+index 253ec0b..c5b28c4 100644
+--- i/CMakeLists.txt
++++ w/CMakeLists.txt
+@@ -133,7 +133,7 @@ endif()
+ #
+ function(itk_add_test)
+   # Add tests with data in the ITKData group.
+-  ExternalData_add_test(ITKData ${ARGN})
++  #ExternalData_add_test(ITKData ${ARGN})
+ 
+   if("NAME" STREQUAL "${ARGV0}")
+     set(_iat_testname ${ARGV1})
+@@ -143,14 +143,14 @@ function(itk_add_test)
+ 
+   if(itk-module)
+     set(_label ${itk-module})
+-    if(TARGET ${itk-module}-all AND "${ARGN}" MATCHES "DATA{")
+-      add_dependencies(${itk-module}-all ITKData)
+-    endif()
++    # if(TARGET ${itk-module}-all AND "${ARGN}" MATCHES "DATA{")
++    #   add_dependencies(${itk-module}-all ITKData)
++    # endif()
+   else()
+     set(_label ${main_project_name})
+   endif()
+ 
+-  set_property(TEST ${_iat_testname} PROPERTY LABELS ${_label})
++  #set_property(TEST ${_iat_testname} PROPERTY LABELS ${_label})
+ endfunction()
+ 
+ #-----------------------------------------------------------------------------

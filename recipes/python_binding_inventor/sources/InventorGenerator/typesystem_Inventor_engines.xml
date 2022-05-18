@@ -1,0 +1,81 @@
+<typesystem package="Inventor.engines">
+
+  <enum-type name="SoOneShot::Flags" />
+  <enum-type name="SoBoolOperation::Operation" />
+
+  <object-type name="SoEngineOutput" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoEngine" create-shell="no" create-promoter="no" >
+  </object-type>
+
+  <object-type name="SoBoolOperation" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoCalculator" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoComposeMatrix" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoComputeBoundingBox" create-shell="no" create-promoter="no" >
+  </object-type>
+  <!-- Does not work well because input is an array of 10 fields...
+  <object-type name="SoConcatenate" create-shell="no" create-promoter="no" >
+  </object-type>
+  -->
+  <object-type name="SoCounter" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoElapsedTime" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoFieldConverter" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoGate" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoInterpolate" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoOnOff" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoOneShot" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoOutputData" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoSelectOne" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoTimeCounter" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoTransformVec3f" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoTriggerAny" create-shell="no" create-promoter="no" >
+  </object-type>
+
+  <object-type name="SoComposeRotation" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoComposeRotationFromTo" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoComposeVec2f" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoComposeVec3f" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoComposeVec4f" create-shell="no" create-promoter="no" >
+  </object-type>
+
+  <object-type name="SoDecomposeMatrix" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoDecomposeRotation" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoDecomposeVec2f" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoDecomposeVec3f" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoDecomposeVec4f" create-shell="no" create-promoter="no" >
+  </object-type>
+
+  <object-type name="SoInterpolateFloat" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoInterpolateVec2f" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoInterpolateVec3f" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoInterpolateVec4f" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoInterpolateRotation" create-shell="no" create-promoter="no" >
+  </object-type>
+
+ </typesystem>

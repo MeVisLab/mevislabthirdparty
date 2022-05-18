@@ -1,0 +1,8 @@
+#
+# {{ header_date }}
+#
+
+file(GLOB INSTALL_THIRDPARTY_TARGET_FILES "${CMAKE_CURRENT_LIST_DIR}/MeVisLabThirdPartyPaths-*.cmake")
+foreach(f ${INSTALL_THIRDPARTY_TARGET_FILES})
+  include(${f})
+endforeach()

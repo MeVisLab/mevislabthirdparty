@@ -1,0 +1,13 @@
+type: pure_c
+name: "xz-utils"
+display_name: "XZ Utils"
+version: "5.2.5"
+homepage: "https://tukaani.org/xz/"
+description: "XZ Utils is free general-purpose data compression software with a high compression ratio"
+license: "PublicDomain"
+
+sources:
+  "5.2.5":
+    sha256: "f6f4910fd033078738bd82bfba4f49219d03b17eb0794eb91efbae419f4aba10"
+    url: "https://tukaani.org/xz/xz-${version}.tar.gz"
+    base_path: "xz-${version}"

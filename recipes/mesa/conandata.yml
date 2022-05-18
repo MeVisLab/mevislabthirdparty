@@ -1,0 +1,31 @@
+type: cpp
+name: "mesa"
+display_name: "Mesa"
+version: "20.3.4"
+homepage: "https://mesa3d.org"
+description: "an open source software implementation of OpenGL, Vulkan, and other graphics API specifications"
+license: "MIT"
+
+pipeline: "windows:vs15:release"
+
+sources:
+  "21.1.1":
+    sha256: "eec25ea379054e8911bc5de816aeb50f581b5b708414725003d2f00386b38dd2"
+    url: "https://mesa.freedesktop.org/archive/mesa-${version}.tar.xz"
+    base_path: "mesa-${version}"
+
+  "20.3.4":
+    sha256: "dc21a987ec1ff45b278fe4b1419b1719f1968debbb80221480e44180849b4084"
+    url: "https://mesa.freedesktop.org/archive/mesa-${version}.tar.xz"
+    base_path: "mesa-${version}"
+
+patches:
+  "21.1.1":
+    - patch_file: "patches/21.1.1-fix-tchar_usage.patch"
+    - patch_file: "patches/21.1.1-meson_no_fallback.patch"
+
+  "20.3.4":
+    - patch_file: "patches/20.3.4-fix-tchar_usage.patch"
+    - patch_file: "patches/20.3.4-remove_warning_forward_struct.patch"
+    - patch_file: "patches/20.3.4-meson_no_fallback.patch"
+

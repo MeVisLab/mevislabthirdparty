@@ -1,0 +1,8 @@
+type: cpp
+name: "python_binding_inventor"
+cmake_name: "PythonBindingInventor"
+display_name: "PythonBindingQt"
+version: "2022.02.11"
+homepage: "https://mevislab.de/"
+description: "Python binding into Inventor"
+license: "LGPL-2.1-only"

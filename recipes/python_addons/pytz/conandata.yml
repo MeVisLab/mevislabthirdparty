@@ -1,0 +1,31 @@
+type: pure_c
+name: pytz
+version: "2022.1"
+homepage: https://pythonhosted.org/pytz
+description: Olson tz database for accurate and cross platform timezone calculations in Python
+license: MIT
+
+sources:
+  "2022.1":
+    sha256: 1e760e2fe6a8163bc0b3d9a19c4f84342afa0a2affebfaa84b01b978a02ecaa7
+    url: "https://files.pythonhosted.org/packages/2f/5f/a0f653311adff905bbcaa6d3dfaf97edcf4d26138393c6ccd37a484851fb/pytz-${version}.tar.gz"
+    base_path: "pytz-${version}"
+
+  "2021.3":
+    sha256: acad2d8b20a1af07d4e4c9d2e9285c5ed9104354062f275f3fcd88dcef4f1326
+    url: "https://files.pythonhosted.org/packages/e3/8e/1cde9d002f48a940b9d9d38820aaf444b229450c0854bdf15305ce4a3d1a/pytz-${version}.tar.gz"
+    base_path: "pytz-${version}"
+
+  "2021.1":
+    sha256: 83a4a90894bf38e243cf052c8b58f381bfe9a7a483f6a9cab140bc7f702ac4da
+    url: "https://files.pythonhosted.org/packages/b0/61/eddc6eb2c682ea6fd97a7e1018a6294be80dba08fa28e7a3570148b4612d/pytz-${version}.tar.gz"
+    base_path: "pytz-${version}"
+
+  "2015.4":
+    sha256: c4ee70cb407f9284517ac368f121cf0796a7134b961e53d9daf1aaae8f44fb90
+    url: "https://files.pythonhosted.org/packages/89/f7/c3f24985638befecf0c0db820c27a276ce4030820a948d4893a6d35e36fa/pytz-${version}.tar.gz"
+    base_path: "pytz-${version}"
+
+patches:
+  "2015.4":
+    - patch_file: "patches/${version}-disable_zip_safe_for_performance_reasons.patch"

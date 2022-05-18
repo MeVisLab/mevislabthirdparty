@@ -1,0 +1,17 @@
+IVDEPTH = ../../..
+include $(IVDEPTH)/make/ivcommondefs
+
+PROGRAM = componentTest
+
+CXXFILES = componentTest.c++
+
+LLDLIBS = libInventorWidget.a -lInventor -lInventorXt -lGLw
+
+all install: all_ivbin
+
+LTARGETS = libInventorWidget.a
+
+libInventorWidget.a:
+	cd `dirname $@`; make `basename $@`
+
+include $(IVCOMMONRULES)

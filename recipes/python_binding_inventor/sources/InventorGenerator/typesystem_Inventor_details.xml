@@ -1,0 +1,22 @@
+<typesystem package="Inventor.details">
+
+  <object-type name="SoDetail">
+  <modify-function signature="SoDetail()" remove="all"/>
+  </object-type>
+
+  <object-type name="SoTextDetail">
+  </object-type>
+  <object-type name="SoPointDetail">
+  </object-type>
+  <object-type name="SoLineDetail">
+  </object-type>
+  <object-type name="SoFaceDetail">
+  </object-type>
+  <object-type name="SoCylinderDetail">
+  </object-type>
+  <object-type name="SoCubeDetail">
+  </object-type>
+  <object-type name="SoConeDetail">
+  </object-type>
+  
+ </typesystem>

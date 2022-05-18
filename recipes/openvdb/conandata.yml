@@ -1,0 +1,30 @@
+type: cpp
+name: "openvdb"
+cmake_name: "OpenVDB"
+display_name: "OpenVDB"
+version: "9.0.0"
+homepage: "https://www.openvdb.org"
+description: "A suite of tools for the efficient storage and manipulation of sparse volumetric data discretized on three-dimensional grids"
+license: "MPL-2.0"
+
+sources:
+  "9.0.0":
+    sha256: ad3816e8f1931d1d6fdbddcec5a1acd30695d049dd10aa965096b2fb9972b468
+    url: "https://github.com/AcademySoftwareFoundation/openvdb/archive/v${version}.tar.gz"
+    base_path: "openvdb-${version}"
+
+  "8.1.0":
+    sha256: "3e09d47331429be7409a3a3c27fdd3c297f96d31d2153febe194e664a99d6183"
+    url: "https://github.com/AcademySoftwareFoundation/openvdb/archive/v${version}.tar.gz"
+    base_path: "openvdb-${version}"
+
+  "8.0.1":
+    sha256: "a6845da7c604d2c72e4141c898930ac8a2375521e535f696c2cd92bebbe43c4f"
+    url: "https://github.com/AcademySoftwareFoundation/openvdb/archive/v${version}.tar.gz"
+    base_path: "openvdb-${version}"
+
+patches:
+  "8.0.1":
+    - patch_file: "patches/${version}-find_tbb.patch"
+    - patch_file: "patches/${version}-find_blosc.patch"
+    - patch_file: "patches/${version}-deprecated_tbb_api.patch"

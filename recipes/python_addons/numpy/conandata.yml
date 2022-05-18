@@ -1,0 +1,29 @@
+type: pure_c
+name: numpy
+display_name: NumPy
+mli_name: Python3__NumPy
+version: "1.22.3"
+homepage: https://numpy.org
+description: NumPy is the fundamental package for scientific computing with Python
+license: BSD-3-Clause
+
+sources:
+  "1.22.3":
+    sha256: a906c0b4301a3d62ccf66d058fe779a65c1c34f6719ef2058f96e1856f48bca5
+    url: "https://github.com/numpy/numpy/releases/download/v${version}/numpy-${version}.tar.gz"
+    base_path: "numpy-${version}"
+
+  "1.22.2":
+    sha256: 093d513a460fd94f94c16193c3ef29b2d69a33e482071e3d6d6e561a700587a6
+    url: "https://github.com/numpy/numpy/releases/download/v${version}/numpy-${version}.tar.gz"
+    base_path: "numpy-${version}"
+
+  "1.21.4":
+    sha256: 5d412381aa489b8be82ac5c6a9e99c3eb3f754245ad3f90ab5c339d92f25fb47
+    url: "https://github.com/numpy/numpy/releases/download/v${version}/numpy-${version}.tar.gz"
+    base_path: "numpy-${version}"
+
+  "1.17.5":
+    sha256: "ef0801b6feca0f50e56c29b02e0f3e2c8c40963d44c38484e6f47bfcfbf17d32"
+    url: "https://github.com/numpy/numpy/releases/download/v${version}/numpy-${version}.tar.gz"
+    base_path: "numpy-${version}"

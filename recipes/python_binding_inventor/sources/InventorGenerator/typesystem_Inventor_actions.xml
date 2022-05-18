@@ -1,0 +1,60 @@
+<typesystem package="Inventor.actions">
+  
+  <enum-type name="SoAction::AppliedCode" />
+  <enum-type name="SoAction::PathCode" />
+
+  <enum-type name="SoCallbackAction::Response" />
+  <enum-type name="SoGLRenderAction::AbortCode" />
+  <enum-type name="SoGLRenderAction::TransparencyType" />
+  <enum-type name="SoGetBoundingBoxAction::ResetType" />
+  <enum-type name="SoSearchAction::Interest" />
+  <enum-type name="SoSearchAction::LookFor" />
+ 
+  <rejection class="SoCallbackAction" function-name="addTriangleCallback"/>
+  <rejection class="SoCallbackAction" function-name="addPointCallback"/>
+  <rejection class="SoCallbackAction" function-name="addLineSegmentCallback"/>
+  <rejection class="SoCallbackAction" function-name="addPostTailCallback"/>
+  <rejection class="SoCallbackAction" function-name="addPreTailCallback"/>
+  <rejection class="SoCallbackAction" function-name="addPostCallback"/>
+  <rejection class="SoCallbackAction" function-name="addPreCallback"/>
+  <rejection class="SoGLRenderAction" function-name="setAbortCallback"/>
+  <rejection class="SoGLRenderAction" function-name="setPassCallback"/>
+  
+  <rejection class="SoSearchAction" function-name="getPaths"/>
+  <rejection class="SoSearchAction" function-name="getType"/>
+  <rejection class="SoAction" function-name="getPathCode"/>
+  <rejection class="SoAction" function-name="usePathCode"/>
+  
+  <object-type name="SoAction">
+  <modify-function signature="SoAction()" remove="all"/>
+  </object-type>
+  <object-type name="SoWriteAction">
+  </object-type>
+  <object-type name="SoSearchAction">
+   <inject-code class="pywrap-h">
+   QList&lt;SoPath*&gt; getPaths(SoSearchAction* action) {
+     QList&lt;SoPath*&gt; result;
+     SoPathList&amp; paths = action-&gt;getPaths();
+     for (int i = 0; i&lt; paths.getLength(); i++) {
+       result &lt;&lt; paths[i];
+     }
+     return result;
+   }
+   </inject-code>
+  </object-type>
+  <object-type name="SoRayPickAction">
+  </object-type>
+  <object-type name="SoPickAction">
+  </object-type>
+  <object-type name="SoHandleEventAction">
+  </object-type>
+  <object-type name="SoGetMatrixAction">
+  </object-type>
+  <object-type name="SoGetBoundingBoxAction">
+  </object-type>
+  <object-type name="SoGLRenderAction">
+  </object-type>
+  <object-type name="SoCallbackAction">
+  </object-type>
+  
+ </typesystem>

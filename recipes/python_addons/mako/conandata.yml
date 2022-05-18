@@ -1,0 +1,23 @@
+type: pure_c
+name: "mako"
+version: "1.1.6"
+homepage: "https://www.makotemplates.org"
+description: "A templating language that borrows the best ideas from the existing templating languages"
+license: "MIT"
+
+sources:
+  "1.1.6":
+    sha256: 4e9e345a41924a954251b95b4b28e14a301145b544901332e658907a7464b6b2
+    url: "https://files.pythonhosted.org/packages/af/b6/42cd322ae555aa770d49e31b8c5c28a243ba1bbb57ad927e1a5f5b064811/Mako-${version}.tar.gz"
+    base_path: "Mako-${version}"
+
+  "1.1.5":
+    sha256: 169fa52af22a91900d852e937400e79f535496191c63712e3b9fda5a9bed6fc3
+    url: "https://files.pythonhosted.org/packages/d1/42/ff293411e980debfc647be9306d89840c8b82ea24571b014f1a35b2ad80f/Mako-${version}.tar.gz"
+    base_path: "Mako-${version}"
+
+  "1.1.4":
+    sha256: 17831f0b7087c313c0ffae2bcbbd3c1d5ba9eeac9c38f2eb7b50e8c99fe9d5ab
+    url: "https://files.pythonhosted.org/packages/5c/db/2d2d88b924aa4674a080aae83b59ea19d593250bfe5ed789947c21736785/Mako-${version}.tar.gz"
+    base_path: "Mako-${version}"
+

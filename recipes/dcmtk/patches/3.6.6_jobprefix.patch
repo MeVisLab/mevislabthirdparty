@@ -1,0 +1,69 @@
+diff --git i/dcmpstat/include/dcmtk/dcmpstat/dviface.h w/dcmpstat/include/dcmtk/dcmpstat/dviface.h
+index 4dc1c81..c877845 100644
+--- i/dcmpstat/include/dcmtk/dcmpstat/dviface.h
++++ w/dcmpstat/include/dcmtk/dcmpstat/dviface.h
+@@ -59,8 +59,9 @@ class DCMTK_DCMPSTAT_EXPORT DVInterface: public DVConfiguration
+     *     is assumed.
+     *  @param useLog (optional) flag specifying whether a general log file should be used
+     *     (config entry GENERAL\APPLICATION\LOGFILE).
++    *  @param jobPrefix (optional) printJobIdentifier and prefix for log file of a print client
+     */
+-    DVInterface(const char *config_file = NULL, OFBool useLog = OFFalse);
++    DVInterface(const char *config_file = NULL, OFBool useLog = OFFalse, const char* jobPrefix = NULL);
+ 
+     /** destructor.
+      */
+diff --git i/dcmpstat/libsrc/dviface.cc w/dcmpstat/libsrc/dviface.cc
+index d5f4522..b0f79ef 100644
+--- i/dcmpstat/libsrc/dviface.cc
++++ w/dcmpstat/libsrc/dviface.cc
+@@ -68,6 +68,8 @@
+ #define INCLUDE_UNISTD
+ #include "dcmtk/ofstd/ofstdinc.h"
+ 
++#define MTDMISSINGPREFIX "dcm"
++
+ BEGIN_EXTERN_C
+ #ifdef HAVE_SYS_TYPES_H
+ #include <sys/types.h>   /* for fork */
+@@ -110,7 +112,7 @@ END_EXTERN_C
+ #endif
+ 
+ 
+-DVInterface::DVInterface(const char *config_file, OFBool useLog)
++DVInterface::DVInterface ( const char *config_file, OFBool useLog, const char* jobPrefix )
+ : DVConfiguration(config_file)
+ , pPrint(NULL)
+ , pState(NULL)
+@@ -200,10 +202,19 @@ DVInterface::DVInterface(const char *config_file, OFBool useLog)
+     pSignatureHandler = new DVSignatureHandler(*this);
+ 
+     referenceTime = OFstatic_cast(unsigned long, time(NULL));
++
++    // jj20040702:
++    // no jobPrefix defined? use current time
++    if( !jobPrefix ) {
+     /* initialize printJobIdentifier with a string comprising the current time */
+     char buf[20];
+     sprintf(buf, "%lu", referenceTime);
+     printJobIdentifier = buf;
++    }
++    // use defined jobPrefix
++    else
++      printJobIdentifier = jobPrefix;
++    
+     /* initialize reference time with "yesterday" */
+     if (referenceTime >= 86400) referenceTime -= 86400; // subtract one day
+     setCurrentPrinter(getTargetID(0, DVPSE_printAny));
+@@ -3379,6 +3390,11 @@ OFCondition DVInterface::spoolPrintJob(OFBool deletePrintedImages)
+   return result;
+ }
+ 
++// -------------------------------------------------------------------------
++/*
++  start print spooler without specified job string
++*/
++// -------------------------------------------------------------------------
+ OFCondition DVInterface::startPrintSpooler()
+ {
+   const char *spooler_application = getSpoolerName();

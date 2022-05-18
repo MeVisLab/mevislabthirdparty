@@ -1,0 +1,7 @@
+type: cpp
+name: "spline"
+display_name: "SPLINE"
+version: "1.0.0"
+homepage: "https://people.sc.fsu.edu/~jburkardt/cpp_src/spline/spline.html"
+description: "SPLINE, a C++ code which constructs and evaluates spline functions"
+license: "LGPL-3.0-or-later"

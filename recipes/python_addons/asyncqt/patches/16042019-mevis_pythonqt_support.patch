@@ -1,0 +1,161 @@
+diff --git i/asyncqt/__init__.py w/asyncqt/__init__.py
+index e16e5d9..87f9fa4 100644
+--- i/asyncqt/__init__.py
++++ w/asyncqt/__init__.py
+@@ -1,6 +1,7 @@
+ """
+ Implementation of the PEP 3156 Event-Loop with Qt.
+ 
++Copyright (c) 2019 Florian Link <florian.link@mevis.fraunhofer.de>
+ Copyright (c) 2018 Gerard Marull-Paretas <gerard@teslabs.com>
+ Copyright (c) 2014 Mark Harviston <mark.harviston@gmail.com>
+ Copyright (c) 2014 Arve Knudsen <arve.knudsen@gmail.com>
+@@ -31,44 +32,19 @@ import functools
+ logger = logging.getLogger(__name__)
+ 
+ 
+-try:
+-    QtModuleName = os.environ['QT_API']
+-except KeyError:
+-    QtModule = None
+-else:
+-    logger.info('Forcing use of {} as Qt Implementation'.format(QtModuleName))
+-    QtModule = importlib.import_module(QtModuleName)
+-
+-if not QtModule:
+-    for QtModuleName in ('PyQt5', 'PySide2'):
+-        try:
+-            QtModule = importlib.import_module(QtModuleName)
+-        except ImportError:
+-            continue
+-        else:
+-            break
+-    else:
+-        raise ImportError('No Qt implementations found')
+-
+-logger.info('Using Qt Implementation: {}'.format(QtModuleName))
+-
+-QtCore = importlib.import_module(QtModuleName + '.QtCore', package=QtModuleName)
+-QtGui = importlib.import_module(QtModuleName + '.QtGui', package=QtModuleName)
+-if QtModuleName == 'PyQt5':
+-    from PyQt5 import QtWidgets
+-    from PyQt5.QtCore import pyqtSlot as Slot
+-    QApplication = QtWidgets.QApplication
+-elif QtModuleName == 'PySide2':
+-    from PySide2 import QtWidgets
+-    from PySide2.QtCore import Slot
+-    QApplication = QtWidgets.QApplication
+-
++# MeVis: PythonQt support
++from PythonQt import QtCore
++Slot = QtCore.Slot
++QApplication = QtCore.QCoreApplication
++# TODO: fix when QThread is wrapped
++QThread = object
++# MeVis end
+ 
+ from ._common import with_logger  # noqa
+ 
+ 
+ @with_logger
+-class _QThreadWorker(QtCore.QThread):
++class _QThreadWorker(QThread):
+ 
+     """
+     Read jobs from the queue and then execute them.
+@@ -194,6 +170,8 @@ class _SimpleTimer(QtCore.QObject):
+         self._stopped = False
+ 
+     def add_callback(self, handle, delay=0):
++        # TODO: when using delay = 0, it would make sense to
++        # start a singleShot timer and store the callbacks in a singleShot list
+         timerid = self.startTimer(delay * 1000)
+         self._logger.debug("Registering timer id {0}".format(timerid))
+         assert timerid not in self.__callbacks
+@@ -202,27 +180,23 @@ class _SimpleTimer(QtCore.QObject):
+ 
+     def timerEvent(self, event):  # noqa: N802
+         timerid = event.timerId()
++        handle = self.__callbacks.get(timerid)
++        # only kill if we have a registered callback for the timerId
++        # sometimes we get a timer event two times due to the global event filter...
++        # if we don't have a callback entry for it, we don't kill it since it is a wrong event...
++        if handle:
++          self.killTimer(timerid)
++          del self.__callbacks[timerid]
+         self._logger.debug("Timer event on id {0}".format(timerid))
+         if self._stopped:
+             self._logger.debug("Timer stopped, killing {}".format(timerid))
+-            self.killTimer(timerid)
+-            del self.__callbacks[timerid]
+         else:
+-            try:
+-                handle = self.__callbacks[timerid]
+-            except KeyError as e:
+-                self._logger.debug(str(e))
+-                pass
+-            else:
+-                if handle._cancelled:
+-                    self._logger.debug("Handle {} cancelled".format(handle))
+-                else:
+-                    self._logger.debug("Calling handle {}".format(handle))
+-                    handle._run()
+-            finally:
+-                del self.__callbacks[timerid]
+-                handle = None
+-            self.killTimer(timerid)
++            if handle:
++              if handle._cancelled:
++                  self._logger.debug("Handle {} cancelled".format(handle))
++              else:
++                  self._logger.debug("Calling handle {}".format(handle))
++                  handle._run()
+ 
+     def stop(self):
+         self._logger.debug("Stopping timers")
+@@ -269,9 +243,21 @@ class _QEventLoop:
+ 
+         super().__init__()
+ 
++    def run_forever_start(self):
++        """Run eventloop forever."""
++        self.__is_running = True
++        asyncio.events._set_running_loop(self)
++        self._before_run_forever()
++
++    def run_forever_stop(self):
++        self._after_run_forever()
++        asyncio.events._set_running_loop(None)
++        self.__is_running = False
++
+     def run_forever(self):
+         """Run eventloop forever."""
+         self.__is_running = True
++        asyncio.events._set_running_loop(self)
+         self._before_run_forever()
+ 
+         try:
+@@ -281,6 +267,7 @@ class _QEventLoop:
+             return rslt
+         finally:
+             self._after_run_forever()
++            asyncio.events._set_running_loop(None)
+             self.__is_running = False
+ 
+     def run_until_complete(self, future):
+@@ -607,12 +594,13 @@ class _QEventLoop:
+ from ._unix import _SelectorEventLoop  # noqa
+ QSelectorEventLoop = type('QSelectorEventLoop', (_QEventLoop, _SelectorEventLoop), {})
+ 
+-if os.name == 'nt':
++# MeVis: proactor loop disabled because QThread is not yet wrapped
++if os.name == 'ignore_nt':
+     from ._windows import _ProactorEventLoop
+     QIOCPEventLoop = type('QIOCPEventLoop', (_QEventLoop, _ProactorEventLoop), {})
+     QEventLoop = QIOCPEventLoop
+ else:
+-    QEventLoop = QSelectorEventLoop
++  QEventLoop = QSelectorEventLoop
+ 
+ 
+ class _Cancellable:

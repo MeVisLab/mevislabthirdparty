@@ -1,0 +1,33 @@
+type: pure_c
+name: "openssl"
+display_name: "OpenSSL"
+version: "1.1.1o"
+homepage: "https://www.openssl.org"
+description: "full-strength general purpose cryptography library (including SSL and TLS)"
+license: "OpenSSL"
+
+sources:
+  "1.1.1o":
+    sha256: 9384a2b0570dd80358841464677115df785edb941c71211f75076d72fe6b438f
+    url: https://www.openssl.org/source/openssl-${version}.tar.gz
+    base_path: openssl-${version}
+
+  "1.1.1n":
+    sha256: 40dceb51a4f6a5275bde0e6bf20ef4b91bfc32ed57c0552e2e8e15463372b17a
+    url: https://www.openssl.org/source/openssl-${version}.tar.gz
+    base_path: openssl-${version}
+
+  "1.1.1m":
+    sha256: f89199be8b23ca45fc7cb9f1d8d3ee67312318286ad030f5316aca6462db6c96
+    url: https://www.openssl.org/source/openssl-${version}.tar.gz
+    base_path: openssl-${version}
+
+patches:
+  "1.1.1o":
+    - patch_file: "patches/${version}-masm_multilib_suffix.patch"
+
+  "1.1.1n":
+    - patch_file: "patches/${version}-masm_multilib_suffix.patch"
+
+  "1.1.1m":
+    - patch_file: "patches/${version}-masm_multilib_suffix.patch"

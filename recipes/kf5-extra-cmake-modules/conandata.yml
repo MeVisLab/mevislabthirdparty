@@ -1,0 +1,63 @@
+type: header_only
+name: kf5-extra-cmake-modules
+display_name: KDE Extra CMake Modules
+version: "5.91.0"
+homepage: https://api.kde.org/frameworks/extra-cmake-modules/html/index.html
+description: KDE's extra modules and scripts for CMake
+license: BSD-3-Clause
+
+sources:
+  "5.91.0":
+    sha256: 229fb02d2c5525646a6348b881f20ecda351476889adfec1d9b7bd5fc4e7bede
+    url: "https://download.kde.org/stable/frameworks/${version_major}.${version_minor}/extra-cmake-modules-${version}.zip"
+    base_path: "extra-cmake-modules-${version}"
+
+  "5.89.0":
+    sha256: c1b7557a23f4d5f62f94a504e9a8e77265585d4cf04cdf791fad31ef052d12c0
+    url: "https://download.kde.org/stable/frameworks/${version_major}.${version_minor}/extra-cmake-modules-${version}.zip"
+    base_path: "extra-cmake-modules-${version}"
+
+  "5.88.0":
+    sha256: 8bcca6b97b3e920f1aacbd05c64394f3dd13a58d3582635a42c729c9f686d2c8
+    url: "https://download.kde.org/stable/frameworks/${version_major}.${version_minor}/extra-cmake-modules-${version}.zip"
+    base_path: "extra-cmake-modules-${version}"
+
+  "5.87.0":
+    sha256: 91825ea1a7737b837041bb71678360e8d9bc33add6502b84fc79a698a5ab4b3d
+    url: "https://download.kde.org/stable/frameworks/${version_major}.${version_minor}/extra-cmake-modules-${version}.zip"
+    base_path: "extra-cmake-modules-${version}"
+
+  "5.86.0":
+    sha256: c667f288f5ced0e82f81e0248810b261ae87ad64cc1943297bf0754217f44041
+    url: "https://download.kde.org/stable/frameworks/5.86/extra-cmake-modules-5.86.0.zip"
+    base_path: "extra-cmake-modules-${version}"
+
+  "5.85.0":
+    sha256: 9a00d05f3a5ecdea472d9fc1effd1ddfc966ca5c2583d4e8088c41b720ee5484
+    url: "https://download.kde.org/stable/frameworks/5.85/extra-cmake-modules-5.85.0.zip"
+    base_path: "extra-cmake-modules-${version}"
+
+  "5.82.0":
+    sha256: "23746b49ce3f9c18ade0c88cb7db60586b78dd9419225223f17511ad6b634086"
+    url: "https://download.kde.org/stable/frameworks/5.82/extra-cmake-modules-5.82.0.zip"
+    base_path: "extra-cmake-modules-${version}"
+
+  "5.80.0":
+    sha256: "3825a1d18384cc696bee787c6a4fb445a8c84078b133ba336ca838e35d18ce7d"
+    url: "https://download.kde.org/stable/frameworks/5.80/extra-cmake-modules-5.80.0.zip"
+    base_path: "extra-cmake-modules-${version}"
+
+  "5.79.0":
+    sha256: "3f40056b15c050f4699cda1793754e59a31ba7cc42916cbb9cc07d3756e685b2"
+    url: "https://download.kde.org/stable/frameworks/5.79/extra-cmake-modules-5.79.0.zip"
+    base_path: "extra-cmake-modules-${version}"
+
+  "5.75.0":
+    sha256: "dc937fd2018eb8285c1b07d4b5de104c60959404c4979883f6bdb0a4d40cf98e"
+    url: "https://download.kde.org/stable/frameworks/5.75/extra-cmake-modules-5.75.0.zip"
+    base_path: "extra-cmake-modules-${version}"
+
+  "5.70.0":
+    sha256: "c9d647d22bc33833e5878fcc668090500a9c624236725bafa088c2b722877375"
+    url: "https://download.kde.org/stable/frameworks/5.70/extra-cmake-modules-5.70.0.zip"
+    base_path: "extra-cmake-modules-${version}"

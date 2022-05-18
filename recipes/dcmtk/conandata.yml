@@ -1,0 +1,33 @@
+type: cpp
+name: "dcmtk"
+cmake_name: "DCMTK"
+display_name: "DCMTK"
+version: "3.6.6"
+homepage: "http://dicom.offis.de/dcmtk.php.en"
+description: "The DICOM Toolkit"
+license: "BSD-3-Clause"
+
+sources:
+  "3.6.6":
+    sha256: "6859c62b290ee55677093cccfd6029c04186d91cf99c7642ae43627387f3458e"
+    url: "https://dicom.offis.de/download/dcmtk/dcmtk366/dcmtk-3.6.6.tar.gz"
+    base_path: "dcmtk-${version}"
+
+patches:
+  "3.6.6":
+    - patch_file: "patches/3.6.6_configure.patch"
+    - patch_file: "patches/3.6.6_dcdictbi.cc.patch"
+    - patch_file: "patches/3.6.6_dcmprscu.cc.patch"
+    - patch_file: "patches/3.6.6_dcmpsprt.cc.patch"
+    - patch_file: "patches/3.6.6_dcpixel.cc.patch"
+    - patch_file: "patches/3.6.6_dcuid.cc.patch"
+    - patch_file: "patches/3.6.6_getspoolerdeleteconfiguration.patch"
+    - patch_file: "patches/3.6.6_jobprefix.patch"
+    - patch_file: "patches/3.6.6_MeVisRecreateBuiltinDicomDict.patch"
+    - patch_file: "patches/3.6.6_on_the_fly_compression.patch"
+    - patch_file: "patches/3.6.6_stderr.patch"
+    - patch_file: "patches/3.6.6_storescp.cc.patch"
+    - patch_file: "patches/3.6.6_storescu.cc.patch"
+    - patch_file: "patches/3.6.6_warning_4351.patch"
+    - patch_file: "patches/3.6.6_deps_required.patch"
+    - patch_file: "patches/3.6.6_apple_m1.patch"

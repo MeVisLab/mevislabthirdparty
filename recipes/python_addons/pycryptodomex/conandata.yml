@@ -1,0 +1,13 @@
+type: pure_c
+name: pycryptodomex
+display_name: PyCryptodome
+version: "3.14.1"
+homepage: https://www.pycryptodome.org/
+description: PyCryptodome is a self-contained Python package of low-level cryptographic primitives
+license: BSD-2-Clause
+
+sources:
+  "3.14.1":
+    sha256: 2ce76ed0081fd6ac8c74edc75b9d14eca2064173af79843c24fa62573263c1f2
+    url: https://files.pythonhosted.org/packages/24/40/e249ac3845a2333ce50f1bb02299ffb766babdfe80ca9d31e0158ad06afd/pycryptodomex-${version}.tar.gz
+    base_path: "pycryptodomex-${version}"

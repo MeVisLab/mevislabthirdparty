@@ -1,0 +1,19 @@
+type: cpp
+name: cluster
+cmake_name: Cluster
+display_name: Cluster
+version: "1.59"                                                         # ???
+homepage: http://bonsai.hgc.jp/~mdehoon/software/cluster/software.htm   # ???
+description: the C Clustering Library                                   # ???
+license: "MIT"
+
+# sources:
+#   "1.59":
+#     sha256: bb59b05d9ad8c5a01eceec692fd88723fc3c53248396985e6e922434c1089811
+#     url: http://bonsai.hgc.jp/~mdehoon/software/cluster/cluster-${version}.tar.gz
+#     base_path: cluster-${version}
+
+# FIXME!
+# The version from FME we build here is quite different from the above origin code.
+# I'm really not sure what it is, where it came from, what version it is, etc.
+

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<book id="mainBook">
+  <title>Third-party software components</title>
+
+  <preface>
+    <title>About this Document</title>
+    <para>
+      This document lists all third-party libraries that are included in the MeVisLab Pro SDK
+      and MeVisLab Public SDK which are available to the user.
+    </para>
+  </preface>
+
+  <chapter>
+    <title>Third-party software components</title>
+{% for it in items %}
+    {% if not it.public_sdk_only %}
+    <!-- next: {{ it.name }} -->
+    <section>
+      <title>{{ it.name }} / {{ it.version }}</title>
+      <para>{{ it.description }}</para>
+
+      {% if it.public_sdk_only %}
+      <note><para>Only available in PublicSDK</para></note>
+      {% endif %}
+
+      {% if it.components %}
+      <simplesect>
+        <title>Components</title>
+        <para>These are all the declared components for the <literal>{{ it.name }}</literal> package:</para>
+        {% for c in it.components %}
+        <para><literal>{{ c }}</literal></para>
+        {% endfor %}
+      </simplesect>
+      {% endif %}
+
+      {% if it.requires or it.required_by %}
+      <simplesect>
+        <title>Dependencies</title>
+        {% if it.requires %}
+        <para>
+            <literal>{{ it.name }}</literal> requires:
+            {% for r in it.requires %}
+            <literal>{{ r }}</literal>{{ ", " if not loop.last else "" }}
+            {% endfor %}
+        </para>
+        {% endif %}
+        {% if it.required_by %}
+        <para>
+            <literal>{{ it.name }}</literal> is required by:
+            {% for r in it.required_by %}
+            <literal>{{ r }}</literal>{{ ", " if not loop.last else "" }}
+            {% endfor %}
+        </para>
+      {% endif %}
+      </simplesect>
+      {% endif %}
+    </section>
+    {% endif %}
+{% endfor %}
+  </chapter>
+
+  <chapter>
+    <title>Additional third-party software in the MeVisLab Public SDK</title>
+{% for it in items %}
+    {% if it.public_sdk_only %}
+    <!-- next: {{ it.name }} -->
+    <section>
+      <title>{{ it.name }} / {{ it.version }}</title>
+      <para>{{ it.description }}</para>
+
+      {% if it.components %}
+      <simplesect>
+        <title>Components</title>
+        <para>These are all the declared components for the <literal>{{ it.name }}</literal> package:</para>
+        {% for c in it.components %}
+        <para><literal>{{ c }}</literal></para>
+        {% endfor %}
+      </simplesect>
+      {% endif %}
+
+      {% if it.requires or it.required_by %}
+      <simplesect>
+        <title>Dependencies</title>
+        {% if it.requires %}
+        <para>
+            <literal>{{ it.name }}</literal> requires:
+            {% for r in it.requires %}
+            <literal>{{ r }}</literal>{{ ", " if not loop.last else "" }}
+            {% endfor %}
+        </para>
+        {% endif %}
+        {% if it.required_by %}
+        <para>
+            <literal>{{ it.name }}</literal> is required by:
+            {% for r in it.required_by %}
+            <literal>{{ r }}</literal>{{ ", " if not loop.last else "" }}
+            {% endfor %}
+        </para>
+      {% endif %}
+      </simplesect>
+      {% endif %}
+    </section>
+    {% endif %}
+{% endfor %}
+  </chapter>
+</book>

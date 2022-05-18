@@ -1,0 +1,13 @@
+diff --git i/CMakeLists.txt w/CMakeLists.txt
+index 8eb3411..34b909c 100644
+--- i/CMakeLists.txt
++++ w/CMakeLists.txt
+@@ -617,7 +617,7 @@ endif()
+ #-----------------------------------------------------------------------------
+ # force off-tree build
+ 
+-if(${CMAKE_CURRENT_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_BINARY_DIR})
++if(0)
+   message(FATAL_ERROR "CMake generation is not allowed within the source directory! \
+     Remove the CMakeCache.txt file and try again from another folder, e.g.: \
+     \

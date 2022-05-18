@@ -1,0 +1,34 @@
+pure_c: true
+header_only: false
+name: libaec
+version: 1.0.6
+homepage: https://gitlab.dkrz.de/k202009/libaec
+description: "Adaptive Entropy Coding library"
+license: "BSD-2-Clause"
+
+sources:
+  1.0.6:
+    sha256: 032961877231113bb094ef224085e6d66fd670f85a3e17f53d0f131abf24f2fd
+    url: https://gitlab.dkrz.de/k202009/libaec/uploads/45b10e42123edd26ab7b3ad92bcf7be2/libaec-1.0.6.tar.gz
+    base_path: "libaec-${version}"
+
+  1.0.5:
+    sha256: 2a6b5393c4697b167e81b3c12008fc6334f8778a37587d67faba214640e5ed36
+    url: https://gitlab.dkrz.de/k202009/libaec/uploads/eb02f9727d538283d1730fdf8fd85665/libaec-1.0.5.tar.gz
+    base_path: "libaec-${version}"
+
+  1.0.4:
+    sha256: f2b1b232083bd8beaf8a54a024225de3dd72a673a9bcdf8c3ba96c39483f4309
+    url: https://gitlab.dkrz.de/k202009/libaec/uploads/ea0b7d197a950b0c110da8dfdecbb71f/libaec-1.0.4.tar.gz
+    base_path: "libaec-${version}"
+
+patches:
+  1.0.6:
+    - patch_file: "patches/${version}-install_shared_libs_only.patch"
+
+  1.0.5:
+    - patch_file: "patches/${version}-disable_tests.patch"
+    - patch_file: "patches/${version}-install_shared_libs_only.patch"
+
+  1.0.4:
+    - patch_file: "patches/${version}-disable_tests.patch"

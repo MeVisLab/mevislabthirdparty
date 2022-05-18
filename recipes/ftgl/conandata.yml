@@ -1,0 +1,18 @@
+type: cpp
+name: "ftgl"
+cmake_name: "FTGL"
+display_name: "FTGL"
+version: "2.1.2"
+homepage: "http://ftgl.sourceforge.net"
+description: "library to use arbitrary fonts in OpenGL applications"
+license: "MIT"
+
+sources:
+  "2.1.2":
+    sha256: "2759cbd5fac0b631e8b012923cd0d2add320f6e541b399a7cda37163ad034075"
+    url: "https://sourceforge.net/projects/ftgl/files/FTGL Source/${version}/ftgl-${version}.tar.gz/download"
+    base_path: "FTGL"
+
+patches:
+  "2.1.2":
+    - patch_file: "patches/${version}-mevis.patch"

@@ -1,0 +1,22 @@
+type: cpp
+name: double-conversion
+version: "3.2.0"
+homepage: https://github.com/google/double-conversion
+description: Efficient binary-decimal and decimal-binary conversion routines for IEEE doubles
+license: BSD-3-Clause
+
+sources:
+  "3.2.0":
+    sha256: 3dbcdf186ad092a8b71228a5962009b5c96abde9a315257a3452eb988414ea3b
+    url: "https://github.com/google/double-conversion/archive/v${version}.tar.gz"
+    base_path: "double-conversion-${version}"
+
+  "3.1.6":
+    sha256: 8a79e87d02ce1333c9d6c5e47f452596442a343d8c3e9b234e8a62fce1b1d49c
+    url: "https://github.com/google/double-conversion/archive/v3.1.6.tar.gz"
+    base_path: "double-conversion-${version}"
+
+  "3.1.5":
+    sha256: a63ecb93182134ba4293fd5f22d6e08ca417caafa244afaa751cbfddf6415b13
+    url: "https://github.com/google/double-conversion/archive/v3.1.5.tar.gz"
+    base_path: "double-conversion-${version}"

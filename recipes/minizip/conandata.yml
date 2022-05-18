@@ -1,0 +1,18 @@
+type: pure_c
+name: minizip
+cmake_name: Minizip
+display_name: Minizip
+version: "1.2.12"
+homepage: https://zlib.net
+description: A Massively Spiffy Yet Delicately Unobtrusive Compression Library
+license: ZLib
+
+sources:
+  "1.2.12":
+    sha256: 91844808532e5ce316b3c010929493c0244f3d37593afd6de04f71821d5136d9
+    url: https://zlib.net/zlib-${version}.tar.gz
+    base_path: zlib-${version}
+
+patches:
+  "1.2.12":
+    - patch_file: patches/${version}-minizip.patch

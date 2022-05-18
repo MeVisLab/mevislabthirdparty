@@ -1,0 +1,19 @@
+<typesystem package="Inventor.all">
+
+  <load-typesystem name=":/trolltech/generator/typesystem_core.txt" generate="no" />
+
+  <load-typesystem name="typesystem_Inventor_actions.xml" generate="yes" />
+  <load-typesystem name="typesystem_Inventor_base.xml" generate="yes" />
+  <load-typesystem name="typesystem_Inventor_details.xml" generate="yes" />
+  <load-typesystem name="typesystem_Inventor_draggers.xml" generate="yes" />
+  <load-typesystem name="typesystem_Inventor_elements.xml" generate="yes" />
+  <load-typesystem name="typesystem_Inventor_engines.xml" generate="yes" />
+  <load-typesystem name="typesystem_Inventor_events.xml" generate="yes" />
+  <load-typesystem name="typesystem_Inventor_fields.xml" generate="yes" />
+  <load-typesystem name="typesystem_Inventor_manips.xml" generate="yes" />
+  <load-typesystem name="typesystem_Inventor_nodekits.xml" generate="yes" />
+  <load-typesystem name="typesystem_Inventor_nodes.xml" generate="yes" />
+  <load-typesystem name="typesystem_Inventor_projectors.xml" generate="yes" />
+  <load-typesystem name="typesystem_Inventor_sensors.xml" generate="yes" />
+
+ </typesystem>

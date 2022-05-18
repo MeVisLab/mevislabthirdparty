@@ -1,0 +1,24 @@
+type: cpp
+name: "stlab"
+cmake_name: "stlab"
+display_name: "stlab"
+version: "1.6.2"
+homepage: "https://stlab.cc"
+description: "Software Technology Lab (stlab) libraries"
+license: "BSL-1.0"
+
+sources:
+  "1.6.2":
+    sha256: "d0369d889c7bf78068d0c4f4b5125d7e9fe9abb0ad7a3be35bf13b6e2c271676"
+    url: "https://github.com/stlab/libraries/archive/v${version}.tar.gz"
+    base_path: "libraries-${version}"
+
+  "1.6.1":
+    sha256: "d7705fb6265d33a7c7aa8d4ae2fb6d48431fa36ad53ad57baea999932b6b56c5"
+    url: "https://github.com/stlab/libraries/archive/v${version}.tar.gz"
+    base_path: "libraries-${version}"
+
+  "1.5.6":
+    sha256: "a6b788848be637b6d6c471de76c38486789e708997648e9b9731fdb5a631030c"
+    url: "https://github.com/stlab/libraries/archive/v${version}.tar.gz"
+    base_path: "libraries-${version}"

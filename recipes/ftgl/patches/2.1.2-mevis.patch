@@ -1,0 +1,365 @@
+diff --git c/demo/FTGLDemo.cpp i/demo/FTGLDemo.cpp
+index 908366f..abe9933 100644
+--- c/demo/FTGLDemo.cpp
++++ i/demo/FTGLDemo.cpp
+@@ -21,7 +21,7 @@
+ 	#define FONT_FILE "/usr/share/fonts/truetype/arial.ttf"
+ #endif
+ #ifdef __APPLE_CC__
+-	#define FONT_FILE "/Users/henry/Development/PROJECTS/FTGL/test/font_pack/arial.ttf"
++	#define FONT_FILE "/Library/Fonts/Arial"
+ #endif
+ #ifdef WIN32
+ 	#define FONT_FILE "C:\\WINNT\\Fonts\\arial.ttf"
+@@ -41,7 +41,7 @@
+ #define FTGL_TEXTURE 5
+ 
+ char* fontfile = FONT_FILE;
+-int current_font = FTGL_EXTRUDE;
++int current_font = FTGL_TEXTURE;
+ 
+ GLint w_win = 640, h_win = 480;
+ int mode = INTERACTIVE;
+diff --git c/include/FTFont.h i/include/FTFont.h
+index bce8de6..7d9fb62 100644
+--- c/include/FTFont.h
++++ i/include/FTFont.h
+@@ -122,7 +122,7 @@ class FTGL_EXPORT FTFont
+          *
+          * @param depth  The extrusion distance.
+          */
+-        virtual void Depth( float depth){}
++        virtual void Depth( float /*depth*/){}
+ 
+         /**
+          * Enable or disable the use of Display Lists inside FTGL
+@@ -132,6 +132,14 @@ class FTGL_EXPORT FTFont
+          */
+         void UseDisplayList( bool useList);
+         
++        /**
++        * MeVis Patch: 
++        * Forget about GL resources because the context is gone, this avoids freeing the resources in the destructor,
++        * which can destroy things in invalid contexts
++        *
++        */
++        virtual void ForgetAboutGLResources() {};
++
+         /**
+          * Get the global ascender height for the face.
+          *
+@@ -227,7 +235,7 @@ class FTGL_EXPORT FTFont
+          * @return  An FT****Glyph or <code>null</code> on failure.
+          */
+         virtual FTGlyph* MakeGlyph( unsigned int g) = 0;
+-        
++
+         /**
+          * Current face object
+          */
+@@ -255,14 +263,18 @@ class FTGL_EXPORT FTFont
+          * Check that the glyph at <code>chr</code> exist. If not load it.
+          *
+          * @param chr  character index
++         * @raram forRendering  selects if the check if for layout or rendering glyphs
+          * @return <code>true</code> if the glyph can be created.
+          */
+-        inline bool CheckGlyph( const unsigned int chr);
++        inline bool CheckGlyph( const unsigned int chr, bool forRendering = false);
+ 
+-        /**
+-         * An object that holds a list of glyphs
+-         */
++        //! Create a layout glyph for the given glyphIndex.
++        FTGlyph* MakeLayoutGlyph( unsigned int glyphIndex);
++
++        //! List of layout glyphs (create via MakeLayoutGlyph()).
+         FTGlyphContainer* glyphList;
++        //! List of render glyphs (created via MakeGlyph()).
++        FTGlyphContainer* renderGlyphList;
+         
+         /**
+          * Current pen or cursor position;
+diff --git c/include/FTGLTextureFont.h i/include/FTGLTextureFont.h
+index 7e97d6c..4291b09 100644
+--- c/include/FTGLTextureFont.h
++++ i/include/FTGLTextureFont.h
+@@ -37,6 +37,14 @@ class  FTGL_EXPORT FTGLTextureFont : public FTFont
+          */
+         virtual ~FTGLTextureFont();
+ 
++        /**
++        * MeVis Patch: 
++        * Forget about GL resources because the context is gone, this avoids freeing the resources in the destructor,
++        * which can destroy things in invalid contexts
++        *
++        */
++        virtual void ForgetAboutGLResources();
++
+         /**
+             * Set the char size for the current face.
+          *
+diff --git c/include/FTGlyph.h i/include/FTGlyph.h
+index b4bef08..419c103 100644
+--- c/include/FTGlyph.h
++++ i/include/FTGlyph.h
+@@ -96,6 +96,14 @@ class FTGL_EXPORT FTGlyph
+ 
+ };
+ 
++//! Derived class that is used for layouting (implements empty render method)
++class FTGL_EXPORT FTLayoutGlyph : public FTGlyph
++{
++public:
++  FTLayoutGlyph( FT_GlyphSlot glyph):FTGlyph(glyph) {};
++
++  virtual const FTPoint& Render( const FTPoint& pen) { return advance; }
++};
+ 
+ #endif  //  __FTGlyph__
+ 
+diff --git c/include/FTTextureGlyph.h i/include/FTTextureGlyph.h
+index c263f72..8959cb3 100644
+--- c/include/FTTextureGlyph.h
++++ i/include/FTTextureGlyph.h
+@@ -52,7 +52,7 @@ class FTGL_EXPORT FTTextureGlyph : public FTGlyph
+          * Reset the currently active texture to zero to get into a known state before
+          * drawing a string. This is to get round possible threading issues.
+          */
+-        static void FTTextureGlyph::ResetActiveTexture(){ activeTextureID = 0;}
++        static void ResetActiveTexture(){ activeTextureID = 0;}
+         
+     private:
+         /**
+diff --git c/include/FTVectoriser.h i/include/FTVectoriser.h
+index e2d54ee..1df6bd4 100644
+--- c/include/FTVectoriser.h
++++ i/include/FTVectoriser.h
+@@ -126,7 +126,7 @@ class FTGL_EXPORT FTMesh
+         /**
+          * Get a tesselation by index
+          */
+-        const FTTesselation* const Tesselation( unsigned int index) const;
++        const FTTesselation* Tesselation( unsigned int index) const;
+         
+         /**
+          * Return the temporary point list. For testing only.
+@@ -201,7 +201,7 @@ class FTGL_EXPORT FTVectoriser
+         /**
+          * Get the current mesh.
+          */
+-        const FTMesh* const GetMesh() const { return mesh;}
++        const FTMesh* GetMesh() const { return mesh;}
+         
+         /**
+          * Get the total count of points in this outline
+@@ -222,7 +222,7 @@ class FTGL_EXPORT FTVectoriser
+          *
+          * @return the number of contours
+          */
+-         const FTContour* const Contour( unsigned int index) const;
++         const FTContour* Contour( unsigned int index) const;
+ 
+         /**
+          * Get the number of points in a specific contour in this outline
+diff --git c/src/FTFont.cpp i/src/FTFont.cpp
+index f519f33..618bc3c 100644
+--- c/src/FTFont.cpp
++++ i/src/FTFont.cpp
+@@ -2,29 +2,33 @@
+ #include    "FTFont.h"
+ #include    "FTGlyphContainer.h"
+ #include    "FTBBox.h"
+-
++#include    "FTGlyph.h"
+ 
+ FTFont::FTFont( const char* fontFilePath)
+ :   face( fontFilePath),
+     useDisplayLists(true),
+-    glyphList(0)
++    glyphList(0),
++    renderGlyphList(0)
+ {
+     err = face.Error();
+     if( err == 0)
+     {
+         glyphList = new FTGlyphContainer( &face);
++        renderGlyphList = new FTGlyphContainer( &face);
+     }
+ }
+ 
+ 
+ FTFont::FTFont( const unsigned char *pBufferBytes, size_t bufferSizeInBytes)
+ :   face( pBufferBytes, bufferSizeInBytes),
+-    glyphList(0)
++    glyphList(0),
++    renderGlyphList(0)
+ {
+     err = face.Error();
+     if( err == 0)
+     {
+         glyphList = new FTGlyphContainer( &face);
++        renderGlyphList = new FTGlyphContainer( &face);
+     }
+ }
+ 
+@@ -32,6 +36,7 @@ FTFont::FTFont( const unsigned char *pBufferBytes, size_t bufferSizeInBytes)
+ FTFont::~FTFont()
+ {
+     delete glyphList;
++    delete renderGlyphList;
+ }
+ 
+ 
+@@ -79,8 +84,13 @@ bool FTFont::FaceSize( const unsigned int size, const unsigned int res )
+     {
+         delete glyphList;
+     }
++    if( renderGlyphList != NULL)
++    {
++      delete renderGlyphList;
++    }
+     
+     glyphList = new FTGlyphContainer( &face);
++    renderGlyphList = new FTGlyphContainer( &face);
+     return true;
+ }
+ 
+@@ -249,9 +259,9 @@ void FTFont::Render( const char* string )
+ 
+     while( *c)
+     {
+-        if(CheckGlyph( *c))
++        if(CheckGlyph( *c, true))
+         {
+-            pen = glyphList->Render( *c, *(c + 1), pen);
++            pen = renderGlyphList->Render( *c, *(c + 1), pen);
+         }
+         ++c;
+     }
+@@ -265,21 +275,22 @@ void FTFont::Render( const wchar_t* string )
+ 
+     while( *c)
+     {
+-        if(CheckGlyph( *c))
++        if(CheckGlyph( *c, true))
+         {
+-            pen = glyphList->Render( *c, *(c + 1), pen);
++            pen = renderGlyphList->Render( *c, *(c + 1), pen);
+         }
+         ++c;
+     }
+ }
+ 
+ 
+-bool FTFont::CheckGlyph( const unsigned int characterCode)
++bool FTFont::CheckGlyph( const unsigned int characterCode, bool forRendering)
+ {
+-    if( NULL == glyphList->Glyph( characterCode))
++    FTGlyphContainer* list = forRendering ? renderGlyphList : glyphList;
++    if( NULL == list->Glyph( characterCode))
+     {
+-        unsigned int glyphIndex = glyphList->FontIndex( characterCode);
+-        FTGlyph* tempGlyph = MakeGlyph( glyphIndex);
++        unsigned int glyphIndex = list->FontIndex( characterCode);
++        FTGlyph* tempGlyph = forRendering ? MakeGlyph(glyphIndex) : MakeLayoutGlyph(glyphIndex);
+         if( NULL == tempGlyph)
+         {
+             if( 0 == err)
+@@ -289,9 +300,19 @@ bool FTFont::CheckGlyph( const unsigned int characterCode)
+             
+             return false;
+         }
+-        glyphList->Add( tempGlyph, characterCode);
++        list->Add( tempGlyph, characterCode);
+     }
+     
+     return true;
+ }
+ 
++FTGlyph* FTFont::MakeLayoutGlyph( unsigned int glyphIndex )
++{
++  FT_GlyphSlot ftGlyph = face.Glyph( glyphIndex, FT_LOAD_NO_HINTING);
++  if (ftGlyph)
++  {
++    return new FTLayoutGlyph(ftGlyph);
++  }
++  err = face.Error();
++  return NULL;
++}
+diff --git c/src/FTGLTextureFont.cpp i/src/FTGLTextureFont.cpp
+index 3b8836e..c663397 100644
+--- c/src/FTGLTextureFont.cpp
++++ i/src/FTGLTextureFont.cpp
+@@ -54,6 +54,11 @@ FTGLTextureFont::~FTGLTextureFont()
+     glDeleteTextures( textureIDList.size(), (const GLuint*)&textureIDList[0]);
+ }
+ 
++void FTGLTextureFont::ForgetAboutGLResources()
++{
++    textureIDList.clear();
++};
++
+ 
+ FTGlyph* FTGLTextureFont::MakeGlyph( unsigned int glyphIndex)
+ {
+@@ -108,7 +113,7 @@ void FTGLTextureFont::CalculateTextureSize()
+     
+     int h = static_cast<int>( (textureWidth - ( padding * 2)) / glyphWidth);
+         
+-    textureHeight = NextPowerOf2( (( numGlyphs / h) + 1) * glyphHeight);
++    textureHeight = NextPowerOf2( (( numGlyphs / h) + 1) * glyphHeight + (padding * 2));
+     textureHeight = textureHeight > maximumGLTextureSize ? maximumGLTextureSize : textureHeight;
+ }
+ 
+diff --git c/src/FTVectoriser.cpp i/src/FTVectoriser.cpp
+index d7f8774..e55fc25 100644
+--- c/src/FTVectoriser.cpp
++++ i/src/FTVectoriser.cpp
+@@ -1,13 +1,17 @@
+ #include    "FTVectoriser.h"
+ #include    "FTGL.h"
+ 
++#if defined(__APPLE__)
++#include <AvailabilityMacros.h>
++#endif
++
+ #ifndef CALLBACK
+ #define CALLBACK
+ #endif
+ 
+-#ifdef __APPLE_CC__    
++#if defined(__APPLE__) && (MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4) && !defined(__INTEL_COMPILER)
+     typedef GLvoid (*GLUTesselatorFunction)(...);
+-#elif defined( __mips ) || defined( __linux__ ) || defined( __FreeBSD__ ) || defined( __OpenBSD__ ) || defined( __sun ) || defined (__CYGWIN__)
++#elif defined( __mips ) || defined( __linux__ ) || defined( __FreeBSD__ ) || defined( __OpenBSD__ ) || defined( __sun ) || defined (__CYGWIN__) || defined (__APPLE__)
+     typedef GLvoid (*GLUTesselatorFunction)();
+ #elif defined ( WIN32)
+     typedef GLvoid (CALLBACK *GLUTesselatorFunction)( );
+@@ -29,7 +33,7 @@ void CALLBACK ftglVertex( void* data, FTMesh* mesh)
+ }
+ 
+ 
+-void CALLBACK ftglCombine( FTGL_DOUBLE coords[3], void* vertex_data[4], GLfloat weight[4], void** outData, FTMesh* mesh)
++void CALLBACK ftglCombine( FTGL_DOUBLE coords[3], void* /*vertex_data[4]*/, GLfloat /*weight[4]*/, void** outData, FTMesh* mesh)
+ {
+     const FTGL_DOUBLE* vertex = static_cast<const FTGL_DOUBLE*>(coords);
+     *outData = const_cast<FTGL_DOUBLE*>(mesh->Combine( vertex[0], vertex[1], vertex[2]));
+@@ -92,7 +96,7 @@ void FTMesh::End()
+ }
+ 
+ 
+-const FTTesselation* const FTMesh::Tesselation( unsigned int index) const
++const FTTesselation* FTMesh::Tesselation( unsigned int index) const
+ {
+     return ( index < tesselationList.size()) ? tesselationList[index] : NULL;
+ }
+@@ -166,7 +170,7 @@ size_t FTVectoriser::PointCount()
+ }
+ 
+ 
+-const FTContour* const FTVectoriser::Contour( unsigned int index) const
++const FTContour* FTVectoriser::Contour( unsigned int index) const
+ {
+     return ( index < ContourCount()) ? contourList[index] : NULL;
+ }

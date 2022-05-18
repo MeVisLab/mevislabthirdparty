@@ -1,0 +1,19 @@
+type: pure_c
+name: "tiff"
+cmake_name: "TIFF"
+display_name: "libTIFF"
+version: "4.3.0"
+homepage: "http://simplesystems.org/libtiff"
+description: "Tag Image File Format (TIFF) library"
+license: "libtiff"
+
+sources:
+  "4.3.0":
+    sha256: "0e46e5acb087ce7d1ac53cf4f56a09b221537fc86dfc5daaad1c2e89e1b37ac8"
+    url: "https://download.osgeo.org/libtiff/tiff-${version}.tar.gz"
+    base_path: "tiff-${version}"
+
+  "4.2.0":
+    sha256: "eb0484e568ead8fa23b513e9b0041df7e327f4ee2d22db5a533929dfc19633cb"
+    url: "https://download.osgeo.org/libtiff/tiff-${version}.tar.gz"
+    base_path: "tiff-${version}"

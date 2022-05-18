@@ -1,0 +1,29 @@
+diff --git i/CMake/vtkPythonWrapping.cmake w/CMake/vtkPythonWrapping.cmake
+index e695a034..2260e029 100644
+--- i/CMake/vtkPythonWrapping.cmake
++++ w/CMake/vtkPythonWrapping.cmake
+@@ -147,6 +147,13 @@ function(vtk_add_python_wrapping_library module srcs)
+   endif()
+ endfunction()
+ 
++execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "import distutils.sysconfig; print(distutils.sysconfig.get_config_var('SO'))"
++                RESULT_VARIABLE PYTHON_CVPY_PROCESS
++                OUTPUT_VARIABLE CVPY_SUFFIX
++                OUTPUT_STRIP_TRAILING_WHITESPACE)
++
++
++
+ #------------------------------------------------------------------------------
+ # _vtk_add_python_module(<name> src1 src2..) is used to build modules for Python.
+ # A python module is the module that gets imported in Python interpretor.
+@@ -163,6 +170,10 @@ function(_vtk_add_python_module name)
+       # when building shared on Windows, the python module files need to be
+       # named as *.pyd
+       set_target_properties(${name} PROPERTIES SUFFIX ".pyd")
++    elseif (NOT APPLE)
++      set_target_properties(${name} PROPERTIES
++                            DEBUG_POSTFIX ""
++                            SUFFIX ${CVPY_SUFFIX})
+     endif()
+   else ()
+     # when building statically, the module targets need to be exported since

@@ -1,0 +1,15 @@
+diff --git i/plugin/qlibrary.cpp w/plugin/qlibrary.cpp
+index 29ef697..fa96db5 100644
+--- i/qtbase/src/corelib/plugin/qlibrary.cpp
++++ w/qtbase/src/corelib/plugin/qlibrary.cpp
+@@ -77,7 +77,9 @@ QT_BEGIN_NAMESPACE
+ #if defined(Q_OS_UNIX)
+ // We don't use separate debug and release libs on UNIX, so we want
+ // to allow loading plugins, regardless of how they were built.
+-#  define QT_NO_DEBUG_PLUGIN_CHECK
++//
++// MeVis: We want the check to happen so that we can have debug and release plugins side-by-side
++// #  define QT_NO_DEBUG_PLUGIN_CHECK
+ #endif
+ 
+ /*!

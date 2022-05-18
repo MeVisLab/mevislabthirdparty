@@ -1,0 +1,14 @@
+type: pure_c
+name: "openjpeg"
+display_name: "OpenJPEG"
+cmake_name: "OpenJPEG"
+version: "2.4.0"
+homepage: "https://www.openjpeg.org"
+description: "Open-source JPEG 2000 library"
+license: "BSD-2-Clause"
+
+sources:
+  "2.4.0":
+    sha256: "8702ba68b442657f11aaeb2b338443ca8d5fb95b0d845757968a7be31ef7f16d"
+    url: "https://github.com/uclouvain/openjpeg/archive/v${version}.tar.gz"
+    base_path: "openjpeg-${version}"

@@ -1,0 +1,12 @@
+type: cpp
+name: "xylib"
+version: "1.6.0"
+homepage: "https://github.com/wojdyr/xylib"
+description: "library for reading files with x-y data from powder diffraction, spectroscopy, or other experimental methods"
+license: "LGPL-2.1-or-later"
+
+sources:
+  "1.6.0":
+    sha256: "b641cb33fa01732b8203356e0978384f9551bf415cfbae5989b3a233b3cb0ec7"
+    url: "https://github.com/wojdyr/xylib/releases/download/v1.6/xylib-1.6.tar.bz2"
+    base_path: "xylib-1.6"

@@ -1,0 +1,10 @@
+diff --git i/src/CMakeLists.txt w/src/CMakeLists.txt
+index 1e3e600..c40d2b4 100644
+--- i/src/CMakeLists.txt
++++ w/src/CMakeLists.txt
+@@ -78,4 +78,4 @@ if(UNIX)
+     COMPONENT doc)
+ endif()
+ 
+-install(TARGETS aec_static aec_shared sz_static sz_shared aec_client)
++install(TARGETS aec_shared sz_shared aec_client)

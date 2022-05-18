@@ -1,0 +1,18 @@
+type: pure_c
+name: "alabaster"
+display_name: "alabaster"
+version: "0.7.12"
+homepage: "https://github.com/bitprophet/alabaster/"
+description: "Lightweight, configurable Sphinx theme"
+license: "BSD-3-Clause"
+
+sources:
+  "0.7.12":
+    sha256: 7978a9917bf2030b5c179f999e1a3f23385e4c610179dab0a2c86aee9ba027a9
+    url: "https://github.com/bitprophet/alabaster/archive/${version}.zip"
+    base_path: "alabaster-${version}"
+
+  "0.7.6":
+    sha256: e9b6ff9711deaf7a160e238ef0baf95a2aa8f43fba7dd36e75acbccae3b2a8d9
+    url: "https://github.com/bitprophet/alabaster/archive/${version}.zip"
+    base_path: "alabaster-${version}"

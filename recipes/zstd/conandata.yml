@@ -1,0 +1,38 @@
+type: pure_c
+name: zstd
+display_name: ZStandard
+version: "1.5.2"
+homepage: https://facebook.github.io/zstd
+description: Zstandard - Fast real-time compression algorithm
+license: BSD-3-Clause
+
+sources:
+  "1.5.2":
+    sha256: 53f4696f3cec8703f12d3402707a6aaf7eb92d43c90d61e1d32454bda5da7b9c
+    url: https://github.com/facebook/zstd/archive/v${version}.zip
+    base_path: "zstd-${version}"
+
+  "1.5.0":
+    sha256: "424951b44315dd56b52573814a780b0ef57e2f32bad6ddd7a60cbf1fdf1b453b"
+    url: "https://github.com/facebook/zstd/archive/v${version}.zip"
+    base_path: "zstd-${version}"
+
+  "1.4.9":
+    sha256: "bc74d2247f72584b9b010679089ee77136982d6f0e1eff28ca9d22c99185dcc6"
+    url: "https://github.com/facebook/zstd/archive/v${version}.zip"
+    base_path: "zstd-${version}"
+
+  "1.4.8":
+    sha256: "136a9197711e746899b9c8a36db378432427a165d446b19831c400ae30fa2e64"
+    url: "https://github.com/facebook/zstd/archive/v${version}.zip"
+    base_path: "zstd-${version}"
+
+  "1.4.5":
+    sha256: "b6c537b53356a3af3ca3e621457751fa9a6ba96daf3aebb3526ae0f610863532"
+    url: "https://github.com/facebook/zstd/archive/v${version}.zip"
+    base_path: "zstd-${version}"
+
+  "1.4.4":
+    sha256: "5a874ba43d1ec6d1c03f070f5fa820ff834ef85d5525b03effa7508c9087ba55"
+    url: "https://github.com/facebook/zstd/archive/v${version}.zip"
+    base_path: "zstd-${version}"

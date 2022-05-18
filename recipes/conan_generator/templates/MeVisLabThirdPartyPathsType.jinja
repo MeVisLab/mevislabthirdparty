@@ -1,0 +1,7 @@
+#
+# {{ header_date }}
+#
+
+{% for name, path in package_root_dirs.items() %}
+set(MEVISLAB_{{ name }}_ROOTDIR{{build_type_suffix}} "{{ path }}")
+{% endfor %}

@@ -1,0 +1,9 @@
+type: installer
+name: "common"
+display_name: "common"
+version: "1.0.0"
+homepage: "http://mms-build.mevis.lokal"
+description: "Common recipes for MeVisLab Conan packages"
+license: "MIT"
+
+pipeline: "linux:gcc10:release"

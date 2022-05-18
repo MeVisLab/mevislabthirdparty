@@ -1,0 +1,17 @@
+diff --git c/qtbase/mkspecs/features/uic.prf i/qtbase/mkspecs/features/uic.prf
+index a5df0c7e8..92076747b 100644
+--- c/qtbase/mkspecs/features/uic.prf
++++ i/qtbase/mkspecs/features/uic.prf
+@@ -6,7 +6,11 @@ isEmpty(QMAKE_MOD_UIC):QMAKE_MOD_UIC = ui_
+ uic.depends += $$QMAKE_UIC_EXE
+ uic.commands = $$QMAKE_UIC $$QMAKE_UIC_FLAGS ${QMAKE_FILE_IN} -o ${QMAKE_FILE_OUT}
+ uic.depend_command = $$QMAKE_UIC_DEP -d ${QMAKE_FILE_IN}
+-uic.output = $$UI_DIR/$${QMAKE_MOD_UIC}${QMAKE_FILE_BASE}$${first(QMAKE_EXT_H)}
++isEmpty(MEVIS_USE_UI_GENERATED_SUB_DIRECTORY) {
++  uic.output = $$UI_DIR/$${QMAKE_MOD_UIC}${QMAKE_FILE_BASE}$${first(QMAKE_EXT_H)}
++} else {
++  uic.output = ${QMAKE_FILE_IN_PATH}/$${MEVIS_UI_GENERATED_SUB_DIRECTORY}/$${QMAKE_MOD_UIC}${QMAKE_FILE_BASE}$${first(QMAKE_EXT_H)}
++}
+ uic.input = FORMS
+ uic.variable_out = GENERATED_FILES
+ uic.CONFIG += no_link target_predeps dep_lines dep_existing_only

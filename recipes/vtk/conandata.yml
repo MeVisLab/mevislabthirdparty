@@ -1,0 +1,27 @@
+pure_c: false
+header_only: false
+name: vtk
+cmake_name: VTK
+display_name: VTK
+version: "7.1.1"
+homepage: "https://www.vtk.org"
+description: "The Visualization Toolkit (VTK) is open source software for manipulating and displaying scientific data"
+license: "MPL-2.0"
+
+sources:
+  "7.1.1":
+    sha256: "2d5cdd048540144d821715c718932591418bb48f5b6bb19becdae62339efa75a"
+    url: "https://www.vtk.org/files/release/7.1/VTK-7.1.1.tar.gz"
+    base_path: "VTK-${version}"
+
+patches:
+  "7.1.1":
+    - patch_file: "patches/7.1.1-gcc_to_old.patch"
+    - patch_file: "patches/7.1.1-freetype_FT_CALLBACK_DEF.patch"
+    - patch_file: "patches/7.1.1-custom_target_working_directory.patch"
+    - patch_file: "patches/7.1.1-missing-gets.patch"
+    - patch_file: "patches/7.1.1-fix-stl-errors.patch"
+    - patch_file: "patches/7.1.1-fix-vs2019-const-errors.patch"
+    - patch_file: "patches/7.1.1-Python3.9-const_char.patch"
+    - patch_file: "patches/7.1.1-apple_opengl_deprecation_warnings.patch"
+    - patch_file: "patches/7.1.1-use_system_glew.patch"

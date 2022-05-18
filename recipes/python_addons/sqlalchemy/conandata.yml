@@ -1,0 +1,47 @@
+type: pure_c
+name: sqlalchemy
+version: 1.4.32
+homepage: https://www.sqlalchemy.org
+description: SQLAlchemy is the Python SQL toolkit and Object Relational Mapper that gives application developers the full power and flexibility of SQL
+license: MIT
+
+sources:
+  1.4.32:
+    sha256: 48b2f433d930c4f668f874693f2c33112519a035ba951cdf0d22e5a29cf97f13
+    url: "https://github.com/sqlalchemy/sqlalchemy/archive/refs/tags/rel_${version_major}_${version_minor}_${version_patch}.tar.gz"
+    base_path: "sqlalchemy-rel_${version_major}_${version_minor}_${version_patch}"
+
+  1.4.28:
+    sha256: 06319a501b4ec8c622b814323951414e63de91edd379b043a510b5af2cd2d44e
+    url: "https://github.com/sqlalchemy/sqlalchemy/archive/refs/tags/rel_${version_major}_${version_minor}_${version_patch}.tar.gz"
+    base_path: "sqlalchemy-rel_${version_major}_${version_minor}_${version_patch}"
+
+  1.4.27:
+    sha256: ab80bf6b16e56775360d9567d28e1e42472f04e768d65125a43abf1647efe54f
+    url: "https://github.com/sqlalchemy/sqlalchemy/archive/refs/tags/rel_${version_major}_${version_minor}_${version_patch}.tar.gz"
+    base_path: "sqlalchemy-rel_${version_major}_${version_minor}_${version_patch}"
+
+  1.4.26:
+    sha256: 5bff31890bd4a22592ae344f8054a763d25106c8aae5f80d2215a4e1c309119b
+    url: "https://github.com/sqlalchemy/sqlalchemy/archive/refs/tags/rel_${version_major}_${version_minor}_${version_patch}.tar.gz"
+    base_path: "sqlalchemy-rel_${version_major}_${version_minor}_${version_patch}"
+
+  1.4.25:
+    sha256: cfcf665a5d7532facd2d590483e1d1f02cd654bbd9d20698b8ab5d98136a566c
+    url: "https://github.com/sqlalchemy/sqlalchemy/archive/refs/tags/rel_${version_major}_${version_minor}_${version_patch}.tar.gz"
+    base_path: "sqlalchemy-rel_${version_major}_${version_minor}_${version_patch}"
+
+  1.4.23:
+    sha256: 3792f752920fbda1bc173bc72b5b4dc050f9ffdec3151f9b0cbd34ff40af978f
+    url: "https://github.com/sqlalchemy/sqlalchemy/archive/refs/tags/rel_${version_major}_${version_minor}_${version_patch}.tar.gz"
+    base_path: "sqlalchemy-rel_${version_major}_${version_minor}_${version_patch}"
+
+  1.4.22:
+    sha256: 18c286a89e094d8bc3d495843d7ebb01634f777c628e00025fa82199d5542558
+    url: "https://github.com/sqlalchemy/sqlalchemy/archive/refs/tags/rel_${version_major}_${version_minor}_${version_patch}.tar.gz"
+    base_path: "sqlalchemy-rel_${version_major}_${version_minor}_${version_patch}"
+
+  1.3.17:
+    sha256: "ab8ba10f09065dcbbdb334559f6769da3eb8aad6a23f3b9024d4464829b9fc25"
+    url: "https://github.com/sqlalchemy/sqlalchemy/archive/rel_1_3_17.tar.gz"
+    base_path: "sqlalchemy-rel_${version_major}_${version_minor}_${version_patch}"

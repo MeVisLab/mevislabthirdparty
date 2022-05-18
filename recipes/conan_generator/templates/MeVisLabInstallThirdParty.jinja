@@ -1,0 +1,12 @@
+#
+# {{ header_date }}
+#
+
+if(NOT DEFINED MEVISLAB_INSTALL_THIRDPARTYDIR)
+  message(FATAL_ERROR "MEVISLAB_INSTALL_THIRDPARTYDIR not defined")
+endif()
+
+file(GLOB INSTALL_THIRDPARTY_TARGET_FILES "${CMAKE_CURRENT_LIST_DIR}/MeVisLabInstallThirdParty-*.cmake")
+foreach(f ${INSTALL_THIRDPARTY_TARGET_FILES})
+  include(${f})
+endforeach()

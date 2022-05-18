@@ -1,0 +1,33 @@
+type: pure_c
+name: "pcre2"
+display_name: "PCRE2"
+version: "10.39"
+homepage: "https://www.pcre.org"
+description: "Perl-compatible regular expression library"
+license: "BSD-3-Clause"
+
+sources:
+  "10.39":
+    sha256: 0f03caf57f81d9ff362ac28cd389c055ec2bf0678d277349a1a4bee00ad6d440
+    url: "https://github.com/PhilipHazel/pcre2/releases/download/pcre2-${version}/pcre2-${version}.tar.bz2"
+    base_path: "pcre2-${version}"
+
+  "10.38":
+    sha256: 7d95aa7c8a7b0749bf03c4bd73626ab61dece7e3986b5a57f5ec39eebef6b07c
+    url: "https://github.com/PhilipHazel/pcre2/releases/download/pcre2-${version}/pcre2-${version}.tar.bz2"
+    base_path: "pcre2-${version}"
+
+  "10.37":
+    sha256: "04e214c0c40a97b8a5c2b4ae88a3aa8a93e6f2e45c6b3534ddac351f26548577"
+    url: "https://ftp.pcre.org/pub/pcre/pcre2-${version}.tar.gz"
+    base_path: "pcre2-${version}"
+
+  "10.36":
+    sha256: "b95ddb9414f91a967a887d69617059fb672b914f56fa3d613812c1ee8e8a1a37"
+    url: "https://ftp.pcre.org/pub/pcre/pcre2-${version}.tar.gz"
+    base_path: "pcre2-${version}"
+
+  "10.35":
+    sha256: "8fdcef8c8f4cd735169dd0225fd010487970c1bcadd49e9b90e26c7250a33dc9"
+    url: "https://ftp.pcre.org/pub/pcre/pcre2-${version}.tar.gz"
+    base_path: "pcre2-${version}"

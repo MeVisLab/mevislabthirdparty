@@ -1,0 +1,133 @@
+diff --git i/Source/WebCore/bridge/qt/qt_runtime.cpp w/Source/WebCore/bridge/qt/qt_runtime.cpp
+index 4859fae..84dbd8f 100644
+--- i/Source/WebCore/bridge/qt/qt_runtime.cpp
++++ w/Source/WebCore/bridge/qt/qt_runtime.cpp
+@@ -62,6 +62,21 @@ Q_DECLARE_METATYPE(QObjectList);
+ Q_DECLARE_METATYPE(QList<int>);
+ Q_DECLARE_METATYPE(QVariant);
+ 
++// MEVIS BEGIN, Florian Link 2009-11-30
++#include "WebKit/qt/Api/qwebkitglobal.h"
++
++QSet<QByteArray> _MEVIS_knownQObjects;
++
++bool MEVISWebKit_isDerivedFromQObject(const QByteArray& className) {
++  return _MEVIS_knownQObjects.contains(className);
++}
++
++Q_DECL_EXPORT void MEVISWebKit_registerQObject(const QByteArray& className)
++{
++  _MEVIS_knownQObjects.insert(className);
++}
++// MEVIS END
++
+ using namespace WebCore;
+ 
+ namespace JSC {
+@@ -219,7 +234,10 @@ static JSValueRef unwrapBoxedPrimitive(JSContextRef context, JSValueRef value, J
+     return value;
+ }
+ 
+-QVariant convertValueToQVariant(JSContextRef, JSValueRef, QMetaType::Type, int*, HashSet<JSObjectRef>*, int, JSValueRef *exception);
++QVariant convertValueToQVariant(JSContextRef, JSValueRef, QMetaType::Type, int*, HashSet<JSObjectRef>*, int, JSValueRef *exception
++// MEVIS BEGIN, Florian Link 2009-11-30
++ , const char* requiredBaseClassName = NULL);
++ // MEVIS END
+ 
+ static QVariantMap convertValueToQVariantMap(JSContextRef context, JSObjectRef object, HashSet<JSObjectRef>* visitedObjects, int recursionLimit, JSValueRef* exception)
+ {
+@@ -312,7 +330,10 @@ static QDateTime toQDateTimeUTC(JSContextRef context, JSRealType type, JSValueRe
+     return QDateTime(date, time, Qt::UTC);
+ }
+ 
+-QVariant convertValueToQVariant(JSContextRef context, JSValueRef value, QMetaType::Type hint, int *distance, HashSet<JSObjectRef>* visitedObjects, int recursionLimit, JSValueRef* exception)
++QVariant convertValueToQVariant(JSContextRef context, JSValueRef value, QMetaType::Type hint, int *distance, HashSet<JSObjectRef>* visitedObjects, int recursionLimit, JSValueRef* exception
++ // MEVIS BEGIN, Florian Link 2009-11-30
++ , const char* requiredBaseClassName)
++ // MEVIS END
+ {
+     --recursionLimit;
+ 
+@@ -583,9 +604,15 @@ QVariant convertValueToQVariant(JSContextRef context, JSValueRef value, QMetaTyp
+                 if (qtinst) {
+                     if (qtinst->getObject()) {
+                         qConvDebug() << "found instance, with object:" << (void*) qtinst->getObject();
+-                        ret = QVariant::fromValue(qtinst->getObject());
+-                        qConvDebug() << ret;
+-                        dist = 0;
++// MEVIS BEGIN, Florian Link 2009-11-30
++                        if (requiredBaseClassName && !qtinst->getObject()->inherits(requiredBaseClassName)) {
++                            qConvDebug() << "can't convert object to " << requiredBaseClassName;
++                        } else {
++                            ret = qVariantFromValue(qtinst->getObject());
++                            qConvDebug() << ret;
++                            dist = 0;
++                        }
++// MEVIS END
+                     } else {
+                         qConvDebug() << "can't convert deleted qobject";
+                     }
+@@ -1020,9 +1047,13 @@ static int findMethodIndex(JSContextRef context,
+         // resolve return type
+         QByteArray returnTypeName = method.typeName();
+         int rtype = method.returnType();
+-        if (rtype == QMetaType::UnknownType) {
+-            if (returnTypeName.endsWith('*')) {
+-                types.append(QtMethodMatchType::metaType(QMetaType::VoidStar, returnTypeName));
++// MEVIS BEGIN, Florian Link 2009-11-30
++        int isPointer = returnTypeName.endsWith('*');
++        if ((rtype == QMetaType::UnknownType) || isPointer) {
++            if (isPointer) {
++                int metaId = MEVISWebKit_isDerivedFromQObject(returnTypeName.left(returnTypeName.length()-1))?QMetaType::QObjectStar:QMetaType::VoidStar;
++                types.append(QtMethodMatchType::metaType(metaId, returnTypeName));
++// MEVIS END
+             } else {
+                 int enumIndex = indexOfMetaEnum(meta, returnTypeName);
+                 if (enumIndex != -1)
+@@ -1044,6 +1075,17 @@ static int findMethodIndex(JSContextRef context,
+         for (int i = 0; i < parameterTypeNames.count(); ++i) {
+             QByteArray argTypeName = parameterTypeNames.at(i);
+             int atype = method.parameterType(i);
++// MEVIS BEGIN, Florian Link 2009-11-30
++            if (argTypeName.endsWith('*')) {
++                QByteArray nameWithoutStar = argTypeName.left(argTypeName.length()-1);
++                if (MEVISWebKit_isDerivedFromQObject(nameWithoutStar)) {
++                    types.append(QtMethodMatchType::metaType(QMetaType::QObjectStar, nameWithoutStar));
++                } else {
++                    unresolvedTypes = true;
++                    types.append(QtMethodMatchType::unresolved(argTypeName));
++                }
++            } else
++// MEVIS END
+             if (atype == QMetaType::UnknownType) {
+                 int enumIndex = indexOfMetaEnum(meta, argTypeName);
+                 if (enumIndex != -1)
+@@ -1089,7 +1131,10 @@ static int findMethodIndex(JSContextRef context,
+             JSValueRef arg = i < argumentCount ? arguments[i] : JSValueMakeUndefined(context);
+ 
+             int argdistance = -1;
+-            QVariant v = convertValueToQVariant(context, arg, types.at(i+1).typeId(), &argdistance, exception);
++// MEVIS BEGIN, Florian Link 2009-11-30
++            HashSet<JSObjectRef> visitedObjects;
++            QVariant v = convertValueToQVariant(context, arg, types.at(i+1).typeId(), &argdistance, &visitedObjects, 200, exception, types.at(i+1).name().constData());
++// MEVIS END
+             if (argdistance >= 0) {
+                 matchDistance += argdistance;
+                 args[i+1] = v;
+diff --git i/Source/WebKit/qt/WidgetApi/qwebview.h w/Source/WebKit/qt/WidgetApi/qwebview.h
+index 0ed324d..90948b7 100644
+--- i/Source/WebKit/qt/WidgetApi/qwebview.h
++++ w/Source/WebKit/qt/WidgetApi/qwebview.h
+@@ -34,6 +34,12 @@ class QNetworkRequest;
+ class QPrinter;
+ QT_END_NAMESPACE
+ 
++// MEVIS BEGIN, Florian Link 2009-11-30
++#define MEVIS_WEBKIT_EXTENSIONS
++//! Register \p className as a QObject derived class, so that the script engine can convert pointers to it correctly. 
++QWEBKIT_EXPORT void MEVISWebKit_registerQObject(const QByteArray& className);
++// MEVIS END
++
+ class QWebPage;
+ class QWebViewPrivate;
+ class QWebNetworkRequest;

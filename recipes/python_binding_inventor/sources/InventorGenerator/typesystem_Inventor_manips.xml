@@ -1,0 +1,24 @@
+<typesystem package="Inventor.manips">
+
+  <object-type name="SoCenterballManip">
+  </object-type>
+  <object-type name="SoHandleBoxManip">
+  </object-type>
+  <object-type name="SoJackManip">
+  </object-type>
+  <object-type name="SoTabBoxManip">
+  </object-type>
+  <object-type name="SoTransformManip">
+  </object-type>
+  <object-type name="SoTrackballManip">
+  </object-type>
+  <object-type name="SoTransformerManip">
+  </object-type>
+  <object-type name="SoTransformBoxManip">
+  </object-type>
+  <object-type name="SoDirectionalLightManip">
+  </object-type>
+  <object-type name="SoSpotLightManip">
+  </object-type>
+
+ </typesystem>

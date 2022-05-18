@@ -1,0 +1,70 @@
+<typesystem package="Inventor.draggers">
+
+  <enum-type name="SoDragger::ProjectorFrontSetting" />
+  <enum-type name="SoTabPlaneDragger::State" />
+  <enum-type name="SoTransformerDragger::State" />
+  <enum-type name="SoTrackballDragger::State" />
+
+  <rejection class="SoDragger" function-name="addValueChangedCallback"/>
+  <rejection class="SoDragger" function-name="addStartCallback"/>
+  <rejection class="SoDragger" function-name="addOtherEventCallback"/>
+  <rejection class="SoDragger" function-name="addMotionCallback"/>
+  <rejection class="SoDragger" function-name="addFinishCallback"/>
+  <rejection class="SoDragger" function-name="removeValueChangedCallback"/>
+  <rejection class="SoDragger" function-name="removeStartCallback"/>
+  <rejection class="SoDragger" function-name="removeOtherEventCallback"/>
+  <rejection class="SoDragger" function-name="removeMotionCallback"/>
+  <rejection class="SoDragger" function-name="removeFinishCallback"/>
+
+  <rejection class="SoTransformerDragger" function-name="isColinear"/>
+  <rejection class="SoTransformerDragger" function-name="getIgnoreAxis"/>
+  <rejection class="SoTransformerDragger" function-name="motionCB"/>
+  <rejection class="SoTransformerDragger" function-name="metaKeyChangeCB"/>
+  <rejection class="SoTransformerDragger" function-name="makeMinorAxisPerpendicularIfColinear"/>
+    
+  <object-type name="SoCenterballDragger">
+  </object-type>
+  <object-type name="SoDirectionalLightDragger">
+  </object-type>
+  <object-type name="SoDragPointDragger">
+  </object-type>
+  <object-type name="SoDragger">
+  </object-type>
+  <object-type name="SoHandleBoxDragger">
+  </object-type>
+  <object-type name="SoJackDragger">
+  </object-type>
+  <object-type name="SoPointLightDragger">
+  </object-type>
+  <object-type name="SoRotateCylindricalDragger">
+  </object-type>
+  <object-type name="SoRotateDiscDragger">
+  </object-type>
+  <object-type name="SoRotateSphericalDragger">
+  </object-type>
+  <object-type name="SoScale1Dragger">
+  </object-type>
+  <object-type name="SoScale2Dragger">
+  </object-type>
+  <object-type name="SoScale2UniformDragger">
+  </object-type>
+  <object-type name="SoScaleUniformDragger">
+  </object-type>
+  <object-type name="SoSpotLightDragger">
+  </object-type>
+  <object-type name="SoTabBoxDragger">
+  </object-type>
+  <object-type name="SoTabPlaneDragger">
+  </object-type>
+  <object-type name="SoTrackballDragger">
+  </object-type>
+  <object-type name="SoTransformBoxDragger">
+  </object-type>
+  <object-type name="SoTransformerDragger">
+  </object-type>
+  <object-type name="SoTranslate1Dragger">
+  </object-type>
+  <object-type name="SoTranslate2Dragger">
+  </object-type>
+
+ </typesystem>

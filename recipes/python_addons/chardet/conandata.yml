@@ -1,0 +1,13 @@
+type: pure_c
+name: "chardet"
+display_name: "Chardet"
+version: "4.0.0"
+homepage: "http://docutils.sourceforge.net"
+description: "Python character encoding detector"
+license: "LGPL-2.1-or-later"
+
+sources:
+  "4.0.0":
+    sha256: 67bbe3eb02691d38831ddf2719c40fe09381bc17f15321946f6cd71dc274e530
+    url: https://github.com/chardet/chardet/archive/refs/tags/4.0.0.tar.gz
+    base_path: "chardet-${version}"

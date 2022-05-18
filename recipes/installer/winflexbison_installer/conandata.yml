@@ -1,0 +1,19 @@
+type: pure_c
+name: "winflexbison_installer"
+version: "2.5.24"
+homepage: "https://github.com/lexxmark/winflexbison"
+description: "WinFlexBison is a Windows port of Flex (the fast lexical analyser) and GNU Bison (parser generator)."
+license: "GPL-3.0-only"
+
+pipeline: "windows:vs15:release"
+
+sources:
+  "2.5.24":
+    sha256: "9996f50ff9136b273e5068fe661e40d37248196f5cfa7568b49ed70bbb8e9daf"
+    url: "https://github.com/lexxmark/winflexbison/archive/v2.5.24.zip"
+    base_path: "winflexbison-${version}"
+
+  "2.5.22":
+    sha256: "bc8d6a6852bd25d47c31292f25a1c34784f74724f4f00d1f66ab16ec6d0dd3f5"
+    url: "https://github.com/lexxmark/winflexbison/archive/v2.5.22.zip"
+    base_path: "winflexbison-${version}"

@@ -1,0 +1,17 @@
+type: header_only
+name: "tnt"
+display_name: "Template Numerical Toolkit"
+version: "1.2.6"
+homepage: "https://math.nist.gov/tnt"
+description: "Numerical math library"
+license: "PublicDomain"
+
+sources:
+  "1.2.6":
+    sha256: "93c7cdd116a6faeb679890a52d5b513055388c7faaac74beea570f8f2edbd7e4"
+    url: "https://math.nist.gov/tnt/tnt_126.zip"
+    base_path: ""
+
+patches:
+  "1.2.6":
+    - patch_file: "patches/1.2.6-mevis.patch"

@@ -1,0 +1,14 @@
+type: cpp
+name: "easybmp"
+cmake_name: "EasyBMP"
+display_name: "EasyBMP"
+version: "1.06"
+homepage: "http://easybmp.sourceforge.net"
+description: "Cross-Platform Windows Bitmap Library"
+license: "BSD-3-Clause"
+
+sources:
+  "1.06":
+    url: "https://sourceforge.net/projects/easybmp/files/easybmp/EasyBMP Library Files Version 1.06/EasyBMP_1.06.zip/download"
+    sha256: "1ef19cc92b18a8ab272bf68a4ce8ce862d08208d4e675560c33fbd04d997c469"
+

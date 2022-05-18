@@ -1,0 +1,112 @@
+diff --git i/qtwebengine/config.tests/re2/re2.cpp w/qtwebengine/config.tests/re2/re2.cpp
+deleted file mode 100644
+index bd3b80a824..0000000000
+--- i/qtwebengine/config.tests/re2/re2.cpp
++++ /dev/null
+@@ -1,36 +0,0 @@
+-/****************************************************************************
+-**
+-** Copyright (C) 2017 The Qt Company Ltd.
+-** Contact: https://www.qt.io/licensing/
+-**
+-** This file is part of the QtWebEngine module of the Qt Toolkit.
+-**
+-** $QT_BEGIN_LICENSE:GPL-EXCEPT$
+-** Commercial License Usage
+-** Licensees holding valid commercial Qt licenses may use this file in
+-** accordance with the commercial license agreement provided with the
+-** Software or, alternatively, in accordance with the terms contained in
+-** a written agreement between you and The Qt Company. For licensing terms
+-** and conditions see https://www.qt.io/terms-conditions. For further
+-** information use the contact form at https://www.qt.io/contact-us.
+-**
+-** GNU General Public License Usage
+-** Alternatively, this file may be used under the terms of the GNU
+-** General Public License version 3 as published by the Free Software
+-** Foundation with exceptions as appearing in the file LICENSE.GPL3-EXCEPT
+-** included in the packaging of this file. Please review the following
+-** information to ensure the GNU General Public License requirements will
+-** be met: https://www.gnu.org/licenses/gpl-3.0.html.
+-**
+-** $QT_END_LICENSE$
+-**
+-****************************************************************************/
+-
+-#include <re2/re2.h>
+-
+-int main(int, char **)
+-{
+-    std::string s("dummytest");
+-    RE2 re2(s);
+-    return 0;
+-}
+diff --git i/qtwebengine/config.tests/re2/re2.pro w/qtwebengine/config.tests/re2/re2.pro
+deleted file mode 100644
+index b1a26d9180..0000000000
+--- i/qtwebengine/config.tests/re2/re2.pro
++++ /dev/null
+@@ -1,3 +0,0 @@
+-SOURCES += re2.cpp
+-LIBS += -lre2
+-CONFIG -= qt
+diff --git i/qtwebengine/src/core/configure.json w/qtwebengine/src/core/configure.json
+index b9c9204443..0f2e54baf5 100644
+--- i/qtwebengine/src/core/configure.json
++++ w/qtwebengine/src/core/configure.json
+@@ -137,12 +137,25 @@
+                 { "type": "pkgConfig", "args": "poppler-cpp" }
+             ]
+         },
+-        "pulseaudio": {
++        "webengine-pulseaudio": {
+             "label": "pulseaudio >= 0.9.10",
+             "sources": [
+                 { "type": "pkgConfig", "args": "libpulse >= 0.9.10 libpulse-mainloop-glib" }
+             ]
+         },
++        "webengine-re2": {
++            "label": "re2",
++            "test" : {
++                "main": [
++                    "std::string s;",
++                    "RE2 re2(s);"
++                ]
++            },
++            "headers": "re2/re2.h",
++            "sources": [
++                { "type": "pkgConfig", "args": "re2" }
++            ]
++        },
+         "webengine-icu": {
+             "label": "icu >= 53",
+             "sources": [
+@@ -303,11 +316,6 @@
+             "label": "embedded",
+             "type": "embedded"
+         },
+-        "webengine-re2": {
+-            "label": "re2",
+-            "test": "re2",
+-            "type": "compile"
+-        },
+         "webengine-glibc": {
+             "label": "glibc > 2.16",
+             "type": "detectGlibc"
+@@ -500,7 +508,7 @@
+         "webengine-pulseaudio": {
+             "label": "Use PulseAudio",
+             "autoDetect": "config.unix",
+-            "condition": "libs.pulseaudio",
++            "condition": "libs.webengine-pulseaudio",
+             "output": [ "privateFeature" ]
+         },
+         "webengine-pepper-plugins": {
+@@ -601,7 +609,7 @@
+         "webengine-system-re2": {
+             "label": "re2",
+             "autoDetect": "config.unix",
+-            "condition": "tests.webengine-re2",
++            "condition": "libs.webengine-re2",
+             "output": [ "privateFeature" ]
+         },
+         "webengine-system-ninja": {

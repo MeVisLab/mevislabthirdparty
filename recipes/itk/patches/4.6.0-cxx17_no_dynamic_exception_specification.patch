@@ -1,0 +1,1246 @@
+diff --git i/Modules/Filtering/BiasCorrection/include/itkMRIBiasFieldCorrectionFilter.h w/Modules/Filtering/BiasCorrection/include/itkMRIBiasFieldCorrectionFilter.h
+index 0002762..6b791d3 100644
+--- i/Modules/Filtering/BiasCorrection/include/itkMRIBiasFieldCorrectionFilter.h
++++ w/Modules/Filtering/BiasCorrection/include/itkMRIBiasFieldCorrectionFilter.h
+@@ -373,8 +373,7 @@ public:
+    * If the numbers of elements in the means and the sigmas are not equal
+    * it will throw exception    */
+   void SetTissueClassStatistics(const Array< double > & means,
+-                                const Array< double > & sigmas)
+-  throw ( ExceptionObject );
++                                const Array< double > & sigmas);
+ 
+   /** Set/Get the maximum iteration termination condition parameter. */
+   itkSetMacro(VolumeCorrectionMaximumIteration, int);
+@@ -441,8 +440,7 @@ public:
+    * intensity values, tissue classes' statistics values and the optimizer's
+    * initial radius NOTE: If the tissue class statistics values (mean and
+    * sigma values) then it will throw exception. */
+-  void Initialize()
+-  throw ( ExceptionObject );
++  void Initialize();
+ 
+   /** Optimizes the bias field only using the image data that are in
+    * the specified region. */
+diff --git i/Modules/Filtering/BiasCorrection/include/itkMRIBiasFieldCorrectionFilter.hxx w/Modules/Filtering/BiasCorrection/include/itkMRIBiasFieldCorrectionFilter.hxx
+index f6e6f9f..0d745a8 100644
+--- i/Modules/Filtering/BiasCorrection/include/itkMRIBiasFieldCorrectionFilter.hxx
++++ w/Modules/Filtering/BiasCorrection/include/itkMRIBiasFieldCorrectionFilter.hxx
+@@ -560,7 +560,6 @@ template< typename TInputImage, typename TOutputImage, typename TMaskImage >
+ void
+ MRIBiasFieldCorrectionFilter< TInputImage, TOutputImage, TMaskImage >
+ ::Initialize()
+-throw ( ExceptionObject )
+ {
+   m_InternalInput->SetRegions( this->GetInput()->GetLargestPossibleRegion() );
+   m_InternalInput->Allocate();
+@@ -965,7 +964,6 @@ void
+ MRIBiasFieldCorrectionFilter< TInputImage, TOutputImage, TMaskImage >
+ ::SetTissueClassStatistics(const Array< double > & means,
+                            const Array< double > & sigmas)
+-throw ( ExceptionObject )
+ {
+   const SizeValueType meanSize = means.Size();
+   const SizeValueType sigmaSize = sigmas.Size();
+diff --git i/Modules/Filtering/ImageFeature/include/itkMaskFeaturePointSelectionFilter.h w/Modules/Filtering/ImageFeature/include/itkMaskFeaturePointSelectionFilter.h
+index ecdf321..52edc5d 100644
+--- i/Modules/Filtering/ImageFeature/include/itkMaskFeaturePointSelectionFilter.h
++++ w/Modules/Filtering/ImageFeature/include/itkMaskFeaturePointSelectionFilter.h
+@@ -152,7 +152,7 @@ protected:
+    * the execution of the filter. This method must be called after invoking
+    * SetNonConnectivity().
+    */
+-  void ComputeConnectivityOffsets( void ) throw ( ExceptionObject );
++  void ComputeConnectivityOffsets( void );
+ 
+ private:
+   // purposely not implemented
+diff --git i/Modules/Filtering/ImageFeature/include/itkMaskFeaturePointSelectionFilter.hxx w/Modules/Filtering/ImageFeature/include/itkMaskFeaturePointSelectionFilter.hxx
+index 460ea1e..cd13ddb 100644
+--- i/Modules/Filtering/ImageFeature/include/itkMaskFeaturePointSelectionFilter.hxx
++++ w/Modules/Filtering/ImageFeature/include/itkMaskFeaturePointSelectionFilter.hxx
+@@ -77,7 +77,7 @@ MaskFeaturePointSelectionFilter< TImage, TMask, TFeatures >
+ template< typename TImage, typename TMask, typename TFeatures >
+ void
+ MaskFeaturePointSelectionFilter< TImage, TMask, TFeatures >
+-::ComputeConnectivityOffsets( void ) throw ( ExceptionObject )
++::ComputeConnectivityOffsets( void )
+ {
+   if ( m_NonConnectivity < ImageDimension )
+     {
+diff --git i/Modules/Numerics/Optimizersv4/include/itkObjectToObjectMetric.h w/Modules/Numerics/Optimizersv4/include/itkObjectToObjectMetric.h
+index e09fd7a..b0747dd 100644
+--- i/Modules/Numerics/Optimizersv4/include/itkObjectToObjectMetric.h
++++ w/Modules/Numerics/Optimizersv4/include/itkObjectToObjectMetric.h
+@@ -162,7 +162,7 @@ public:
+   /** DisplacementFieldTransform types for working with local-support transforms */
+   typedef DisplacementFieldTransform<CoordinateRepresentationType, itkGetStaticConstMacro( MovingDimension ) >  MovingDisplacementFieldTransformType;
+ 
+-  virtual void Initialize(void) throw ( ExceptionObject );
++  virtual void Initialize(void);
+ 
+   virtual NumberOfParametersType GetNumberOfParameters() const;
+   virtual NumberOfParametersType GetNumberOfLocalParameters() const;
+diff --git i/Modules/Numerics/Optimizersv4/include/itkObjectToObjectMetric.hxx w/Modules/Numerics/Optimizersv4/include/itkObjectToObjectMetric.hxx
+index cf285e1..f7ed9c7 100644
+--- i/Modules/Numerics/Optimizersv4/include/itkObjectToObjectMetric.hxx
++++ w/Modules/Numerics/Optimizersv4/include/itkObjectToObjectMetric.hxx
+@@ -58,7 +58,7 @@ ObjectToObjectMetric<TFixedDimension, TMovingDimension, TVirtualImage, TInternal
+ template<unsigned int TFixedDimension, unsigned int TMovingDimension, typename TVirtualImage, typename TInternalComputationValueType>
+ void
+ ObjectToObjectMetric<TFixedDimension, TMovingDimension, TVirtualImage, TInternalComputationValueType>
+-::Initialize() throw ( ExceptionObject )
++::Initialize()
+ {
+   if ( !this->m_FixedTransform )
+     {
+diff --git i/Modules/Numerics/Optimizersv4/include/itkObjectToObjectMetricBase.h w/Modules/Numerics/Optimizersv4/include/itkObjectToObjectMetricBase.h
+index edcb145..4c03127 100644
+--- i/Modules/Numerics/Optimizersv4/include/itkObjectToObjectMetricBase.h
++++ w/Modules/Numerics/Optimizersv4/include/itkObjectToObjectMetricBase.h
+@@ -107,7 +107,7 @@ public:
+    *  are present and plugged together correctly, and initializing
+    *  internal variables as required. This is for one-time initialization,
+    *  e.g. before starting an optimization process. */
+-  virtual void Initialize(void) throw ( ExceptionObject ) = 0;
++  virtual void Initialize(void) = 0;
+ 
+   /** Type to represent the number of parameters that are being optimized at
+    * any given iteration of the optimizer. */
+diff --git i/Modules/Numerics/Optimizersv4/test/itkAmoebaOptimizerv4Test.cxx w/Modules/Numerics/Optimizersv4/test/itkAmoebaOptimizerv4Test.cxx
+index 56c2c96..b66992b 100644
+--- i/Modules/Numerics/Optimizersv4/test/itkAmoebaOptimizerv4Test.cxx
++++ w/Modules/Numerics/Optimizersv4/test/itkAmoebaOptimizerv4Test.cxx
+@@ -93,7 +93,7 @@ public:
+     GetDerivative( derivative );
+   }
+ 
+-  virtual void Initialize(void) throw ( itk::ExceptionObject ) ITK_OVERRIDE
++  virtual void Initialize(void) ITK_OVERRIDE
+   {
+     m_Parameters.SetSize( SpaceDimension );
+   }
+@@ -201,7 +201,7 @@ public:
+     GetDerivative( derivative );
+     }
+ 
+-  virtual void Initialize(void) throw ( itk::ExceptionObject ) ITK_OVERRIDE
++  virtual void Initialize(void) ITK_OVERRIDE
+     {
+     m_Parameters.SetSize( SpaceDimension );
+     }
+diff --git i/Modules/Numerics/Optimizersv4/test/itkConjugateGradientLineSearchOptimizerv4Test.cxx w/Modules/Numerics/Optimizersv4/test/itkConjugateGradientLineSearchOptimizerv4Test.cxx
+index 11dd982..1a54f3c 100644
+--- i/Modules/Numerics/Optimizersv4/test/itkConjugateGradientLineSearchOptimizerv4Test.cxx
++++ w/Modules/Numerics/Optimizersv4/test/itkConjugateGradientLineSearchOptimizerv4Test.cxx
+@@ -61,7 +61,7 @@ public:
+     m_Parameters.Fill( 0 );
+   }
+ 
+-  virtual void Initialize(void) throw ( itk::ExceptionObject ) ITK_OVERRIDE {}
++  virtual void Initialize(void) ITK_OVERRIDE {}
+ 
+   virtual void GetDerivative( DerivativeType & derivative ) const ITK_OVERRIDE
+   {
+diff --git i/Modules/Numerics/Optimizersv4/test/itkExhaustiveOptimizerv4Test.cxx w/Modules/Numerics/Optimizersv4/test/itkExhaustiveOptimizerv4Test.cxx
+index bdc911d..4f008cc 100644
+--- i/Modules/Numerics/Optimizersv4/test/itkExhaustiveOptimizerv4Test.cxx
++++ w/Modules/Numerics/Optimizersv4/test/itkExhaustiveOptimizerv4Test.cxx
+@@ -96,7 +96,7 @@ public:
+     GetDerivative( derivative );
+   }
+ 
+-  virtual void Initialize(void) throw ( itk::ExceptionObject ) ITK_OVERRIDE
++  virtual void Initialize(void) ITK_OVERRIDE
+   {
+     m_Parameters.SetSize( SpaceDimension );
+   }
+diff --git i/Modules/Numerics/Optimizersv4/test/itkGradientDescentLineSearchOptimizerv4Test.cxx w/Modules/Numerics/Optimizersv4/test/itkGradientDescentLineSearchOptimizerv4Test.cxx
+index 668fa67..88f105d 100644
+--- i/Modules/Numerics/Optimizersv4/test/itkGradientDescentLineSearchOptimizerv4Test.cxx
++++ w/Modules/Numerics/Optimizersv4/test/itkGradientDescentLineSearchOptimizerv4Test.cxx
+@@ -63,7 +63,7 @@ public:
+     m_Parameters.Fill( 0 );
+   }
+ 
+-  virtual void Initialize(void) throw ( itk::ExceptionObject ) ITK_OVERRIDE {}
++  virtual void Initialize(void) ITK_OVERRIDE {}
+ 
+   virtual void GetDerivative( DerivativeType & derivative ) const ITK_OVERRIDE
+   {
+diff --git i/Modules/Numerics/Optimizersv4/test/itkGradientDescentOptimizerBasev4Test.cxx w/Modules/Numerics/Optimizersv4/test/itkGradientDescentOptimizerBasev4Test.cxx
+index 1916d76..8ad390d 100644
+--- i/Modules/Numerics/Optimizersv4/test/itkGradientDescentOptimizerBasev4Test.cxx
++++ w/Modules/Numerics/Optimizersv4/test/itkGradientDescentOptimizerBasev4Test.cxx
+@@ -74,7 +74,7 @@ public:
+     return false;
+     }
+ 
+-  virtual void Initialize(void) throw ( itk::ExceptionObject ) ITK_OVERRIDE {}
++  virtual void Initialize(void) ITK_OVERRIDE {}
+ 
+   virtual void PrintSelf(std::ostream& os, itk::Indent indent) const ITK_OVERRIDE
+   { Superclass::PrintSelf( os, indent ); }
+diff --git i/Modules/Numerics/Optimizersv4/test/itkGradientDescentOptimizerv4Test.cxx w/Modules/Numerics/Optimizersv4/test/itkGradientDescentOptimizerv4Test.cxx
+index a0bd176..4dd7e46 100644
+--- i/Modules/Numerics/Optimizersv4/test/itkGradientDescentOptimizerv4Test.cxx
++++ w/Modules/Numerics/Optimizersv4/test/itkGradientDescentOptimizerv4Test.cxx
+@@ -62,7 +62,7 @@ public:
+     m_Parameters.Fill( 0 );
+   }
+ 
+-  virtual void Initialize(void) throw ( itk::ExceptionObject ) ITK_OVERRIDE {}
++  virtual void Initialize(void) ITK_OVERRIDE {}
+ 
+   virtual void GetDerivative( DerivativeType & derivative ) const ITK_OVERRIDE
+   {
+diff --git i/Modules/Numerics/Optimizersv4/test/itkGradientDescentOptimizerv4Test2.cxx w/Modules/Numerics/Optimizersv4/test/itkGradientDescentOptimizerv4Test2.cxx
+index 9f64b02..545f811 100644
+--- i/Modules/Numerics/Optimizersv4/test/itkGradientDescentOptimizerv4Test2.cxx
++++ w/Modules/Numerics/Optimizersv4/test/itkGradientDescentOptimizerv4Test2.cxx
+@@ -57,7 +57,7 @@ public:
+     m_Parameters.Fill( 0 );
+   }
+ 
+-  virtual void Initialize(void) throw ( itk::ExceptionObject ) ITK_OVERRIDE {}
++  virtual void Initialize(void) ITK_OVERRIDE {}
+ 
+   virtual void GetDerivative( DerivativeType & derivative ) const ITK_OVERRIDE
+   {
+diff --git i/Modules/Numerics/Optimizersv4/test/itkLBFGSBOptimizerv4Test.cxx w/Modules/Numerics/Optimizersv4/test/itkLBFGSBOptimizerv4Test.cxx
+index 9676431..b650852 100644
+--- i/Modules/Numerics/Optimizersv4/test/itkLBFGSBOptimizerv4Test.cxx
++++ w/Modules/Numerics/Optimizersv4/test/itkLBFGSBOptimizerv4Test.cxx
+@@ -68,7 +68,7 @@ public:
+     m_HasLocalSupport = false;
+   }
+ 
+-  virtual void Initialize(void) throw ( itk::ExceptionObject ) ITK_OVERRIDE
++  virtual void Initialize(void) ITK_OVERRIDE
+   {
+     m_Parameters.SetSize( SpaceDimension );
+   }
+diff --git i/Modules/Numerics/Optimizersv4/test/itkLBFGSOptimizerv4Test.cxx w/Modules/Numerics/Optimizersv4/test/itkLBFGSOptimizerv4Test.cxx
+index 69abb6b..2740317 100644
+--- i/Modules/Numerics/Optimizersv4/test/itkLBFGSOptimizerv4Test.cxx
++++ w/Modules/Numerics/Optimizersv4/test/itkLBFGSOptimizerv4Test.cxx
+@@ -99,7 +99,7 @@ public:
+     GetDerivative( derivative );
+   }
+ 
+-  virtual void Initialize(void) throw ( itk::ExceptionObject ) ITK_OVERRIDE
++  virtual void Initialize(void) ITK_OVERRIDE
+   {
+     m_Parameters.SetSize( SpaceDimension );
+   }
+diff --git i/Modules/Numerics/Optimizersv4/test/itkMultiGradientOptimizerv4Test.cxx w/Modules/Numerics/Optimizersv4/test/itkMultiGradientOptimizerv4Test.cxx
+index 80cdc96..c36ef23 100644
+--- i/Modules/Numerics/Optimizersv4/test/itkMultiGradientOptimizerv4Test.cxx
++++ w/Modules/Numerics/Optimizersv4/test/itkMultiGradientOptimizerv4Test.cxx
+@@ -65,7 +65,7 @@ public:
+     m_Parameters(ITK_NULLPTR)
+   {}
+ 
+-  virtual void Initialize(void) throw ( itk::ExceptionObject ) ITK_OVERRIDE {}
++  virtual void Initialize(void) ITK_OVERRIDE {}
+ 
+   virtual void GetDerivative( DerivativeType & derivative ) const ITK_OVERRIDE
+     {
+@@ -170,7 +170,7 @@ public:
+     m_Parameters(ITK_NULLPTR)
+   {}
+ 
+-  virtual void Initialize(void) throw ( itk::ExceptionObject ) ITK_OVERRIDE {}
++  virtual void Initialize(void) ITK_OVERRIDE {}
+ 
+   virtual void GetDerivative( DerivativeType & derivative ) const ITK_OVERRIDE
+     {
+diff --git i/Modules/Numerics/Optimizersv4/test/itkMultiStartOptimizerv4Test.cxx w/Modules/Numerics/Optimizersv4/test/itkMultiStartOptimizerv4Test.cxx
+index 7a270cc..3fc06ca 100644
+--- i/Modules/Numerics/Optimizersv4/test/itkMultiStartOptimizerv4Test.cxx
++++ w/Modules/Numerics/Optimizersv4/test/itkMultiStartOptimizerv4Test.cxx
+@@ -59,7 +59,7 @@ public:
+     m_Parameters.Fill( 0 );
+   }
+ 
+-  virtual void Initialize(void) throw ( itk::ExceptionObject ) ITK_OVERRIDE {}
++  virtual void Initialize(void) ITK_OVERRIDE {}
+ 
+   virtual void GetDerivative( DerivativeType & derivative ) const ITK_OVERRIDE
+     {
+diff --git i/Modules/Numerics/Optimizersv4/test/itkObjectToObjectMetricBaseTest.cxx w/Modules/Numerics/Optimizersv4/test/itkObjectToObjectMetricBaseTest.cxx
+index bbfe5ea..0b6a8ab 100644
+--- i/Modules/Numerics/Optimizersv4/test/itkObjectToObjectMetricBaseTest.cxx
++++ w/Modules/Numerics/Optimizersv4/test/itkObjectToObjectMetricBaseTest.cxx
+@@ -78,7 +78,7 @@ public:
+   {
+   }
+ 
+-  virtual void Initialize(void) throw ( itk::ExceptionObject ) ITK_OVERRIDE {}
++  virtual void Initialize(void) ITK_OVERRIDE {}
+ 
+   virtual void PrintSelf(std::ostream& os, itk::Indent indent) const ITK_OVERRIDE
+   { Superclass::PrintSelf( os, indent ); }
+diff --git i/Modules/Numerics/Optimizersv4/test/itkObjectToObjectOptimizerBaseTest.cxx w/Modules/Numerics/Optimizersv4/test/itkObjectToObjectOptimizerBaseTest.cxx
+index 00b65cb..a244335 100644
+--- i/Modules/Numerics/Optimizersv4/test/itkObjectToObjectOptimizerBaseTest.cxx
++++ w/Modules/Numerics/Optimizersv4/test/itkObjectToObjectOptimizerBaseTest.cxx
+@@ -73,7 +73,7 @@ public:
+ 
+   virtual void SetParameters( ParametersType & ) ITK_OVERRIDE {}
+ 
+-  virtual void Initialize(void) throw ( itk::ExceptionObject ) ITK_OVERRIDE {}
++  virtual void Initialize(void) ITK_OVERRIDE {}
+ 
+   virtual void PrintSelf(std::ostream& os, itk::Indent indent) const ITK_OVERRIDE
+   { Superclass::PrintSelf( os, indent ); }
+diff --git i/Modules/Numerics/Optimizersv4/test/itkOnePlusOneEvolutionaryOptimizerv4Test.cxx w/Modules/Numerics/Optimizersv4/test/itkOnePlusOneEvolutionaryOptimizerv4Test.cxx
+index 3e7a958..45f60f8 100644
+--- i/Modules/Numerics/Optimizersv4/test/itkOnePlusOneEvolutionaryOptimizerv4Test.cxx
++++ w/Modules/Numerics/Optimizersv4/test/itkOnePlusOneEvolutionaryOptimizerv4Test.cxx
+@@ -91,7 +91,7 @@ public:
+     GetDerivative( derivative );
+   }
+ 
+-  virtual void Initialize(void) throw ( itk::ExceptionObject ) ITK_OVERRIDE
++  virtual void Initialize(void) ITK_OVERRIDE
+   {
+     m_Parameters.SetSize( SpaceDimension );
+   }
+diff --git i/Modules/Numerics/Optimizersv4/test/itkPowellOptimizerv4Test.cxx w/Modules/Numerics/Optimizersv4/test/itkPowellOptimizerv4Test.cxx
+index 3369b7b..b0da4b1 100644
+--- i/Modules/Numerics/Optimizersv4/test/itkPowellOptimizerv4Test.cxx
++++ w/Modules/Numerics/Optimizersv4/test/itkPowellOptimizerv4Test.cxx
+@@ -87,7 +87,7 @@ public:
+     GetDerivative( derivative );
+   }
+ 
+-  virtual void Initialize(void) throw ( itk::ExceptionObject ) ITK_OVERRIDE
++  virtual void Initialize(void) ITK_OVERRIDE
+   {
+     m_Parameters.SetSize( SpaceDimension );
+   }
+diff --git i/Modules/Numerics/Optimizersv4/test/itkRegistrationParameterScalesEstimatorTest.cxx w/Modules/Numerics/Optimizersv4/test/itkRegistrationParameterScalesEstimatorTest.cxx
+index fa971d5..7e866c5 100644
+--- i/Modules/Numerics/Optimizersv4/test/itkRegistrationParameterScalesEstimatorTest.cxx
++++ w/Modules/Numerics/Optimizersv4/test/itkRegistrationParameterScalesEstimatorTest.cxx
+@@ -70,7 +70,7 @@ public:
+   const ParametersType & GetParameters() const
+   { return m_Parameters; }
+ 
+-  void Initialize(void) throw ( itk::ExceptionObject ) {}
++  void Initialize(void) {}
+ 
+   void PrintSelf(std::ostream& os, itk::Indent indent) const
+   { Superclass::PrintSelf( os, indent ); }
+diff --git i/Modules/Numerics/Optimizersv4/test/itkRegistrationParameterScalesFromIndexShiftTest.cxx w/Modules/Numerics/Optimizersv4/test/itkRegistrationParameterScalesFromIndexShiftTest.cxx
+index f98dd9c..28b2393 100644
+--- i/Modules/Numerics/Optimizersv4/test/itkRegistrationParameterScalesFromIndexShiftTest.cxx
++++ w/Modules/Numerics/Optimizersv4/test/itkRegistrationParameterScalesFromIndexShiftTest.cxx
+@@ -68,7 +68,7 @@ public:
+   const ParametersType & GetParameters() const
+   { return m_Parameters; }
+ 
+-  void Initialize(void) throw ( itk::ExceptionObject ) {}
++  void Initialize(void) {}
+ 
+   ParametersType  m_Parameters;
+ 
+diff --git i/Modules/Numerics/Optimizersv4/test/itkRegistrationParameterScalesFromJacobianTest.cxx w/Modules/Numerics/Optimizersv4/test/itkRegistrationParameterScalesFromJacobianTest.cxx
+index c0a8d8f..193f3dd 100644
+--- i/Modules/Numerics/Optimizersv4/test/itkRegistrationParameterScalesFromJacobianTest.cxx
++++ w/Modules/Numerics/Optimizersv4/test/itkRegistrationParameterScalesFromJacobianTest.cxx
+@@ -68,7 +68,7 @@ public:
+   const ParametersType & GetParameters() const
+   { return m_Parameters; }
+ 
+-  void Initialize(void) throw ( itk::ExceptionObject ) {}
++  void Initialize(void) {}
+ 
+   ParametersType  m_Parameters;
+ 
+diff --git i/Modules/Numerics/Optimizersv4/test/itkRegistrationParameterScalesFromPhysicalShiftTest.cxx w/Modules/Numerics/Optimizersv4/test/itkRegistrationParameterScalesFromPhysicalShiftTest.cxx
+index c657465..166fa30 100644
+--- i/Modules/Numerics/Optimizersv4/test/itkRegistrationParameterScalesFromPhysicalShiftTest.cxx
++++ w/Modules/Numerics/Optimizersv4/test/itkRegistrationParameterScalesFromPhysicalShiftTest.cxx
+@@ -67,7 +67,7 @@ public:
+   const ParametersType & GetParameters() const
+   { return m_Parameters; }
+ 
+-  void Initialize(void) throw ( itk::ExceptionObject ) {}
++  void Initialize(void) {}
+ 
+   ParametersType  m_Parameters;
+ 
+diff --git i/Modules/Numerics/Optimizersv4/test/itkRegularStepGradientDescentOptimizerv4Test.cxx w/Modules/Numerics/Optimizersv4/test/itkRegularStepGradientDescentOptimizerv4Test.cxx
+index a926295..27b511d 100644
+--- i/Modules/Numerics/Optimizersv4/test/itkRegularStepGradientDescentOptimizerv4Test.cxx
++++ w/Modules/Numerics/Optimizersv4/test/itkRegularStepGradientDescentOptimizerv4Test.cxx
+@@ -59,7 +59,7 @@ public:
+     m_Parameters.Fill( 0 );
+   }
+ 
+-  virtual void Initialize(void) throw ( itk::ExceptionObject ) ITK_OVERRIDE {}
++  virtual void Initialize(void) ITK_OVERRIDE {}
+ 
+   virtual void GetDerivative( DerivativeType & derivative ) const ITK_OVERRIDE
+   {
+diff --git i/Modules/Numerics/Polynomials/include/itkMultivariateLegendrePolynomial.h w/Modules/Numerics/Polynomials/include/itkMultivariateLegendrePolynomial.h
+index bdda186..75ca65d 100644
+--- i/Modules/Numerics/Polynomials/include/itkMultivariateLegendrePolynomial.h
++++ w/Modules/Numerics/Polynomials/include/itkMultivariateLegendrePolynomial.h
+@@ -140,11 +140,9 @@ public:
+    * \warning The number of coefficients provided should
+    * match the number returned by GetNumberOfCoefficients()
+    * otherwise an exception is thrown.  */
+-  void SetCoefficients(const CoefficientArrayType & coef)
+-  throw ( CoefficientVectorSizeMismatch );
++  void SetCoefficients(const CoefficientArrayType & coef);
+ 
+-  void SetCoefficients(const ParametersType & coef)
+-  throw ( CoefficientVectorSizeMismatch );
++  void SetCoefficients(const ParametersType & coef);
+ 
+   /** \brief Gets Legendre polynomials' coefficients. */
+   const CoefficientArrayType & GetCoefficients(void) const;
+diff --git i/Modules/Numerics/Polynomials/src/itkMultivariateLegendrePolynomial.cxx w/Modules/Numerics/Polynomials/src/itkMultivariateLegendrePolynomial.cxx
+index cd0bac6..6eeb620 100644
+--- i/Modules/Numerics/Polynomials/src/itkMultivariateLegendrePolynomial.cxx
++++ w/Modules/Numerics/Polynomials/src/itkMultivariateLegendrePolynomial.cxx
+@@ -123,7 +123,6 @@ void MultivariateLegendrePolynomial
+ 
+ void MultivariateLegendrePolynomial
+ ::SetCoefficients(const CoefficientArrayType & coefficients)
+-throw ( MultivariateLegendrePolynomial::CoefficientVectorSizeMismatch )
+ {
+   if ( coefficients.size() != m_NumberOfCoefficients )
+     {
+@@ -146,7 +145,6 @@ throw ( MultivariateLegendrePolynomial::CoefficientVectorSizeMismatch )
+ 
+ void MultivariateLegendrePolynomial
+ ::SetCoefficients(const ParametersType & coefficients)
+-throw ( MultivariateLegendrePolynomial::CoefficientVectorSizeMismatch )
+ {
+   if ( coefficients.size() != m_NumberOfCoefficients )
+     {
+diff --git i/Modules/Registration/Common/include/itkBlockMatchingImageFilter.h w/Modules/Registration/Common/include/itkBlockMatchingImageFilter.h
+index 7c27f93..5023af8 100644
+--- i/Modules/Registration/Common/include/itkBlockMatchingImageFilter.h
++++ w/Modules/Registration/Common/include/itkBlockMatchingImageFilter.h
+@@ -167,7 +167,7 @@ protected:
+   /** Generate temporary containers to be used by individual threads exclusively */
+   virtual void BeforeThreadedGenerateData();
+ 
+-  virtual void ThreadedGenerateData( ThreadIdType threadId ) throw ( ExceptionObject );
++  virtual void ThreadedGenerateData( ThreadIdType threadId );
+ 
+   /** Compose pieces computed by each thread into a single output */
+   virtual void AfterThreadedGenerateData();
+diff --git i/Modules/Registration/Common/include/itkBlockMatchingImageFilter.hxx w/Modules/Registration/Common/include/itkBlockMatchingImageFilter.hxx
+index 029f869..0bccfc2 100644
+--- i/Modules/Registration/Common/include/itkBlockMatchingImageFilter.hxx
++++ w/Modules/Registration/Common/include/itkBlockMatchingImageFilter.hxx
+@@ -221,7 +221,7 @@ BlockMatchingImageFilter< TFixedImage, TMovingImage, TFeatures, TDisplacements,
+ template< typename TFixedImage, typename TMovingImage, typename TFeatures, typename TDisplacements, typename TSimilarities >
+ void
+ BlockMatchingImageFilter< TFixedImage, TMovingImage, TFeatures, TDisplacements, TSimilarities >
+-::ThreadedGenerateData( ThreadIdType threadId ) throw ( ExceptionObject )
++::ThreadedGenerateData( ThreadIdType threadId )
+ {
+   FixedImageConstPointer fixedImage = this->GetFixedImage();
+   MovingImageConstPointer movingImage = this->GetMovingImage();
+diff --git i/Modules/Registration/Common/include/itkCompareHistogramImageToImageMetric.h w/Modules/Registration/Common/include/itkCompareHistogramImageToImageMetric.h
+index ff6efb5..293b9fb 100644
+--- i/Modules/Registration/Common/include/itkCompareHistogramImageToImageMetric.h
++++ w/Modules/Registration/Common/include/itkCompareHistogramImageToImageMetric.h
+@@ -129,8 +129,7 @@ public:
+ 
+   /** Forms the histogram of the training images to prepare to evaluate the
+    * metric. Must set all parameters first. */
+-  void Initialize()
+-  throw ( ExceptionObject );
++  void Initialize();
+ 
+ protected:
+   /** Constructor is protected to ensure that \c New() function is used to
+@@ -140,8 +139,7 @@ protected:
+   void PrintSelf(std::ostream & os, Indent indent) const;
+ 
+   /** Form the Histogram for the Training data */
+-  void FormTrainingHistogram()
+-  throw ( ExceptionObject );
++  void FormTrainingHistogram();
+ 
+   /** Evaluates the comparison histogram metric. All sub-classes must
+       re-implement method. */
+diff --git i/Modules/Registration/Common/include/itkCompareHistogramImageToImageMetric.hxx w/Modules/Registration/Common/include/itkCompareHistogramImageToImageMetric.hxx
+index 98526c1..46b6119 100644
+--- i/Modules/Registration/Common/include/itkCompareHistogramImageToImageMetric.hxx
++++ w/Modules/Registration/Common/include/itkCompareHistogramImageToImageMetric.hxx
+@@ -37,7 +37,6 @@ template< typename TFixedImage, typename TMovingImage >
+ void
+ CompareHistogramImageToImageMetric< TFixedImage, TMovingImage >
+ ::Initialize()
+-throw ( ExceptionObject )
+ {
+   Superclass::Initialize();
+ 
+@@ -51,7 +50,6 @@ template< typename TFixedImage, typename TMovingImage >
+ void
+ CompareHistogramImageToImageMetric< TFixedImage, TMovingImage >
+ ::FormTrainingHistogram()
+-throw ( ExceptionObject )
+ {
+   // Check to make sure everything is set
+   if ( !m_TrainingTransform )
+diff --git i/Modules/Registration/Common/include/itkGradientDifferenceImageToImageMetric.h w/Modules/Registration/Common/include/itkGradientDifferenceImageToImageMetric.h
+index 1e4e048..907e338 100644
+--- i/Modules/Registration/Common/include/itkGradientDifferenceImageToImageMetric.h
++++ w/Modules/Registration/Common/include/itkGradientDifferenceImageToImageMetric.h
+@@ -132,8 +132,7 @@ public:
+ 
+   /** Initialize the Metric by making sure that all the components
+    *  are present and plugged together correctly     */
+-  virtual void Initialize(void)
+-  throw ( ExceptionObject );
++  virtual void Initialize(void);
+ 
+   /** Write gradient images to a files for debugging purposes. */
+   void WriteGradientImagesToFiles(void) const;
+diff --git i/Modules/Registration/Common/include/itkGradientDifferenceImageToImageMetric.hxx w/Modules/Registration/Common/include/itkGradientDifferenceImageToImageMetric.hxx
+index 6bfb24e..5351d0d 100644
+--- i/Modules/Registration/Common/include/itkGradientDifferenceImageToImageMetric.hxx
++++ w/Modules/Registration/Common/include/itkGradientDifferenceImageToImageMetric.hxx
+@@ -64,7 +64,6 @@ template< typename TFixedImage, typename TMovingImage >
+ void
+ GradientDifferenceImageToImageMetric< TFixedImage, TMovingImage >
+ ::Initialize(void)
+-throw ( ExceptionObject )
+ {
+   unsigned int iFilter;  // Index of Sobel filters for each dimension
+ 
+diff --git i/Modules/Registration/Common/include/itkHistogramImageToImageMetric.h w/Modules/Registration/Common/include/itkHistogramImageToImageMetric.h
+index 3b5e4dc..807ba39 100644
+--- i/Modules/Registration/Common/include/itkHistogramImageToImageMetric.h
++++ w/Modules/Registration/Common/include/itkHistogramImageToImageMetric.h
+@@ -79,8 +79,7 @@ public:
+   typedef typename HistogramType::Pointer               HistogramPointer;
+ 
+   /** Initializes the metric. */
+-  void Initialize()
+-  throw ( ExceptionObject );
++  void Initialize();
+ 
+   /** Define the transform and thereby the parameter space of the metric
+    *   and the space of its derivatives */
+diff --git i/Modules/Registration/Common/include/itkHistogramImageToImageMetric.hxx w/Modules/Registration/Common/include/itkHistogramImageToImageMetric.hxx
+index 2e02b9a..0648df4 100644
+--- i/Modules/Registration/Common/include/itkHistogramImageToImageMetric.hxx
++++ w/Modules/Registration/Common/include/itkHistogramImageToImageMetric.hxx
+@@ -81,7 +81,6 @@ HistogramImageToImageMetric< TFixedImage, TMovingImage >
+ template< typename TFixedImage, typename TMovingImage >
+ void HistogramImageToImageMetric< TFixedImage, TMovingImage >
+ ::Initialize()
+-throw ( ExceptionObject )
+ {
+   Superclass::Initialize();
+ 
+diff --git i/Modules/Registration/Common/include/itkImageRegistrationMethod.h w/Modules/Registration/Common/include/itkImageRegistrationMethod.h
+index d3a1738..1ed1447 100644
+--- i/Modules/Registration/Common/include/itkImageRegistrationMethod.h
++++ w/Modules/Registration/Common/include/itkImageRegistrationMethod.h
+@@ -176,8 +176,7 @@ public:
+   itkSetMacro(FixedImageRegionDefined, bool);
+ 
+   /** Initialize by setting the interconnects between the components. */
+-  virtual void Initialize()
+-  throw ( ExceptionObject );
++  virtual void Initialize();
+ 
+   /** Returns the transform resulting from the registration process  */
+   const TransformOutputType * GetOutput() const;
+diff --git i/Modules/Registration/Common/include/itkImageRegistrationMethod.hxx w/Modules/Registration/Common/include/itkImageRegistrationMethod.hxx
+index 112820f..8dc1b66 100644
+--- i/Modules/Registration/Common/include/itkImageRegistrationMethod.hxx
++++ w/Modules/Registration/Common/include/itkImageRegistrationMethod.hxx
+@@ -140,7 +140,6 @@ template< typename TFixedImage, typename TMovingImage >
+ void
+ ImageRegistrationMethod< TFixedImage, TMovingImage >
+ ::Initialize()
+-throw ( ExceptionObject )
+ {
+   if ( !m_FixedImage )
+     {
+diff --git i/Modules/Registration/Common/include/itkImageToImageMetric.h w/Modules/Registration/Common/include/itkImageToImageMetric.h
+index 9259589..9d0e2d9 100644
+--- i/Modules/Registration/Common/include/itkImageToImageMetric.h
++++ w/Modules/Registration/Common/include/itkImageToImageMetric.h
+@@ -216,11 +216,10 @@ public:
+ 
+   /** Initialize the Metric by making sure that all the components
+    *  are present and plugged together correctly     */
+-  virtual void Initialize(void)
+-  throw ( ExceptionObject );
++  virtual void Initialize(void);
+ 
+   /** Initialize the components related to supporting multiple threads */
+-  virtual void MultiThreadingInitialize(void) throw ( ExceptionObject );
++  virtual void MultiThreadingInitialize(void);
+ 
+   /** Number of spatial samples to used to compute metric
+    *   This sets the number of samples.  */
+diff --git i/Modules/Registration/Common/include/itkImageToImageMetric.hxx w/Modules/Registration/Common/include/itkImageToImageMetric.hxx
+index f436adb..7fc5908 100644
+--- i/Modules/Registration/Common/include/itkImageToImageMetric.hxx
++++ w/Modules/Registration/Common/include/itkImageToImageMetric.hxx
+@@ -292,7 +292,6 @@ template< typename TFixedImage, typename TMovingImage >
+ void
+ ImageToImageMetric< TFixedImage, TMovingImage >
+ ::Initialize(void)
+-throw ( ExceptionObject )
+ {
+   if ( !m_Transform )
+     {
+@@ -370,7 +369,6 @@ template< typename TFixedImage, typename TMovingImage >
+ void
+ ImageToImageMetric< TFixedImage, TMovingImage >
+ ::MultiThreadingInitialize(void)
+-throw ( ExceptionObject )
+ {
+   this->SetNumberOfThreads(m_NumberOfThreads);
+ 
+diff --git i/Modules/Registration/Common/include/itkImageToSpatialObjectMetric.h w/Modules/Registration/Common/include/itkImageToSpatialObjectMetric.h
+index 92fd892..58412a3 100644
+--- i/Modules/Registration/Common/include/itkImageToSpatialObjectMetric.h
++++ w/Modules/Registration/Common/include/itkImageToSpatialObjectMetric.h
+@@ -152,8 +152,7 @@ public:
+                                      DerivativeType  & Derivative) const = 0;
+ 
+   /** Initialize the metric */
+-  virtual void Initialize(void)
+-  throw ( ExceptionObject );
++  virtual void Initialize(void);
+ 
+   /** Get the last transformation parameters visited by
+    * the optimizer. This function overload the superclass's one */
+diff --git i/Modules/Registration/Common/include/itkImageToSpatialObjectMetric.hxx w/Modules/Registration/Common/include/itkImageToSpatialObjectMetric.hxx
+index 6bbba44..0568d24 100644
+--- i/Modules/Registration/Common/include/itkImageToSpatialObjectMetric.hxx
++++ w/Modules/Registration/Common/include/itkImageToSpatialObjectMetric.hxx
+@@ -42,7 +42,6 @@ template< typename TFixedImage, typename TMovingSpatialObject >
+ void
+ ImageToSpatialObjectMetric< TFixedImage, TMovingSpatialObject >
+ ::Initialize(void)
+-throw ( ExceptionObject )
+ {
+   if ( !m_Transform )
+     {
+diff --git i/Modules/Registration/Common/include/itkImageToSpatialObjectRegistrationMethod.h w/Modules/Registration/Common/include/itkImageToSpatialObjectRegistrationMethod.h
+index 82f2778..84a74a3 100644
+--- i/Modules/Registration/Common/include/itkImageToSpatialObjectRegistrationMethod.h
++++ w/Modules/Registration/Common/include/itkImageToSpatialObjectRegistrationMethod.h
+@@ -205,8 +205,7 @@ protected:
+   virtual void  GenerateData() ITK_OVERRIDE;
+ 
+   /** Initialize by setting the interconnects between the components. */
+-  void Initialize()
+-  throw ( ExceptionObject );
++  void Initialize();
+ 
+   ParametersType m_InitialTransformParameters;
+   ParametersType m_LastTransformParameters;
+diff --git i/Modules/Registration/Common/include/itkImageToSpatialObjectRegistrationMethod.hxx w/Modules/Registration/Common/include/itkImageToSpatialObjectRegistrationMethod.hxx
+index 5a64df1..c013707 100644
+--- i/Modules/Registration/Common/include/itkImageToSpatialObjectRegistrationMethod.hxx
++++ w/Modules/Registration/Common/include/itkImageToSpatialObjectRegistrationMethod.hxx
+@@ -53,7 +53,6 @@ template< typename TFixedImage, typename TMovingSpatialObject >
+ void
+ ImageToSpatialObjectRegistrationMethod< TFixedImage, TMovingSpatialObject >
+ ::Initialize()
+-throw ( ExceptionObject )
+ {
+   if ( !m_FixedImage )
+     {
+diff --git i/Modules/Registration/Common/include/itkKullbackLeiblerCompareHistogramImageToImageMetric.h w/Modules/Registration/Common/include/itkKullbackLeiblerCompareHistogramImageToImageMetric.h
+index e9a1314..6248ab2 100644
+--- i/Modules/Registration/Common/include/itkKullbackLeiblerCompareHistogramImageToImageMetric.h
++++ w/Modules/Registration/Common/include/itkKullbackLeiblerCompareHistogramImageToImageMetric.h
+@@ -127,8 +127,7 @@ public:
+ 
+   /** Forms the histogram of the training images to prepare to evaluate the */
+   /** metric. Must set all parameters first */
+-  void Initialize()
+-  throw ( ExceptionObject );
++  void Initialize();
+ 
+ protected:
+   /** Constructor is protected to ensure that \c New() function is used to
+@@ -138,8 +137,7 @@ protected:
+   void PrintSelf(std::ostream & os, Indent indent) const;
+ 
+   /** Form the Histogram for the Training data */
+-  void FormTrainingHistogram()
+-  throw ( ExceptionObject );
++  void FormTrainingHistogram();
+ 
+   /** Evaluates the mutual information from the histogram. */
+   virtual MeasureType EvaluateMeasure(HistogramType & histogram) const;
+diff --git i/Modules/Registration/Common/include/itkKullbackLeiblerCompareHistogramImageToImageMetric.hxx w/Modules/Registration/Common/include/itkKullbackLeiblerCompareHistogramImageToImageMetric.hxx
+index c8fbd4b..09a597a 100644
+--- i/Modules/Registration/Common/include/itkKullbackLeiblerCompareHistogramImageToImageMetric.hxx
++++ w/Modules/Registration/Common/include/itkKullbackLeiblerCompareHistogramImageToImageMetric.hxx
+@@ -38,7 +38,6 @@ template< typename TFixedImage, typename TMovingImage >
+ void
+ KullbackLeiblerCompareHistogramImageToImageMetric< TFixedImage, TMovingImage >
+ ::Initialize()
+-throw ( ExceptionObject )
+ {
+   Superclass::Initialize();
+ }
+diff --git i/Modules/Registration/Common/include/itkMattesMutualInformationImageToImageMetric.h w/Modules/Registration/Common/include/itkMattesMutualInformationImageToImageMetric.h
+index fda3234..514e7cb 100644
+--- i/Modules/Registration/Common/include/itkMattesMutualInformationImageToImageMetric.h
++++ w/Modules/Registration/Common/include/itkMattesMutualInformationImageToImageMetric.h
+@@ -162,8 +162,7 @@ public:
+    *  (2) uniformly select NumberOfSpatialSamples within
+    *      the FixedImageRegion, and
+    *  (3) allocate memory for pdf data structures. */
+-  virtual void Initialize(void)
+-  throw ( ExceptionObject );
++  virtual void Initialize(void);
+ 
+   /**  Get the value. */
+   MeasureType GetValue(const ParametersType & parameters) const;
+diff --git i/Modules/Registration/Common/include/itkMattesMutualInformationImageToImageMetric.hxx w/Modules/Registration/Common/include/itkMattesMutualInformationImageToImageMetric.hxx
+index d0f157d..b3e0300 100644
+--- i/Modules/Registration/Common/include/itkMattesMutualInformationImageToImageMetric.hxx
++++ w/Modules/Registration/Common/include/itkMattesMutualInformationImageToImageMetric.hxx
+@@ -115,7 +115,6 @@ template <typename TFixedImage, typename TMovingImage>
+ void
+ MattesMutualInformationImageToImageMetric<TFixedImage, TMovingImage>
+ ::Initialize(void)
+-throw ( ExceptionObject )
+ {
+   this->Superclass::Initialize();
+   this->Superclass::MultiThreadingInitialize();
+diff --git i/Modules/Registration/Common/include/itkMeanSquaresImageToImageMetric.h w/Modules/Registration/Common/include/itkMeanSquaresImageToImageMetric.h
+index b62bacb..f2b9e5c 100644
+--- i/Modules/Registration/Common/include/itkMeanSquaresImageToImageMetric.h
++++ w/Modules/Registration/Common/include/itkMeanSquaresImageToImageMetric.h
+@@ -86,8 +86,7 @@ public:
+    *  (2) uniformly select NumberOfSpatialSamples within
+    *      the FixedImageRegion, and
+    *  (3) allocate memory for pdf data structures. */
+-  virtual void Initialize(void)
+-  throw ( ExceptionObject );
++  virtual void Initialize(void);
+ 
+   /**  Get the value. */
+   MeasureType GetValue(const ParametersType & parameters) const;
+diff --git i/Modules/Registration/Common/include/itkMeanSquaresImageToImageMetric.hxx w/Modules/Registration/Common/include/itkMeanSquaresImageToImageMetric.hxx
+index 843e478..7129f1d 100644
+--- i/Modules/Registration/Common/include/itkMeanSquaresImageToImageMetric.hxx
++++ w/Modules/Registration/Common/include/itkMeanSquaresImageToImageMetric.hxx
+@@ -72,7 +72,6 @@ template <typename TFixedImage, typename TMovingImage>
+ void
+ MeanSquaresImageToImageMetric<TFixedImage, TMovingImage>
+ ::Initialize(void)
+-throw ( ExceptionObject )
+ {
+   this->Superclass::Initialize();
+   this->Superclass::MultiThreadingInitialize();
+diff --git i/Modules/Registration/Common/include/itkMultiResolutionImageRegistrationMethod.h w/Modules/Registration/Common/include/itkMultiResolutionImageRegistrationMethod.h
+index 0b3d1ab..16d00ae 100644
+--- i/Modules/Registration/Common/include/itkMultiResolutionImageRegistrationMethod.h
++++ w/Modules/Registration/Common/include/itkMultiResolutionImageRegistrationMethod.h
+@@ -241,8 +241,7 @@ protected:
+       This method is executed at every level of the pyramid with the
+       values corresponding to this resolution
+    */
+-  void Initialize()
+-  throw ( ExceptionObject );
++  void Initialize();
+ 
+   /** Compute the size of the fixed region for each level of the pyramid. */
+   void PreparePyramids(void);
+diff --git i/Modules/Registration/Common/include/itkMultiResolutionImageRegistrationMethod.hxx w/Modules/Registration/Common/include/itkMultiResolutionImageRegistrationMethod.hxx
+index 6193b1b..e96cc38 100644
+--- i/Modules/Registration/Common/include/itkMultiResolutionImageRegistrationMethod.hxx
++++ w/Modules/Registration/Common/include/itkMultiResolutionImageRegistrationMethod.hxx
+@@ -73,7 +73,6 @@ template< typename TFixedImage, typename TMovingImage >
+ void
+ MultiResolutionImageRegistrationMethod< TFixedImage, TMovingImage >
+ ::Initialize()
+-throw ( ExceptionObject )
+ {
+   // Sanity checks
+   if ( !m_Metric )
+diff --git i/Modules/Registration/Common/include/itkPointSetToImageMetric.h w/Modules/Registration/Common/include/itkPointSetToImageMetric.h
+index a0b4f1e..6f4f6d9 100644
+--- i/Modules/Registration/Common/include/itkPointSetToImageMetric.h
++++ w/Modules/Registration/Common/include/itkPointSetToImageMetric.h
+@@ -163,8 +163,7 @@ public:
+ 
+   /** Initialize the Metric by making sure that all the components
+    *  are present and plugged together correctly     */
+-  virtual void Initialize(void)
+-  throw ( ExceptionObject );
++  virtual void Initialize(void);
+ 
+ protected:
+   PointSetToImageMetric();
+diff --git i/Modules/Registration/Common/include/itkPointSetToImageMetric.hxx w/Modules/Registration/Common/include/itkPointSetToImageMetric.hxx
+index 6709651..7a9d45b 100644
+--- i/Modules/Registration/Common/include/itkPointSetToImageMetric.hxx
++++ w/Modules/Registration/Common/include/itkPointSetToImageMetric.hxx
+@@ -60,7 +60,6 @@ template< typename TFixedPointSet, typename TMovingImage >
+ void
+ PointSetToImageMetric< TFixedPointSet, TMovingImage >
+ ::Initialize(void)
+-throw ( ExceptionObject )
+ {
+   if ( !m_Transform )
+     {
+diff --git i/Modules/Registration/Common/include/itkPointSetToImageRegistrationMethod.h w/Modules/Registration/Common/include/itkPointSetToImageRegistrationMethod.h
+index 9f5f880..1a3678a 100644
+--- i/Modules/Registration/Common/include/itkPointSetToImageRegistrationMethod.h
++++ w/Modules/Registration/Common/include/itkPointSetToImageRegistrationMethod.h
+@@ -146,8 +146,7 @@ public:
+   itkGetConstReferenceMacro(LastTransformParameters, ParametersType);
+ 
+   /** Initialize by setting the interconnects between the components. */
+-  void Initialize()
+-  throw ( ExceptionObject );
++  void Initialize();
+ 
+   /** Returns the transform resulting from the registration process  */
+   const TransformOutputType * GetOutput() const;
+diff --git i/Modules/Registration/Common/include/itkPointSetToImageRegistrationMethod.hxx w/Modules/Registration/Common/include/itkPointSetToImageRegistrationMethod.hxx
+index b2d4ae3..591e429 100644
+--- i/Modules/Registration/Common/include/itkPointSetToImageRegistrationMethod.hxx
++++ w/Modules/Registration/Common/include/itkPointSetToImageRegistrationMethod.hxx
+@@ -69,7 +69,6 @@ template< typename TFixedPointSet, typename TMovingImage >
+ void
+ PointSetToImageRegistrationMethod< TFixedPointSet, TMovingImage >
+ ::Initialize()
+-throw ( ExceptionObject )
+ {
+   if ( !m_FixedPointSet )
+     {
+diff --git i/Modules/Registration/Common/include/itkPointSetToPointSetMetric.h w/Modules/Registration/Common/include/itkPointSetToPointSetMetric.h
+index f4776a8..ba787d2 100644
+--- i/Modules/Registration/Common/include/itkPointSetToPointSetMetric.h
++++ w/Modules/Registration/Common/include/itkPointSetToPointSetMetric.h
+@@ -119,8 +119,7 @@ public:
+ 
+   /** Initialize the Metric by making sure that all the components
+    *  are present and plugged together correctly     */
+-  virtual void Initialize(void)
+-  throw ( ExceptionObject );
++  virtual void Initialize(void);
+ 
+ protected:
+   PointSetToPointSetMetric();
+diff --git i/Modules/Registration/Common/include/itkPointSetToPointSetMetric.hxx w/Modules/Registration/Common/include/itkPointSetToPointSetMetric.hxx
+index 6786d76..8d632a7 100644
+--- i/Modules/Registration/Common/include/itkPointSetToPointSetMetric.hxx
++++ w/Modules/Registration/Common/include/itkPointSetToPointSetMetric.hxx
+@@ -50,7 +50,6 @@ template< typename TFixedPointSet, typename TMovingPointSet >
+ void
+ PointSetToPointSetMetric< TFixedPointSet, TMovingPointSet >
+ ::Initialize(void)
+-throw ( ExceptionObject )
+ {
+   if ( !m_Transform )
+     {
+diff --git i/Modules/Registration/Common/include/itkPointSetToPointSetRegistrationMethod.h w/Modules/Registration/Common/include/itkPointSetToPointSetRegistrationMethod.h
+index 8def77a..48dbd35 100644
+--- i/Modules/Registration/Common/include/itkPointSetToPointSetRegistrationMethod.h
++++ w/Modules/Registration/Common/include/itkPointSetToPointSetRegistrationMethod.h
+@@ -136,8 +136,7 @@ public:
+   itkGetConstReferenceMacro(LastTransformParameters, ParametersType);
+ 
+   /** Initialize by setting the interconnects between the components. */
+-  void Initialize()
+-  throw ( ExceptionObject );
++  void Initialize();
+ 
+   /** Returns the transform resulting from the registration process  */
+   const TransformOutputType * GetOutput() const;
+diff --git i/Modules/Registration/Common/include/itkPointSetToPointSetRegistrationMethod.hxx w/Modules/Registration/Common/include/itkPointSetToPointSetRegistrationMethod.hxx
+index e5c5142..07e82b8 100644
+--- i/Modules/Registration/Common/include/itkPointSetToPointSetRegistrationMethod.hxx
++++ w/Modules/Registration/Common/include/itkPointSetToPointSetRegistrationMethod.hxx
+@@ -68,7 +68,6 @@ template< typename TFixedPointSet, typename TMovingPointSet >
+ void
+ PointSetToPointSetRegistrationMethod< TFixedPointSet, TMovingPointSet >
+ ::Initialize()
+-throw ( ExceptionObject )
+ {
+   if ( !m_FixedPointSet )
+     {
+diff --git i/Modules/Registration/Metricsv4/include/itkANTSNeighborhoodCorrelationImageToImageMetricv4.h w/Modules/Registration/Metricsv4/include/itkANTSNeighborhoodCorrelationImageToImageMetricv4.h
+index 359750c..f3ca3c5 100644
+--- i/Modules/Registration/Metricsv4/include/itkANTSNeighborhoodCorrelationImageToImageMetricv4.h
++++ w/Modules/Registration/Metricsv4/include/itkANTSNeighborhoodCorrelationImageToImageMetricv4.h
+@@ -168,7 +168,7 @@ public:
+   itkGetMacro(Radius, RadiusType);
+   itkGetConstMacro(Radius, RadiusType);
+ 
+-  void Initialize(void) throw ( itk::ExceptionObject );
++  void Initialize(void);
+ 
+ protected:
+   ANTSNeighborhoodCorrelationImageToImageMetricv4();
+diff --git i/Modules/Registration/Metricsv4/include/itkANTSNeighborhoodCorrelationImageToImageMetricv4.hxx w/Modules/Registration/Metricsv4/include/itkANTSNeighborhoodCorrelationImageToImageMetricv4.hxx
+index 468c952..702f198 100644
+--- i/Modules/Registration/Metricsv4/include/itkANTSNeighborhoodCorrelationImageToImageMetricv4.hxx
++++ w/Modules/Registration/Metricsv4/include/itkANTSNeighborhoodCorrelationImageToImageMetricv4.hxx
+@@ -46,7 +46,7 @@ ANTSNeighborhoodCorrelationImageToImageMetricv4<TFixedImage, TMovingImage, TVirt
+ template<typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType, typename TMetricTraits>
+ void
+ ANTSNeighborhoodCorrelationImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage, TInternalComputationValueType, TMetricTraits>
+-::Initialize(void) throw ( itk::ExceptionObject )
++::Initialize(void)
+ {
+   Superclass::Initialize();
+ }
+diff --git i/Modules/Registration/Metricsv4/include/itkDemonsImageToImageMetricv4.h w/Modules/Registration/Metricsv4/include/itkDemonsImageToImageMetricv4.h
+index 5c1e22f..2341cf6 100644
+--- i/Modules/Registration/Metricsv4/include/itkDemonsImageToImageMetricv4.h
++++ w/Modules/Registration/Metricsv4/include/itkDemonsImageToImageMetricv4.h
+@@ -105,7 +105,7 @@ public:
+   itkStaticConstMacro(MovingImageDimension, ImageDimensionType,
+       TMovingImage::ImageDimension);
+ 
+-  virtual void Initialize(void) throw ( itk::ExceptionObject );
++  virtual void Initialize(void);
+ 
+   /** Accessors for the image intensity difference threshold use
+    *  in derivative calculation */
+diff --git i/Modules/Registration/Metricsv4/include/itkDemonsImageToImageMetricv4.hxx w/Modules/Registration/Metricsv4/include/itkDemonsImageToImageMetricv4.hxx
+index 0ab040c..c66127a 100644
+--- i/Modules/Registration/Metricsv4/include/itkDemonsImageToImageMetricv4.hxx
++++ w/Modules/Registration/Metricsv4/include/itkDemonsImageToImageMetricv4.hxx
+@@ -50,7 +50,7 @@ DemonsImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage, TInternalComp
+ template < typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType, typename TMetricTraits >
+ void
+ DemonsImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage, TInternalComputationValueType, TMetricTraits>
+-::Initialize(void) throw ( itk::ExceptionObject )
++::Initialize(void)
+ {
+   // Make sure user has not set to use both moving and fixed image
+   // gradients
+diff --git i/Modules/Registration/Metricsv4/include/itkExpectationBasedPointSetToPointSetMetricv4.h w/Modules/Registration/Metricsv4/include/itkExpectationBasedPointSetToPointSetMetricv4.h
+index d17d800..5e3bec6 100644
+--- i/Modules/Registration/Metricsv4/include/itkExpectationBasedPointSetToPointSetMetricv4.h
++++ w/Modules/Registration/Metricsv4/include/itkExpectationBasedPointSetToPointSetMetricv4.h
+@@ -103,7 +103,7 @@ public:
+    */
+   itkGetConstMacro( EvaluationKNeighborhood, unsigned int );
+ 
+-  void Initialize( void ) throw ( ExceptionObject );
++  void Initialize( void );
+ 
+   /** Clone method will clone the existing instance of this type,
+    *  including its internal member variables. */
+diff --git i/Modules/Registration/Metricsv4/include/itkExpectationBasedPointSetToPointSetMetricv4.hxx w/Modules/Registration/Metricsv4/include/itkExpectationBasedPointSetToPointSetMetricv4.hxx
+index e123012..c3f8d21 100644
+--- i/Modules/Registration/Metricsv4/include/itkExpectationBasedPointSetToPointSetMetricv4.hxx
++++ w/Modules/Registration/Metricsv4/include/itkExpectationBasedPointSetToPointSetMetricv4.hxx
+@@ -44,7 +44,7 @@ ExpectationBasedPointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet, TInt
+ template<typename TFixedPointSet, typename TMovingPointSet, class TInternalComputationValueType>
+ void
+ ExpectationBasedPointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet, TInternalComputationValueType>
+-::Initialize( void ) throw ( ExceptionObject )
++::Initialize( void )
+ {
+   Superclass::Initialize();
+ 
+diff --git i/Modules/Registration/Metricsv4/include/itkImageToImageMetricv4.h w/Modules/Registration/Metricsv4/include/itkImageToImageMetricv4.h
+index 7d754e2..89a8d05 100644
+--- i/Modules/Registration/Metricsv4/include/itkImageToImageMetricv4.h
++++ w/Modules/Registration/Metricsv4/include/itkImageToImageMetricv4.h
+@@ -481,7 +481,7 @@ public:
+    * before entering the registration loop, during which GetValue or
+    * GetDerivative will be called repeatedly. It must be called again if
+    * metric settings are changed before beginning a new registration. */
+-  virtual void Initialize(void) throw ( itk::ExceptionObject );
++  virtual void Initialize(void);
+ 
+   virtual MeasureType GetValue() const;
+ 
+diff --git i/Modules/Registration/Metricsv4/include/itkImageToImageMetricv4.hxx w/Modules/Registration/Metricsv4/include/itkImageToImageMetricv4.hxx
+index 8a6069d..13733b2 100644
+--- i/Modules/Registration/Metricsv4/include/itkImageToImageMetricv4.hxx
++++ w/Modules/Registration/Metricsv4/include/itkImageToImageMetricv4.hxx
+@@ -87,7 +87,7 @@ ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage, TInternalComputat
+ template<typename TFixedImage,typename TMovingImage,typename TVirtualImage, typename TInternalComputationValueType, typename TMetricTraits>
+ void
+ ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage, TInternalComputationValueType, TMetricTraits>
+-::Initialize() throw ( itk::ExceptionObject )
++::Initialize()
+ {
+   itkDebugMacro("Initialize entered");
+ 
+diff --git i/Modules/Registration/Metricsv4/include/itkJensenHavrdaCharvatTsallisPointSetToPointSetMetricv4.h w/Modules/Registration/Metricsv4/include/itkJensenHavrdaCharvatTsallisPointSetToPointSetMetricv4.h
+index f480723..4845294 100644
+--- i/Modules/Registration/Metricsv4/include/itkJensenHavrdaCharvatTsallisPointSetToPointSetMetricv4.h
++++ w/Modules/Registration/Metricsv4/include/itkJensenHavrdaCharvatTsallisPointSetToPointSetMetricv4.h
+@@ -119,7 +119,7 @@ public:
+ 
+   /** Initialize the Metric by making sure that all the components
+    *  are present and plugged together correctly     */
+-  virtual void Initialize( void ) throw ( ExceptionObject );
++  virtual void Initialize( void );
+ 
+   /**
+    * Set the alpha parameter used to tune the point-set metric from
+diff --git i/Modules/Registration/Metricsv4/include/itkJensenHavrdaCharvatTsallisPointSetToPointSetMetricv4.hxx w/Modules/Registration/Metricsv4/include/itkJensenHavrdaCharvatTsallisPointSetToPointSetMetricv4.hxx
+index c45f103..c005397 100644
+--- i/Modules/Registration/Metricsv4/include/itkJensenHavrdaCharvatTsallisPointSetToPointSetMetricv4.hxx
++++ w/Modules/Registration/Metricsv4/include/itkJensenHavrdaCharvatTsallisPointSetToPointSetMetricv4.hxx
+@@ -49,7 +49,7 @@ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet, TInternalComputa
+ template<typename TPointSet, class TInternalComputationValueType>
+ void
+ JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4<TPointSet, TInternalComputationValueType>
+-::Initialize( void ) throw ( ExceptionObject )
++::Initialize( void )
+ {
+   Superclass::Initialize();
+ 
+diff --git i/Modules/Registration/Metricsv4/include/itkJointHistogramMutualInformationImageToImageMetricv4.h w/Modules/Registration/Metricsv4/include/itkJointHistogramMutualInformationImageToImageMetricv4.h
+index 976ba68..5bc6959 100644
+--- i/Modules/Registration/Metricsv4/include/itkJointHistogramMutualInformationImageToImageMetricv4.h
++++ w/Modules/Registration/Metricsv4/include/itkJointHistogramMutualInformationImageToImageMetricv4.h
+@@ -143,7 +143,7 @@ public:
+   itkGetMacro(VarianceForJointPDFSmoothing, TInternalComputationValueType);
+ 
+   /** Initialize the metric. Make sure all essential inputs are plugged in. */
+-  virtual void Initialize() throw (itk::ExceptionObject);
++  virtual void Initialize();
+ 
+   virtual MeasureType GetValue() const;
+ 
+diff --git i/Modules/Registration/Metricsv4/include/itkJointHistogramMutualInformationImageToImageMetricv4.hxx w/Modules/Registration/Metricsv4/include/itkJointHistogramMutualInformationImageToImageMetricv4.hxx
+index 29ed2f7..5d040a4 100644
+--- i/Modules/Registration/Metricsv4/include/itkJointHistogramMutualInformationImageToImageMetricv4.hxx
++++ w/Modules/Registration/Metricsv4/include/itkJointHistogramMutualInformationImageToImageMetricv4.hxx
+@@ -64,7 +64,7 @@ JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVi
+ template <typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType, typename TMetricTraits>
+ void
+ JointHistogramMutualInformationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,TInternalComputationValueType, TMetricTraits>
+-::Initialize() throw (itk::ExceptionObject)
++::Initialize()
+ {
+   Superclass::Initialize();
+ 
+diff --git i/Modules/Registration/Metricsv4/include/itkLabeledPointSetToPointSetMetricv4.h w/Modules/Registration/Metricsv4/include/itkLabeledPointSetToPointSetMetricv4.h
+index 1c3b040..822502e 100644
+--- i/Modules/Registration/Metricsv4/include/itkLabeledPointSetToPointSetMetricv4.h
++++ w/Modules/Registration/Metricsv4/include/itkLabeledPointSetToPointSetMetricv4.h
+@@ -91,7 +91,7 @@ public:
+    * Initialize the metric by making sure that all the components
+    *  are present and plugged together correctly.
+    */
+-  virtual void Initialize( void ) throw ( ExceptionObject );
++  virtual void Initialize( void );
+ 
+   /**
+    * Calculates the local metric value for a single point.  The label type
+diff --git i/Modules/Registration/Metricsv4/include/itkLabeledPointSetToPointSetMetricv4.hxx w/Modules/Registration/Metricsv4/include/itkLabeledPointSetToPointSetMetricv4.hxx
+index 1516415..5a60c82 100644
+--- i/Modules/Registration/Metricsv4/include/itkLabeledPointSetToPointSetMetricv4.hxx
++++ w/Modules/Registration/Metricsv4/include/itkLabeledPointSetToPointSetMetricv4.hxx
+@@ -49,7 +49,7 @@ LabeledPointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet, TInternalComp
+ template<typename TFixedPointSet, typename TMovingPointSet, class TInternalComputationValueType>
+ void
+ LabeledPointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet, TInternalComputationValueType>
+-::Initialize( void ) throw ( ExceptionObject )
++::Initialize( void )
+ {
+   Superclass::Initialize();
+ 
+diff --git i/Modules/Registration/Metricsv4/include/itkMattesMutualInformationImageToImageMetricv4.h w/Modules/Registration/Metricsv4/include/itkMattesMutualInformationImageToImageMetricv4.h
+index 8638b22..96f6bb0 100644
+--- i/Modules/Registration/Metricsv4/include/itkMattesMutualInformationImageToImageMetricv4.h
++++ w/Modules/Registration/Metricsv4/include/itkMattesMutualInformationImageToImageMetricv4.h
+@@ -151,7 +151,7 @@ public:
+   itkSetClampMacro( NumberOfHistogramBins, SizeValueType, 5, NumericTraits<SizeValueType>::max() );
+   itkGetConstReferenceMacro(NumberOfHistogramBins, SizeValueType);
+ 
+-  virtual void Initialize(void) throw ( itk::ExceptionObject );
++  virtual void Initialize(void);
+ 
+   /** The marginal PDFs are stored as std::vector. */
+   //NOTE:  floating point precision is not as stable.
+diff --git i/Modules/Registration/Metricsv4/include/itkMattesMutualInformationImageToImageMetricv4.hxx w/Modules/Registration/Metricsv4/include/itkMattesMutualInformationImageToImageMetricv4.hxx
+index 60cbf7c..f046cd4 100644
+--- i/Modules/Registration/Metricsv4/include/itkMattesMutualInformationImageToImageMetricv4.hxx
++++ w/Modules/Registration/Metricsv4/include/itkMattesMutualInformationImageToImageMetricv4.hxx
+@@ -71,7 +71,7 @@ MattesMutualInformationImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualI
+ template <typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType, typename TMetricTraits>
+ void
+ MattesMutualInformationImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage, TInternalComputationValueType, TMetricTraits>
+-::Initialize(void) throw ( itk::ExceptionObject )
++::Initialize(void)
+ {
+   /* Superclass initialization */
+   this->Superclass::Initialize();
+diff --git i/Modules/Registration/Metricsv4/include/itkObjectToObjectMultiMetricv4.h w/Modules/Registration/Metricsv4/include/itkObjectToObjectMultiMetricv4.h
+index 9a59101..d85c053 100644
+--- i/Modules/Registration/Metricsv4/include/itkObjectToObjectMultiMetricv4.h
++++ w/Modules/Registration/Metricsv4/include/itkObjectToObjectMultiMetricv4.h
+@@ -139,7 +139,7 @@ public:
+   /** Get the number of metrics */
+   SizeValueType GetNumberOfMetrics() const;
+ 
+-  void Initialize(void) throw ( itk::ExceptionObject );
++  void Initialize(void);
+ 
+   /** Set each of the component metrics to use this moving transform. */
+   virtual void SetMovingTransform( MovingTransformType * );
+diff --git i/Modules/Registration/Metricsv4/include/itkObjectToObjectMultiMetricv4.hxx w/Modules/Registration/Metricsv4/include/itkObjectToObjectMultiMetricv4.hxx
+index 7b0c57c..b178b77 100644
+--- i/Modules/Registration/Metricsv4/include/itkObjectToObjectMultiMetricv4.hxx
++++ w/Modules/Registration/Metricsv4/include/itkObjectToObjectMultiMetricv4.hxx
+@@ -104,7 +104,7 @@ ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage, TI
+ template<unsigned int TFixedDimension, unsigned int TMovingDimension, typename TVirtualImage, typename TInternalComputationValueType>
+ void
+ ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage, TInternalComputationValueType>
+-::Initialize() throw ( ExceptionObject )
++::Initialize()
+ {
+   if( this->GetNumberOfMetrics() == 0 )
+     {
+diff --git i/Modules/Registration/Metricsv4/include/itkPointSetToPointSetMetricv4.h w/Modules/Registration/Metricsv4/include/itkPointSetToPointSetMetricv4.h
+index bd8f04c..e30762a 100644
+--- i/Modules/Registration/Metricsv4/include/itkPointSetToPointSetMetricv4.h
++++ w/Modules/Registration/Metricsv4/include/itkPointSetToPointSetMetricv4.h
+@@ -261,7 +261,7 @@ public:
+    * Initialize the metric by making sure that all the components
+    *  are present and plugged together correctly.
+    */
+-  virtual void Initialize( void ) throw ( ExceptionObject );
++  virtual void Initialize( void );
+ 
+   virtual bool SupportsArbitraryVirtualDomainSamples( void ) const
+   {
+diff --git i/Modules/Registration/Metricsv4/include/itkPointSetToPointSetMetricv4.hxx w/Modules/Registration/Metricsv4/include/itkPointSetToPointSetMetricv4.hxx
+index bac203a..dd5c6d5 100644
+--- i/Modules/Registration/Metricsv4/include/itkPointSetToPointSetMetricv4.hxx
++++ w/Modules/Registration/Metricsv4/include/itkPointSetToPointSetMetricv4.hxx
+@@ -64,7 +64,7 @@ PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet, TInternalComputation
+ template<typename TFixedPointSet, typename TMovingPointSet, class TInternalComputationValueType>
+ void
+ PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet, TInternalComputationValueType>
+-::Initialize( void ) throw ( ExceptionObject )
++::Initialize( void )
+ {
+   if ( !this->m_FixedPointSet )
+     {
+diff --git i/Modules/Segmentation/LevelSets/include/itkShapePriorMAPCostFunction.h w/Modules/Segmentation/LevelSets/include/itkShapePriorMAPCostFunction.h
+index 638872f..9c84eab 100644
+--- i/Modules/Segmentation/LevelSets/include/itkShapePriorMAPCostFunction.h
++++ w/Modules/Segmentation/LevelSets/include/itkShapePriorMAPCostFunction.h
+@@ -137,8 +137,7 @@ public:
+ 
+   /** Initialize the cost function by making sure that all the components
+    *  are present. */
+-  virtual void Initialize(void)
+-  throw ( ExceptionObject );
++  virtual void Initialize(void);
+ 
+ protected:
+   ShapePriorMAPCostFunction();
+diff --git i/Modules/Segmentation/LevelSets/include/itkShapePriorMAPCostFunction.hxx w/Modules/Segmentation/LevelSets/include/itkShapePriorMAPCostFunction.hxx
+index e1714d4..df8a366 100644
+--- i/Modules/Segmentation/LevelSets/include/itkShapePriorMAPCostFunction.hxx
++++ w/Modules/Segmentation/LevelSets/include/itkShapePriorMAPCostFunction.hxx
+@@ -175,7 +175,6 @@ template< typename TFeatureImage, typename TOutputPixel >
+ void
+ ShapePriorMAPCostFunction< TFeatureImage, TOutputPixel >
+ ::Initialize(void)
+-throw ( ExceptionObject )
+ {
+   this->Superclass::Initialize();
+ 
+diff --git i/Modules/Segmentation/LevelSets/include/itkShapePriorMAPCostFunctionBase.h w/Modules/Segmentation/LevelSets/include/itkShapePriorMAPCostFunctionBase.h
+index 71f8972..7f742cd 100644
+--- i/Modules/Segmentation/LevelSets/include/itkShapePriorMAPCostFunctionBase.h
++++ w/Modules/Segmentation/LevelSets/include/itkShapePriorMAPCostFunctionBase.h
+@@ -135,8 +135,7 @@ public:
+ 
+   /** Initialize the cost function by making sure that all the components
+    *  are present. */
+-  virtual void Initialize(void)
+-  throw ( ExceptionObject );
++  virtual void Initialize(void);
+ 
+ protected:
+   ShapePriorMAPCostFunctionBase();
+diff --git i/Modules/Segmentation/LevelSets/include/itkShapePriorMAPCostFunctionBase.hxx w/Modules/Segmentation/LevelSets/include/itkShapePriorMAPCostFunctionBase.hxx
+index 41ccd06..a23b5b5 100644
+--- i/Modules/Segmentation/LevelSets/include/itkShapePriorMAPCostFunctionBase.hxx
++++ w/Modules/Segmentation/LevelSets/include/itkShapePriorMAPCostFunctionBase.hxx
+@@ -70,7 +70,6 @@ template< typename TFeatureImage, typename TOutputPixel >
+ void
+ ShapePriorMAPCostFunctionBase< TFeatureImage, TOutputPixel >
+ ::Initialize(void)
+-throw ( ExceptionObject )
+ {
+   if ( !m_ShapeFunction )
+     {
+diff --git i/Modules/Segmentation/SignedDistanceFunction/include/itkPCAShapeSignedDistanceFunction.h w/Modules/Segmentation/SignedDistanceFunction/include/itkPCAShapeSignedDistanceFunction.h
+index 4a8b667..4104357 100644
+--- i/Modules/Segmentation/SignedDistanceFunction/include/itkPCAShapeSignedDistanceFunction.h
++++ w/Modules/Segmentation/SignedDistanceFunction/include/itkPCAShapeSignedDistanceFunction.h
+@@ -164,8 +164,7 @@ public:
+ 
+   /** Initialize must be called before the first call of
+    Evaluate() to allow the class to validate any inputs. */
+-  virtual void Initialize()
+-  throw ( ExceptionObject );
++  virtual void Initialize();
+ 
+ protected:
+   PCAShapeSignedDistanceFunction();
+diff --git i/Modules/Segmentation/SignedDistanceFunction/include/itkPCAShapeSignedDistanceFunction.hxx w/Modules/Segmentation/SignedDistanceFunction/include/itkPCAShapeSignedDistanceFunction.hxx
+index 9555a3f..9e39006 100644
+--- i/Modules/Segmentation/SignedDistanceFunction/include/itkPCAShapeSignedDistanceFunction.hxx
++++ w/Modules/Segmentation/SignedDistanceFunction/include/itkPCAShapeSignedDistanceFunction.hxx
+@@ -120,7 +120,6 @@ template< typename TCoordRep, unsigned int VSpaceDimension, typename TImage >
+ void
+ PCAShapeSignedDistanceFunction< TCoordRep, VSpaceDimension, TImage >
+ ::Initialize()
+-throw ( ExceptionObject )
+ {
+   // verify mean image
+   if ( !m_MeanImage )
+diff --git i/Modules/Segmentation/SignedDistanceFunction/include/itkShapeSignedDistanceFunction.h w/Modules/Segmentation/SignedDistanceFunction/include/itkShapeSignedDistanceFunction.h
+index 700ef3e..31c6f8c 100644
+--- i/Modules/Segmentation/SignedDistanceFunction/include/itkShapeSignedDistanceFunction.h
++++ w/Modules/Segmentation/SignedDistanceFunction/include/itkShapeSignedDistanceFunction.h
+@@ -99,8 +99,7 @@ public:
+ 
+   /** Initialize must be called before the first call of SetParameters() or
+    Evaluate() to allow the class to validate any inputs. */
+-  virtual void Initialize()
+-  throw ( ExceptionObject ) {}
++  virtual void Initialize() {}
+ 
+ protected:
+ 
+diff --git i/Modules/Video/Core/test/itkTemporalProcessObjectTest.cxx w/Modules/Video/Core/test/itkTemporalProcessObjectTest.cxx
+index b60a755..528a1a3 100644
+--- i/Modules/Video/Core/test/itkTemporalProcessObjectTest.cxx
++++ w/Modules/Video/Core/test/itkTemporalProcessObjectTest.cxx
+@@ -149,7 +149,7 @@ public:
+   }
+ 
+   /** Override PropagateRequestedRegion for debug output */
+-  virtual void PropagateRequestedRegion() throw (itk::InvalidRequestedRegionError) ITK_OVERRIDE
++  virtual void PropagateRequestedRegion() ITK_OVERRIDE
+   {
+     Superclass::PropagateRequestedRegion();
+   }

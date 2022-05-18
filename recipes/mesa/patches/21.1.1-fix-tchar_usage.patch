@@ -1,0 +1,19 @@
+--- a/src/gallium/drivers/swr/rasterizer/codegen/templates/gen_ar_eventhandlerfile.hpp
++++ b/src/gallium/drivers/swr/rasterizer/codegen/templates/gen_ar_eventhandlerfile.hpp
+@@ -52,13 +52,13 @@ namespace ArchRast
+         {
+ #if defined(_WIN32)
+             DWORD pid = GetCurrentProcessId();
+-            TCHAR procname[MAX_PATH];
+-            GetModuleFileName(NULL, procname, MAX_PATH);
++            char procname[MAX_PATH];
++            GetModuleFileNameA(NULL, procname, MAX_PATH);
+             const char*       pBaseName = strrchr(procname, '\\');
+             std::stringstream outDir;
+             outDir << KNOB_DEBUG_OUTPUT_DIR << pBaseName << "_" << pid << std::ends;
+             mOutputDir = outDir.str();
+-            if (CreateDirectory(mOutputDir.c_str(), NULL))
++            if (CreateDirectoryA(mOutputDir.c_str(), NULL))
+             {
+                 std::cout << std::endl
+                           << "ArchRast Dir:       " << mOutputDir << std::endl

@@ -1,0 +1,26 @@
+diff --git i/Rendering/FreeType/vtkFreeTypeTools.cxx w/Rendering/FreeType/vtkFreeTypeTools.cxx
+index 16a445d..3d38db7 100644
+--- i/Rendering/FreeType/vtkFreeTypeTools.cxx
++++ w/Rendering/FreeType/vtkFreeTypeTools.cxx
+@@ -273,7 +273,7 @@ FTC_CMapCache* vtkFreeTypeTools::GetCMapCache()
+ }
+ 
+ //----------------------------------------------------------------------------
+-FT_CALLBACK_DEF(FT_Error)
++extern "C" FT_Error
+ vtkFreeTypeToolsFaceRequester(FTC_FaceID face_id,
+                               FT_Library lib,
+                               FT_Pointer request_data,
+diff --git i/Rendering/FreeTypeFontConfig/vtkFontConfigFreeTypeTools.cxx w/Rendering/FreeTypeFontConfig/vtkFontConfigFreeTypeTools.cxx
+index ed4964f..6d61bee 100644
+--- i/Rendering/FreeTypeFontConfig/vtkFontConfigFreeTypeTools.cxx
++++ w/Rendering/FreeTypeFontConfig/vtkFontConfigFreeTypeTools.cxx
+@@ -31,7 +31,7 @@ vtkStandardNewMacro(vtkFontConfigFreeTypeTools)
+ namespace
+ {
+ // The FreeType face requester callback:
+-FT_CALLBACK_DEF(FT_Error)
++extern "C" FT_Error
+ vtkFontConfigFreeTypeToolsFaceRequester(FTC_FaceID face_id,
+                                         FT_Library lib,
+                                         FT_Pointer request_data,

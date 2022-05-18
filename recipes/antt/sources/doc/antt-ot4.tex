@@ -1,0 +1,63 @@
+%% Begin of file `antt-ot4.tex'.
+\documentclass[11pt]{article}
+
+\textwidth=16cm
+\textheight=24cm
+\hoffset=-0.5in
+\voffset=-0.5in
+
+\usepackage{polski}
+\usepackage{antyktor}
+
+\newcommand{\tytul}[2]{%
+  \begin{center}
+    {\Huge #1\footnote{\zrodlo}\par}
+    \medskip
+    \texttt{\string\usepackage \string{#2\string}}
+  \end{center}
+  \vspace{2cc}
+  }
+\newcommand{\przyklad}[2]{%
+  \par
+  \pagebreak[3]
+  \bigskip
+  \noindent\parbox{\textwidth}{\raggedright
+   \texttt\bgroup\string\text #1\string{\string\text #2\string{\%\egroup
+    \par\nopagebreak
+    \leftskip=2cc
+    \csname text#1\endcsname {\csname text#2\endcsname {%
+      \cytat}}%
+    \texttt\bgroup \string}\string}\egroup 
+    }\par
+  }
+
+\prefixing
+
+\newcommand{\zrodlo}{%
+  Cytat pochodzi z ksi/a/zki Andrzeja Tomaszewskiego \textit{Leksykon
+    pism drukarskich}, Wydawnictwo Krupski i S-ka,
+  Warszawa 1996.%
+  }
+\newcommand{\cytat}{%
+Antykwa Toru/nska, dwuelementowa antykwa zaprojektowana przez
+Zygfryda Gardzielewskiego przy wsp/o/lpracy J/ozefa Gruszki. Pierwszy
+raz odlana w warszawskiej Odlewni Czcionek w~1960 roku. Kr/oj, u/zywany
+g/l/ownie jako pismo akcydensowe i tytu/lowe, charakteryzuje si/e
+rozszerzeniem u~g/ory pionowych kresek tworz/acych litery, falisto/sci/a
+niekt/orych poziomych i~uko/snych kresek oraz szeryf/ow. Produkowana
+w~odmianach: zwyk/lej, p/o/lgrubej i~pochy/lej w~stopniach 6--48~p.}
+
+
+\begin{document}
+
+\tytul{Antykwa Toru/nska}{antyktor}
+
+\przyklad{md}{up}
+\przyklad{md}{it}
+
+\przyklad{bf}{up}
+
+\end{document}
+
+%% 
+%% End of file `antyktor.tex'.

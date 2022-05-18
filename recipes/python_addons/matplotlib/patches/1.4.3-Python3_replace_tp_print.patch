@@ -1,0 +1,16 @@
+diff --git i/extern/CXX/Python3/cxx_extensions.cxx w/extern/CXX/Python3/cxx_extensions.cxx
+index 7a62d3c..4627a4a 100644
+--- i/extern/CXX/Python3/cxx_extensions.cxx
++++ w/extern/CXX/Python3/cxx_extensions.cxx
+@@ -374,7 +374,11 @@ PythonType::PythonType( size_t basic_size, int itemsize, const char *default_nam
+ 
+     // Methods to implement standard operations
+     table->tp_dealloc = (destructor)standard_dealloc;
++#if PY_MAJOR_VERSION == 2 || PY_MINOR_VERSION <= 7
+     table->tp_print = 0;
++#else
++    table->tp_vectorcall_offset = 0;
++#endif
+     table->tp_getattr = 0;
+     table->tp_setattr = 0;
+     table->tp_repr = 0;

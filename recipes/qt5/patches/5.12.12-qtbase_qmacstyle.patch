@@ -1,0 +1,67 @@
+diff --git i/qtbase/src/plugins/styles/mac/qmacstyle_mac.mm w/qtbase/src/plugins/styles/mac/qmacstyle_mac.mm
+index 40c0018..58989ed 100644
+--- i/qtbase/src/plugins/styles/mac/qmacstyle_mac.mm
++++ w/qtbase/src/plugins/styles/mac/qmacstyle_mac.mm
+@@ -589,7 +589,7 @@ static bool isInMacUnifiedToolbarArea(QWindow *window, int windowY)
+ static void drawTabCloseButton(QPainter *p, bool hover, bool selected, bool pressed, bool documentMode)
+ {
+     p->setRenderHints(QPainter::Antialiasing);
+-    QRect rect(0, 0, closeButtonSize, closeButtonSize);
++    QRect rect(1, 1, closeButtonSize-2, closeButtonSize-2);
+     const int width = rect.width();
+     const int height = rect.height();
+ 
+@@ -613,7 +613,7 @@ static void drawTabCloseButton(QPainter *p, bool hover, bool selected, bool pres
+     }
+ 
+     // draw cross
+-    const int margin = 3;
++    const int margin = 4;
+     QPen crossPen;
+     crossPen.setColor(selected ? (documentMode ? tabBarCloseButtonCrossSelected : Qt::white) : tabBarCloseButtonCross);
+     crossPen.setWidthF(1.1);
+@@ -4623,33 +4623,24 @@ void QMacStyle::drawControl(ControlElement ce, const QStyleOption *opt, QPainter
+         }
+ 
+         // draw background gradient
+-        QLinearGradient linearGrad;
+-        if (opt->state & State_Horizontal)
++        if (opt->state & State_Horizontal) {
++            QLinearGradient linearGrad;
+             linearGrad = QLinearGradient(0, opt->rect.top(), 0, opt->rect.bottom());
+-        else
+-            linearGrad = QLinearGradient(opt->rect.left(), 0,  opt->rect.right(), 0);
+ 
+-        QColor mainWindowGradientBegin = isDarkMode ? darkMainWindowGradientBegin : lightMainWindowGradientBegin;
+-        QColor mainWindowGradientEnd = isDarkMode ? darkMainWindowGradientEnd : lightMainWindowGradientEnd;
++            QColor mainWindowGradientBegin = isDarkMode ? darkMainWindowGradientBegin : lightMainWindowGradientBegin;
++            QColor mainWindowGradientEnd = isDarkMode ? darkMainWindowGradientEnd : lightMainWindowGradientEnd;
+ 
+-        linearGrad.setColorAt(0, mainWindowGradientBegin);
+-        linearGrad.setColorAt(1, mainWindowGradientEnd);
+-        p->fillRect(opt->rect, linearGrad);
++            linearGrad.setColorAt(0, mainWindowGradientBegin);
++            linearGrad.setColorAt(1, mainWindowGradientEnd);
++            p->fillRect(opt->rect, linearGrad);
+ 
+-        p->save();
+-        QRect toolbarRect = isDarkMode ? opt->rect.adjusted(0, 0, 0, 1) : opt->rect;
+-        if (opt->state & State_Horizontal) {
++            p->save();
+             p->setPen(isDarkMode ? darkModeSeparatorLine : mainWindowGradientBegin.lighter(114));
+-            p->drawLine(toolbarRect.topLeft(), toolbarRect.topRight());
++            p->drawLine(opt->rect.topLeft(), opt->rect.topRight());
+             p->setPen(isDarkMode ? darkModeSeparatorLine :mainWindowGradientEnd.darker(114));
+-            p->drawLine(toolbarRect.bottomLeft(), toolbarRect.bottomRight());
+-        } else {
+-            p->setPen(isDarkMode ? darkModeSeparatorLine : mainWindowGradientBegin.lighter(114));
+-            p->drawLine(toolbarRect.topLeft(), toolbarRect.bottomLeft());
+-            p->setPen(isDarkMode ? darkModeSeparatorLine : mainWindowGradientEnd.darker(114));
+-            p->drawLine(toolbarRect.topRight(), toolbarRect.bottomRight());
++            p->drawLine(opt->rect.bottomLeft(), opt->rect.bottomRight());
++            p->restore();
+         }
+-        p->restore();
+ 
+ 
+         } break;

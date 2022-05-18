@@ -1,0 +1,14 @@
+We included this public-domain-font for MeVisLab on Linux to be sure, there
+is always an acceptable fall-back for OpenGL-Font-Rendering in MeVisLab.
+
+Normally the user will choose its own font from his X11-installation, but
+in Linux there is no way to be really sure, that there ist such a font.
+
+For copyright-notices and other infos read the other READMEs in this
+directory.
+
+The antt-font-package is distributed unchanged here. We only added this
+README and the directory ttf with TrueType-Versions of the font.
+
+The MeVisLab-Team
+

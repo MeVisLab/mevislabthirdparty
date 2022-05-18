@@ -1,0 +1,54 @@
+diff --git i/zconf.h w/zconf.h
+index 5e1d68a..0f76af7 100644
+--- i/zconf.h
++++ w/zconf.h
+@@ -431,11 +431,11 @@ typedef uLong FAR uLongf;
+    typedef unsigned long z_crc_t;
+ #endif
+ 
+-#ifdef HAVE_UNISTD_H    /* may be set to #if 1 by ./configure */
++#if defined(HAVE_UNISTD_H) && (1-HAVE_UNISTD_H-1 != 0)
+ #  define Z_HAVE_UNISTD_H
+ #endif
+ 
+-#ifdef HAVE_STDARG_H    /* may be set to #if 1 by ./configure */
++#if defined(HAVE_STDARG_H) && (1-HAVE_STDARG_H-1 != 0)
+ #  define Z_HAVE_STDARG_H
+ #endif
+ 
+diff --git i/zconf.h.cmakein w/zconf.h.cmakein
+index a7f24cc..09d71ed 100644
+--- i/zconf.h.cmakein
++++ w/zconf.h.cmakein
+@@ -433,11 +433,11 @@ typedef uLong FAR uLongf;
+    typedef unsigned long z_crc_t;
+ #endif
+ 
+-#ifdef HAVE_UNISTD_H    /* may be set to #if 1 by ./configure */
++#if defined(HAVE_UNISTD_H) && (1-HAVE_UNISTD_H-1 != 0)
+ #  define Z_HAVE_UNISTD_H
+ #endif
+ 
+-#ifdef HAVE_STDARG_H    /* may be set to #if 1 by ./configure */
++#if defined(HAVE_STDARG_H) && (1-HAVE_STDARG_H-1 != 0)
+ #  define Z_HAVE_STDARG_H
+ #endif
+ 
+diff --git i/zconf.h.in w/zconf.h.in
+index 5e1d68a..0f76af7 100644
+--- i/zconf.h.in
++++ w/zconf.h.in
+@@ -431,11 +431,11 @@ typedef uLong FAR uLongf;
+    typedef unsigned long z_crc_t;
+ #endif
+ 
+-#ifdef HAVE_UNISTD_H    /* may be set to #if 1 by ./configure */
++#if defined(HAVE_UNISTD_H) && (1-HAVE_UNISTD_H-1 != 0)
+ #  define Z_HAVE_UNISTD_H
+ #endif
+ 
+-#ifdef HAVE_STDARG_H    /* may be set to #if 1 by ./configure */
++#if defined(HAVE_STDARG_H) && (1-HAVE_STDARG_H-1 != 0)
+ #  define Z_HAVE_STDARG_H
+ #endif
+ 

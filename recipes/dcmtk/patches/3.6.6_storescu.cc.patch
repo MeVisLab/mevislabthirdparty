@@ -1,0 +1,194 @@
+diff --git i/dcmnet/apps/storescu.cc w/dcmnet/apps/storescu.cc
+index 2830a45..b7bbab9 100644
+--- i/dcmnet/apps/storescu.cc
++++ w/dcmnet/apps/storescu.cc
+@@ -82,6 +82,9 @@ static char rcsid[] = "$dcmtk: " OFFIS_CONSOLE_APPLICATION " v"
+ /* default application titles */
+ #define APPLICATIONTITLE     "STORESCU"
+ #define PEERAPPLICATIONTITLE "ANY-SCP"
++#ifndef MAXPATHLEN
++#define MAXPATHLEN 2048 /* should be sufficient for most cases */
++#endif
+ 
+ static OFBool opt_showPresentationContexts = OFFalse;
+ static OFBool opt_abortAssociation = OFFalse;
+@@ -90,6 +93,9 @@ static OFCmdUnsignedInt opt_maxSendPDULength = 0;
+ static E_TransferSyntax opt_networkTransferSyntax = EXS_Unknown;
+ static E_FileReadMode opt_readMode = ERM_autoDetect;
+ 
++// MeVis
++static OFBool opt_dicomCheck = OFFalse;
++
+ static OFBool opt_scanDir = OFFalse;
+ static OFBool opt_recurse = OFFalse;
+ static OFBool opt_renameFile = OFFalse;
+@@ -130,6 +136,10 @@ static OFString opt_password;
+ static OFString opt_identFile;
+ static OFBool opt_identResponse = OFFalse;
+ 
++// MeVis
++static OFBool
++fileContainsMagicWord(const OFString& fname);
++
+ static OFCondition
+ addStoragePresentationContexts(T_ASC_Parameters *params, OFList<OFString> &sopClasses);
+ 
+@@ -192,7 +202,8 @@ int main(int argc, char *argv[])
+   cmd.setParamColumn(LONGCOL + SHORTCOL + 4);
+   cmd.addParam("peer", "hostname of DICOM peer");
+   cmd.addParam("port", "tcp/ip port number of peer");
+-  cmd.addParam("dcmfile-in", "DICOM file or directory to be transmitted", OFCmdParam::PM_MultiMandatory);
++  /* parameter is optional because of possible from-file option */
++  cmd.addParam("dcmfile-in", "DICOM file or directory to be transmitted", OFCmdParam::PM_MultiOptional);
+ 
+   cmd.setOptionColumns(LONGCOL, SHORTCOL);
+   cmd.addGroup("general options:", LONGCOL, SHORTCOL + 2);
+@@ -202,10 +213,15 @@ int main(int argc, char *argv[])
+    cmd.addOption("--verbose-pc",              "+v",      "show presentation contexts in verbose mode");
+ 
+   cmd.addGroup("input options:");
++    cmd.addOption("--from-file",              "-ff",   1, "[f]ilename: string", "read input DICOM file(s) from given file");
+     cmd.addSubGroup("input file format:");
+       cmd.addOption("--read-file",            "+f",      "read file format or data set (default)");
+       cmd.addOption("--read-file-only",       "+fo",     "read file format only");
+       cmd.addOption("--read-dataset",         "-f",      "read data set without file meta information");
++
++      // MeVis
++      cmd.addOption("--accept-dicom-only", "-ado", "accept only file with the magic word 'DICM' in the preamble");
++
+     cmd.addSubGroup("input files:");
+       cmd.addOption("--scan-directories",     "+sd",     "scan directories for input files (dcmfile-in)");
+ #ifdef PATTERN_MATCHING_AVAILABLE
+@@ -298,6 +314,9 @@ int main(int argc, char *argv[])
+     // add TLS specific command line options if (and only if) we are compiling with OpenSSL
+     tlsOptions.addTLSCommandlineOptions(cmd);
+ 
++    int fromFile = OFFalse;
++    FILE *f_inFile = NULL;
++
+     /* evaluate command line */
+     prepareCmdLineArgs(argc, argv, OFFIS_CONSOLE_APPLICATION);
+     if (app.parseCommandLine(cmd, argc, argv))
+@@ -350,6 +369,10 @@ int main(int argc, char *argv[])
+       if (cmd.findOption("--read-file")) opt_readMode = ERM_autoDetect;
+       if (cmd.findOption("--read-file-only")) opt_readMode = ERM_fileOnly;
+       if (cmd.findOption("--read-dataset")) opt_readMode = ERM_dataset;
++      
++      // MeVis
++      if (cmd.findOption("--accept-dicom-only")) opt_dicomCheck = OFTrue;
++      
+       cmd.endOptionBlock();
+ 
+       if (cmd.findOption("--scan-directories")) opt_scanDir = OFTrue;
+@@ -522,6 +545,41 @@ int main(int argc, char *argv[])
+         app.checkValue(cmd.getValueAndCheckMin(opt_inventPatientCount, 1));
+       }
+ 
++      int paramCount = cmd.getParamCount();
++      OFString errormsg;
++
++      /* look if we read input files from text file */
++      fromFile = cmd.findOption("--from-file");
++
++      if (fromFile) {
++        if (paramCount > 2) {
++          app.printError("DICOM file names not allowed with --from-file option");
++          exit(1);
++        }
++        const char *inFilename = NULL;
++        app.checkValue(cmd.getValue(inFilename));
++        if (!inFilename) {
++          app.printError("missing file name for --from-file option");
++          app.printUsage();
++          exit(1);
++        }
++        f_inFile = fopen(inFilename, "r");
++        if (!f_inFile) 
++        {
++          errormsg = "cannot open input file: ";
++          errormsg += inFilename;
++          errormsg += ". Aborting...";
++          app.printError(errormsg.c_str());
++          exit(1);
++        }
++      }
++      else {
++        if (paramCount < 3) {
++          app.printError("please supply DICOM file names or use the --from-file option");
++          exit(1);
++        }
++      }
++
+       // evaluate (most of) the TLS command line options (if we are compiling with OpenSSL)
+       tlsOptions.parseArguments(app, cmd);
+ 
+@@ -581,14 +639,37 @@ int main(int argc, char *argv[])
+ 
+     /* finally, create list of input files */
+     const char *paramString = NULL;
++    char curFilename[MAXPATHLEN + 1];
+     const int paramCount = cmd.getParamCount();
+     OFList<OFString> inputFiles;
+     if (opt_scanDir)
+       OFLOG_INFO(storescuLogger, "determining input files ...");
+     /* iterate over all input filenames/directories */
+-    for (int i = 3; i <= paramCount; i++)
++    for (int i = 3; ; i++)
+     {
++      if (fromFile) {
++        char *p = fgets(curFilename, MAXPATHLEN + 1, f_inFile);
++        if (!p) {
++          /* end of file */
++          fclose(f_inFile);
++          break;
++        }
++        p = strchr(curFilename, '\n');
++        if (!p) {
++          /* line too long - skip it */
++          break;
++        }
++        /* remove newline */
++        *p = 0;
++        /* skip empty lines */
++        if (!curFilename[0])
++          break;
++        paramString = &curFilename[0];
++      }
++      else {
++        if (i > paramCount) break;
+       cmd.getParam(i, paramString);
++      }
+       /* search directory recursively (if required) */
+       if (OFStandard::dirExists(paramString))
+       {
+@@ -920,6 +1001,30 @@ int main(int argc, char *argv[])
+     return exitCode;
+ }
+ 
++// MeVis
++static OFBool
++fileContainsMagicWord(const OFString& fname)
++{
++  OFFile dcmFile;
++  if (!dcmFile.fopen(fname.c_str(), "rb"))
++  {
++    return OFFalse;
++  }
++
++  if (dcmFile.fseek(DCM_PreambleLen, SEEK_SET) != 0)
++  {
++    return OFFalse;
++  }
++
++  char buffer[DCM_MagicLen];
++  const int readBytes = dcmFile.fread(buffer, 1, DCM_MagicLen);
++  if (readBytes != DCM_MagicLen || strncmp(buffer, DCM_Magic, DCM_MagicLen) != 0)
++  {
++    return OFFalse;
++  }
++  return OFTrue;
++}
++
+ 
+ static OFBool
+ isaListMember(OFList<OFString> &lst, OFString &s)

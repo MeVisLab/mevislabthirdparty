@@ -1,0 +1,13 @@
+diff --git c/qtbase/src/gui/opengl/qopenglvertexarrayobject.cpp i/qtbase/src/gui/opengl/qopenglvertexarrayobject.cpp
+index f0837aff9..5ad2f932e 100644
+--- c/qtbase/src/gui/opengl/qopenglvertexarrayobject.cpp
++++ i/qtbase/src/gui/opengl/qopenglvertexarrayobject.cpp
+@@ -209,7 +209,7 @@ void QOpenGLVertexArrayObjectPrivate::destroy()
+         // Before going through the effort of creating an offscreen surface
+         // check that we are on the GUI thread because otherwise many platforms
+         // will not able to create that offscreen surface.
+-        if (QThread::currentThread() != qGuiApp->thread()) {
++        if (!qGuiApp || QThread::currentThread() != qGuiApp->thread()) {
+             ctx = 0;
+         } else {
+             // Cannot just make the current surface current again with another context.

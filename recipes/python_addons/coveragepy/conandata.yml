@@ -1,0 +1,17 @@
+type: pure_c
+name: "coveragepy"
+display_name: "Coverage.py"
+version: "4.5.1"
+homepage: "http://nedbatchelder.com/code/coverage"
+description: "Coverage.py is a tool for measuring code coverage of Python programs."
+license: "Apache-2.0"
+
+sources:
+  "4.5.1":
+    sha256: "a3a93f44a0c85ac71944e69d34a09b63781a525b8c0cc26ad6f220bedf92893e"
+    url: "https://github.com/nedbat/coveragepy/archive/coverage-${version}.zip"
+    base_path: "coveragepy-coverage-${version}"
+
+patches:
+  "4.5.1":
+    - patch_file: "patches/${version}-html_py.patch"

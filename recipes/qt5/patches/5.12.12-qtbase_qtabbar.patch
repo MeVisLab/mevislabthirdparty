@@ -1,0 +1,42 @@
+diff --git c/qtbase/src/widgets/widgets/qtabbar.cpp i/qtbase/src/widgets/widgets/qtabbar.cpp
+index 68453e184..68a9b4592 100644
+--- c/qtbase/src/widgets/widgets/qtabbar.cpp
++++ i/qtbase/src/widgets/widgets/qtabbar.cpp
+@@ -558,7 +558,8 @@ void QTabBarPrivate::layoutTabs()
+ 
+     if (useScrollButtons && tabList.count() && last > available) {
+         const QRect scrollRect = normalizedScrollRect(0);
+-        scrollOffset = -scrollRect.left();
++// MEVIS: usi: Do not overwrite the scrollOffset, it will be modified by makeVisible if necessary
++//        scrollOffset = -scrollRect.left();
+ 
+         Q_Q(QTabBar);
+         QStyleOption opt;
+@@ -1078,6 +1079,8 @@ void QTabBar::removeTab(int index)
+         } else if (index < d->currentIndex) {
+             setCurrentIndex(d->currentIndex - 1);
+         }
++        // MEVIS: mba: Reset the scrollOffset here, because it was done previously in layoutTabs() and there is new space to occupy available
++        d->scrollOffset = 0;
+         d->refresh();
+         d->autoHideTabs();
+         if (!d->hoverRect.isEmpty()) {
+@@ -1715,6 +1718,9 @@ void QTabBar::resizeEvent(QResizeEvent *)
+     Q_D(QTabBar);
+     if (d->layoutDirty)
+         updateGeometry();
++// MEVIS: mba: Reset the scrollOffset here, because it was done previously in scrollOffset. It seems to be good to do on resize,
++//             because the tabs may not occupy all the available space if it has grown.
++    d->scrollOffset = 0;
+     d->layoutTabs();
+ 
+     d->makeVisible(d->currentIndex);
+@@ -2452,6 +2458,8 @@ void QTabBar::setExpanding(bool enabled)
+     if (d->expanding == enabled)
+         return;
+     d->expanding = enabled;
++// MEVIS: mba: Reset the scrollOffset, because it was done in layoutTabs() previously and is probably required here.
++    d->scrollOffset = 0;
+     d->layoutTabs();
+ }
+ 

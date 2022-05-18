@@ -1,0 +1,19 @@
+type: cpp
+name: "cryptopp"
+cmake_name: "CryptoPP"
+display_name: "Crypto++"
+version: "8.6.0"
+homepage: "http://www.cryptopp.com"
+description: "A library of cryptographic schemes"
+license: "BSL-1.0"
+
+sources:
+  "8.6.0":
+    sha256: 9304625f4767a13e0a5f26d0f019d78cf9375604a33e5391c3bf2e81399dfeb8
+    url: "https://github.com/weidai11/cryptopp/archive/CRYPTOPP_8_6_0.tar.gz"
+    base_path: "cryptopp-CRYPTOPP_${version_major}_${version_minor}_${version_patch}"
+
+  "8.5.0":
+    sha256: 8f64cf09cf4f61d5d74bca53574b8cc9959186cc0f072a2e6597e4999d6ad5db
+    url: "https://github.com/weidai11/cryptopp/archive/CRYPTOPP_8_5_0.tar.gz"
+    base_path: "cryptopp-CRYPTOPP_${version_major}_${version_minor}_${version_patch}"

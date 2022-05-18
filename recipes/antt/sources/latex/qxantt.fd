@@ -1,0 +1,37 @@
+\ProvidesFile{qxantt.fd}
+   [2001/04/20 v1.0 font definition file for QX/antt (MW)]
+
+\DeclareFontFamily{QX}{antt}{}
+
+\DeclareFontShape{QX}{antt}{m}{n}{
+   <-> anttr
+}{}
+\DeclareFontShape{QX}{antt}{m}{sc}{
+   <-> sub * antt/m/n
+}{}
+\DeclareFontShape{QX}{antt}{m}{sl}{
+   <-> sub * antt/m/it
+}{}
+\DeclareFontShape{QX}{antt}{m}{it}{
+   <-> anttri
+}{}
+\DeclareFontShape{QX}{antt}{b}{n}{
+   <-> anttb
+}{}
+\DeclareFontShape{QX}{antt}{b}{sc}{
+   <-> sub * antt/b/n
+}{}
+\DeclareFontShape{QX}{antt}{b}{sl}{
+   <-> sub * antt/b/it
+}{}
+\DeclareFontShape{QX}{antt}{b}{it}{
+   <-> anttri
+}{}
+\DeclareFontShape{QX}{antt}{bx}{n}{ <-> ssub * antt/b/n}{}
+\DeclareFontShape{QX}{antt}{bx}{sc}{ <-> ssub * antt/b/sc}{}
+\DeclareFontShape{QX}{antt}{bx}{sl}{ <-> ssub * antt/b/sl}{}
+\DeclareFontShape{QX}{antt}{bx}{it}{ <-> ssub * antt/b/it}{}
+\endinput
+
+%%
+%% End of font definition file qxantt.fd.

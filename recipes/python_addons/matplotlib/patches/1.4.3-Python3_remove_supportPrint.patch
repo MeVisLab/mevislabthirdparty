@@ -1,0 +1,33 @@
+diff --git i/extern/CXX/Python3/PythonType.hxx w/extern/CXX/Python3/PythonType.hxx
+index bb77bb1..c7389f4 100644
+--- i/extern/CXX/Python3/PythonType.hxx
++++ w/extern/CXX/Python3/PythonType.hxx
+@@ -57,9 +57,6 @@ namespace Py
+         PythonType &doc( const char *d );
+ 
+         PythonType &supportClass( void );
+-#ifdef PYCXX_PYTHON_2TO3
+-        PythonType &supportPrint( void );
+-#endif
+         PythonType &supportGetattr( void );
+         PythonType &supportSetattr( void );
+         PythonType &supportGetattro( void );
+diff --git i/extern/CXX/Python3/cxx_extensions.cxx w/extern/CXX/Python3/cxx_extensions.cxx
+index 8f2a488..7a62d3c 100644
+--- i/extern/CXX/Python3/cxx_extensions.cxx
++++ w/extern/CXX/Python3/cxx_extensions.cxx
+@@ -514,14 +514,6 @@ PythonType &PythonType::supportClass()
+     return *this;
+ }
+ 
+-#ifdef PYCXX_PYTHON_2TO3
+-PythonType &PythonType::supportPrint()
+-{
+-    table->tp_print = print_handler;
+-    return *this;
+-}
+-#endif
+-
+ PythonType &PythonType::supportGetattr()
+ {
+     table->tp_getattr = getattr_handler;

@@ -1,0 +1,13 @@
+diff --git i/cmake/FindTBB.cmake w/cmake/FindTBB.cmake
+index d33bad4..4a2e5cf 100644
+--- i/cmake/FindTBB.cmake
++++ w/cmake/FindTBB.cmake
+@@ -206,7 +206,7 @@ endif()
+ set(Tbb_LIB_COMPONENTS "")
+ 
+ foreach(COMPONENT ${TBB_FIND_COMPONENTS})
+-  find_library(Tbb_${COMPONENT}_LIBRARY ${COMPONENT}
++  find_library(Tbb_${COMPONENT}_LIBRARY ${COMPONENT} ${COMPONENT}_debug
+     ${_FIND_TBB_ADDITIONAL_OPTIONS}
+     PATHS ${_TBB_LIBRARYDIR_SEARCH_DIRS}
+     PATH_SUFFIXES ${CMAKE_INSTALL_LIBDIR} lib64 lib

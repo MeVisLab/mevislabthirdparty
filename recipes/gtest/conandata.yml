@@ -1,0 +1,23 @@
+type: cpp
+name: "gtest"
+display_name: "GTest"
+version: "1.11.0"
+homepage: "https://github.com/google/googletest"
+description: "Google Testing and Mocking Framework"
+license: "BSD-3-Clause"
+
+sources:
+  "1.11.0":
+    sha256: 353571c2440176ded91c2de6d6cd88ddd41401d14692ec1f99e35d013feda55a
+    url: https://github.com/google/googletest/archive/release-${version}.zip
+    base_path: googletest-release-${version}
+
+  "1.10.0":
+    sha256: "94c634d499558a76fa649edb13721dce6e98fb1e7018dfaeba3cd7a083945e91"
+    url: "https://github.com/google/googletest/archive/release-${version}.zip"
+    base_path: "googletest-release-${version}"
+
+patches:
+  "1.10.0":
+    - patch_file: "patches/${version}-no_warning_as_error.patch"
+      patch_description: "Newer compilers (e.g. GCC11, Clang 12) generate additional warnings that would otherwise lead to build failure"

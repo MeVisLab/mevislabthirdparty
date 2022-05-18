@@ -1,0 +1,8 @@
+DISTRIBUTIONS.txt
+README.txt
+c/*
+licenses/*
+perl/*
+portable.perl
+portableshell.bat
+win32/*

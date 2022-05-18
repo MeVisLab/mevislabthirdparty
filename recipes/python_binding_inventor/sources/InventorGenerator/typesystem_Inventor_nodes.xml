@@ -1,0 +1,283 @@
+<typesystem package="Inventor.nodes">
+
+  <rejection class="SoNode" enum-name="Stage"/>
+  
+  <rejection class="SoVertexShape" function-name="setPreVertexArrayRenderingCallback"/>
+  <rejection class="SoVertexShape" function-name="setPostVertexArrayRenderingCallback"/>
+  <rejection class="SoShape" function-name="setPostVertexArrayRenderingCallback"/>
+  <rejection class="SoShape" function-name="setPreVertexArrayRenderingCallback"/>
+  <rejection class="SoSeparator" function-name="cullTest"/>
+  <rejection class="SoCallback" function-name="setCallback"/>
+  <rejection class="SoEventCallback" function-name="addEventCallback"/>
+  <rejection class="SoEventCallback" function-name="removeEventCallback"/>
+
+  <enum-type name="SoPolygonOffset::Style" />
+  <enum-type name="SoShape::TriangleShape" />
+  <enum-type name="SoCamera::ViewportMapping" />
+  <enum-type name="SoSelection::Policy" />
+  <enum-type name="SoAntiSquish::Sizing" />
+  <enum-type name="SoRotationXYZ::Axis" />
+  <enum-type name="SoTexture2::Model" />
+  <enum-type name="SoTexture2::Wrap" />
+  <enum-type name="SoFontStyle::Style" />
+  <enum-type name="SoFontStyle::Family" />
+  <enum-type name="SoIndexedTriangleStripSet::Binding" />
+  <enum-type name="SoDrawStyle::Style" />
+  <enum-type name="SoComplexity::Type" />
+  <enum-type name="SoLightModel::Model" />
+  <enum-type name="SoAsciiText::Justification" />
+  <enum-type name="SoResetTransform::ResetType" />
+  <enum-type name="SoCylinder::Part" />
+  <enum-type name="SoEnvironment::FogType" />
+  <enum-type name="SoShapeHints::ShapeType" />
+  <enum-type name="SoShapeHints::VertexOrdering" />
+  <enum-type name="SoLocateHighlight::Modes" />
+  <enum-type name="SoLocateHighlight::Styles" />
+  <enum-type name="SoShapeHints::FaceType" />
+  <enum-type name="SoNormalBinding::Binding" />
+  <enum-type name="SoLineSet::Binding" />
+  <enum-type name="SoIndexedFaceSet::Binding" />
+  <enum-type name="SoIndexedLineSet::Binding" />
+  <enum-type name="SoArray::Origin" />
+  <enum-type name="SoVertexProperty::Binding" />
+  <enum-type name="SoFaceSet::Binding" />
+  <enum-type name="SoText3::Part" />
+  <enum-type name="SoText3::Justification" />
+  <enum-type name="SoText2::Justification" />
+  <enum-type name="SoMaterialBinding::Binding" />
+  <enum-type name="SoProfile::Profile" />
+  <enum-type name="SoPickStyle::Style" />
+  <enum-type name="SoTextureCoordinateBinding::Binding" />
+  <enum-type name="SoSeparator::CacheEnabled" />
+  <enum-type name="SoQuadMesh::Binding" />
+  <enum-type name="SoIndexedTriangleSet::Binding" />
+  <enum-type name="SoUnits::Units" />
+  <enum-type name="SoCone::Part" />
+
+  
+  <object-type name="SoAnnotation">
+  </object-type>
+  <object-type name="SoArray">
+  </object-type>
+  <object-type name="SoAsciiText">
+  </object-type>
+  <object-type name="SoBaseColor">
+  </object-type>
+  <object-type name="SoBlinker">
+  </object-type>
+  <object-type name="SoCallback">
+  </object-type>
+  <object-type name="SoCamera">
+  </object-type>
+  <object-type name="SoClipPlane">
+  </object-type>
+  <object-type name="SoColorIndex">
+  </object-type>
+  <object-type name="SoComplexity">
+  </object-type>
+  <object-type name="SoCone">
+  </object-type>
+  <object-type name="SoCoordinate3">
+  </object-type>
+  <object-type name="SoCoordinate4">
+  </object-type>
+  <object-type name="SoCube">
+  </object-type>
+  <object-type name="SoCylinder">
+  </object-type>
+  <object-type name="SoDirectionalLight">
+  </object-type>
+  <object-type name="SoDrawStyle">
+  </object-type>
+  <object-type name="SoEnvironment">
+  </object-type>
+  <object-type name="SoEventCallback">
+  </object-type>
+  <object-type name="SoFaceSet">
+  </object-type>
+  <object-type name="SoFile">
+  </object-type>
+  <object-type name="SoFont">
+  </object-type>
+  <object-type name="SoFontStyle">
+  </object-type>
+  <object-type name="SoGroup">
+  </object-type>
+  <object-type name="SoIndexedFaceSet">
+  </object-type>
+  <object-type name="SoIndexedLineSet">
+  </object-type>
+  <object-type name="SoIndexedNurbsCurve">
+  </object-type>
+  <object-type name="SoIndexedNurbsSurface">
+  </object-type>
+  <object-type name="SoIndexedShape">
+  </object-type>
+  <object-type name="SoIndexedTriangleSet">
+  </object-type>
+  <object-type name="SoIndexedTriangleStripSet">
+  </object-type>
+  <object-type name="SoInfo">
+  </object-type>
+  <object-type name="SoLOD">
+  </object-type>
+  <object-type name="SoLabel">
+  </object-type>
+  <object-type name="SoLevelOfDetail">
+  </object-type>
+  <object-type name="SoLight">
+  </object-type>
+  <object-type name="SoLightModel">
+  </object-type>
+  <object-type name="SoLineSet">
+  </object-type>
+  <object-type name="SoLinearProfile">
+  </object-type>
+  <object-type name="SoLocateHighlight">
+  </object-type>
+  <object-type name="SoMaterial">
+  </object-type>
+  <object-type name="SoMaterialBinding">
+  </object-type>
+  <object-type name="SoMaterialIndex">
+  </object-type>
+  <object-type name="SoMatrixTransform">
+  </object-type>
+  <object-type name="SoMultipleCopy">
+  </object-type>
+  <object-type name="SoNode">
+  <inject-code class="pysetwrapperfunc">SoNodeSetInstanceWrapperOnShell</inject-code>
+  <inject-code class="pyinit-cpp">
+template&lt;class T&gt; void SoNodeSetInstanceWrapperOnShell(void* object, PythonQtInstanceWrapper* wrapper) { 
+  (reinterpret_cast&lt;T*&gt;(object))-&gt;_wrapper = wrapper;
+  if (wrapper) {
+    SbName name = Py_TYPE(wrapper)-&gt;tp_name;
+    SoType t = SoType::fromName(name);
+    if (t.isBad()) {
+      t = SoType::createType(T::getClassTypeId(),name,NULL,T::getClassTypeId().getData());
+    }
+    ((T*)object)-&gt;_type = t;
+  }
+}
+  </inject-code>
+  </object-type>
+  <object-type name="SoNonIndexedShape">
+  </object-type>
+  <object-type name="SoNormal">
+  </object-type>
+  <object-type name="SoNormalBinding">
+  </object-type>
+  <object-type name="SoNurbsCurve">
+  </object-type>
+  <object-type name="SoNurbsProfile">
+  </object-type>
+  <object-type name="SoNurbsSurface">
+  </object-type>
+  <object-type name="SoOrthographicCamera">
+  </object-type>
+  <object-type name="SoPackedColor">
+  </object-type>
+  <object-type name="SoPathSwitch">
+  </object-type>
+  <object-type name="SoPendulum">
+  </object-type>
+  <object-type name="SoPerspectiveCamera">
+  </object-type>
+  <object-type name="SoPickStyle">
+  </object-type>
+  <object-type name="SoPointLight">
+  </object-type>
+  <object-type name="SoPointSet">
+  </object-type>
+  <object-type name="SoProfile">
+  </object-type>
+  <object-type name="SoProfileCoordinate2">
+  </object-type>
+  <object-type name="SoProfileCoordinate3">
+  </object-type>
+  <object-type name="SoQuadMesh">
+  </object-type>
+  <object-type name="SoResetTransform">
+  </object-type>
+  <object-type name="SoRotation">
+  </object-type>
+  <object-type name="SoRotationXYZ">
+  </object-type>
+  <object-type name="SoRotor">
+  </object-type>
+  <object-type name="SoScale">
+  </object-type>
+  <object-type name="SoSeparator">
+  </object-type>
+  <object-type name="SoShape">
+  </object-type>
+  <object-type name="SoShapeHints">
+  </object-type>
+  <object-type name="SoShuttle">
+  </object-type>
+  <object-type name="SoSphere">
+  </object-type>
+  <object-type name="SoSpotLight">
+  </object-type>
+  <object-type name="SoSwitch">
+  </object-type>
+  <object-type name="SoText2">
+  </object-type>
+  <object-type name="SoText3">
+  </object-type>
+  <object-type name="SoTexture2">
+  </object-type>
+  <object-type name="SoTexture2Transform">
+  </object-type>
+  <object-type name="SoTextureCoordinate2">
+  </object-type>
+  <object-type name="SoTextureCoordinateBinding">
+  </object-type>
+  <object-type name="SoTextureCoordinateDefault">
+  </object-type>
+  <object-type name="SoTextureCoordinateEnvironment">
+  </object-type>
+  <object-type name="SoTextureCoordinateFunction">
+  </object-type>
+  <object-type name="SoTextureCoordinatePlane">
+  </object-type>
+  <object-type name="SoTransform">
+  </object-type>
+  <object-type name="SoTransformSeparator">
+  </object-type>
+  <object-type name="SoTransformation">
+  </object-type>
+  <object-type name="SoTranslation">
+  </object-type>
+  <object-type name="SoTriangleStripSet">
+  </object-type>
+  <object-type name="SoUnits">
+  </object-type>
+  <object-type name="SoVertexProperty">
+  </object-type>
+  <object-type name="SoVertexShape">
+  </object-type>
+
+  <rejection class="SoSelection" function-name="setPickFilterCallback"/>
+  <rejection class="SoSelection" function-name="removeStartCallback"/>
+  <rejection class="SoSelection" function-name="removeSelectionCallback"/>
+  <rejection class="SoSelection" function-name="removeFinishCallback"/>
+  <rejection class="SoSelection" function-name="removeDeselectionCallback"/>
+  <rejection class="SoSelection" function-name="removeChangeCallback"/>
+  <rejection class="SoSelection" function-name="addStartCallback"/>
+  <rejection class="SoSelection" function-name="addSelectionCallback"/>
+  <rejection class="SoSelection" function-name="addFinishCallback"/>
+  <rejection class="SoSelection" function-name="addDeselectionCallback"/>
+  <rejection class="SoSelection" function-name="addChangeCallback"/>
+  
+  <object-type name="SoSelection">
+  </object-type>
+  <object-type name="SoSurroundScale">
+  </object-type>
+  <object-type name="SoAntiSquish">
+  </object-type>
+  
+  <object-type name="SoPolygonOffset">
+  </object-type>
+
+ </typesystem>

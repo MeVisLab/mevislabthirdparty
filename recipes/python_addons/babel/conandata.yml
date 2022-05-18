@@ -1,0 +1,18 @@
+type: pure_c
+name: "babel"
+display_name: "Babel"
+version: "2.9.1"
+homepage: "http://babel.pocoo.org"
+description: "Babel is an internationalization library for Python."
+license: "BSD-3-Clause"
+
+sources:
+  "2.9.1":
+    sha256: 96102878b273d0160c210d9323406d26c4a5cf0f5d3a0097a059836a624231f9
+    url: "https://github.com/python-babel/babel/archive/refs/tags/v${version}.tar.gz"
+    base_path: "babel-${version}"
+
+  "1.3.0":
+    sha256: "9f02d0357184de1f093c10012b52e7454a1008be6a5c185ab7a3307aceb1d12e"
+    url: "https://files.pythonhosted.org/packages/33/27/e3978243a03a76398c384c83f7ca879bc6e8f1511233a621fcada135606e/Babel-${version}.tar.gz"
+    base_path: "Babel-${version}"

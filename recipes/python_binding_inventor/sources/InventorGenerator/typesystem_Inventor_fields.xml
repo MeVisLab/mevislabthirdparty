@@ -1,0 +1,204 @@
+<typesystem package="Inventor.fields">
+
+
+  <rejection class="SoMField" function-name="get1"/>
+  <rejection class="SoSFImage" function-name="getValue"/>
+  <rejection class="*" function-name="startEditing"/>
+  <rejection class="*" function-name="getValues"/>
+
+  <value-type name="SoSField" create-shell="no" create-promoter="no" >
+  </value-type>
+  <value-type name="SoMField" create-shell="no" create-promoter="no" >
+  </value-type>
+
+  <object-type name="SoField" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoFieldContainer" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoFieldData" create-shell="no" create-promoter="no" generate="no">
+  </object-type>
+  <object-type name="SoMFBitMask" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoMFBool" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoMFColor" create-shell="no" create-promoter="no" >
+    <modify-function signature="set1Value(int,Array)" remove="all"/>
+    <modify-function signature="set1HSVValue(int,Array)" remove="all"/>
+    <modify-function signature="setValue(Array)" remove="all"/>
+    <modify-function signature="setValues(int,int,Array)" remove="all"/>
+    <modify-function signature="setHSVValue(Array)" remove="all"/>
+    <modify-function signature="setHSVValues(int,int,Array)" remove="all"/>
+  </object-type>
+  <object-type name="SoMFDouble" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoMFEngine" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoMFEnum" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoMFFloat" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoMFInt32" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoMFMatrix" create-shell="no" create-promoter="no" >
+    <modify-function signature="set1Value(int,Array)" remove="all"/>
+    <modify-function signature="setValue(Array)" remove="all"/>
+    <modify-function signature="setValues(int,int,Array)" remove="all"/>
+  </object-type>
+  <object-type name="SoMFMatrixd" create-shell="no" create-promoter="no" >
+    <modify-function signature="set1Value(int,Array)" remove="all"/>
+    <modify-function signature="setValue(Array)" remove="all"/>
+    <modify-function signature="setValues(int,int,Array)" remove="all"/>
+  </object-type>
+  <object-type name="SoMFName" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoMFNode" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoMFPath" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoMFPlane" create-shell="no" create-promoter="no" >
+    <modify-function signature="set1Value(int,Array)" remove="all"/>
+    <modify-function signature="setValue(Array)" remove="all"/>
+    <modify-function signature="setValues(int,int,Array)" remove="all"/>
+  </object-type>
+  <object-type name="SoMFPlaned" create-shell="no" create-promoter="no" >
+    <modify-function signature="set1Value(int,Array)" remove="all"/>
+    <modify-function signature="setValue(Array)" remove="all"/>
+    <modify-function signature="setValues(int,int,Array)" remove="all"/>
+  </object-type>
+  <object-type name="SoMFRotation" create-shell="no" create-promoter="no" >
+    <modify-function signature="set1Value(int,Array)" remove="all"/>
+    <modify-function signature="setValue(Array)" remove="all"/>
+    <modify-function signature="setValues(int,int,Array)" remove="all"/>
+  </object-type>
+  <object-type name="SoMFRotationd" create-shell="no" create-promoter="no" >
+    <modify-function signature="set1Value(int,Array)" remove="all"/>
+    <modify-function signature="setValue(Array)" remove="all"/>
+    <modify-function signature="setValues(int,int,Array)" remove="all"/>
+  </object-type>
+  <object-type name="SoMFShort" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoMFString" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoMFTime" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoMFUInt32" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoMFUShort" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoMFVec2d" create-shell="no" create-promoter="no" >
+    <modify-function signature="set1Value(int,Array)" remove="all"/>
+    <modify-function signature="setValue(Array)" remove="all"/>
+    <modify-function signature="setValues(int,int,Array)" remove="all"/>
+  </object-type>
+  <object-type name="SoMFVec2f" create-shell="no" create-promoter="no" >
+    <modify-function signature="set1Value(int,Array)" remove="all"/>
+    <modify-function signature="setValue(Array)" remove="all"/>
+    <modify-function signature="setValues(int,int,Array)" remove="all"/>
+  </object-type>
+  <object-type name="SoMFVec3d" create-shell="no" create-promoter="no" >
+    <modify-function signature="set1Value(int,Array)" remove="all"/>
+    <modify-function signature="setValue(Array)" remove="all"/>
+    <modify-function signature="setValues(int,int,Array)" remove="all"/>
+  </object-type>
+  <object-type name="SoMFVec3f" create-shell="no" create-promoter="no" >
+    <modify-function signature="set1Value(int,Array)" remove="all"/>
+    <modify-function signature="setValue(Array)" remove="all"/>
+    <modify-function signature="setValues(int,int,Array)" remove="all"/>
+  </object-type>
+  <object-type name="SoMFVec4d" create-shell="no" create-promoter="no" >
+    <modify-function signature="set1Value(int,Array)" remove="all"/>
+    <modify-function signature="setValue(Array)" remove="all"/>
+    <modify-function signature="setValues(int,int,Array)" remove="all"/>
+  </object-type>
+  <object-type name="SoMFVec4f" create-shell="no" create-promoter="no" >
+    <modify-function signature="set1Value(int,Array)" remove="all"/>
+    <modify-function signature="setValue(Array)" remove="all"/>
+    <modify-function signature="setValues(int,int,Array)" remove="all"/>
+  </object-type>
+
+
+  <object-type name="SoSFBitMask" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoSFBool" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoSFColor" create-shell="no" create-promoter="no" >
+    <modify-function signature="setHSVValue(Array)" remove="all"/>
+    <modify-function signature="setValue(Array)" remove="all"/>
+  </object-type>
+  <object-type name="SoSFDouble" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoSFEngine" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoSFEnum" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoSFFloat" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoSFImage" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoSFInt32" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoSFMatrix" create-shell="no" create-promoter="no" >
+    <modify-function signature="setValue(Array)" remove="all"/>
+  </object-type>
+  <object-type name="SoSFMatrixd" create-shell="no" create-promoter="no" >
+    <modify-function signature="setValue(Array)" remove="all"/>
+  </object-type>
+  <object-type name="SoSFName" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoSFNode" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoSFPath" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoSFPlane" create-shell="no" create-promoter="no" >
+    <modify-function signature="setValue(Array)" remove="all"/>
+  </object-type>
+  <object-type name="SoSFPlaned" create-shell="no" create-promoter="no" >
+    <modify-function signature="setValue(Array)" remove="all"/>
+  </object-type>
+  <object-type name="SoSFRotation" create-shell="no" create-promoter="no" >
+    <modify-function signature="setValue(Array)" remove="all"/>
+    <modify-function signature="getValue(SbVec3f&amp;,float&amp;)const" remove="all"/>
+  </object-type>
+  <object-type name="SoSFRotationd" create-shell="no" create-promoter="no" >
+    <modify-function signature="setValue(Array)" remove="all"/>
+    <modify-function signature="getValue(SbVec3d&amp;,double&amp;)const" remove="all"/>
+  </object-type>
+  <object-type name="SoSFShort" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoSFString" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoSFTime" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoSFTrigger" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoSFUInt32" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoSFUShort" create-shell="no" create-promoter="no" >
+  </object-type>
+  <object-type name="SoSFVec2d" create-shell="no" create-promoter="no" >
+    <modify-function signature="setValue(Array)" remove="all"/>
+  </object-type>
+  <object-type name="SoSFVec2f" create-shell="no" create-promoter="no" >
+    <modify-function signature="setValue(Array)" remove="all"/>
+  </object-type>
+  <object-type name="SoSFVec3d" create-shell="no" create-promoter="no" >
+    <modify-function signature="setValue(Array)" remove="all"/>
+  </object-type>
+  <object-type name="SoSFVec3f" create-shell="no" create-promoter="no" >
+    <modify-function signature="setValue(Array)" remove="all"/>
+  </object-type>
+  <object-type name="SoSFVec4d" create-shell="no" create-promoter="no" >
+    <modify-function signature="setValue(Array)" remove="all"/>
+  </object-type>
+  <object-type name="SoSFVec4f" create-shell="no" create-promoter="no" >
+    <modify-function signature="setValue(Array)" remove="all"/>
+  </object-type>
+
+  <object-type name="SoSFVec2s" create-shell="no" create-promoter="no" >
+    <modify-function signature="setValue(Array)" remove="all"/>
+  </object-type>
+  <object-type name="SoSFVec3s" create-shell="no" create-promoter="no" >
+    <modify-function signature="setValue(Array)" remove="all"/>
+  </object-type>
+
+ </typesystem>

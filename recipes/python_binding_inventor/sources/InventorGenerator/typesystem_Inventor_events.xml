@@ -1,0 +1,28 @@
+<typesystem package="Inventor.events">
+
+  <enum-type name="SoButtonEvent::State" />
+  <enum-type name="SoSpaceballButtonEvent::Button" />
+  <enum-type name="SoKeyboardEvent::Key" />
+  <enum-type name="SoMouseButtonEvent::Button" />
+  <enum-type name="SoMouseWheelEvent::Orientation" />
+
+  <object-type name="SoEvent">
+  </object-type>
+  <object-type name="SoButtonEvent">
+  </object-type>
+  <object-type name="SoSpaceballButtonEvent">
+  </object-type>
+  <object-type name="SoMouseButtonEvent">
+  </object-type>
+  <object-type name="SoMotion3Event">
+  </object-type>
+  <object-type name="SoLocation2Event">
+  </object-type>
+  <object-type name="SoKeyboardEvent">
+  </object-type>
+  <object-type name="SoLocation2RefreshEvent">
+  </object-type>
+  <object-type name="SoMouseWheelEvent">
+  </object-type>
+
+ </typesystem>

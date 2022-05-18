@@ -1,0 +1,27 @@
+type: pure_c
+name: pygments
+version: "2.11.2"
+homepage: https://pygments.org
+description: Python syntax highlighter
+license: BSD-2-Clause
+
+sources:
+  "2.11.2":
+    sha256: fe2ea8683575fc04c09511e981a8f5e23d0a8db7973cda37e700fbf05f9d38d0
+    url: https://github.com/pygments/pygments/archive/${version}.zip
+    base_path: "pygments-${version}"
+
+  "2.10.0":
+    sha256: b80d1475ded5e32dc01c774d032986764e328e4617c995104ada9406ab82da3b
+    url: "https://github.com/pygments/pygments/archive/${version}.zip"
+    base_path: "pygments-${version}"
+
+  "2.9.0":
+    sha256: 9922c5cb3abd869b572fd9270b06e2564e706766dd3c45db3d327d78a54a3224
+    url: "https://github.com/pygments/pygments/archive/${version}.zip"
+    base_path: "pygments-${version}"
+
+  "2.0.2":
+    sha256: "5cf9c86be467f89cf7a755169e62ae4c92645b4bb7a11838caee1263f91be9e8"
+    url: "https://github.com/pygments/pygments/archive/${version}.zip"
+    base_path: "pygments-${version}"

@@ -1,0 +1,31 @@
+diff --git i/CMakeLists.txt w/CMakeLists.txt
+index 26675a7..23e30af 100644
+--- i/CMakeLists.txt
++++ w/CMakeLists.txt
+@@ -206,7 +206,7 @@ else()
+ endif()
+ 
+ # default to not using the system GLEW as ours has fixes in it right now
+-set(VTK_USE_SYSTEM_GLEW OFF CACHE BOOL "do not use a system glew" FORCE)
++set(VTK_USE_SYSTEM_GLEW OFF CACHE BOOL "do not use a system glew")
+ 
+ set(VTK_BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS})
+ 
+diff --git i/CMake/FindGLEW.cmake w/CMake/FindGLEW.cmake
+index 722da20..cda3d9e 100644
+--- i/CMake/FindGLEW.cmake
++++ w/CMake/FindGLEW.cmake
+@@ -5,9 +5,11 @@
+ #  GLEW_FOUND        - system has GLEW
+ #  GLEW_INCLUDE_DIRS - the GLEW include directories
+ #  GLEW_LIBRARY      - The GLEW library
++#  GLEW_LIBRARIES    - Copy of GLEW_LIBRARY
+ #
+-find_path(GLEW_INCLUDE_DIR GL/glew.h)
+-find_library(GLEW_LIBRARY NAMES GLEW glew32)
++find_path(GLEW_INCLUDE_DIR GL/glew.h REQUIRED)
++find_library(GLEW_LIBRARY NAMES GLEW GLEWd glew32 glew32d REQUIRED)
++set(GLEW_LIBRARIES ${GLEW_LIBRARY})
+ 
+ set(GLEW_INCLUDE_DIRS "${GLEW_INCLUDE_DIR}")
+

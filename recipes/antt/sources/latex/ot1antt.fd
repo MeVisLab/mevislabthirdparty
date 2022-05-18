@@ -1,0 +1,44 @@
+%% Begin of definition file ot1antt.fd for Antykwa Toru\'nska from J.M. Nowacki
+%% This was previously part of `pl-qx' package.
+%% Piotr K\l{}osowski; Wydawnictwo UMCS <pklosows@press.umcs.lublin.pl>
+%%
+\def\fileversion{v0.9}
+\def\filedate{2001/04/21}
+\ProvidesFile{ot1antt.fd}
+   [\filedate\space\fileversion\space font definition file for OT1/antt (P.K.)]
+
+\DeclareFontFamily{OT1}{antt}{}
+
+\DeclareFontShape{OT1}{antt}{m}{n}{
+   <-> anttr
+}{}
+\DeclareFontShape{OT1}{antt}{m}{sc}{
+   <-> sub * antt/m/n
+}{}
+\DeclareFontShape{OT1}{antt}{m}{sl}{
+   <-> sub * antt/m/it
+}{}
+\DeclareFontShape{OT1}{antt}{m}{it}{
+   <-> anttri
+}{}
+\DeclareFontShape{OT1}{antt}{b}{n}{
+   <-> anttb
+}{}
+\DeclareFontShape{OT1}{antt}{b}{sc}{
+   <-> sub * antt/b/n
+}{}
+\DeclareFontShape{OT1}{antt}{b}{sl}{
+   <-> sub * antt/b/it
+}{}
+\DeclareFontShape{OT1}{antt}{b}{it}{
+   <-> anttri
+}{}
+\DeclareFontShape{OT1}{antt}{bx}{n}{ <-> ssub * antt/b/n}{}
+\DeclareFontShape{OT1}{antt}{bx}{sc}{ <-> ssub * antt/b/sc}{}
+\DeclareFontShape{OT1}{antt}{bx}{sl}{ <-> ssub * antt/b/sl}{}
+\DeclareFontShape{OT1}{antt}{bx}{it}{ <-> ssub * antt/b/it}{}
+
+\endinput
+
+%%
+%% End of font definition file ot1antt.fd.

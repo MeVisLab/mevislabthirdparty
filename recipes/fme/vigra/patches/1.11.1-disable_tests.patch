@@ -1,0 +1,13 @@
+diff --git i/CMakeLists.txt w/CMakeLists.txt
+index 77597ba..94c83ae 100644
+--- i/CMakeLists.txt
++++ w/CMakeLists.txt
+@@ -269,7 +269,7 @@ ADD_CUSTOM_TARGET(experiments)
+ ##################################################
+ 
+ ADD_SUBDIRECTORY(src)
+-ADD_SUBDIRECTORY(test)
++#ADD_SUBDIRECTORY(test)
+ ADD_SUBDIRECTORY(docsrc)
+ 
+ IF(WITH_VIGRANUMPY)

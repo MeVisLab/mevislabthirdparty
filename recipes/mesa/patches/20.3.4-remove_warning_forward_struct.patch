@@ -1,0 +1,22 @@
+--- a/src/gallium/drivers/swr/rasterizer/core/api.h
++++ b/src/gallium/drivers/swr/rasterizer/core/api.h
+@@ -235,7 +235,7 @@ struct SWR_API_THREADING_INFO
+ /// SWR_CONTEXT
+ /// Forward Declaration (see context.h for full definition)
+ /////////////////////////////////////////////////////////////////////////
+-class SWR_CONTEXT;
++struct SWR_CONTEXT;
+ 
+ //////////////////////////////////////////////////////////////////////////
+ /// SWR_WORKER_PRIVATE_STATE
+--- a/src/gallium/drivers/swr/rasterizer/core/context.h
++++ b/src/gallium/drivers/swr/rasterizer/core/context.h
+@@ -332,7 +332,7 @@ OSALIGNLINE(struct) API_STATE
+ 
+ class MacroTileMgr;
+ class DispatchQueue;
+-class HOTTILE;
++struct HOTTILE;
+ 
+ struct RenderOutputBuffers
+ {

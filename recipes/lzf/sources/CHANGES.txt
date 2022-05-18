@@ -1,0 +1,3 @@
+When using this library be aware that it is not the original lzf library,
+but a lzf library modified explicitly for the binding to the MeVisLab 
+data compressor libraries.

@@ -1,0 +1,44 @@
+%% Begin of definition file ot4antt.fd for Antykwa Toru\'nska from J.M. Nowacki
+%% This was previously part of `pl-qx' package.
+%% Piotr K\l{}osowski; Wydawnictwo UMCS <pklosows@press.umcs.lublin.pl>
+%%
+\def\fileversion{v0.9}
+\def\filedate{2001/04/21}
+\ProvidesFile{ot4antt.fd}
+   [\filedate\space\fileversion\space font definition file for OT4/antt (P.K.)]
+
+\DeclareFontFamily{OT4}{antt}{}
+
+\DeclareFontShape{OT4}{antt}{m}{n}{
+   <-> anttr
+}{}
+\DeclareFontShape{OT4}{antt}{m}{sc}{
+   <-> sub * antt/m/n
+}{}
+\DeclareFontShape{OT4}{antt}{m}{sl}{
+   <-> sub * antt/m/it
+}{}
+\DeclareFontShape{OT4}{antt}{m}{it}{
+   <-> anttri
+}{}
+\DeclareFontShape{OT4}{antt}{b}{n}{
+   <-> anttb
+}{}
+\DeclareFontShape{OT4}{antt}{b}{sc}{
+   <-> sub * antt/b/n
+}{}
+\DeclareFontShape{OT4}{antt}{b}{sl}{
+   <-> sub * antt/b/it
+}{}
+\DeclareFontShape{OT4}{antt}{b}{it}{
+   <-> anttri
+}{}
+\DeclareFontShape{OT4}{antt}{bx}{n}{ <-> ssub * antt/b/n}{}
+\DeclareFontShape{OT4}{antt}{bx}{sc}{ <-> ssub * antt/b/sc}{}
+\DeclareFontShape{OT4}{antt}{bx}{sl}{ <-> ssub * antt/b/sl}{}
+\DeclareFontShape{OT4}{antt}{bx}{it}{ <-> ssub * antt/b/it}{}
+
+\endinput
+
+%%
+%% End of font definition file ot4antt.fd.

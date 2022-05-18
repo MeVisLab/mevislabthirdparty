@@ -1,0 +1,22 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+    <file>images/pickMode.png</file>
+    <file>images/pickMode@2x.png</file>
+    <file>images/viewMode.png</file>
+    <file>images/viewMode@2x.png</file>
+    <file>images/viewAll.png</file>
+    <file>images/viewAll@2x.png</file>
+    <file>images/gotoHome.png</file>
+    <file>images/gotoHome@2x.png</file>
+    <file>images/setHome.png</file>
+    <file>images/setHome@2x.png</file>
+    <file>images/seek.png</file>
+    <file>images/seek@2x.png</file>
+    <file>images/ortho.png</file>
+    <file>images/ortho@2x.png</file>
+    <file>images/persp.png</file>
+    <file>images/persp@2x.png</file>
+    <file>images/help.png</file>
+    <file>images/help@2x.png</file>
+</qresource>
+</RCC>

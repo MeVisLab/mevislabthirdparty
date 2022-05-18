@@ -1,0 +1,724 @@
+<typesystem package="Inventor.base">
+  <rejection class="SoBase" enum-name="BaseFlags"/>
+
+  <rejection class="SbColor" function-name="setPackedValue"/>
+  <rejection class="SbColor" function-name="getHSVValue"/>
+  <rejection class="SoSceneManager" function-name="setRenderCallback"/>
+  <rejection class="SoType" function-name="overrideType"/>
+  <rejection class="SoType" function-name="createType"/>
+  
+  <rejection class="*" function-name="initClass"/>
+  <rejection class="*" function-name="initClasses"/>
+  <rejection class="*" function-name="unref"/>
+  <rejection class="*" function-name="ref"/>
+  <rejection class="*" function-name="unrefNoDelete"/>
+  
+  <rejection class="SoDB" function-name="getHeaderData"/>
+  <rejection class="SoDB" function-name="registerHeader"/>
+  <rejection class="SoDB" function-name="read"/>
+
+  <rejection class="*" function-name="addCopy"/>
+  <rejection class="*" function-name="getFieldDataPtr"/>
+  <rejection class="*" function-name="getFieldData"/>
+  <rejection class="*" function-name="getTypeId"/>
+  <rejection class="SoBase" function-name="addName"/>
+  <rejection class="SoBase" function-name="read"/>
+  <rejection class="*" function-name="addToCopyDict"/>
+  <rejection class="*" function-name="addWriteReference"/>
+  <rejection class="*" function-name="checkCopy"/>
+  <rejection class="SoBase" function-name="copy"/>
+  <rejection class="*" function-name="copyContents"/>
+  <rejection class="*" function-name="copyDone"/>
+  <rejection class="*" function-name="copyFieldValues"/>
+  <rejection class="*" function-name="copyThroughConnection"/>
+  <rejection class="*" function-name="decrementCurrentWriteCounter"/>
+  <rejection class="*" function-name="destroy"/>
+  <rejection class="*" function-name="delete"/>
+  <rejection class="*" function-name="findCopy"/>
+  <rejection class="*" function-name="getActionMethodIndex"/>
+  <rejection class="*" function-name="getCurrentWriteCounter"/>
+  <rejection class="*" function-name="getFileFormatName"/>
+  <rejection class="*" function-name="getNamedBase"/>
+  <rejection class="*" function-name="getNextNodeId"/>
+  <rejection class="*" function-name="getNodeId"/>
+  <rejection class="*" function-name="hasMultipleWriteRefs"/>
+  <rejection class="*" function-name="grabEventsCleanup"/>
+  <rejection class="*" function-name="grabEventsSetup"/>
+  <rejection class="*" function-name="incrementCurrentWriteCounter"/>
+  <rejection class="*" function-name="initCopyDict"/>
+  <rejection class="*" function-name="readInstance"/>
+  <rejection class="SoBase" function-name="removeName"/>
+  <rejection class="*" function-name="setInstancePrefix"/>
+  <rejection class="*" function-name="shouldWrite"/>
+  <rejection class="*" function-name="writeFooter"/>
+  <rejection class="*" function-name="writeHeader"/>
+  <rejection class="*" function-name="writeInstance"/>
+
+  <rejection class="SbVec2f" function-name="getValue"/>
+  <rejection class="SbVec3f" function-name="getValue"/>
+  <rejection class="SbVec4f" function-name="getValue"/>
+  <rejection class="SbVec2d" function-name="getValue"/>
+  <rejection class="SbVec3d" function-name="getValue"/>
+  <rejection class="SbVec4d" function-name="getValue"/>
+
+  <rejection class="SbVec2s" function-name="getValue"/>
+  <rejection class="SbVec3s" function-name="getValue"/>
+
+  <rejection class="SbMatrix" function-name="factor"/>
+  <rejection class="SbMatrixd" function-name="factor"/>
+  <rejection class="SbMatrix" function-name="getTransform"/>
+  <rejection class="SbMatrixd" function-name="getTransform"/>
+  <!-- these typically don't make sense in MeVisLab, and we don't want to burnen people with the decision.. -->
+  <rejection class="SbMatrix" function-name="multMatrixVec"/>
+  <rejection class="SbMatrixd" function-name="multMatrixVec"/>
+
+  <rejection class="SbLine" function-name="getClosestPoints"/>
+  <rejection class="SbLine" function-name="intersect"/>
+  <rejection class="SbLined" function-name="getClosestPoints"/>
+  <rejection class="SbLined" function-name="intersect"/>
+
+  <rejection class="SbCylinder" function-name="intersect"/>
+  <rejection class="SbCylinderd" function-name="intersect"/>
+
+  <rejection class="SbSphere" function-name="intersect"/>
+  <rejection class="SbSphered" function-name="intersect"/>
+  <rejection class="SbPlane" function-name="intersect"/>
+  <rejection class="SbPlaned" function-name="intersect"/>
+
+  <rejection class="SbRotation" function-name="getValue"/>
+  <rejection class="SbRotation" function-name="multVec"/>
+  <rejection class="SbRotationd" function-name="getValue"/>
+  <rejection class="SbRotationd" function-name="multVec"/>
+  <!--  we could add a SbRotation::getValue() that returns the quaternion values -->
+
+  <rejection class="SbViewVolume" function-name="getMatrices"/>
+
+  <rejection class="SoInput" function-name="get"/>
+  <rejection class="SoInput" function-name="getASCIIBuffer"/>
+  <rejection class="SoInput" function-name="getASCIIFile"/>
+  <rejection class="SoInput" function-name="getLocationString"/>
+  <rejection class="SoInput" function-name="read"/>
+  <rejection class="SoInput" function-name="readHex"/>
+
+  <rejection class="SbMatrix" function-name="multDirMatrix"/>
+  <rejection class="SbMatrix" function-name="multLineMatrix"/>
+  <rejection class="SbMatrix" function-name="multVecMatrix"/>
+  <rejection class="SbMatrixd" function-name="multDirMatrix"/>
+  <rejection class="SbMatrixd" function-name="multLineMatrix"/>
+  <rejection class="SbMatrixd" function-name="multVecMatrix"/>
+
+  <rejection class="SoFieldContainer" function-name="get"/>
+  <rejection class="SoFieldContainer" function-name="getFieldName"/>
+
+  <rejection class="SoField" function-name="get"/>
+  <rejection class="SoField" function-name="getConnectedEngine"/>
+  <rejection class="SoField" function-name="getConnectedField"/>
+
+  <rejection class="SoEngine" function-name="getOutputName"/>
+
+  <rejection class="SoFieldData" function-name="getEnumData"/>
+  <rejection class="SoFieldData" function-name="addEnumValue"/>
+
+  <rejection class="SbXfBox3f" function-name="getBounds"/>
+  <rejection class="SbXfBox3f" function-name="getSize"/>
+  <rejection class="SbXfBox3f" function-name="getOrigin"/>
+  <rejection class="SbXfBox3f" function-name="getSpan"/>
+  <rejection class="SbXfBox3f" function-name="outside"/>
+  <rejection class="SbXfBox3d" function-name="getBounds"/>
+  <rejection class="SbXfBox3d" function-name="getSize"/>
+  <rejection class="SbXfBox3d" function-name="getOrigin"/>
+  <rejection class="SbXfBox3d" function-name="getSpan"/>
+  <rejection class="SbXfBox3d" function-name="outside"/>
+  <rejection class="SbBox3d" function-name="getBounds"/>
+  <rejection class="SbBox3d" function-name="getSize"/>
+  <rejection class="SbBox3d" function-name="getOrigin"/>
+  <rejection class="SbBox3d" function-name="getSpan"/>
+  <rejection class="SbBox3d" function-name="outside"/>
+  <rejection class="SbBox2d" function-name="getBounds"/>
+  <rejection class="SbBox2d" function-name="getSize"/>
+  <rejection class="SbBox2d" function-name="getOrigin"/>
+  <rejection class="SbBox3f" function-name="getBounds"/>
+  <rejection class="SbBox3f" function-name="getSize"/>
+  <rejection class="SbBox3f" function-name="getOrigin"/>
+  <rejection class="SbBox3f" function-name="getSpan"/>
+  <rejection class="SbBox3f" function-name="outside"/>
+  <rejection class="SbBox2f" function-name="getBounds"/>
+  <rejection class="SbBox2f" function-name="getSize"/>
+  <rejection class="SbBox2f" function-name="getOrigin"/>
+  <rejection class="SbBox2s" function-name="getBounds"/>
+  <rejection class="SbBox2s" function-name="getSize"/>
+  <rejection class="SbBox2s" function-name="getOrigin"/>
+
+  <rejection class="SbCylinderProjector" function-name="projectAndGetRotation"/>
+    
+  <value-type name="SbColor">
+  <modify-function signature="SbColor(Array)" remove="all"/>
+  <modify-function signature="setValue(Array)" remove="all"/>
+  <modify-function signature="setHSVValue(Array)" remove="all"/>
+  </value-type>
+  
+   <value-type name="SbVec2s">
+    <include file-name="stdexcept" location="global"/>
+    <inject-code class="pywrap-operators">PythonQt::Type_MappingGetItem PythonQt::Type_MappingSetItem PythonQt::Type_Length</inject-code>
+    <modify-function signature="SbVec2s(Array)" remove="all"/>
+    <modify-function signature="setValue(Array)" remove="all"/>
+    <modify-function signature="operator[](int)" remove="all"/>
+    <modify-function signature="operator[](int)const" remove="all"/>
+    <inject-code class="pywrap-h">
+  QList&lt;int&gt; getValue(SbVec2s* vec)
+  {
+    QList&lt;int&gt; r;
+    r &lt;&lt; (*vec)[0];
+    r &lt;&lt; (*vec)[1];
+    return r;
+  }
+
+  void         setValue(SbVec2s* vec, const QList&lt;int&gt;&amp; values)
+  {
+    if (values.size() != 2) {
+      throw std::range_error(&quot;SbVec2s::setValue expects 2 values.&quot;);
+    }
+    vec-&gt;setValue(values.at(0), values.at(1));
+  }
+
+  QList&lt;int&gt; toTuple(SbVec2s* vec) { return getValue(vec); }
+
+  void  __setitem__(SbVec2s* vec, int index, short value)
+  {
+    if (index&lt;0 || index&gt;=2) {
+      throw std::range_error(&quot;SbVec2s::__setitem__ out of range!&quot;);
+    }
+    (*vec)[index] = value;
+  }
+
+  short __getitem__(SbVec2s* vec, int index)
+  {
+    if (index&lt;0 || index&gt;=2) {
+      throw std::range_error(&quot;SbVec2s::__getitem__ out of range!&quot;);
+    }
+    return (*vec)[index];
+  }
+
+  int   __len__(SbVec2s* vec) { return 2; }
+    </inject-code>
+  </value-type>
+
+  <value-type name="SbVec3s">
+    <include file-name="stdexcept" location="global"/>
+    <inject-code class="pywrap-operators">PythonQt::Type_MappingGetItem PythonQt::Type_MappingSetItem PythonQt::Type_Length</inject-code>
+    <modify-function signature="SbVec3s(Array)" remove="all"/>
+    <modify-function signature="setValue(Array)" remove="all"/>
+    <modify-function signature="operator[](int)" remove="all"/>
+    <modify-function signature="operator[](int)const" remove="all"/>
+    <inject-code class="pywrap-h">
+  QList&lt;int&gt; getValue(SbVec3s* vec)
+  {
+    QList&lt;int&gt; r;
+    r &lt;&lt; (*vec)[0];
+    r &lt;&lt; (*vec)[1];
+    r &lt;&lt; (*vec)[2];
+    return r;
+  }
+
+  void         setValue(SbVec3s* vec, const QList&lt;int&gt;&amp; values)
+  {
+    if (values.size() != 3) {
+      throw std::range_error(&quot;SbVec3s::setValue expects 3 values.&quot;);
+    }
+    vec-&gt;setValue(values.at(0), values.at(1), values.at(2));
+  }
+
+  QList&lt;int&gt; toTuple(SbVec3s* vec) { return getValue(vec); }
+
+  void  __setitem__(SbVec3s* vec, int index, short value)
+  {
+    if (index&lt;0 || index&gt;=3) {
+      throw std::range_error(&quot;SbVec3s::__setitem__ out of range!&quot;);
+    }
+    (*vec)[index] = value;
+  }
+
+  short __getitem__(SbVec3s* vec, int index)
+  {
+    if (index&lt;0 || index&gt;=3) {
+      throw std::range_error(&quot;SbVec3s::__getitem__ out of range!&quot;);
+    }
+    return (*vec)[index];
+  }
+
+  int   __len__(SbVec3s* vec) { return 3; }
+    </inject-code>
+  </value-type>
+
+
+  <value-type name="SbVec2f">
+   <include file-name="stdexcept" location="global"/>
+   <inject-code class="pywrap-operators">PythonQt::Type_MappingGetItem PythonQt::Type_MappingSetItem PythonQt::Type_Length</inject-code>
+   <modify-function signature="SbVec2f(Array)" remove="all"/>
+   <modify-function signature="setValue(Array)" remove="all"/>
+   <modify-function signature="operator[](int)" remove="all"/>
+   <modify-function signature="operator[](int)const" remove="all"/>
+
+    <inject-code class="pywrap-h">
+  SbVec2d toVec2d( SbVec2f* vec )
+  {
+    const float* value = vec-&gt;getValue();
+    return SbVec2d(value[0], value[1]);
+  }
+
+  QList&lt;float&gt; getValue(SbVec2f* vec)
+  {
+    QList&lt;float&gt; r;
+    r &lt;&lt; (*vec)[0];
+    r &lt;&lt; (*vec)[1];
+    return r;
+  }
+
+  void         setValue(SbVec2f* vec, const QList&lt;float&gt;&amp; values)
+  {
+    if (values.size() != 2) {
+      throw std::range_error(&quot;SbVec2f::setValue expects 2 values.&quot;);
+    }
+    vec-&gt;setValue(values.at(0), values.at(1));
+  }
+
+  QList&lt;float&gt; toTuple(SbVec2f* vec) { return getValue(vec); }
+
+  void  __setitem__(SbVec2f* vec, int index, float value)
+  {
+    if (index&lt;0 || index&gt;=2) {
+      throw std::range_error(&quot;SbVec2f::__setitem__ out of range!&quot;);
+    }
+    (*vec)[index] = value;
+  }
+
+  float __getitem__(SbVec2f* vec, int index)
+  {
+    if (index&lt;0 || index&gt;=2) {
+      throw std::range_error(&quot;SbVec2f::__getitem__ out of range!&quot;);
+    }
+    return (*vec)[index];
+  }
+
+  int   __len__(SbVec2f* vec) { return 2; }
+    </inject-code>
+  </value-type>
+  <value-type name="SbVec3f">
+   <inject-code class="pywrap-operators">PythonQt::Type_MappingGetItem PythonQt::Type_MappingSetItem PythonQt::Type_Length</inject-code>
+   <modify-function signature="SbVec3f(Array)" remove="all"/>
+   <modify-function signature="setValue(Array)" remove="all"/>
+   <modify-function signature="operator[](int)" remove="all"/>
+   <modify-function signature="operator[](int)const" remove="all"/>
+   <inject-code class="pywrap-h">
+  SbVec3d toVec3d( SbVec3f* vec )
+  {
+    const float* value = vec-&gt;getValue();
+    return SbVec3d(value[0], value[1], value[2]);
+  }
+
+  QList&lt;float&gt; getValue(SbVec3f* vec)
+  {
+    QList&lt;float&gt; r;
+    r &lt;&lt; (*vec)[0];
+    r &lt;&lt; (*vec)[1];
+    r &lt;&lt; (*vec)[2];
+    return r;
+  }
+
+  void         setValue(SbVec3f* vec, const QList&lt;float&gt;&amp; values)
+  {
+    if (values.size() != 3) {
+      throw std::range_error(&quot;SbVec3f::setValue expects 3 values.&quot;);
+    }
+    vec-&gt;setValue(values.at(0), values.at(1), values.at(2));
+  }
+
+  QList&lt;float&gt; toTuple(SbVec3f* vec) { return getValue(vec); }
+
+  void  __setitem__(SbVec3f* vec, int index, float value)
+  {
+    if (index&lt;0 || index&gt;=3) {
+      throw std::range_error(&quot;SbVec3f::__setitem__ out of range!&quot;);
+    }
+    (*vec)[index] = value;
+  }
+
+  float __getitem__(SbVec3f* vec, int index)
+  {
+    if (index&lt;0 || index&gt;=3) {
+      throw std::range_error(&quot;SbVec3f::__getitem__ out of range!&quot;);
+    }
+    return (*vec)[index];
+  }
+
+  int   __len__(SbVec3f* vec) { return 3; }
+    </inject-code>
+  </value-type>
+  <value-type name="SbVec4f">
+   <inject-code class="pywrap-operators">PythonQt::Type_MappingGetItem PythonQt::Type_MappingSetItem PythonQt::Type_Length</inject-code>
+   <modify-function signature="SbVec4f(Array)" remove="all"/>
+   <modify-function signature="setValue(Array)" remove="all"/>
+   <modify-function signature="operator[](int)" remove="all"/>
+   <modify-function signature="operator[](int)const" remove="all"/>
+   <modify-function signature="getReal(SbVec3f&amp;)const" remove="all"/>
+   <inject-code class="pywrap-h">
+  SbVec4d toVec4d( SbVec4f* vec )
+  {
+    const float* value = vec-&gt;getValue();
+    return SbVec4d(value[0], value[1], value[2], value[3]);
+  }
+  
+  QList&lt;float&gt; getValue(SbVec4f* vec)
+  {
+    QList&lt;float&gt; r;
+    r &lt;&lt; (*vec)[0];
+    r &lt;&lt; (*vec)[1];
+    r &lt;&lt; (*vec)[2];
+    r &lt;&lt; (*vec)[3];
+    return r;
+  }
+
+  void         setValue(SbVec4f* vec, const QList&lt;float&gt;&amp; values)
+  {
+    if (values.size() != 4) {
+      throw std::range_error(&quot;SbVec4f::setValue expects 4 values.&quot;);
+    }
+    vec-&gt;setValue(values.at(0), values.at(1), values.at(2), values.at(3));
+  }
+
+  QList&lt;float&gt; toTuple(SbVec4f* vec) { return getValue(vec); }
+
+  void  __setitem__(SbVec4f* vec, int index, float value)
+  {
+    if (index&lt;0 || index&gt;=4) {
+      throw std::range_error(&quot;SbVec4f::__setitem__ out of range!&quot;);
+    }
+    (*vec)[index] = value;
+  }
+
+  float __getitem__(SbVec4f* vec, int index)
+  {
+    if (index&lt;0 || index&gt;=4) {
+      throw std::range_error(&quot;SbVec4f::__getitem__ out of range!&quot;);
+    }
+    return (*vec)[index];
+  }
+
+  int   __len__(SbVec4f* vec) { return 4; }
+    </inject-code>
+  </value-type>
+  <value-type name="SbVec2d">
+   <include file-name="stdexcept" location="global"/>
+   <inject-code class="pywrap-operators">PythonQt::Type_MappingGetItem PythonQt::Type_MappingSetItem PythonQt::Type_Length</inject-code>
+   <modify-function signature="SbVec2d(Array)" remove="all"/>
+   <modify-function signature="setValue(Array)" remove="all"/>
+   <modify-function signature="operator[](int)" remove="all"/>
+   <modify-function signature="operator[](int)const" remove="all"/>
+    <inject-code class="pywrap-h">
+  
+  SbVec2f toVec2f( SbVec2d* vec )
+  {
+    const double* value = vec-&gt;getValue();
+    return SbVec2f(value[0], value[1]);
+  }
+
+  QList&lt;double&gt; getValue(SbVec2d* vec)
+  {
+    QList&lt;double&gt; r;
+    r &lt;&lt; (*vec)[0];
+    r &lt;&lt; (*vec)[1];
+    return r;
+  }
+
+  void         setValue(SbVec2d* vec, const QList&lt;double&gt;&amp; values)
+  {
+    if (values.size() != 2) {
+      throw std::range_error(&quot;SbVec2d::setValue expects 2 values.&quot;);
+    }
+    vec-&gt;setValue(values.at(0), values.at(1));
+  }
+
+  QList&lt;double&gt; toTuple(SbVec2d* vec) { return getValue(vec); }
+
+  void  __setitem__(SbVec2d* vec, int index, double value)
+  {
+    if (index&lt;0 || index&gt;=2) {
+      throw std::range_error(&quot;SbVec2d::__setitem__ out of range!&quot;);
+    }
+    (*vec)[index] = value;
+  }
+
+  double __getitem__(SbVec2d* vec, int index)
+  {
+    if (index&lt;0 || index&gt;=2) {
+      throw std::range_error(&quot;SbVec2d::__getitem__ out of range!&quot;);
+    }
+    return (*vec)[index];
+  }
+
+  int   __len__(SbVec2d* vec) { return 2; }
+    </inject-code>
+  </value-type>
+  <value-type name="SbVec3d">
+   <inject-code class="pywrap-operators">PythonQt::Type_MappingGetItem PythonQt::Type_MappingSetItem PythonQt::Type_Length</inject-code>
+   <modify-function signature="SbVec3d(Array)" remove="all"/>
+   <modify-function signature="setValue(Array)" remove="all"/>
+   <modify-function signature="operator[](int)" remove="all"/>
+   <modify-function signature="operator[](int)const" remove="all"/>
+   <inject-code class="pywrap-h">
+  SbVec3f toVec3f( SbVec3d* vec )
+  {
+    const double* value = vec-&gt;getValue();
+    return SbVec3f(value[0], value[1], value[2]);
+  }
+    
+  QList&lt;double&gt; getValue(SbVec3d* vec)
+  {
+    QList&lt;double&gt; r;
+    r &lt;&lt; (*vec)[0];
+    r &lt;&lt; (*vec)[1];
+    r &lt;&lt; (*vec)[2];
+    return r;
+  }
+
+  void         setValue(SbVec3d* vec, const QList&lt;double&gt;&amp; values)
+  {
+    if (values.size() != 3) {
+      throw std::range_error(&quot;SbVec3d::setValue expects 3 values.&quot;);
+    }
+    vec-&gt;setValue(values.at(0), values.at(1), values.at(2));
+  }
+
+  QList&lt;double&gt; toTuple(SbVec3d* vec) { return getValue(vec); }
+
+  void  __setitem__(SbVec3d* vec, int index, double value)
+  {
+    if (index&lt;0 || index&gt;=3) {
+      throw std::range_error(&quot;SbVec3d::__setitem__ out of range!&quot;);
+    }
+    (*vec)[index] = value;
+  }
+
+  double __getitem__(SbVec3d* vec, int index)
+  {
+    if (index&lt;0 || index&gt;=3) {
+      throw std::range_error(&quot;SbVec3d::__getitem__ out of range!&quot;);
+    }
+    return (*vec)[index];
+  }
+
+  int   __len__(SbVec3d* vec) { return 3; }
+    </inject-code>
+  </value-type>
+  <value-type name="SbVec4d">
+   <inject-code class="pywrap-operators">PythonQt::Type_MappingGetItem PythonQt::Type_MappingSetItem PythonQt::Type_Length</inject-code>
+   <modify-function signature="SbVec4d(Array)" remove="all"/>
+   <modify-function signature="setValue(Array)" remove="all"/>
+   <modify-function signature="operator[](int)" remove="all"/>
+   <modify-function signature="operator[](int)const" remove="all"/>
+   <modify-function signature="getReal(SbVec3d&amp;)const" remove="all"/>
+    <inject-code class="pywrap-h">
+  SbVec4f toVec4f( SbVec4d* vec )
+  {
+    const double* value = vec-&gt;getValue();
+    return SbVec4f(value[0], value[1], value[2], value[3]);
+  }
+  
+  QList&lt;double&gt; getValue(SbVec4d* vec)
+  {
+    QList&lt;double&gt; r;
+    r &lt;&lt; (*vec)[0];
+    r &lt;&lt; (*vec)[1];
+    r &lt;&lt; (*vec)[2];
+    r &lt;&lt; (*vec)[3];
+    return r;
+  }
+
+  void         setValue(SbVec4d* vec, const QList&lt;double&gt;&amp; values)
+  {
+    if (values.size() != 4) {
+      throw std::range_error(&quot;SbVec4d::setValue expects 4 values.&quot;);
+    }
+    vec-&gt;setValue(values.at(0), values.at(1), values.at(2), values.at(3));
+  }
+
+  QList&lt;double&gt; toTuple(SbVec4d* vec) { return getValue(vec); }
+
+  void  __setitem__(SbVec4d* vec, int index, double value)
+  {
+    if (index&lt;0 || index&gt;=4) {
+      throw std::range_error(&quot;SbVec4d::__setitem__ out of range!&quot;);
+    }
+    (*vec)[index] = value;
+  }
+
+  double __getitem__(SbVec4d* vec, int index)
+  {
+    if (index&lt;0 || index&gt;=4) {
+      throw std::range_error(&quot;SbVec4d::__getitem__ out of range!&quot;);
+    }
+    return (*vec)[index];
+  }
+
+  int   __len__(SbVec4d* vec) { return 4; }
+    </inject-code>
+  </value-type>
+  <value-type name="SbLine">
+   <modify-function signature="SbLine(Array)" remove="all"/>
+   <modify-function signature="setValue(Array)" remove="all"/>
+  </value-type>
+  <value-type name="SbLined">
+   <modify-function signature="SbLined(Array)" remove="all"/>
+   <modify-function signature="setValue(Array)" remove="all"/>
+  </value-type>
+  <value-type name="SbPlane">
+   <modify-function signature="SbPlane(Array)" remove="all"/>
+   <modify-function signature="setValue(Array)" remove="all"/>
+  </value-type>
+  <value-type name="SbPlaned">
+   <modify-function signature="SbPlaned(Array)" remove="all"/>
+   <modify-function signature="setValue(Array)" remove="all"/>
+  </value-type>
+  <value-type name="SbMatrix">
+   <modify-function signature="operator[](int)" remove="all"/>
+   <modify-function signature="operator[](int)const" remove="all"/>
+   <inject-code class="pywrap-operators">PythonQt::Type_MappingGetItem PythonQt::Type_MappingSetItem</inject-code>
+   <modify-function signature="SbMatrix(Array)" remove="all"/>
+   <modify-function signature="setValue(Array)" remove="all"/>
+   <modify-function signature="setValue(const float*)" remove="all"/>
+   <modify-function signature="getValue() const" remove="all"/>
+   <modify-function signature="getValue(Array) const" remove="all"/>
+   <modify-function signature="operator=(Array)" remove="all"/>
+   <modify-function signature="operator SbMat &amp;()" remove="all"/>
+   <modify-function signature="operator float *()" remove="all"/>
+   <modify-function signature="LUDecomposition(Array,float &amp;)" remove="all"/>
+   <modify-function signature="LUBackSubstitution(Array,Array) const" remove="all"/>
+  </value-type>
+  <value-type name="SbMatrixd">
+   <modify-function signature="operator[](int)" remove="all"/>
+   <modify-function signature="operator[](int)const" remove="all"/>
+   <inject-code class="pywrap-operators">PythonQt::Type_MappingGetItem PythonQt::Type_MappingSetItem</inject-code>
+   <modify-function signature="SbMatrixd(Array)" remove="all"/>
+   <modify-function signature="setValue(Array)" remove="all"/>
+   <modify-function signature="setValue(const float*)" remove="all"/>
+   <modify-function signature="setValue(const double*)" remove="all"/>
+   <modify-function signature="getValue() const" remove="all"/>
+   <modify-function signature="getValue(Array) const" remove="all"/>
+   <modify-function signature="operator=(Array)" remove="all"/>
+   <modify-function signature="operator SbMatd &amp;()" remove="all"/>
+   <modify-function signature="operator double *()" remove="all"/>
+   <modify-function signature="LUDecomposition(Array,double &amp;)" remove="all"/>
+   <modify-function signature="LUBackSubstitution(Array,Array) const" remove="all"/>
+  </value-type>
+  <value-type name="SbRotation">
+   <modify-function signature="SbRotation(Array)" remove="all"/>
+   <modify-function signature="setValue(Array)" remove="all"/>
+  </value-type>
+  <value-type name="SbRotationd">
+   <modify-function signature="SbRotationd(Array)" remove="all"/>
+   <modify-function signature="setValue(Array)" remove="all"/>
+  </value-type>
+
+
+  <value-type name="SbCylinder">
+  </value-type>
+  <value-type name="SbCylinderd">
+  </value-type>
+
+  <value-type name="SbSphere">
+  </value-type>
+  <value-type name="SbSphered">
+  </value-type>
+
+  <enum-type name="SbViewVolume::ProjectionType" />
+  <value-type name="SbViewVolume">
+    <modify-function signature="projectPointToLine(const SbVec2f&amp;,SbLine&amp;)const" remove="all"/>
+    <modify-function signature="projectPointToLine(const SbVec2f&amp;,SbVec3f&amp;,SbVec3f&amp;)const" remove="all"/>
+    <modify-function signature="projectToScreen(const SbVec3f&amp;,SbVec3f&amp;)const" remove="all"/>
+    <modify-function signature="intersect(const SbVec3f&amp;,const SbVec3f&amp;,SbVec3f&amp;)const" remove="all"/>
+  </value-type>
+
+  <value-type name="SoType">
+  </value-type>
+
+  <value-type name="SbName">
+  </value-type>
+  <value-type name="SbString">
+  </value-type>
+
+  <value-type name="SbTime">
+  </value-type>
+
+  <value-type name="SbBox2s">
+  </value-type>
+  <value-type name="SbBox2f">
+  </value-type>
+  <value-type name="SbXfBox3f">
+   <modify-function signature="getMin() const" remove="all"/>
+   <modify-function signature="getMax() const" remove="all"/>
+  </value-type>
+  <value-type name="SbBox3f">
+   <modify-function signature="getMin() const" remove="all"/>
+   <modify-function signature="getMax() const" remove="all"/>
+  </value-type>
+  <value-type name="SbXfBox3d">
+   <modify-function signature="getMin() const" remove="all"/>
+   <modify-function signature="getMax() const" remove="all"/>
+  </value-type>
+  <value-type name="SbBox3d">
+   <modify-function signature="getMin() const" remove="all"/>
+   <modify-function signature="getMax() const" remove="all"/>
+  </value-type>
+
+  <value-type name="SoState">
+  </value-type>
+
+  <object-type name="SoBase">
+   <modify-function signature="SoBase()" remove="all"/>
+   <inject-code class="pyinheritshell-constructor-code">_type = getClassTypeId();</inject-code>
+   <inject-code class="pyinheritshell-h">
+   SoType _type;
+   virtual SoType getTypeId() const { return _type; }
+   </inject-code>
+   <inject-code class="pywrap-h">
+   SoType getTypeId(SoBase* o) const { return o->getTypeId(); }
+   </inject-code>
+  </object-type>
+
+  <value-type name="SoSceneManager">
+  </value-type>
+  <value-type name="SoInput">
+  </value-type>
+  <value-type name="SoDB">
+  </value-type>
+  
+  <enum-type name="SoOutput::Annotations" />
+  <enum-type name="SoOutput::Stage" />
+  <value-type name="SoOutput">
+  </value-type>
+  
+  <value-type name="SbViewportRegion">
+  </value-type>
+  <value-type name="SoPath">
+  </value-type>
+
+<!-- we don't want to expose those:
+  <value-type name="SoPathList">
+  </value-type>
+  <value-type name="SoBaseList">
+  </value-type>
+  <value-type name="SbPList">
+  </value-type>
+-->
+
+  <value-type name="SoPickedPoint">
+  </value-type>
+  <value-type name="SoPrimitiveVertex">
+  </value-type>
+
+<suppress-warning text="WARNING(MetaJavaBuilder) :: private virtual function*"/>
+<suppress-warning text="WARNING(MetaJavaBuilder) :: skipping field '*' with unmatched type 'So*'"/>
+<suppress-warning text="WARNING(MetaJavaBuilder) :: skipping field '*' with unmatched type 'SbPList'"/>
+<suppress-warning text="WARNING(MetaJavaBuilder) :: unknown operator 'SbMat*'"/>
+  
+ </typesystem>

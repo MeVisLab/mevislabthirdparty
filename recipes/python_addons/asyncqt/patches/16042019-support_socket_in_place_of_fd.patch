@@ -1,0 +1,16 @@
+diff --git i/asyncqt/__init__.py w/asyncqt/__init__.py
+index 87f9fa4..1bf2c6b 100644
+--- i/asyncqt/__init__.py
++++ w/asyncqt/__init__.py
+@@ -363,6 +363,11 @@ class _QEventLoop:
+         """Register a callback for when a file descriptor is ready for reading."""
+         self._check_closed()
+ 
++        try:
++            fd = fd.fileno()
++        except:
++            pass
++
+         try:
+             existing = self._read_notifiers[fd]
+         except KeyError:

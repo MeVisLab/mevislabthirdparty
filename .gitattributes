@@ -1,0 +1,5 @@
+# Make sure that all text files on all platforms use the lf line feed.
+# This is necessary because Conan uses hashes of the files to compare them.
+
+* text=auto eol=lf
+patches/** -text

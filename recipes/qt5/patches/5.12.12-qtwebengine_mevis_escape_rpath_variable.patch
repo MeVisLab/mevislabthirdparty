@@ -1,0 +1,17 @@
+diff --git i/qtwebengine/mkspecs/features/gn_generator.prf w/qtwebengine/mkspecs/features/gn_generator.prf
+index c1399a4537..9063566aa1 100644
+--- i/qtwebengine/mkspecs/features/gn_generator.prf
++++ w/qtwebengine/mkspecs/features/gn_generator.prf
+@@ -149,7 +149,11 @@ GN_CONTENTS += "    \"$$QMAKESPEC\""
+ GN_CONTENTS += "  ]"
+ 
+ GN_CONTENTS += "  ldflags = ["
+-for (flag, QMAKE_LFLAGS): GN_CONTENTS += "    \"$$filter_flag_values($$flag)\","
++for (flag, QMAKE_LFLAGS): {
++  # MeVis: The $ in -Wl,-rpath,'$$ORIGIN:$$ORIGIN/../../../../lib' must be escaped
++  flag = $$replace(flag, '\\$', '\\$')
++  GN_CONTENTS += "    \"$$filter_flag_values($$flag)\","
++}
+ for (flag, GN_FLAGS): GN_CONTENTS += "    \"$$flag\","
+ !isEmpty(QMAKE_RPATHDIR) {
+     for (rpath, QMAKE_RPATHDIR) {

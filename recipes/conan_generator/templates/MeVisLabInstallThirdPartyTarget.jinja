@@ -1,0 +1,79 @@
+# {{ name }}
+# {{ header_date }}
+#
+{% set install_excludes = "PATTERN licenses EXCLUDE PATTERN conaninfo.txt EXCLUDE PATTERN conanmanifest.txt EXCLUDE PATTERN lib/python{{python_major_version}}.{{python_minor_version}} EXCLUDE" -%}
+
+{%- if name == 'mesa' %}
+
+if(WIN32)
+    install(FILES "{{ rootpath }}/bin/opengl32.dll" DESTINATION "MeVisLab/IDE/bin/MESA/")
+endif()
+
+{%- elif name == 'qt5' %}
+
+install(DIRECTORY "{{ rootpath }}/" DESTINATION "${MEVISLAB_INSTALL_THIRDPARTYDIR}/" USE_SOURCE_PERMISSIONS {{install_excludes}} PATTERN MeVis EXCLUDE)
+
+{%- elif name == 'python' %}
+
+if(WIN32)
+  install(DIRECTORY "{{ rootpath }}/" DESTINATION "${MEVISLAB_INSTALL_THIRDPARTYDIR}/Python" USE_SOURCE_PERMISSIONS PATTERN licenses EXCLUDE PATTERN conaninfo.txt EXCLUDE PATTERN conanmanifest.txt EXCLUDE PATTERN MeVis EXCLUDE)
+else()
+  install(DIRECTORY "{{ rootpath }}/" DESTINATION "${MEVISLAB_INSTALL_THIRDPARTYDIR}/Python/{{ build_type | capitalize }}" USE_SOURCE_PERMISSIONS PATTERN licenses EXCLUDE PATTERN conaninfo.txt EXCLUDE PATTERN conanmanifest.txt EXCLUDE PATTERN MeVis EXCLUDE)
+endif()
+
+{% else %}
+
+{%- if name == 'openssl' %}
+
+# Copy OpenSSL DLLs so that stand-alone MeVisPython can "import ssl".
+if(WIN32)
+  install(DIRECTORY "{{ rootpath }}/bin/" DESTINATION "${MEVISLAB_INSTALL_THIRDPARTYDIR}/Python/DLLs" USE_SOURCE_PERMISSIONS FILES_MATCHING PATTERN "*1_1-x64.dll" PATTERN "*1_1-x64d.dll" )
+endif()
+
+{% endif %}
+
+{% if bin_paths %}
+foreach(d {{ bin_paths }})
+  install(DIRECTORY "${d}/" DESTINATION "${MEVISLAB_INSTALL_THIRDPARTYDIR}/bin" USE_SOURCE_PERMISSIONS {{install_excludes}})
+endforeach()
+{% endif %}
+
+{% if lib_paths %}
+foreach(d {{ lib_paths }})
+  install(DIRECTORY "${d}/" DESTINATION "${MEVISLAB_INSTALL_THIRDPARTYDIR}/lib" USE_SOURCE_PERMISSIONS {{install_excludes}})
+endforeach()
+{% endif %}
+
+{% if res_paths %}
+foreach(d {{ res_paths }})
+  install(DIRECTORY "${d}/" DESTINATION "${MEVISLAB_INSTALL_THIRDPARTYDIR}/res" USE_SOURCE_PERMISSIONS {{install_excludes}})
+endforeach()
+{% endif %}
+
+{% if include_paths %}
+foreach(d {{ include_paths }})
+  install(DIRECTORY "${d}/" DESTINATION "${MEVISLAB_INSTALL_THIRDPARTYDIR}/include" USE_SOURCE_PERMISSIONS {{install_excludes}})
+endforeach()
+{% endif %}
+
+{% if python_major_version %}
+if(WIN32)
+  set(_SRC_DIR "{{ rootpath }}/Lib/site-packages/")
+  set(_DST_DIR "${MEVISLAB_INSTALL_THIRDPARTYDIR}/Python/Lib/site-packages")
+else()
+  set(_SRC_DIR "{{ rootpath }}/lib/python{{python_major_version}}.{{python_minor_version}}/site-packages/")
+  set(_DST_DIR "${MEVISLAB_INSTALL_THIRDPARTYDIR}/Python/{{ build_type | capitalize }}/lib/python{{python_major_version}}.{{python_minor_version}}/site-packages")
+endif()
+
+install(DIRECTORY "${_SRC_DIR}" DESTINATION "${_DST_DIR}" OPTIONAL USE_SOURCE_PERMISSIONS)
+
+if(WIN32)
+  set(_SRC_DIR "{{ rootpath }}/Scripts/")
+  set(_DST_DIR "${MEVISLAB_INSTALL_THIRDPARTYDIR}/Python/Scripts")
+  install(DIRECTORY "${_SRC_DIR}" DESTINATION "${_DST_DIR}" OPTIONAL USE_SOURCE_PERMISSIONS)
+endif()
+{% endif %}
+
+{% endif %}
+
+install(DIRECTORY "{{ rootpath }}/MeVis/ThirdParty/" DESTINATION "${MEVISLAB_INSTALL_THIRDPARTYDIR}" OPTIONAL USE_SOURCE_PERMISSIONS)

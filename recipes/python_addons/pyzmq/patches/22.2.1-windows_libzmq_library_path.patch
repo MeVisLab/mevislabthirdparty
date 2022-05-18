@@ -1,0 +1,13 @@
+diff --git i/setup.py w/setup.py
+index 2632628..fab39d0 100755
+--- i/setup.py
++++ w/setup.py
+@@ -259,7 +259,7 @@ def settings_from_prefix(prefix=None):
+                     break
+             else:
+                 warn(f"zmq.h not found in {prefix} or {prefix}/include")
+-            for library_dir in [pjoin(prefix, 'lib'), prefix]:
++            for library_dir in [pjoin(prefix, 'lib'), pjoin(prefix, 'bin'), prefix]:
+                 matches = glob(pjoin(library_dir, f"{libzmq_name}*.dll"))
+                 if matches:
+                     libzmq_path = matches[0]

@@ -1,0 +1,12 @@
+type: pure_c
+name: idna
+version: "3.3"
+homepage: https://github.com/kjd/idna
+description: "Internationalized Domain Names for Python (IDNA 2008 and UTS #46)"
+license: BSD-3-Clause
+
+sources:
+  "3.3":
+    sha256: 34b145ffe35b7872e9a3e0abc3a3a8330db90a0fd58db978725fd05c5c7d9f88
+    url: https://github.com/kjd/idna/archive/refs/tags/v${version}.tar.gz
+    base_path: idna-${version}

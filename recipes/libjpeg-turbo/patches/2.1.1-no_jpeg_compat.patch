@@ -1,0 +1,13 @@
+diff --git i/sharedlib/CMakeLists.txt w/sharedlib/CMakeLists.txt
+index 78a2f28..26b73de 100644
+--- i/sharedlib/CMakeLists.txt
++++ w/sharedlib/CMakeLists.txt
+@@ -88,6 +88,8 @@ set_property(TARGET jpegtran PROPERTY COMPILE_FLAGS "${USE_SETMODE}")
+ add_executable(jcstest ../jcstest.c)
+ target_link_libraries(jcstest jpeg)
+ 
++return() # exit here to not install the following targets
++
+ install(TARGETS jpeg EXPORT ${CMAKE_PROJECT_NAME}Targets
+   INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}

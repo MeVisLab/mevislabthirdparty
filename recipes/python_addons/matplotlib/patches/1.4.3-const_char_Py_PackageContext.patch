@@ -1,0 +1,26 @@
+diff --git i/extern/CXX/IndirectPythonInterface.cxx w/extern/CXX/IndirectPythonInterface.cxx
+index 256bd7e..d225372 100644
+--- i/extern/CXX/IndirectPythonInterface.cxx
++++ w/extern/CXX/IndirectPythonInterface.cxx
+@@ -538,7 +538,7 @@ int &_Py_InteractiveFlag()              { return Py_InteractiveFlag; }
+ int &_Py_OptimizeFlag()                 { return Py_OptimizeFlag; }
+ int &_Py_NoSiteFlag()                   { return Py_NoSiteFlag; }
+ int &_Py_VerboseFlag()                  { return Py_VerboseFlag; }
+-char *__Py_PackageContext()             { return _Py_PackageContext; }
++const char *__Py_PackageContext()       { return _Py_PackageContext; }
+ 
+ //
+ //    Needed to keep the abstactions for delayload interface
+diff --git i/extern/CXX/Python3/IndirectPythonInterface.hxx w/extern/CXX/Python3/IndirectPythonInterface.hxx
+index cdae3ad..4e8419f 100644
+--- i/extern/CXX/Python3/IndirectPythonInterface.hxx
++++ w/extern/CXX/Python3/IndirectPythonInterface.hxx
+@@ -177,7 +177,7 @@ int &_Py_UnicodeFlag();
+ void _XINCREF( PyObject *op );
+ void _XDECREF( PyObject *op );
+ 
+-char *__Py_PackageContext();
++const char *__Py_PackageContext();
+ };
+ 
+ #endif    // __CXX_INDIRECT_PYTHON_INTERFACE__HXX__

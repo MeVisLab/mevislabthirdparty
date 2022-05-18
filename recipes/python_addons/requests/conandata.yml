@@ -1,0 +1,17 @@
+type: pure_c
+name: requests
+version: "2.27.1"
+homepage: https://docs.python-requests.org
+description: Requests is a simple, yet elegant, HTTP library for Python
+license: Apache-2.0
+
+sources:
+  "2.27.1":
+    sha256: b290592a3ade14f676d00db0a4ec0e500271fa9cc4c07a108e30731173be4299
+    url: https://github.com/psf/requests/archive/refs/tags/v${version}.tar.gz
+    base_path: requests-${version}
+
+  "2.26.0":
+    sha256: e88b61425a0b4f1316e7ab8f6c11d7abbc99b464e418786681d59fef9f9d6421
+    url: https://github.com/psf/requests/archive/refs/tags/v${version}.tar.gz
+    base_path: requests-${version}

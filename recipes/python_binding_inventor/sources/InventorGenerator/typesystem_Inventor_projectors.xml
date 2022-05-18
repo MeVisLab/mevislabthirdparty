@@ -1,0 +1,27 @@
+<typesystem package="Inventor.projectors">
+
+  <object-type name="SbProjector">
+  </object-type>
+  <object-type name="SbSphereSheetProjector">
+  </object-type>
+  <object-type name="SbSphereSectionProjector">
+  </object-type>
+  <object-type name="SbSphereProjector">
+  </object-type>
+  <object-type name="SbSpherePlaneProjector">
+  </object-type>
+  <object-type name="SbPlaneProjector">
+  </object-type>
+  <object-type name="SbLineProjector">
+  </object-type>
+  <object-type name="SbCylinderSheetProjector">
+  </object-type>
+  <object-type name="SbCylinderProjector">
+  </object-type>
+  <object-type name="SbCylinderSectionProjector">
+  </object-type>
+  <object-type name="SbCylinderPlaneProjector">
+  </object-type>
+
+  
+ </typesystem>

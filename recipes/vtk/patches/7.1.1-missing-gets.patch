@@ -1,0 +1,1314 @@
+diff --git i/Common/ComputationalGeometry/vtkParametricSpline.cxx w/Common/ComputationalGeometry/vtkParametricSpline.cxx
+index 29eea2ae..7b1ea1e8 100644
+--- i/Common/ComputationalGeometry/vtkParametricSpline.cxx
++++ w/Common/ComputationalGeometry/vtkParametricSpline.cxx
+@@ -77,6 +77,12 @@ void vtkParametricSpline::SetNumberOfPoints(vtkIdType numPts)
+   this->Modified();
+ }
+ 
++//----------------------------------------------------------------------------
++vtkIdType vtkParametricSpline::GetNumberOfPoints()
++{
++  return this->Points ? this->Points->GetNumberOfPoints() : 0;
++}
++
+ //----------------------------------------------------------------------------
+ void vtkParametricSpline::SetPoint(
+   vtkIdType index, double x, double y, double z)
+diff --git i/Common/ComputationalGeometry/vtkParametricSpline.h w/Common/ComputationalGeometry/vtkParametricSpline.h
+index fd2ef213..ef7059d9 100644
+--- i/Common/ComputationalGeometry/vtkParametricSpline.h
++++ w/Common/ComputationalGeometry/vtkParametricSpline.h
+@@ -97,6 +97,10 @@ public:
+    * splines will be fit.
+    */
+   void SetPoints(vtkPoints*);
++  
++  // Returns number of points (or 0 if still not set). 
++  vtkIdType GetNumberOfPoints();
++
+   vtkGetObjectMacro(Points,vtkPoints);
+   //@}
+
+diff --git i/Common/Core/vtkLookupTable.h w/Common/Core/vtkLookupTable.h
+index 6b79ac61..68133bc9 100644
+--- i/Common/Core/vtkLookupTable.h
++++ w/Common/Core/vtkLookupTable.h
+@@ -282,6 +282,7 @@ public:
+    * and \a v serves directly as an index into \a TableValues.
+    */
+   virtual vtkIdType GetIndex(double v);
++  void GetRange(double rng[2]) { this->GetTableRange(rng); };
+
+   //@{
+   /**
+diff --git i/Common/Core/vtkOutputWindow.h w/Common/Core/vtkOutputWindow.h
+index 5c590138..c3829bd1 100644
+--- i/Common/Core/vtkOutputWindow.h
++++ w/Common/Core/vtkOutputWindow.h
+@@ -77,6 +77,7 @@ public:
+   virtual void DisplayErrorText(const char*);
+   virtual void DisplayWarningText(const char*);
+   virtual void DisplayGenericWarningText(const char*);
++  vtkGetMacro(PromptUser, int);
+   //@}
+ 
+   virtual void DisplayDebugText(const char*);
+diff --git i/Filters/Extraction/vtkExtractUnstructuredGrid.cxx w/Filters/Extraction/vtkExtractUnstructuredGrid.cxx
+index a30ee4f4..092aea8d 100644
+--- i/Filters/Extraction/vtkExtractUnstructuredGrid.cxx
++++ w/Filters/Extraction/vtkExtractUnstructuredGrid.cxx
+@@ -89,6 +89,16 @@ void vtkExtractUnstructuredGrid::SetExtent(double extent[6])
+   }
+ }
+ 
++void vtkExtractUnstructuredGrid::GetExtent(double extent[6])
++{
++  extent[0] = this->Extent[0]; 
++  extent[1] = this->Extent[1]; 
++  extent[2] = this->Extent[2]; 
++  extent[3] = this->Extent[3]; 
++  extent[4] = this->Extent[4]; 
++  extent[5] = this->Extent[5]; 
++}
++
+ // Extract cells and pass points and point data through. Also handles
+ // cell data.
+ int vtkExtractUnstructuredGrid::RequestData(
+diff --git i/Filters/Extraction/vtkExtractUnstructuredGrid.h w/Filters/Extraction/vtkExtractUnstructuredGrid.h
+index a48ccdcc..a1439b57 100644
+--- i/Filters/Extraction/vtkExtractUnstructuredGrid.h
++++ w/Filters/Extraction/vtkExtractUnstructuredGrid.h
+@@ -97,7 +97,8 @@ public:
+   vtkSetClampMacro(PointMaximum,vtkIdType,0,VTK_ID_MAX);
+   vtkGetMacro(PointMaximum,vtkIdType);
+   //@}
+-
++  void GetExtent(double extent[6]);
++  
+   //@{
+   /**
+    * Specify the minimum cell id for point id selection.
+diff --git i/Filters/FlowPaths/vtkStreamer.cxx w/Filters/FlowPaths/vtkStreamer.cxx
+index 49091e86..3e57f18e 100644
+--- i/Filters/FlowPaths/vtkStreamer.cxx
++++ w/Filters/FlowPaths/vtkStreamer.cxx
+@@ -221,6 +221,22 @@ double *vtkStreamer::GetStartPosition()
+   return this->StartPosition;
+ }
+ 
++void vtkStreamer::GetStartPosition(double &x, double &y, double &z)
++{
++  double *startPosition = this->GetStartPosition();
++  x = startPosition[0];
++  y = startPosition[1];
++  z = startPosition[2];
++}
++
++void vtkStreamer::GetStartPosition(double startPos[3])
++{
++  double *startPosition = this->GetStartPosition();
++  startPos[0] = startPosition[0];
++  startPos[1] = startPosition[1];
++  startPos[2] = startPosition[2];
++}
++
+ VTK_THREAD_RETURN_TYPE vtkStreamer::ThreadedIntegrate( void *arg )
+ {
+   vtkStreamer              *self;
+diff --git i/Filters/FlowPaths/vtkStreamer.h w/Filters/FlowPaths/vtkStreamer.h
+index 2e310061..246a72ee 100644
+--- i/Filters/FlowPaths/vtkStreamer.h
++++ w/Filters/FlowPaths/vtkStreamer.h
+@@ -107,6 +107,8 @@ public:
+    * Get the start position in global x-y-z coordinates.
+    */
+   double *GetStartPosition();
++  void GetStartPosition(double &x, double &y, double &z);
++  void GetStartPosition(double startPos[3]);
+ 
+   //@{
+   /**
+diff --git i/Filters/General/vtkHyperStreamline.cxx w/Filters/General/vtkHyperStreamline.cxx
+index 5be66bf7..1bf2a524 100644
+--- i/Filters/General/vtkHyperStreamline.cxx
++++ w/Filters/General/vtkHyperStreamline.cxx
+@@ -254,6 +254,12 @@ double *vtkHyperStreamline::GetStartPosition()
+ {
+   return this->StartPosition;
+ }
++void vtkHyperStreamline::GetStartPosition(double x[3])
++{
++  x[0] = this->StartPosition[0];
++  x[1] = this->StartPosition[1];
++  x[2] = this->StartPosition[2];
++}
+ 
+ // Make sure coordinate systems are consistent
+ static void FixVectors(double **prev, double **current, int iv, int ix, int iy)
+diff --git i/Filters/General/vtkHyperStreamline.h w/Filters/General/vtkHyperStreamline.h
+index 4f88b823..8243e796 100644
+--- i/Filters/General/vtkHyperStreamline.h
++++ w/Filters/General/vtkHyperStreamline.h
+@@ -113,6 +113,7 @@ public:
+    * Get the start position of the hyperstreamline in global x-y-z coordinates.
+    */
+   double *GetStartPosition();
++  void GetStartPosition(double x[3]);
+ 
+   //@{
+   /**
+diff --git i/Filters/Geometry/vtkGeometryFilter.cxx w/Filters/Geometry/vtkGeometryFilter.cxx
+index fcbc29af..314ac3ed 100644
+--- i/Filters/Geometry/vtkGeometryFilter.cxx
++++ w/Filters/Geometry/vtkGeometryFilter.cxx
+@@ -111,6 +111,17 @@ void vtkGeometryFilter::SetExtent(double extent[6])
+   }
+ }
+ 
++//----------------------------------------------------------------------------
++void vtkGeometryFilter::GetExtent(double extent[6])
++{
++  extent[0] = this->Extent[0]; 
++  extent[1] = this->Extent[1]; 
++  extent[2] = this->Extent[2]; 
++  extent[3] = this->Extent[3]; 
++  extent[4] = this->Extent[4]; 
++  extent[5] = this->Extent[5]; 
++}
++
+ //----------------------------------------------------------------------------
+ int vtkGeometryFilter::RequestData(
+   vtkInformation *vtkNotUsed(request),
+diff --git i/Filters/Geometry/vtkGeometryFilter.h w/Filters/Geometry/vtkGeometryFilter.h
+index 0d847925..f57b0c77 100644
+--- i/Filters/Geometry/vtkGeometryFilter.h
++++ w/Filters/Geometry/vtkGeometryFilter.h
+@@ -108,6 +108,7 @@ public:
+   vtkGetMacro(PointMaximum,vtkIdType);
+   //@}
+ 
++  void GetExtent(double extent[6]);
+   //@{
+   /**
+    * Specify the minimum cell id for point id selection.
+diff --git i/Filters/Geometry/vtkImageDataGeometryFilter.cxx w/Filters/Geometry/vtkImageDataGeometryFilter.cxx
+index f7a72eac..4f96dc5d 100644
+--- i/Filters/Geometry/vtkImageDataGeometryFilter.cxx
++++ w/Filters/Geometry/vtkImageDataGeometryFilter.cxx
+@@ -463,6 +463,16 @@ void vtkImageDataGeometryFilter::SetExtent(int extent[6])
+   }
+ }
+ 
++void vtkImageDataGeometryFilter::GetExtent(int extent[6])
++{
++  extent[0] = this->Extent[0]; 
++  extent[1] = this->Extent[1]; 
++  extent[2] = this->Extent[2]; 
++  extent[3] = this->Extent[3]; 
++  extent[4] = this->Extent[4]; 
++  extent[5] = this->Extent[5]; 
++}
++
+ int vtkImageDataGeometryFilter::FillInputPortInformation(int, vtkInformation *info)
+ {
+   info->Set(vtkAlgorithm::INPUT_REQUIRED_DATA_TYPE(), "vtkImageData");
+diff --git i/Filters/Geometry/vtkImageDataGeometryFilter.h w/Filters/Geometry/vtkImageDataGeometryFilter.h
+index d714080f..f6d1a6b0 100644
+--- i/Filters/Geometry/vtkImageDataGeometryFilter.h
++++ w/Filters/Geometry/vtkImageDataGeometryFilter.h
+@@ -53,6 +53,7 @@ public:
+   static vtkImageDataGeometryFilter *New();
+ 
+   //@{
++  void GetExtent(int extent[6]);
+   /**
+    * Set / get the extent (imin,imax, jmin,jmax, kmin,kmax) indices.
+    */
+diff --git i/Filters/Geometry/vtkUnstructuredGridGeometryFilter.cxx w/Filters/Geometry/vtkUnstructuredGridGeometryFilter.cxx
+index 92f4db31..2c4d74ed 100644
+--- i/Filters/Geometry/vtkUnstructuredGridGeometryFilter.cxx
++++ w/Filters/Geometry/vtkUnstructuredGridGeometryFilter.cxx
+@@ -787,6 +787,17 @@ void vtkUnstructuredGridGeometryFilter::SetExtent(double extent[6])
+   }
+ }
+ 
++//----------------------------------------------------------------------------
++void vtkUnstructuredGridGeometryFilter::GetExtent(double extent[6])
++{
++  extent[0] = this->Extent[0]; 
++  extent[1] = this->Extent[1]; 
++  extent[2] = this->Extent[2]; 
++  extent[3] = this->Extent[3]; 
++  extent[4] = this->Extent[4]; 
++  extent[5] = this->Extent[5]; 
++}
++
+ //-----------------------------------------------------------------------------
+ int vtkUnstructuredGridGeometryFilter::RequestData(
+   vtkInformation *vtkNotUsed(request),
+diff --git i/Filters/Geometry/vtkUnstructuredGridGeometryFilter.h w/Filters/Geometry/vtkUnstructuredGridGeometryFilter.h
+index 6fb8854e..46a3b446 100644
+--- i/Filters/Geometry/vtkUnstructuredGridGeometryFilter.h
++++ w/Filters/Geometry/vtkUnstructuredGridGeometryFilter.h
+@@ -100,6 +100,7 @@ public:
+   //@}
+ 
+   //@{
++  void GetExtent(double extent[6]);
+   /**
+    * Specify the minimum cell id for point id selection.
+    */
+diff --git i/Filters/Imaging/vtkPairwiseExtractHistogram2D.h w/Filters/Imaging/vtkPairwiseExtractHistogram2D.h
+index 5dd1b356..43ee0104 100644
+--- i/Filters/Imaging/vtkPairwiseExtractHistogram2D.h
++++ w/Filters/Imaging/vtkPairwiseExtractHistogram2D.h
+@@ -76,6 +76,7 @@ public:
+    * to interact with the ParaView client/server message passing interface.
+    */
+   vtkSetMacro(CustomColumnRangeIndex,int);
++  vtkGetMacro(CustomColumnRangeIndex,int);
+   void SetCustomColumnRangeByIndex(double,double);
+   //@}
+ 
+diff --git i/Filters/Statistics/vtkStrahlerMetric.h w/Filters/Statistics/vtkStrahlerMetric.h
+index a101c1af..c9189d6e 100644
+--- i/Filters/Statistics/vtkStrahlerMetric.h
++++ w/Filters/Statistics/vtkStrahlerMetric.h
+@@ -55,6 +55,7 @@ public:
+   static vtkStrahlerMetric *New();
+   vtkTypeMacro(vtkStrahlerMetric,vtkTreeAlgorithm);
+   void PrintSelf(ostream& os, vtkIndent indent) VTK_OVERRIDE;
+
++  vtkGetStringMacro(MetricArrayName);
+   //@{
+   /**
+diff --git i/IO/Core/vtkUTF16TextCodec.cxx w/IO/Core/vtkUTF16TextCodec.cxx
+index 041200dc..1fe095ae 100644
+--- i/IO/Core/vtkUTF16TextCodec.cxx
++++ w/IO/Core/vtkUTF16TextCodec.cxx
+@@ -159,6 +159,11 @@ void vtkUTF16TextCodec::SetBigEndian(bool state)
+    _bigEndian = state;
+ }
+ 
++bool vtkUTF16TextCodec::GetBigEndian() const
++{
++  return _bigEndian;
++}
++
+ void vtkUTF16TextCodec::FindEndianness(istream& InputStream)
+ {
+   _endianExplicitlySet = false;
+diff --git i/IO/Core/vtkUTF16TextCodec.h w/IO/Core/vtkUTF16TextCodec.h
+index 3175565d..0eacc833 100644
+--- i/IO/Core/vtkUTF16TextCodec.h
++++ w/IO/Core/vtkUTF16TextCodec.h
+@@ -60,6 +60,9 @@ public:
+    * Set the endianness - true if Big false is little
+    */
+   void SetBigEndian(bool) ;
++  // Description:
++  // Returns true if the currently set or determined endianess is bigendian.
++  bool GetBigEndian() const;
+ 
+   /**
+    * Set the endianness - true if Big false is little
+diff --git i/IO/Exodus/vtkExodusIICache.cxx w/IO/Exodus/vtkExodusIICache.cxx
+index ad7c77de..241b7613 100644
+--- i/IO/Exodus/vtkExodusIICache.cxx
++++ w/IO/Exodus/vtkExodusIICache.cxx
+@@ -105,6 +105,10 @@ void vtkExodusIICache::SetCacheCapacity( double sizeInMiB )
+ 
+   this->Capacity =  sizeInMiB < 0 ? 0 : sizeInMiB;
+ }
++double vtkExodusIICache::GetCacheCapacity() const
++{
++  return this->Capacity;
++}
+ 
+ int vtkExodusIICache::ReduceToSize( double newSize )
+ {
+diff --git i/IO/Exodus/vtkExodusIICache.h w/IO/Exodus/vtkExodusIICache.h
+index 3368b505..9f3524e1 100644
+--- i/IO/Exodus/vtkExodusIICache.h
++++ w/IO/Exodus/vtkExodusIICache.h
+@@ -136,6 +136,8 @@ public:
+ 
+   /// Set the maximum allowable cache size. This will remove cache entries if the capacity is reduced below the current size.
+   void SetCacheCapacity( double sizeInMiB );
++  /// Returns the maximum allowable cache size.  
++  double GetCacheCapacity() const;
+ 
+   /** See how much cache space is left.
+     * This is the difference between the capacity and the size of the cache.
+diff --git i/IO/Exodus/vtkExodusIIReader.h w/IO/Exodus/vtkExodusIIReader.h
+index 763bff66..8b409a13 100644
+--- i/IO/Exodus/vtkExodusIIReader.h
++++ w/IO/Exodus/vtkExodusIIReader.h
+@@ -93,6 +93,13 @@ public:
+   //@}
+ 
+   //@{
++  // Description:
++  // Convenience method to get the mode-shape which is same as
++  // this->GetTimeStep()+1;
++  int GetModeShape()
++  {
++    return this->GetTimeStep() + 1;
++  }
+   /**
+    * Which TimeStep to read.
+    */
+diff --git i/IO/Exodus/vtkExodusIIReaderPrivate.h w/IO/Exodus/vtkExodusIIReaderPrivate.h
+index 90de70a1..1477bc7d 100644
+--- i/IO/Exodus/vtkExodusIIReaderPrivate.h
++++ w/IO/Exodus/vtkExodusIIReaderPrivate.h
+@@ -448,8 +448,12 @@ public:
+ 
+   void SetFastPathObjectType(vtkExodusIIReader::ObjectType type)
+     {this->FastPathObjectType = type;};
++  vtkExodusIIReader::ObjectType GetFastPathObjectType() const
++    {return this->FastPathObjectType;};
+   void SetFastPathObjectId(vtkIdType id){this->FastPathObjectId = id;};
++  vtkIdType GetFastPathObjectId() const {return this->FastPathObjectId;};
+   vtkSetStringMacro(FastPathIdType);
++  vtkGetStringMacro(FastPathIdType);
+ 
+   bool IsXMLMetadataValid();
+ 
+diff --git i/IO/Geometry/vtkTecplotReader.cxx w/IO/Geometry/vtkTecplotReader.cxx
+index 2a9f6be7..8800fe41 100644
+--- i/IO/Geometry/vtkTecplotReader.cxx
++++ w/IO/Geometry/vtkTecplotReader.cxx
+@@ -546,6 +546,12 @@ void vtkTecplotReader::SetFileName( const char * fileName )
+   }
+ }
+ 
++// ----------------------------------------------------------------------------
++const char *vtkTecplotReader::GetFileName() const
++{
++  return this->FileName ? this->FileName : "";
++}
++
+ //----------------------------------------------------------------------------
+ void vtkTecplotReader::SelectionModifiedCallback( vtkObject *, unsigned long,
+                                                   void * tpReader, void * )
+diff --git i/IO/Geometry/vtkTecplotReader.h w/IO/Geometry/vtkTecplotReader.h
+index c95faad9..93f9f3fc 100644
+--- i/IO/Geometry/vtkTecplotReader.h
++++ w/IO/Geometry/vtkTecplotReader.h
+@@ -105,6 +105,10 @@ public:
+   vtkGetMacro( NumberOfVariables, int );
+   //@}
+ 
++  // Description.
++  // Returns the currently set file name or "" if NULL or not set.
++  const char *GetFileName() const;
++
+   /**
+    * Specify a Tecplot ASCII file for data loading.
+    */
+diff --git i/IO/NetCDF/vtkMPASReader.cxx w/IO/NetCDF/vtkMPASReader.cxx
+index 4a8a88c1..95a671fe 100644
+--- i/IO/NetCDF/vtkMPASReader.cxx
++++ w/IO/NetCDF/vtkMPASReader.cxx
+@@ -2658,6 +2658,14 @@ int vtkMPASReader::GetCellArrayStatus(const char* name)
+   return this->CellDataArraySelection->ArrayIsEnabled(name);
+ }
+ 
++//----------------------------------------------------------------------------
++//  Return current CenterLon state.
++//----------------------------------------------------------------------------
++
++int vtkMPASReader::GetCenterLon() const
++{
++  return CenterLon;
++}
+ 
+ //----------------------------------------------------------------------------
+ // Set status of named cell variable selection.
+@@ -2755,6 +2763,15 @@ int vtkMPASReader::GetVerticalLevel()
+   return this->GetDimensionCurrentIndex(this->VerticalDimension);
+ }
+ 
++//----------------------------------------------------------------------------
++//  Return current LayerThickness state.
++//----------------------------------------------------------------------------
++
++int vtkMPASReader::GetLayerThickness() const
++{
++  return LayerThickness;
++}
++
+ //----------------------------------------------------------------------------
+ //  Set center longitude for lat/lon projection
+ //----------------------------------------------------------------------------
+diff --git i/IO/NetCDF/vtkMPASReader.h w/IO/NetCDF/vtkMPASReader.h
+index 0112a676..3f95b60d 100644
+--- i/IO/NetCDF/vtkMPASReader.h
++++ w/IO/NetCDF/vtkMPASReader.h
+@@ -209,9 +209,11 @@ class VTKIONETCDF_EXPORT vtkMPASReader : public vtkUnstructuredGridAlgorithm
+   vtkSetMacro(LayerThickness, int)
+   vtkGetMacro(LayerThickness, int)
+   vtkGetVector2Macro(LayerThicknessRange, int)
++  int GetLayerThickness() const;
+ 
+   void SetCenterLon(int val);
+   vtkGetVector2Macro(CenterLonRange, int)
++  int GetCenterLon() const;
+ 
+   vtkSetMacro(ProjectLatLon, bool)
+   vtkGetMacro(ProjectLatLon, bool)
+diff --git i/IO/VPIC/vtkVPICReader.h w/IO/VPIC/vtkVPICReader.h
+index 0c79530a..66ea0af0 100644
+--- i/IO/VPIC/vtkVPICReader.h
++++ w/IO/VPIC/vtkVPICReader.h
+@@ -62,6 +62,9 @@ public:
+   /**
+    * Set the stride in each dimension
+    */
++  vtkGetVector2Macro(XExtent, int);
++  vtkGetVector2Macro(YExtent, int);
++  vtkGetVector2Macro(ZExtent, int);
+   vtkSetVector3Macro(Stride, int);
+   vtkGetVector3Macro(Stride, int);
+   //@}
+diff --git i/IO/XML/vtkXMLWriter.cxx w/IO/XML/vtkXMLWriter.cxx
+index 351ee440..b1f23fc5 100644
+--- i/IO/XML/vtkXMLWriter.cxx
++++ w/IO/XML/vtkXMLWriter.cxx
+@@ -487,6 +487,15 @@ void vtkXMLWriter::SetCompressorType(int compressorType)
+   }
+ }
+ 
++//----------------------------------------------------------------------------
++int vtkXMLWriter::GetCompressorType()
++{
++  if (this->Compressor && this->Compressor->IsTypeOf("vtkZLibDataCompressor")){
++    return ZLIB;
++  }
++  return NONE;
++}
++
+ //----------------------------------------------------------------------------
+ void vtkXMLWriter::PrintSelf(ostream& os, vtkIndent indent)
+ {
+diff --git i/IO/XML/vtkXMLWriter.h w/IO/XML/vtkXMLWriter.h
+index a8a61208..c7303ed2 100644
+--- i/IO/XML/vtkXMLWriter.h
++++ w/IO/XML/vtkXMLWriter.h
+@@ -154,6 +154,7 @@ public:
+    * Convenience functions to set the compressor to certain known types.
+    */
+   void SetCompressorType(int compressorType);
++  int GetCompressorType();
+   void SetCompressorTypeToNone()
+   {
+     this->SetCompressorType(NONE);
+diff --git i/Imaging/Sources/vtkImageNoiseSource.h w/Imaging/Sources/vtkImageNoiseSource.h
+index e1d49db7..5f54c688 100644
+--- i/Imaging/Sources/vtkImageNoiseSource.h
++++ w/Imaging/Sources/vtkImageNoiseSource.h
+@@ -48,6 +48,15 @@ public:
+   vtkSetMacro(Maximum, double);
+   vtkGetMacro(Maximum, double);
+   //@}
+
++  void GetWholeExtent(int ext[6])
++  {
++    ext[0] = this->WholeExtent[0];
++    ext[1] = this->WholeExtent[1];
++    ext[2] = this->WholeExtent[2];
++    ext[3] = this->WholeExtent[3];
++    ext[4] = this->WholeExtent[4];
++    ext[5] = this->WholeExtent[5];
++  }
+   //@{
+   /**
+diff --git i/Infovis/Core/vtkKCoreDecomposition.h w/Infovis/Core/vtkKCoreDecomposition.h
+index 4cf69436..20b00cfc 100644
+--- i/Infovis/Core/vtkKCoreDecomposition.h
++++ w/Infovis/Core/vtkKCoreDecomposition.h
+@@ -55,6 +55,7 @@ public:
+   void PrintSelf(ostream& os, vtkIndent indent);
+ 
+   //@{
++  vtkGetStringMacro(OutputArrayName);
+   /**
+    * Set the output array name. If no output array name is
+    * set then the name 'KCoreDecompositionNumbers' is used.
+diff --git i/Infovis/Core/vtkVertexDegree.h w/Infovis/Core/vtkVertexDegree.h
+index 9d10eb2b..7fd6dfcd 100644
+--- i/Infovis/Core/vtkVertexDegree.h
++++ w/Infovis/Core/vtkVertexDegree.h
+@@ -42,6 +42,7 @@ public:
+   void PrintSelf(ostream& os, vtkIndent indent);
+ 
+   //@{
++  vtkGetStringMacro(OutputArrayName);
+   /**
+    * Set the output array name. If no output array name is
+    * set then the name 'VertexDegree' is used.
+diff --git i/Infovis/Layout/vtkKCoreLayout.h w/Infovis/Layout/vtkKCoreLayout.h
+index 4f76968f..4dabc5f2 100644
+--- i/Infovis/Layout/vtkKCoreLayout.h
++++ w/Infovis/Layout/vtkKCoreLayout.h
+@@ -77,6 +77,7 @@ public:
+    * Default: kcore
+    */
+   vtkSetStringMacro(KCoreLabelArrayName);
++  vtkGetStringMacro(KCoreLabelArrayName);
+   //@}
+
+   //@{
+diff --git i/Interaction/Image/vtkImageViewer.cxx w/Interaction/Image/vtkImageViewer.cxx
+index 9b19d217..e60909b2 100644
+--- i/Interaction/Image/vtkImageViewer.cxx
++++ w/Interaction/Image/vtkImageViewer.cxx
+@@ -85,12 +85,29 @@ void vtkImageViewer::SetSize(int a[2])
+ {
+   this->SetSize(a[0],a[1]);
+ }
++
++//----------------------------------------------------------------------------
++void vtkImageViewer::GetSize(int a[2])
++{
++  int *s = this->GetSize(); 
++  a[0] = s[0];
++  a[1] = s[1];
++}
++
+ //----------------------------------------------------------------------------
+ void vtkImageViewer::SetPosition(int a[2])
+ {
+   this->SetPosition(a[0],a[1]);
+ }
+ 
++//----------------------------------------------------------------------------
++void vtkImageViewer::GetPosition(int a[2])
++{
++  int *p = this->GetPosition();
++  a[0] = p[0];
++  a[1] = p[1];
++}
++
+ //----------------------------------------------------------------------------
+ class vtkImageViewerCallback : public vtkCommand
+ {
+diff --git i/Interaction/Image/vtkImageViewer.h w/Interaction/Image/vtkImageViewer.h
+index f320b137..9687c8bb 100644
+--- i/Interaction/Image/vtkImageViewer.h
++++ w/Interaction/Image/vtkImageViewer.h
+@@ -85,12 +85,14 @@ public:
+   /**
+    * Sets window/level for mapping pixels to colors.
+    */
++  virtual void GetPosition(int a[2]);
+   double GetColorWindow() {return this->ImageMapper->GetColorWindow();};
+   double GetColorLevel() {return this->ImageMapper->GetColorLevel();};
+   void SetColorWindow(double s) {this->ImageMapper->SetColorWindow(s);};
+   void SetColorLevel(double s) {this->ImageMapper->SetColorLevel(s);};
+   //@}
+ 
++  virtual void GetSize(int a[2]);
+   //@{
+   /**
+    * These are here for using a tk window.
+diff --git i/Interaction/Image/vtkImageViewer2.cxx w/Interaction/Image/vtkImageViewer2.cxx
+index c873f337..ccdc54b9 100644
+--- i/Interaction/Image/vtkImageViewer2.cxx
++++ w/Interaction/Image/vtkImageViewer2.cxx
+@@ -184,6 +184,14 @@ void vtkImageViewer2::SetSize(int a,int b)
+   this->RenderWindow->SetSize(a, b);
+ }
+ 
++//----------------------------------------------------------------------------
++void vtkImageViewer2::GetSize(int a[2])
++{
++  int *s = this->GetSize(); 
++  a[0] = s[0];
++  a[1] = s[1];
++}
++
+ //----------------------------------------------------------------------------
+ int* vtkImageViewer2::GetSize()
+ {
+@@ -421,6 +429,14 @@ int* vtkImageViewer2::GetPosition()
+   return this->RenderWindow->GetPosition();
+ }
+ 
++//----------------------------------------------------------------------------
++void vtkImageViewer2::GetPosition(int a[2])
++{
++  int *p = this->GetPosition();
++  a[0] = p[0];
++  a[1] = p[1];
++}
++
+ //----------------------------------------------------------------------------
+ void vtkImageViewer2::SetDisplayId(void *a)
+ {
+diff --git i/Interaction/Image/vtkImageViewer2.h w/Interaction/Image/vtkImageViewer2.h
+index 06b443b9..5319547a 100644
+--- i/Interaction/Image/vtkImageViewer2.h
++++ w/Interaction/Image/vtkImageViewer2.h
+@@ -156,12 +156,14 @@ public:
+ 
+   //@{
+   /**
+    * Set window and level for mapping pixels to colors.
+    */
+   virtual double GetColorWindow();
+   virtual double GetColorLevel();
+   virtual void SetColorWindow(double s);
+   virtual void SetColorLevel(double s);
++  virtual void GetPosition(int a[2]);
++  virtual void GetSize(int a[2]);
+   //@}
+ 
+   //@{
+diff --git i/Interaction/Widgets/vtkAbstractPolygonalHandleRepresentation3D.cxx w/Interaction/Widgets/vtkAbstractPolygonalHandleRepresentation3D.cxx
+index 1a06ed10..4ab6e872 100644
+--- i/Interaction/Widgets/vtkAbstractPolygonalHandleRepresentation3D.cxx
++++ w/Interaction/Widgets/vtkAbstractPolygonalHandleRepresentation3D.cxx
+@@ -773,6 +773,12 @@ double * vtkAbstractPolygonalHandleRepresentation3D::GetLabelTextScale()
+   return this->LabelTextActor->GetScale();
+ }
+ 
++//----------------------------------------------------------------------
++void vtkAbstractPolygonalHandleRepresentation3D::GetLabelTextScale( double scale[3] )
++{
++  this->LabelTextActor->GetScale(scale);
++}
++
+ //----------------------------------------------------------------------
+ void vtkAbstractPolygonalHandleRepresentation3D::PrintSelf(ostream& os, vtkIndent indent)
+ {
+diff --git i/Interaction/Widgets/vtkAbstractPolygonalHandleRepresentation3D.h w/Interaction/Widgets/vtkAbstractPolygonalHandleRepresentation3D.h
+index fac83d03..bbc6938d 100644
+--- i/Interaction/Widgets/vtkAbstractPolygonalHandleRepresentation3D.h
++++ w/Interaction/Widgets/vtkAbstractPolygonalHandleRepresentation3D.h
+@@ -112,6 +112,7 @@ public:
+   virtual int RenderOpaqueGeometry(vtkViewport *viewport);
+   virtual int RenderTranslucentPolygonalGeometry(vtkViewport *viewport);
+   virtual int HasTranslucentPolygonalGeometry();
++  virtual void GetLabelTextScale( double scale[3] );
+   virtual double *GetBounds();
+   //@}
+ 
+diff --git i/Interaction/Widgets/vtkAngleRepresentation3D.cxx w/Interaction/Widgets/vtkAngleRepresentation3D.cxx
+index a8458496..23725ee6 100644
+--- i/Interaction/Widgets/vtkAngleRepresentation3D.cxx
++++ w/Interaction/Widgets/vtkAngleRepresentation3D.cxx
+@@ -369,6 +369,12 @@ void vtkAngleRepresentation3D::SetTextActorScale( double scale[3] )
+   this->ScaleInitialized = true;
+ }
+ 
++//----------------------------------------------------------------------
++void vtkAngleRepresentation3D::GetTextActorScale( double scale[3] )
++{
++  this->TextActor->GetScale( scale );
++}
++
+ //----------------------------------------------------------------------
+ double * vtkAngleRepresentation3D::GetTextActorScale()
+ {
+diff --git i/Interaction/Widgets/vtkAngleRepresentation3D.h w/Interaction/Widgets/vtkAngleRepresentation3D.h
+index 71a99e80..87be83a2 100644
+--- i/Interaction/Widgets/vtkAngleRepresentation3D.h
++++ w/Interaction/Widgets/vtkAngleRepresentation3D.h
+@@ -102,6 +102,7 @@ public:
+    * Scale text.
+    */
+   virtual void SetTextActorScale( double scale[3] );
++  virtual void GetTextActorScale( double scale[3] );
+   virtual double * GetTextActorScale();
+   //@}
+ 
+diff --git i/Interaction/Widgets/vtkAxesTransformRepresentation.cxx w/Interaction/Widgets/vtkAxesTransformRepresentation.cxx
+index 2e734679..48ff2722 100644
+--- i/Interaction/Widgets/vtkAxesTransformRepresentation.cxx
++++ w/Interaction/Widgets/vtkAxesTransformRepresentation.cxx
+@@ -306,6 +306,15 @@ double * vtkAxesTransformRepresentation::GetLabelScale()
+   return this->LabelActor->GetScale();
+ }
+ 
++//----------------------------------------------------------------------
++void vtkAxesTransformRepresentation::GetLabelScale( double scale[3] )
++{
++  double * s = this->LabelActor->GetScale();
++  scale[0] = s[0];
++  scale[1] = s[1];
++  scale[2] = s[2];
++}
++
+ //----------------------------------------------------------------------------
+ vtkProperty * vtkAxesTransformRepresentation::GetLabelProperty()
+ {
+diff --git i/Interaction/Widgets/vtkAxesTransformRepresentation.h w/Interaction/Widgets/vtkAxesTransformRepresentation.h
+index 1dc2624d..6955504f 100644
+--- i/Interaction/Widgets/vtkAxesTransformRepresentation.h
++++ w/Interaction/Widgets/vtkAxesTransformRepresentation.h
+@@ -133,6 +133,7 @@ public:
+   /**
+    * Method to satisfy superclasses' API.
+    */
++  virtual void GetLabelScale( double scale[3] );
+   virtual void BuildRepresentation();
+   virtual int ComputeInteractionState(int X, int Y, int modify=0);
+   virtual void StartWidgetInteraction(double e[2]);
+diff --git i/Interaction/Widgets/vtkContourRepresentation.h w/Interaction/Widgets/vtkContourRepresentation.h
+index f9a66bef..150610c9 100644
+--- i/Interaction/Widgets/vtkContourRepresentation.h
++++ w/Interaction/Widgets/vtkContourRepresentation.h
+@@ -461,6 +461,7 @@ public:
+   void GetNodePolyData( vtkPolyData* poly );
+ 
+   vtkSetMacro(RebuildLocator,bool);
++  vtkGetMacro(RebuildLocator,bool);
+ 
+ protected:
+   vtkContourRepresentation();
+diff --git i/Interaction/Widgets/vtkLineRepresentation.cxx w/Interaction/Widgets/vtkLineRepresentation.cxx
+index 60037a1f..f2e67893 100644
+--- i/Interaction/Widgets/vtkLineRepresentation.cxx
++++ w/Interaction/Widgets/vtkLineRepresentation.cxx
+@@ -1004,6 +1004,12 @@ void vtkLineRepresentation::SetDistanceAnnotationScale( double scale[3] )
+   this->AnnotationTextScaleInitialized = true;
+ }
+ 
++//----------------------------------------------------------------------
++void vtkLineRepresentation::GetDistanceAnnotationScale( double scale[3] )
++{
++  this->TextActor->GetScale(scale);
++}
++
+ //----------------------------------------------------------------------
+ double * vtkLineRepresentation::GetDistanceAnnotationScale()
+ {
+diff --git i/Interaction/Widgets/vtkLineRepresentation.h w/Interaction/Widgets/vtkLineRepresentation.h
+index 2e0de6ae..e3b7b5c7 100644
+--- i/Interaction/Widgets/vtkLineRepresentation.h
++++ w/Interaction/Widgets/vtkLineRepresentation.h
+@@ -273,6 +273,7 @@ public:
+     this->SetDistanceAnnotationScale(scale);
+   }
+   virtual void SetDistanceAnnotationScale( double scale[3] );
++  virtual void GetDistanceAnnotationScale( double scale[3] );
+   virtual double * GetDistanceAnnotationScale();
+   //@}
+ 
+diff --git i/Interaction/Widgets/vtkResliceCursorPicker.cxx w/Interaction/Widgets/vtkResliceCursorPicker.cxx
+index 55411563..65e318d9 100644
+--- i/Interaction/Widgets/vtkResliceCursorPicker.cxx
++++ w/Interaction/Widgets/vtkResliceCursorPicker.cxx
+@@ -300,6 +300,12 @@ void vtkResliceCursorPicker::Pick(
+   }
+ }
+ 
++//----------------------------------------------------------------------------
++vtkMatrix4x4 * vtkResliceCursorPicker::GetTransformMatrix() const
++{
++  return TransformMatrix;
++}
++
+ //----------------------------------------------------------------------------
+ // Helper function for sanity check - to see if one point is different from
+ // another.
+diff --git i/Interaction/Widgets/vtkResliceCursorPicker.h w/Interaction/Widgets/vtkResliceCursorPicker.h
+index 7feb493b..ca84c800 100644
+--- i/Interaction/Widgets/vtkResliceCursorPicker.h
++++ w/Interaction/Widgets/vtkResliceCursorPicker.h
+@@ -75,6 +75,7 @@ public:
+   //@}
+ 
+   virtual void SetTransformMatrix( vtkMatrix4x4 * );
++  virtual vtkMatrix4x4 * GetTransformMatrix() const;
+ 
+   /**
+    * Overloaded pick method that returns the picked coordinates of the current
+diff --git i/Parallel/Core/vtkCommunicator.cxx w/Parallel/Core/vtkCommunicator.cxx
+index e873e099..cc338516 100644
+--- i/Parallel/Core/vtkCommunicator.cxx
++++ w/Parallel/Core/vtkCommunicator.cxx
+@@ -122,6 +122,10 @@ void vtkCommunicator::SetUseCopy(int useCopy)
+ {
+   vtkCommunicator::UseCopy = useCopy;
+ }
++int vtkCommunicator::GetUseCopy()
++{
++  return vtkCommunicator::UseCopy;
++}
+ 
+ //----------------------------------------------------------------------------
+ void vtkCommunicator::PrintSelf(ostream& os, vtkIndent indent)
+diff --git i/Parallel/Core/vtkCommunicator.h w/Parallel/Core/vtkCommunicator.h
+index c196330b..12472049 100644
+--- i/Parallel/Core/vtkCommunicator.h
++++ w/Parallel/Core/vtkCommunicator.h
+@@ -1247,6 +1247,7 @@ public:
+   //@}
+ 
+   static void SetUseCopy(int useCopy);
++  static int GetUseCopy();
+ 
+   /**
+    * Determine the global bounds for a set of processes.  BBox is
+diff --git i/Rendering/Annotation/vtkAxisActor2D.h w/Rendering/Annotation/vtkAxisActor2D.h
+index 24199856..9a0429c6 100644
+--- i/Rendering/Annotation/vtkAxisActor2D.h
++++ w/Rendering/Annotation/vtkAxisActor2D.h
+@@ -86,6 +86,7 @@ public:
+     { return this->GetPositionCoordinate(); };
+   virtual void SetPoint1(double x[2]) { this->SetPosition(x); };
+   virtual void SetPoint1(double x, double y) { this->SetPosition(x,y); };
++  virtual void GetPoint1(double x[2]){ double *p = this->GetPosition(); x[0] = p[0]; x[1] = p[1]; }
+   virtual double *GetPoint1() { return this->GetPosition(); };
+   //@}
+
+@@ -100,6 +100,7 @@ public:
+     { return this->GetPosition2Coordinate(); };
+   virtual void SetPoint2(double x[2]) { this->SetPosition2(x); };
+   virtual void SetPoint2(double x, double y) { this->SetPosition2(x,y); };
++  virtual void GetPoint2(double x[2]){ double *p = this->GetPosition2(); x[0] = p[0]; x[1] = p[1]; }
+   virtual double *GetPoint2() { return this->GetPosition2(); };
+   //@}
+
+diff --git i/Rendering/Annotation/vtkCubeAxesActor2D.h w/Rendering/Annotation/vtkCubeAxesActor2D.h
+index 437fc679..322a4c35 100644
+--- i/Rendering/Annotation/vtkCubeAxesActor2D.h
++++ w/Rendering/Annotation/vtkCubeAxesActor2D.h
+@@ -125,6 +125,9 @@ public:
+    * making sure that the min's are less than the max's.
+    */
+   vtkSetVector6Macro(Ranges,double);
++  vtkGetMacro( XOrigin, double );
++  vtkGetMacro( YOrigin, double );
++  vtkGetMacro( ZOrigin, double );
+   double *GetRanges();
+   void GetRanges(double& xmin, double& xmax, double& ymin, double& ymax,
+                  double& zmin, double& zmax);
+diff --git i/Rendering/Annotation/vtkGraphAnnotationLayersFilter.cxx w/Rendering/Annotation/vtkGraphAnnotationLayersFilter.cxx
+index d29a1134..381e6ce9 100644
+--- i/Rendering/Annotation/vtkGraphAnnotationLayersFilter.cxx
++++ w/Rendering/Annotation/vtkGraphAnnotationLayersFilter.cxx
+@@ -87,12 +87,23 @@ void vtkGraphAnnotationLayersFilter::SetOutline(bool b)
+   this->ConvexHullFilter->SetOutline(b);
+ }
+ 
++bool vtkGraphAnnotationLayersFilter::GetOutline()
++{
++  return this->ConvexHullFilter->GetOutline();
++}
++
+ //-----------------------------------------------------------------------------
+ void vtkGraphAnnotationLayersFilter::SetScaleFactor(double scale)
+ {
+   this->ConvexHullFilter->SetScaleFactor(scale);
+ }
+ 
++//-----------------------------------------------------------------------------
++double vtkGraphAnnotationLayersFilter::GetScaleFactor()
++{
++  return this->ConvexHullFilter->GetScaleFactor();
++}
++
+ //-----------------------------------------------------------------------------
+ void vtkGraphAnnotationLayersFilter::SetHullShapeToBoundingRectangle()
+ {
+@@ -111,12 +122,22 @@ void vtkGraphAnnotationLayersFilter::SetMinHullSizeInWorld(double size)
+   this->ConvexHullFilter->SetMinHullSizeInWorld(size);
+ }
+ 
++double vtkGraphAnnotationLayersFilter::GetMinHullSizeInWorld()
++{
++  return this->ConvexHullFilter->GetMinHullSizeInWorld();
++}
++
+ //-----------------------------------------------------------------------------
+ void vtkGraphAnnotationLayersFilter::SetMinHullSizeInDisplay(int size)
+ {
+   this->ConvexHullFilter->SetMinHullSizeInDisplay(size);
+ }
+ 
++int vtkGraphAnnotationLayersFilter::GetMinHullSizeInDisplay()
++{
++  return this->ConvexHullFilter->GetMinHullSizeInDisplay();
++}
++
+ //-----------------------------------------------------------------------------
+ void vtkGraphAnnotationLayersFilter::SetRenderer(vtkRenderer* renderer)
+ {
+diff --git i/Rendering/Annotation/vtkGraphAnnotationLayersFilter.h w/Rendering/Annotation/vtkGraphAnnotationLayersFilter.h
+index 0c58249a..a35ed307 100644
+--- i/Rendering/Annotation/vtkGraphAnnotationLayersFilter.h
++++ w/Rendering/Annotation/vtkGraphAnnotationLayersFilter.h
+@@ -72,12 +72,14 @@ public:
+   void OutlineOn();
+   void OutlineOff();
+   void SetOutline(bool b);
++  bool GetOutline();
+   //@}
+ 
+   /**
+    * Scale each hull by the amount specified. Defaults to 1.0.
+    */
+   void SetScaleFactor(double scale);
++  double GetScaleFactor();
+ 
+   /**
+    * Set the shape of the hulls to bounding rectangle.
+@@ -94,12 +96,14 @@ public:
+    * to 1.0. Set to 0.0 to disable.
+    */
+   void SetMinHullSizeInWorld(double size);
++  double GetMinHullSizeInWorld();
+ 
+   /**
+    * Set the minimum x,y-dimensions of each hull in pixels. You must also set a
+    * vtkRenderer. Defaults to 1. Set to 0 to disable.
+    */
+   void SetMinHullSizeInDisplay(int size);
++  int GetMinHullSizeInDisplay();
+ 
+   /**
+    * Renderer needed for MinHullSizeInDisplay calculation. Not reference counted.
+diff --git i/Rendering/Context2D/vtkBrush.cxx w/Rendering/Context2D/vtkBrush.cxx
+index fcf96d0e..a552dc2f 100644
+--- i/Rendering/Context2D/vtkBrush.cxx
++++ w/Rendering/Context2D/vtkBrush.cxx
+@@ -57,6 +57,14 @@ void vtkBrush::SetColorF(double r, double g, double b)
+   this->Color[2] = static_cast<unsigned char>(b * 255.0);
+ }
+ 
++//-----------------------------------------------------------------------------
++void vtkBrush::GetColorF(double &r, double &g, double &b) const
++{
++  r = this->Color[0] / 255.0;
++  g = this->Color[1] / 255.0;
++  b = this->Color[2] / 255.0;
++}
++
+ //-----------------------------------------------------------------------------
+ void vtkBrush::SetColorF(double r, double g, double b, double a)
+ {
+@@ -66,6 +74,15 @@ void vtkBrush::SetColorF(double r, double g, double b, double a)
+   this->Color[3] = static_cast<unsigned char>(a * 255.0);
+ }
+ 
++//-----------------------------------------------------------------------------
++void vtkBrush::GetColorF(double &r, double &g, double &b, double &a) const
++{
++  r = this->Color[0] / 255.0;
++  g = this->Color[1] / 255.0;
++  b = this->Color[2] / 255.0;
++  a = this->Color[3] / 255.0;
++}
++
+ //-----------------------------------------------------------------------------
+ void vtkBrush::SetOpacityF(double a)
+ {
+@@ -94,6 +111,14 @@ void vtkBrush::SetColor(unsigned char r, unsigned char g, unsigned char b)
+   this->Color[2] = b;
+ }
+ 
++//-----------------------------------------------------------------------------
++void vtkBrush::GetColor(unsigned char &r, unsigned char &g, unsigned char &b) const
++{
++  r = this->Color[0];
++  g = this->Color[1];
++  b = this->Color[2];
++}
++
+ //-----------------------------------------------------------------------------
+ void vtkBrush::SetColor(unsigned char r, unsigned char g, unsigned char b,
+                 unsigned char a)
+@@ -104,6 +129,16 @@ void vtkBrush::SetColor(unsigned char r, unsigned char g, unsigned char b,
+   this->Color[3] = a;
+ }
+ 
++//-----------------------------------------------------------------------------
++void vtkBrush::GetColor(unsigned char &r, unsigned char &g, unsigned char &b,
++                        unsigned char &a) const
++{
++  r = this->Color[0];
++  g = this->Color[1];
++  b = this->Color[2];
++  a = this->Color[3];
++}
++
+ //-----------------------------------------------------------------------------
+ void vtkBrush::SetColor(const vtkColor4ub &color)
+ {
+diff --git i/Rendering/Context2D/vtkBrush.h w/Rendering/Context2D/vtkBrush.h
+index 44e6bedf..96e54ceb 100644
+--- i/Rendering/Context2D/vtkBrush.h
++++ w/Rendering/Context2D/vtkBrush.h
+@@ -53,12 +53,14 @@ public:
+    * 0.0 to 1.0.
+    */
+   void SetColorF(double r, double g, double b);
++  void GetColorF(double &r, double &g, double &b) const;
+ 
+   /**
+    * Set the color of the brush with four component doubles (RGBA), ranging from
+    * 0.0 to 1.0.
+    */
+   void SetColorF(double r, double g, double b, double a);
++  void GetColorF(double &r, double &g, double &b, double &a) const;
+ 
+   /**
+    * Set the opacity with a double, ranging from 0.0 (transparent) to 1.0
+@@ -82,6 +84,7 @@ public:
+    * ranging from 0 to 255.
+    */
+   void SetColor(unsigned char r, unsigned char g, unsigned char b);
++  void GetColor(unsigned char &r, unsigned char &g, unsigned char &b) const;
+ 
+   //@{
+   /**
+@@ -90,6 +90,8 @@ public:
+    */
+   void SetColor(unsigned char r, unsigned char g, unsigned char b,
+                 unsigned char a);
++  void GetColor(unsigned char &r, unsigned char &g, unsigned char &b,
++                unsigned char &a) const;
+   void SetColor(const vtkColor4ub &color);
+   //@}
+
+diff --git i/Rendering/Context2D/vtkPen.cxx w/Rendering/Context2D/vtkPen.cxx
+index 74b1625e..c270dadc 100644
+--- i/Rendering/Context2D/vtkPen.cxx
++++ w/Rendering/Context2D/vtkPen.cxx
+@@ -64,6 +64,14 @@ void vtkPen::SetColorF(double r, double g, double b)
+   this->Color[2] = static_cast<unsigned char>(b * 255.0);
+ }
+ 
++//-----------------------------------------------------------------------------
++void vtkPen::GetColorF(double &r, double &g, double &b) const
++{
++  r = this->Color[0] / 255.0;
++  g = this->Color[1] / 255.0;
++  b = this->Color[2] / 255.0;
++}
++
+ //-----------------------------------------------------------------------------
+ void vtkPen::SetColorF(double r, double g, double b, double a)
+ {
+@@ -73,12 +81,27 @@ void vtkPen::SetColorF(double r, double g, double b, double a)
+   this->Color[3] = static_cast<unsigned char>(a * 255.0);
+ }
+ 
++//-----------------------------------------------------------------------------
++void vtkPen::GetColorF(double &r, double &g, double &b, double &a) const
++{
++  r = this->Color[0] / 255.0;
++  g = this->Color[1] / 255.0;
++  b = this->Color[2] / 255.0;
++  a = this->Color[3] / 255.0;
++}
++
+ //-----------------------------------------------------------------------------
+ void vtkPen::SetOpacityF(double a)
+ {
+   this->Color[3] = static_cast<unsigned char>(a * 255.0);
+ }
+ 
++//-----------------------------------------------------------------------------
++double vtkPen::GetOpacityF() const
++{
++  return this->Color[3] / 255.0;
++}
++
+ //-----------------------------------------------------------------------------
+ void vtkPen::SetColor(unsigned char color[3])
+ {
+@@ -95,6 +118,14 @@ void vtkPen::SetColor(unsigned char r, unsigned char g, unsigned char b)
+   this->Color[2] = b;
+ }
+ 
++//-----------------------------------------------------------------------------
++void vtkPen::GetColor(unsigned char &r, unsigned char &g, unsigned char &b) const
++{
++  r = this->Color[0];
++  g = this->Color[1];
++  b = this->Color[2];
++}
++
+ //-----------------------------------------------------------------------------
+ void vtkPen::SetColor(unsigned char r, unsigned char g, unsigned char b,
+                       unsigned char a)
+@@ -105,6 +136,17 @@ void vtkPen::SetColor(unsigned char r, unsigned char g, unsigned char b,
+   this->Color[3] = a;
+ }
+ 
++//-----------------------------------------------------------------------------
++void vtkPen::GetColor(unsigned char &r, unsigned char &g, unsigned char &b, 
++                      unsigned char &a) const
++{
++  r = this->Color[0];
++  g = this->Color[1];
++  b = this->Color[2];
++  a = this->Color[3];
++}
++
++//-----------------------------------------------------------------------------
+ void vtkPen::SetColor(const vtkColor4ub &color)
+ {
+   this->PenColor = color;
+diff --git i/Rendering/Context2D/vtkPen.h w/Rendering/Context2D/vtkPen.h
+index 2e87cfbc..3f5f1a48 100644
+--- i/Rendering/Context2D/vtkPen.h
++++ w/Rendering/Context2D/vtkPen.h
+@@ -73,18 +73,21 @@ public:
+    * 0.0 to 1.0.
+    */
+   void SetColorF(double r, double g, double b);
++  void GetColorF(double &r, double &g, double &b) const;
+ 
+   /**
+    * Set the color of the brush with four component doubles (RGBA), ranging from
+    * 0.0 to 1.0.
+    */
+   void SetColorF(double r, double g, double b, double a);
++  void GetColorF(double &r, double &g, double &b, double &a) const;
+ 
+   /**
+    * Set the opacity with a double, ranging from 0.0 (transparent) to 1.0
+    * (opaque).
+    */
+   void SetOpacityF(double a);
++  double GetOpacityF() const;
+ 
+   /**
+    * Set the color of the brush with three component unsigned chars (RGB),
+@@ -97,6 +100,7 @@ public:
+    * ranging from 0 to 255.
+    */
+   void SetColor(unsigned char r, unsigned char g, unsigned char b);
++  void GetColor(unsigned char &r, unsigned char &g, unsigned char &b) const;
+ 
+   //@{
+   /**
+@@ -105,6 +105,8 @@ public:
+    */
+   void SetColor(unsigned char r, unsigned char g, unsigned char b,
+                 unsigned char a);
+   void SetColor(const vtkColor4ub &color);
++  void GetColor(unsigned char &r, unsigned char &g, unsigned char &b,
++                unsigned char &a) const;
+   //@}
+
+diff --git i/Rendering/Core/vtkGlyph3DMapper.h w/Rendering/Core/vtkGlyph3DMapper.h
+index 3de9488e..fba1d96a 100644
+--- i/Rendering/Core/vtkGlyph3DMapper.h
++++ w/Rendering/Core/vtkGlyph3DMapper.h
+@@ -317,6 +317,7 @@ public:
+    * SetInputArrayToProcess(vtkGlyph3DMapper::SCALE, 0, 0,
+    * vtkDataObject::FIELD_ASSOCIATION_POINTS, fieldAttributeType).
+    */
++  vtkGetMacro(SelectMode, int);
+   void SetScaleArray(int fieldAttributeType);
+ 
+   /**
+diff --git i/Rendering/Core/vtkMapper.cxx w/Rendering/Core/vtkMapper.cxx
+index b78c55a8..ac5ed90e 100644
+--- i/Rendering/Core/vtkMapper.cxx
++++ w/Rendering/Core/vtkMapper.cxx
+@@ -323,6 +323,10 @@ void vtkMapper::GetResolveCoincidentTopologyPointOffsetParameter(
+ {
+   units = vtkMapperGlobalResolveCoincidentTopologyPointOffsetUnits;
+ }
++double vtkMapper::GetResolveCoincidentTopologyPointOffsetParameter()
++{
++  return vtkMapperGlobalResolveCoincidentTopologyPointOffsetUnits;
++}
+ 
+ void vtkMapper::SetRelativeCoincidentTopologyPointOffsetParameter(
+                                             double units)
+@@ -339,6 +343,10 @@ void vtkMapper::GetRelativeCoincidentTopologyPointOffsetParameter(
+ {
+   units = this->CoincidentPointOffset;
+ }
++double vtkMapper::GetRelativeCoincidentTopologyPointOffsetParameter()
++{
++  return this->CoincidentPointOffset;
++}
+ 
+ void vtkMapper::GetCoincidentTopologyPointOffsetParameter(double& units)
+ {
+diff --git i/Rendering/Core/vtkMapper.h w/Rendering/Core/vtkMapper.h
+index 96cd0993..7bc3aca1 100644
+--- i/Rendering/Core/vtkMapper.h
++++ w/Rendering/Core/vtkMapper.h
+@@ -356,12 +356,14 @@ public:
+   static int  GetResolveCoincidentTopology();
+   static void SetResolveCoincidentTopologyToDefault();
+   static void SetResolveCoincidentTopologyToOff()
+     { SetResolveCoincidentTopology(VTK_RESOLVE_OFF) ;}
++  static double GetResolveCoincidentTopologyPointOffsetParameter();
+   static void SetResolveCoincidentTopologyToPolygonOffset()
+     { SetResolveCoincidentTopology(VTK_RESOLVE_POLYGON_OFFSET); }
+   static void SetResolveCoincidentTopologyToShiftZBuffer()
+     { SetResolveCoincidentTopology(VTK_RESOLVE_SHIFT_ZBUFFER); }
+   //@}
++  double GetRelativeCoincidentTopologyPointOffsetParameter();
+ 
+   //@{
+   /**
+diff --git i/Views/Infovis/vtkParallelCoordinatesRepresentation.cxx w/Views/Infovis/vtkParallelCoordinatesRepresentation.cxx
+index 89c4b0a0..00605d7a 100644
+--- i/Views/Infovis/vtkParallelCoordinatesRepresentation.cxx
++++ w/Views/Infovis/vtkParallelCoordinatesRepresentation.cxx
+@@ -1318,6 +1318,11 @@ void vtkParallelCoordinatesRepresentation::SetPlotTitle(const char* title)
+     this->PlotTitleActor->VisibilityOff();
+   }
+ }
++//------------------------------------------------------------------------------
++const char *vtkParallelCoordinatesRepresentation::GetPlotTitle()
++{
++  return this->PlotTitleActor->GetVisibility() ? this->PlotTitleMapper->GetInput() : ""; 
++}
+ 
+ //------------------------------------------------------------------------------
+ void vtkParallelCoordinatesRepresentation::SetNumberOfAxisLabels(int num)
+diff --git i/Views/Infovis/vtkParallelCoordinatesRepresentation.h w/Views/Infovis/vtkParallelCoordinatesRepresentation.h
+index 406f0d1c..3188755a 100644
+--- i/Views/Infovis/vtkParallelCoordinatesRepresentation.h
++++ w/Views/Infovis/vtkParallelCoordinatesRepresentation.h
+@@ -121,6 +121,7 @@ public:
+    * Set the title for the entire plot
+    */
+   void SetPlotTitle(const char*);
++  const char *GetPlotTitle();
+ 
+   //@{
+   /**
+diff --git i/Views/Infovis/vtkRenderView.cxx w/Views/Infovis/vtkRenderView.cxx
+index 962ab47d..ac571580 100644
+--- i/Views/Infovis/vtkRenderView.cxx
++++ w/Views/Infovis/vtkRenderView.cxx
+@@ -703,6 +703,11 @@ void vtkRenderView::GetDisplaySize(int &dsx, int &dsy)
+   }
+ }
+ 
++void vtkRenderView::GetDisplaySize(int ds[2])
++{
++  this->GetDisplaySize(ds[0], ds[1]);
++}
++
+ void vtkRenderView::PrintSelf(ostream& os, vtkIndent indent)
+ {
+   this->Superclass::PrintSelf(os, indent);
+diff --git i/Views/Infovis/vtkRenderView.h w/Views/Infovis/vtkRenderView.h
+index 5319712a..43c4afbb 100644
+--- i/Views/Infovis/vtkRenderView.h
++++ w/Views/Infovis/vtkRenderView.h
+@@ -164,6 +164,7 @@ public:
+   /**
+    * Remove labels from an input connection.
+    */
++  void GetDisplaySize(int ds[2]);
+   virtual void RemoveLabels(vtkAlgorithmOutput* conn);
+ 
+   //@{

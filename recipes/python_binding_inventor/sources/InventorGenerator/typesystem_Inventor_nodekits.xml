@@ -1,0 +1,16 @@
+<typesystem package="Inventor.nodekits">
+
+  <enum-type name="SoInteractionKit::CacheEnabled" />
+  
+  <!-- We don't wrap all nodekits currently, let's wait until someone requests them.
+       Right now we only support those that are needed by draggers and manips.
+  -->
+
+  <object-type name="SoNodeKit">
+  </object-type>
+  <object-type name="SoInteractionKit">
+  </object-type>
+  <object-type name="SoBaseKit">
+  </object-type>
+
+ </typesystem>

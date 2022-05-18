@@ -1,0 +1,13 @@
+Index: source/Modules/Core/ImageFunction/include/itkWindowedSincInterpolateImageFunction.h
+===================================================================
+--- source/Modules/Core/ImageFunction/include/itkWindowedSincInterpolateImageFunction.h	(revision 2442)
++++ source/Modules/Core/ImageFunction/include/itkWindowedSincInterpolateImageFunction.h	(revision 2443)
+@@ -316,6 +316,8 @@
+   void operator=(const Self &);                       //purposely not
+                                                       // implemented
+
++
++protected:
+   // Internal typedefs
+   typedef ConstNeighborhoodIterator<
+     ImageType, TBoundaryCondition > IteratorType;

@@ -1,0 +1,20 @@
+type: header_only
+name: "jquery"
+display_name: "jQuery"
+version: "3.6.0"
+homepage: "https://jquery.com"
+description: "A fast, small, and feature-rich JavaScript library"
+license: "MIT"
+
+pipeline: "linux:gcc10:release"
+
+sources:
+  "3.6.0":
+    sha256: f1becef97ed6d96493d42f4dda5c0cce2b04126e4ac3ea1044cb274b1b8bd26a
+    url: "https://github.com/jquery/jquery/archive/${version}.zip"
+    base_path: "jquery-${version}"
+
+  "3.1.0":
+    sha256: "97078b363d335c3cbd956fc3e80ae785282cb920e3e42567901d93660a2be90e"
+    url: "https://github.com/jquery/jquery/archive/3.1.0.zip"
+    base_path: "jquery-${version}"

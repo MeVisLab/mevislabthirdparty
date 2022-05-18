@@ -1,0 +1,18 @@
+type: pure_c
+name: "libpng"
+cmake_name: "PNG"
+version: "1.6.37"
+homepage: "http://www.libpng.org/pub/png/libpng.html"
+description: "Portable Network Graphics library"
+license: "libpng"
+
+sources:
+  "1.6.37":
+    sha256: "daeb2620d829575513e35fecc83f0d3791a620b9b93d800b763542ece9390fb4"
+    url: "https://download.sourceforge.net/libpng/libpng-1.6.37.tar.gz"
+    base_path: "libpng-${version}"
+
+patches:
+  "1.6.37":
+    - patch_file: "patches/${version}-find_zlib.patch"
+    - patch_file: "patches/${version}-no_incorrect_srgb_profile_warning.patch"

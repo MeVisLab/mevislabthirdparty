@@ -1,0 +1,12 @@
+diff --git i/src/cpp/CMakeLists.txt w/src/cpp/CMakeLists.txt
+index 602a884..32366b2 100644
+--- i/src/cpp/CMakeLists.txt
++++ w/src/cpp/CMakeLists.txt
+@@ -44,6 +44,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND CMAKE_COMPILER_IS_GNUCC)
+         set_property(TARGET flann_cpp_s PROPERTY COMPILE_DEFINITIONS FLANN_USE_CUDA)
+     # 	target_link_libraries(flann_cuda cudpp_x86_64)
+     endif()
++    set_target_properties(flann_cpp PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
+ else()
+     add_library(flann_cpp SHARED ${CPP_SOURCES})
+     if (BUILD_CUDA_LIB)

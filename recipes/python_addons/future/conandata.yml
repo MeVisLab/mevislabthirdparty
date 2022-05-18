@@ -1,0 +1,17 @@
+type: pure_c
+name: "future"
+version: "0.18.2"
+homepage: "http://python-future.org"
+description: "Compatibility layer between Python 2 and Python 3"
+license: "MIT"
+
+sources:
+  "0.18.2":
+    sha256: 89d6f33f46836820f7f10a5dcc8e1d6328756fd6694c8f7e071385fb7d4001d5
+    url: "https://github.com/PythonCharmers/python-future/archive/v${version}.zip"
+    base_path: "python-future-${version}"
+
+  "0.15.2":
+    sha256: "eea4ce9abc683e85b9afc1a2f6dc1e61134ff49e0f31e007e36e707b9d8c0d18"
+    url: "https://github.com/PythonCharmers/python-future/archive/v${version}.zip"
+    base_path: "python-future-${version}"

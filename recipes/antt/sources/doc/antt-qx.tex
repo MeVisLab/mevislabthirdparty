@@ -1,0 +1,181 @@
+%% Begin of file `antt-qx.tex'.
+%% Uwaga: u/zycie kodowania QX wymaga zainstalowania font/ow Quasi Times
+\documentclass[11pt]{article}
+
+\textwidth=16cm
+\textheight=26cm
+\hoffset=-0.5in
+\voffset=-1.1in
+
+\usepackage{polski}
+\usepackage{antyktor}
+\usepackage[QX]{fontenc}
+\usepackage{tabularx,multicol}
+
+\newcommand{\znak}[2]{%
+  \fontencoding{OT4}\selectfont\ttfamily \string #1  
+  & \mbox{#1} 
+  & [#2]\hspace*{.5cc} \\ \hline
+  }
+\newcommand{\nieznak}[2]{%
+  \fontencoding{OT4}\selectfont\ttfamily \string #1  
+  & \rule{1ex}{1ex}
+  & [---]\hspace*{.5cc} \\ \hline
+  }
+\newcommand{\akcent}[2]{%
+  \fontencoding{OT4}\selectfont\ttfamily \string#1\string{x\string}  
+  & #1{x} 
+  & [#2]\hspace*{.5cc} \\ \hline
+  }
+
+\prefixing
+\raggedright
+
+\begin{document}\footnotesize
+
+\subsection*{Znaki specjalne osi/agalne w kroju Antykwa Toru/nska
+  w uk/ladzie QX}
+
+\begin{multicols}{2}
+
+\subsubsection*{Znaki interpunkcyjne}
+\begin{tabularx}{.9\hsize}{|X%
+    |>{\centering}p{3cc}%
+    |>{\raggedleft\arraybackslash}p{3cc}<{\hspace*{0.5cc}}|}\hline
+  Nazwa makra & Wygl/ad & Numer \\ \hline
+  \znak{\textquotedblright}{34}
+  \znak{\textquoteright}{39}
+  \znak{\textexclamdown}{60}
+  \znak{\textquestiondown}{62}
+  \znak{\textquotedblleft}{92}
+  \znak{\textquoteleft}{96}
+  \znak{\textendash}{123}
+  \znak{\textemdash}{124}
+  \znak{\guillemotleft}{174}
+  \znak{\guillemotright}{175}
+  \znak{\quotedblbase}{255}
+\end{tabularx}
+
+\subsubsection*{Litery specjalne, ligatury}
+\begin{tabularx}{.9\hsize}%
+  {|X%
+    |>{\centering}p{3cc}%
+    |>{\raggedleft\arraybackslash}p{3cc}<{\hspace*{0.5cc}}|}\hline
+  Nazwa makra & Wygl/ad & Numer \\ \hline
+  \znak{\i}{16}
+  \znak{\j}{17}
+  \znak{\ss}{25}
+  \znak{\ae}{26}
+  \znak{\oe}{27}
+  \znak{\o}{28}
+  \znak{\AE}{29}
+  \znak{\OE}{30}
+  \znak{\O}{31}
+  \znak{\L}{138}
+  \znak{\textell}{142}
+  \znak{\l}{170}
+  \znak{\AA}{197}
+  \znak{\DH}{208}
+  \nieznak{\TH}{222}
+  \znak{\aa}{229}
+  \znak{\dh}{240}
+  \nieznak{\th}{254}
+  \znak{\SS}{---}
+  \znak{\textsterling}{---}
+\end{tabularx}
+
+\subsubsection*{Symbole matematyczne}
+\begin{tabularx}{.9\hsize}{|X%
+    |>{\centering}p{3cc}%
+    |>{\raggedleft\arraybackslash }p{3cc}<{\hspace*{0.5cc}}|}\hline
+  Nazwa makra & Wygl/ad & Numer \\ \hline
+  \znak{\textgreater}{131}
+  \nieznak{\textxgeq}{132}
+  \nieznak{\textapprox}{133}
+  \znak{\textless}{136}
+  \nieznak{\textxleq}{137}
+  \znak{\textbraceleft}{157}
+  \znak{\textbraceright}{158}
+  \znak{\textdiv}{165}
+  \znak{\textminus}{168}
+  \znak{\texttimes}{169}
+  \znak{\textpm}{172}
+  \nieznak{\textinfty}{173}
+  \znak{\textperiodcentered}{189}
+  \znak{\textquotedbl}{190}
+  \znak{\textquotesingle}{191}
+  \nieznak{\textanglearc}{247}
+  \nieznak{\textdiameter}{248}
+\end{tabularx}
+
+\subsubsection*{Litery greckie}
+\begin{tabularx}{.9\hsize}{|X%
+    |>{\centering}p{3cc}%
+    |>{\raggedleft\arraybackslash}p{3cc}<{\hspace*{0.5cc}}|}\hline
+  Nazwa makra & Wygl/ad & Numer \\ \hline
+  \nieznak{\textDelta}{1}
+  \nieznak{\textbeta}{2}
+  \nieznak{\textdelta}{3}
+  \nieznak{\textpi}{4}
+  \nieznak{\textPi}{5}
+  \nieznak{\textSigma}{6}
+  \znak{\textmu}{7}
+  \nieznak{\textOmega}{10}
+\end{tabularx}
+
+\subsubsection*{Symbole tekstowe}
+\begin{tabularx}{.9\hsize}{|X%
+    |>{\centering}p{3cc}%
+    |>{\raggedleft\arraybackslash}p{3cc}<{\hspace*{0.5cc}}|}\hline
+  Nazwa makra & Wygl/ad & Numer \\ \hline
+  \znak{\ldots}{8}
+  \znak{\#}{35}
+  \znak{\$}{36}
+  \znak{\&}{38}
+%  \znak{\textast}{42}
+%  \znak{\textat}{64}
+  \znak{\textasciitilde}{140}
+  \nieznak{\textasciicircum}{141}
+  \znak{\dag}{143}
+  \znak{\ddag}{144}
+  \znak{\textdegree}{148}
+  \znak{\S}{159}
+  \znak{\textregistered}{163}
+  \znak{\copyright}{164}
+  \znak{\P}{176}
+  \znak{\textbullet}{180}
+  \znak{\textbackslash}{198}
+  \znak{\textcurrency}{215}
+  \znak{\textperthousand}{216}
+  \znak{\textbar}{223}
+  \nieznak{\textunderscore}{230}
+\end{tabularx}
+
+\subsubsection*{Znaki diakrytyczne}
+\begin{tabularx}{.9\hsize}{|X%
+    |>{\centering}p{3cc}%
+    |>{\raggedleft\arraybackslash}p{3cc}<{\hspace*{0.5cc}}|}\hline
+  Nazwa makra & Wygl/ad & Numer \\ \hline
+  \akcent{\`}{18}
+  \akcent{\'}{19}
+  \akcent{\v}{20}
+  \akcent{\u}{21}
+  \akcent{\=}{22}
+  \akcent{\b}{22}
+  \akcent{\r}{23}
+  \akcent{\c}{24}
+  \akcent{\d}{46}
+  \akcent{\^}{94}
+  \akcent{\.}{95}
+  \akcent{\H}{125}
+  \akcent{\~}{126}
+  \akcent{\"}{127}
+  \akcent{\k}{150}
+\end{tabularx}
+
+\end{multicols}
+
+\end{document}
+
+%% 
+%% End of file `antt-qx.tex'.

@@ -1,0 +1,11 @@
+diff --git i/Modules/_ctypes/cfield.c w/Modules/_ctypes/cfield.c
+index 7ebd4ba..c8cdfa9 100644
+--- i/Modules/_ctypes/cfield.c
++++ w/Modules/_ctypes/cfield.c
+@@ -1,5 +1,5 @@
+ #include "Python.h"
+-#include "pycore_byteswap.h"      // _Py_bswap32()
++#include "internal/pycore_byteswap.h"      // _Py_bswap32()
+ 
+ #include <ffi.h>
+ #ifdef MS_WIN32

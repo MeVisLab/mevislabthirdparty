@@ -1,0 +1,12 @@
+type: pure_c
+name: certifi
+version: 2021.10.08
+homepage: https://github.com/certifi/python-certifi
+description: A carefully curated collection of Root Certificates for validating the trustworthiness of SSL certificates while verifying the identity of TLS hosts
+license: MPL-2.0
+
+sources:
+  2021.10.08:
+    sha256: 51c2cf76f7f2582d9c4eb5440bb311ef523ba0b319d0a973450ecebfb6802a3a
+    url: https://github.com/certifi/python-certifi/archive/refs/tags/${version}.tar.gz
+    base_path: python-certifi-${version}

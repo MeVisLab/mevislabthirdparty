@@ -1,0 +1,20 @@
+type: header_only
+name: "chai"
+display_name: "Chai"
+version: "4.3.4"
+homepage: "http://chaijs.com"
+description: "BDD / TDD assertion framework for node.js and the browser that can be paired with any testing framework"
+license: "MIT"
+
+pipeline: "linux:gcc10:release"
+
+sources:
+  "4.3.4":
+    sha256: 5486fd1e9bd7c4cce675b1f22a4794c1d2645717da383a92114841d14b48c6eb
+    url: "https://github.com/chaijs/chai/archive/refs/tags/v${version}.tar.gz"
+    base_path: "chai-${version}"
+
+  "4.0.2":
+    sha256: 5de9c38d8cb0d3fad661dd7243640f0091b7fa9aff5d7bf9b2a721625db71e24
+    url: "https://github.com/chaijs/chai/archive/${version}.tar.gz"
+    base_path: "chai-${version}"

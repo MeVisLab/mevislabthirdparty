@@ -1,0 +1,24 @@
+#
+# {{ header_date }}
+#
+{% if components %}
+{% for comp_name, comp in components %}
+if(NOT TARGET {{ name }}::{{ comp_name }})
+  add_library({{ name }}::{{ comp_name }} INTERFACE IMPORTED)
+endif()
+{% endfor %}
+{% endif %}
+
+if(NOT TARGET {{ name }}::{{ name }})
+  add_library({{ name }}::{{ name }} INTERFACE IMPORTED)
+endif()
+
+get_filename_component(_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+file(GLOB CONFIG_FILES "${_DIR}/{{ name }}Target-*.cmake")
+if("${CONFIG_FILES}" STREQUAL "")
+    message(FATAL_ERROR "MeVisLab: No {{ name }}Target-*.cmake files found.")
+endif()
+
+foreach(f ${CONFIG_FILES})
+  include(${f})
+endforeach()
