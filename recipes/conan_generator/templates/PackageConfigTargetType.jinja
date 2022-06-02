@@ -10,7 +10,7 @@ include("${CMAKE_CURRENT_LIST_DIR}/MeVisLabThirdPartyMacros.cmake")
 if(NOT DEFINED MEVISLAB_{{ name }}_ROOTDIR{{build_type_suffix}})
 {% if name == 'Qt5Dummy' %}
     set(MEVISLAB_{{ name }}_ROOTDIR{{build_type_suffix}} "${MEVISLAB_THIRDPARTY_ROOT_DIR}")
-{% elif name == 'python' %}
+{% elif name == 'python' or name == 'numpy' %}
     if(WIN32)
         set(MEVISLAB_{{ name }}_ROOTDIR{{build_type_suffix}} "${MEVISLAB_THIRDPARTY_ROOT_DIR}/Python")
     else()
