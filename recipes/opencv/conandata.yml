@@ -2,33 +2,13 @@ type: cpp
 name: opencv
 cmake_name: OpenCV
 display_name: OpenCV
-version: "4.5.5"
+version: "4.6.0"
 homepage: https://opencv.org
 description: OpenCV is an open source computer vision and machine learning software library
 license: BSD-3-Clause
 
 sources:
-  "4.5.5":
-    sha256: a1cfdcf6619387ca9e232687504da996aaa9f7b5689986b8331ec02cb61d28ad
-    url: "https://github.com/opencv/opencv/archive/${version}.tar.gz"
-    base_path: "opencv-${version}"
-
-  "4.5.4":
-    sha256: c20bb83dd790fc69df9f105477e24267706715a9d3c705ca1e7f613c7b3bad3d
-    url: "https://github.com/opencv/opencv/archive/${version}.tar.gz"
-    base_path: "opencv-${version}"
-
-  "4.5.3":
-    sha256: "77f616ae4bea416674d8c373984b20c8bd55e7db887fd38c6df73463a0647bab"
-    url: "https://github.com/opencv/opencv/archive/${version}.tar.gz"
-    base_path: "opencv-${version}"
-
-  "4.5.2":
-    sha256: "ae258ed50aa039279c3d36afdea5c6ecf762515836b27871a8957c610d0424f8"
-    url: "https://github.com/opencv/opencv/archive/${version}.tar.gz"
-    base_path: "opencv-${version}"
-
-  "4.5.1":
-    sha256: "e27fe5b168918ab60d58d7ace2bd82dd14a4d0bd1d3ae182952c2113f5637513"
-    url: "https://github.com/opencv/opencv/archive/${version}.tar.gz"
-    base_path: "opencv-${version}"
+  "4.6.0":
+    sha256: 1ec1cba65f9f20fe5a41fda1586e01c70ea0c9a6d7b67c9e13edf0cfe2239277
+    url: https://github.com/opencv/opencv/archive/${version}.tar.gz
+    base_path: opencv-${version}

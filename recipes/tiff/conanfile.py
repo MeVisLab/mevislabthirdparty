@@ -61,6 +61,7 @@ class ConanRecipe(ConanFile):
             tools.rmdir(os.path.join(self.package_folder, 'bin'))
 
         tools.rmdir(os.path.join(self.package_folder, 'share'))
+        tools.rmdir(os.path.join(self.package_folder, 'lib', 'cmake'))
         tools.rmdir(os.path.join(self.package_folder, 'lib', 'pkgconfig'))
 
         self.patch_binaries()

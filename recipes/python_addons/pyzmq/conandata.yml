@@ -1,16 +1,16 @@
 type: pure_c
 name: pyzmq
-version: 22.3.0
-homepage: "http://zguide.zeromq.org/py:all"
-description: "Lightweight and super-fast messaging library built on top of the ZeroMQ library"
-license: "BSD-3-Clause"
+version: "24.0.1"
+homepage: http://zguide.zeromq.org/py:all
+description: Lightweight and super-fast messaging library built on top of the ZeroMQ library
+license: BSD-3-Clause
 
 sources:
-  22.3.0:
-    sha256: 66b6e4fc47181bd560a55a0a15df15e1fc237b92665787d894a51aa70b02e049
-    url: "https://github.com/zeromq/pyzmq/archive/refs/tags/v${version}.tar.gz"
-    base_path: "pyzmq-${version}"
+  "24.0.1":
+    sha256: ce8ea133817947828852847e7b940df41e7672183411ca7175102c05d5dbffad
+    url: https://github.com/zeromq/pyzmq/archive/refs/tags/v${version}.tar.gz
+    base_path: pyzmq-${version}
 
 patches:
-  22.3.0:
-    - patch_file: "patches/${version}-windows_libzmq_library_path.patch"
+  "24.0.1":
+    - patch_file: patches/${version}-windows_libzmq_library_path.patch

@@ -1,23 +1,13 @@
 type: pure_c
 name: cython
 display_name: Cython
-version: "0.29.28"
+version: "0.29.32"
 homepage: https://cython.org
 description: The most widely used Python to C compiler
 license: Apache-2.0
 
 sources:
-  "0.29.28":
-    sha256: d6fac2342802c30e51426828fe084ff4deb1b3387367cf98976bb2e64b6f8e45
-    url: https://files.pythonhosted.org/packages/cb/da/54a5d7a7d9afc90036d21f4b58229058270cc14b4c81a86d9b2c77fd072e/Cython-0.29.28.tar.gz
+  "0.29.32":
+    sha256: 8733cf4758b79304f2a4e39ebfac5e92341bce47bcceb26c1254398b2f8c1af7
+    url: https://github.com/cython/cython/releases/download/${version}/Cython-${version}.tar.gz
     base_path: Cython-${version}
-
-  "0.29.25":
-    sha256: a87cbe3756e7c464acf3e9420d8741e62d3b2eace0846cb39f664ad378aab284
-    url: "https://files.pythonhosted.org/packages/09/45/10c39337ba73c38a798165f97e4798827a532eaac71071842cbe0ee13dc5/Cython-0.29.25.tar.gz"
-    base_path: "Cython-${version}"
-
-  "0.29.24":
-    sha256: cdf04d07c3600860e8c2ebaad4e8f52ac3feb212453c1764a49ac08c827e8443
-    url: "https://files.pythonhosted.org/packages/59/e3/78c921adf4423fff68da327cc91b73a16c63f29752efe7beb6b88b6dd79d/Cython-0.29.24.tar.gz"
-    base_path: "Cython-${version}"

@@ -21,18 +21,11 @@ class ConanRecipe(ConanFile):
 
 
     def source(self):
+        data = self.conan_data.get('sources', {}).get(self.version, {})
         if tools.os_info.is_windows:
-            fileName = "hunspell-%s.zip" % self.version
-            url = "https://github.com/hunspell/hunspell/archive/v%s.zip" % self.version
-            sha256 = "7089cc01ffd9122c960e1f8c7930a75be989ca4e9468773cef1b0a655bfb4368"
-            self.download_distfile(url=url, sha256=sha256, fileName=fileName)
+            self.default_source(source_data=data.get('windows'))
         else:
-            fileName = "hunspell-%s.tar.gz" % self.version
-            url = "https://github.com/hunspell/hunspell/files/2573619/%s" % fileName
-            sha256 = "57be4e03ae9dd62c3471f667a0d81a14513e314d4d92081292b90435944ff951"
-            self.download_distfile(url=url, sha256=sha256, fileName=fileName)
-
-        os.rename("hunspell-%s" % self.version, "sources")
+            self.default_source(source_data=data.get('unix'))
 
         # change rpath
         if not tools.os_info.is_windows:
@@ -50,7 +43,7 @@ class ConanRecipe(ConanFile):
 
 
     def build(self):
-        if self.settings.os == "Windows":
+        if tools.os_info.is_windows:
             self._msvc_build()
         else:
             self._unix_build()

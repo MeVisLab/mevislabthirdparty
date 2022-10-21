@@ -9,9 +9,4 @@ sources:
   "2.11.3":
     sha256: 4be44a9e55fb069347b217d2d66d51d8b0a97f2f76985b90630bb4f317eb042a
     url: https://github.com/pallets/jinja/archive/${version}.tar.gz
-    base_path: "jinja-${version}"
-
-  "2.7.3":
-    sha256: 1380d3b49c2ab19005039278978b64ef4e06751e9cdbe72ac8b8ec061731d301
-    url: https://github.com/pallets/jinja/archive/${version}.tar.gz
-    base_path: "jinja-${version}"
+    base_path: jinja-${version}

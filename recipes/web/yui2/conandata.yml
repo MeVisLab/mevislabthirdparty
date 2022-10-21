@@ -1,15 +1,13 @@
 type: header_only
-name: "yui2"
-display_name: "YUI2"
+name: yui2
+display_name: YUI2
 version: "2.9.0"
-homepage: "http://yuilibrary.com/download/yui2"
-description: "A fast, small, and feature-rich JavaScript library"
-license: "BSD-3-Clause"
-
-pipeline: "linux:gcc10:release"
+homepage: http://yuilibrary.com/download/yui2
+description: A fast, small, and feature-rich JavaScript library
+license: BSD-3-Clause
 
 sources:
   "2.9.0":
-    sha256: "6e3d2ae0f77877a2daab7946c93d45e5f2780a587dddf5db0ced5799772b1f6a"
-    url: "http://yui.github.io/yui2/archives/yui_2.9.0.zip"
-    base_path: "yui"
+    sha256: 6e3d2ae0f77877a2daab7946c93d45e5f2780a587dddf5db0ced5799772b1f6a
+    url: http://yui.github.io/yui2/archives/yui_2.9.0.zip
+    base_path: yui

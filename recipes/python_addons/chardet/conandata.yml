@@ -1,10 +1,10 @@
 type: pure_c
-name: "chardet"
-display_name: "Chardet"
+name: chardet
+display_name: Chardet
 version: "4.0.0"
-homepage: "http://docutils.sourceforge.net"
-description: "Python character encoding detector"
-license: "LGPL-2.1-or-later"
+homepage: http://docutils.sourceforge.net
+description: Python character encoding detector
+license: LGPL-2.1-or-later
 
 sources:
   "4.0.0":

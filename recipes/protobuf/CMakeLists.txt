@@ -6,4 +6,4 @@ set(UNUSED ${CMAKE_EXPORT_NO_PACKAGE_REGISTRY})
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup(TARGETS)
 
-add_subdirectory(sources/cmake)
+add_subdirectory(sources)

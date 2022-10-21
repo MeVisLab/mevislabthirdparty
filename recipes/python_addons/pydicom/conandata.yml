@@ -1,27 +1,12 @@
 type: pure_c
 name: pydicom
-version: 2.2.2
-homepage: "https://pydicom.github.io/"
-description: "pydicom is a pure python package for working with DICOM files"
+version: 2.3.0
+homepage: https://pydicom.github.io
+description: pydicom is a pure python package for working with DICOM files
 license: MIT
 
 sources:
-  2.2.2:
-    sha256: d827669486414b6b6688ecf4d220065e754fabc1b0d016329fced2da4192555d
-    url: "https://github.com/pydicom/pydicom/archive/refs/tags/v${version}.tar.gz"
-    base_path: "pydicom-${version}"
-
-  2.2.1:
-    sha256: 2d094ad57e17800067da8eefbebcf4a028a56dd909b1c2baefb279d33c600f1d
-    url: "https://github.com/pydicom/pydicom/archive/refs/tags/v${version}.tar.gz"
-    base_path: "pydicom-${version}"
-
-  2.2.0:
-    sha256: 375b5c419053d667940431d2f67d57f82f37d3a8f634a2943ef17ae60e2a0c77
-    url: "https://github.com/pydicom/pydicom/archive/refs/tags/v${version}.tar.gz"
-    base_path: "pydicom-${version}"
-
-  2.1.2:
-    sha256: 65f36820c5fec24b4e7ca45b7dae93e054ed269d55f92681863d39d30459e2fd
-    url: "https://files.pythonhosted.org/packages/a8/d8/52606ad3ab8408b6eb529a077b933ff38e941799d22e238cfc5d378c79c3/pydicom-${version}.tar.gz"
-    base_path: "pydicom-${version}"
+  2.3.0:
+    sha256: e50dfa6bc44516816248c750a93b07fa577b867433bd8bf4fd3319a4a19259a5
+    url: https://github.com/pydicom/pydicom/archive/refs/tags/v${version}.tar.gz
+    base_path: pydicom-${version}

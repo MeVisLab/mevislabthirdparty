@@ -2,6 +2,7 @@
 from conans import ConanFile
 from conans import tools
 from conans import CMake
+from conans.errors import ConanInvalidConfiguration
 import os
 
 
@@ -14,6 +15,16 @@ class ConanRecipe(ConanFile):
 
     def package_id(self):
         del self.info.settings.build_type
+
+
+    def validate(self):
+        if self.settings.os != "Windows":
+            raise ConanInvalidConfiguration(f"{self.name} is only supported on Windows")
+
+
+    def validate_build(self):
+        if self.settings.build_type != "Release":
+            raise ConanInvalidConfiguration(f"{self.name} is built in release mode only.")
 
 
     def requirements(self):

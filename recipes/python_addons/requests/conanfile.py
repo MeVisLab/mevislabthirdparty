@@ -10,6 +10,6 @@ class ConanRecipe(ConanFile):
         self.default_requirements()
 
         self.requires(f"idna/[>=3.3]@{self.user}/{self.channel}")
-        self.requires(f"certifi/[>=2021.10.08]@{self.user}/{self.channel}")
+        self.requires(f"certifi/[>=2022.06.15]@{self.user}/{self.channel}")
         self.requires(f"chardet/[>=4.0.0]@{self.user}/{self.channel}")
         self.requires(f"urllib3/[>=1.26.7]@{self.user}/{self.channel}")

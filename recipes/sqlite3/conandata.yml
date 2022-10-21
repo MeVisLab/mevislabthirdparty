@@ -1,68 +1,13 @@
 type: pure_c
 name: sqlite3
 display_name: SQLite3
-version: "3.38.1"
+version: "3.39.3"
 homepage: https://www.sqlite.org
 description: Self-contained, serverless, in-process SQL database engine
 license: PublicDomain
 
 sources:
-  "3.38.1":
-    sha256: 6fb55507d4517b5cbc80bd2db57b0cbe1b45880b28f2e4bd6dca4cfe3716a231
-    url: "https://www.sqlite.org/2022/sqlite-amalgamation-3380100.zip"
-    base_path: "sqlite-amalgamation-3380100"
-
-  "3.38.0":
-    sha256: e055f6054e97747a135c89e36520c0a423249e8a91c5fc445163f4a6adb20df6
-    url: "https://www.sqlite.org/2022/sqlite-amalgamation-3380000.zip"
-    base_path: "sqlite-amalgamation-3380000"
-
-  "3.37.0":
-    sha256: a443aaf5cf345613492efa679ef1c9cc31ba109dcdf37ee377f61ab500d042fe
-    url: "https://www.sqlite.org/2021/sqlite-amalgamation-3370000.zip"
-    base_path: "sqlite-amalgamation-3370000"
-
-  "3.36.0":
-    sha256: 999826fe4c871f18919fdb8ed7ec9dd8217180854dd1fe21eea96aed36186729
-    url: "https://www.sqlite.org/2021/sqlite-amalgamation-3360000.zip"
-    base_path: "sqlite-amalgamation-3360000"
-
-  "3.35.5":
-    sha256: "b49409ef123e193e719e2536f9b795482a69e61a9cc728933739b9024f035061"
-    url: "https://www.sqlite.org/2021/sqlite-amalgamation-3350500.zip"
-    base_path: "sqlite-amalgamation-3350500"
-
-  "3.35.3":
-    sha256: "a629d0b1cc301347109e8ad211ff46af371b6ef73c41b7698e9cf1fb37bf4b95"
-    url: "https://www.sqlite.org/2021/sqlite-amalgamation-3350300.zip"
-    base_path: "sqlite-amalgamation-3350300"
-
-  "3.35.2":
-    sha256: "140f148941f5f3069402fcc9bdaf94cf6ffbca2064909fe1656415f1a082cc52"
-    url: "https://www.sqlite.org/2021/sqlite-amalgamation-3350200.zip"
-    base_path: "sqlite-amalgamation-3350200"
-
-  "3.35.1":
-    sha256: "79c0429cf881beedec10af1cccfe74a849edf7d1cb40265a5f257d384754d5ea"
-    url: "https://www.sqlite.org/2021/sqlite-amalgamation-3350100.zip"
-    base_path: "sqlite-amalgamation-3350100"
-
-  "3.35.0":
-    sha256: "d5c7f8d3df3d7b115ff13a7fb383a3d221b60fde03b55aebe6c06f42dcb76789"
-    url: "https://www.sqlite.org/2021/sqlite-amalgamation-3350000.zip"
-    base_path: "sqlite-amalgamation-3350000"
-
-  "3.34.1":
-    sha256: "e0b1c0345fe4338b936e17da8e1bd88366cd210e576834546977f040c12a8f68"
-    url: "https://www.sqlite.org/2021/sqlite-amalgamation-3340100.zip"
-    base_path: "sqlite-amalgamation-3340100"
-
-  "3.33.0":
-    sha256: "b34f4c0c0eefad9a7e515c030c18702e477f4ef7d8ade6142bdab8011b487ac6"
-    url: "https://www.sqlite.org/2020/sqlite-amalgamation-3330000.zip"
-    base_path: "sqlite-amalgamation-3330000"
-
-  "3.31.1":
-    sha256: "f3c79bc9f4162d0b06fa9fe09ee6ccd23bb99ce310b792c5145f87fbcc30efca"
-    url: "https://www.sqlite.org/2020/sqlite-amalgamation-3310100.zip"
-    base_path: "sqlite-amalgamation-3310100"
+  "3.39.3":
+    sha256: a89db3030d229d860ae56a8bac50ac9761434047ae886e47e7c8f9f428fa98ad
+    url: https://www.sqlite.org/2022/sqlite-amalgamation-3390300.zip
+    base_path: sqlite-amalgamation-3390300

@@ -17,6 +17,11 @@ from mli import MLI, MLI_Python
 from mli_qt import MLI_Qt
 
 
+# these packages should neither be installed, nor listed as third-party dependency
+def is_excluded_package(pkg_name):
+    return pkg_name == 'conan_generator' or pkg_name.endswith('_installer')
+
+
 class ConanRecipe(ConanFile):
     name = "conan_generator"
     version = "1.0.0"
@@ -29,6 +34,9 @@ class ConanRecipe(ConanFile):
     default_user = "mevislab"
     default_channel = "stable"
 
+    def package_id(self):
+        self.info.clear()
+
 
 class mli_generator(CMakeFindPackageGenerator):
     @property
@@ -40,13 +48,16 @@ class mli_generator(CMakeFindPackageGenerator):
         try:
             return self.get_content()
         except Exception as ex:
-            print(''.join(traceback.format_exception(etype=type(ex), value=ex, tb=ex.__traceback__)))
+            print(''.join(traceback.format_exception(type(ex), value=ex, tb=ex.__traceback__)))
             raise ex
 
     def get_content(self):
         result = {}
         build_type = self.conanfile.settings.build_type
         for dependency in self.deps_build_info.deps:
+            if is_excluded_package(dependency):
+                continue
+
             cpp_info = self.conanfile.deps_cpp_info[dependency]
             if dependency == "qt5":
                 subGenerator = MLI_Qt(cpp_info, self.conanfile.output)
@@ -80,7 +91,7 @@ class mlabdocbook(CMakeFindPackageGenerator):
         try:
             return self.get_content()
         except Exception as ex:
-            print(''.join(traceback.format_exception(etype=type(ex), value=ex, tb=ex.__traceback__)))
+            print(''.join(traceback.format_exception(type(ex), value=ex, tb=ex.__traceback__)))
             raise ex
 
 
@@ -91,7 +102,7 @@ class mlabdocbook(CMakeFindPackageGenerator):
         items = []
 
         for pkg_name, cpp_info in self.deps_build_info.dependencies:
-            if pkg_name == 'conan_generator':
+            if is_excluded_package(pkg_name):
                     continue
 
             self._validate_components(cpp_info)
@@ -150,7 +161,7 @@ class mevislab(CMakeFindPackageGenerator):
         try:
             return self.get_content()
         except Exception as ex:
-            print(''.join(traceback.format_exception(etype=type(ex), value=ex, tb=ex.__traceback__)))
+            print(''.join(traceback.format_exception(type(ex), value=ex, tb=ex.__traceback__)))
             raise ex
 
 
@@ -186,7 +197,7 @@ class mevislab(CMakeFindPackageGenerator):
         package_root_dirs = {}
 
         for pkg_name, cpp_info in self.deps_build_info.dependencies:
-            if pkg_name == 'conan_generator':
+            if is_excluded_package(pkg_name):
                 continue
 
             self._validate_components(cpp_info)

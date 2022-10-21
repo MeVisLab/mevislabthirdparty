@@ -6,27 +6,13 @@ description: Library of classes for constructing grammars directly in Python cod
 license: MIT
 
 sources:
+  "3.0.8":
+    # doesn't use setuptools (setup.py) anymore but requires a PEP-517 compliant build system like flit or pyproject-build
+    sha256: 9a2dff108972363312e9af006a5cdd9c895bfa40df81c34103bb591d5100af35
+    url: https://github.com/pyparsing/pyparsing/archive/pyparsing_${version}.tar.gz
+    base_path: pyparsing-pyparsing_${version}
+
   "3.0.7":
     sha256: 9303df2c7998485cc71a246c6cc0489c48ad571adc9d250c2d1314c47768ba59
     url: https://github.com/pyparsing/pyparsing/archive/pyparsing_${version}.tar.gz
     base_path: pyparsing-pyparsing_${version}
-
-  "3.0.6":
-    sha256: b229816613fb9a05667d49934c60d34b26767666ed7dafe431cacbca22b70457
-    url: "https://github.com/pyparsing/pyparsing/archive/pyparsing_${version}.tar.gz"
-    base_path: "pyparsing-pyparsing_${version}"
-
-  "3.0.4":
-    sha256: 5d9021591e8e400f4a61b0f519217b1b7cca40b3023bca31a3eab34a240269b1
-    url: "https://github.com/pyparsing/pyparsing/archive/pyparsing_${version}.tar.gz"
-    base_path: "pyparsing-pyparsing_${version}"
-
-  "2.4.7":
-    sha256: 6deecf4b95a49a5a9c89b4a4b1fcb73c1cba0e3265ec7b858adffcced229ba05
-    url: "https://github.com/pyparsing/pyparsing/archive/pyparsing_${version}.tar.gz"
-    base_path: "pyparsing-pyparsing_${version}"
-
-  "2.0.3":
-    sha256: "601f34e280dc88eaaee9b615898795ec33293b62cc37733f0f0e5806e0830e0e"
-    url: "https://github.com/pyparsing/pyparsing/archive/pyparsing_2.0.3.tar.gz"
-    base_path: "pyparsing-pyparsing_${version}/src"

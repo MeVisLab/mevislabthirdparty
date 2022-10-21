@@ -1,29 +1,14 @@
 type: pure_c
-name: "glfw"
-cmake_name: "GLFW"
-display_name: "GLFW"
-version: "3.3.6"
-homepage: "https://github.com/glfw/glfw"
-description: "A multi-platform library for OpenGL, OpenGL ES, Vulkan, window and input"
-license: "Zlib"
+name: glfw
+cmake_name: GLFW
+display_name: GLFW
+version: "3.3.8"
+homepage: https://github.com/glfw/glfw
+description: A multi-platform library for OpenGL, OpenGL ES, Vulkan, window and input
+license: Zlib
 
 sources:
-  "3.3.6":
-    sha256: ed07b90e334dcd39903e6288d90fa1ae0cf2d2119fec516cf743a0a404527c02
-    url: "https://github.com/glfw/glfw/archive/${version}.tar.gz"
-    base_path: "glfw-${version}"
-
-  "3.3.5":
-    sha256: 32fdb8705784adfe3082f97e0d41e7c515963e977b5a14c467a887cf0da827b5
-    url: "https://github.com/glfw/glfw/archive/${version}.tar.gz"
-    base_path: "glfw-${version}"
-
-  "3.3.4":
-    sha256: "cc8ac1d024a0de5fd6f68c4133af77e1918261396319c24fd697775a6bc93b63"
-    url: "https://github.com/glfw/glfw/archive/${version}.tar.gz"
-    base_path: "glfw-${version}"
-
-  "3.3.3":
-    sha256: "aa9922b55a464d5bab58fcbe5a619f517d54e3dc122361c116de573670006a7a"
-    url: "https://github.com/glfw/glfw/archive/${version}.tar.gz"
+  "3.3.8":
+    sha256: f30f42e05f11e5fc62483e513b0488d5bceeab7d9c5da0ffe2252ad81816c713
+    url: https://github.com/glfw/glfw/archive/${version}.tar.gz
     base_path: "glfw-${version}"

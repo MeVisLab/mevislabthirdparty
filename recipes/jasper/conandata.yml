@@ -1,49 +1,14 @@
 type: pure_c
-name: "jasper"
-display_name: "JasPer"
-cmake_name: "Jasper"
-version: "2.0.33"
-homepage: "https://www.ece.uvic.ca/~mdadams/jasper/"
-description: "Implementation of the codec specified in the JPEG-2000 Part-1 standard"
-license: "JasPer-2.0"
+name: jasper
+display_name: JasPer
+cmake_name: Jasper
+version: "3.0.6"
+homepage: https://www.ece.uvic.ca/~mdadams/jasper/
+description: Implementation of the codec specified in the JPEG-2000 Part-1 standard
+license: JasPer-2.0
 
 sources:
-  "2.0.33":
-    sha256: 09d1958aae8018ef3315bdfec6b71758f83f0e78931c017b1f7991332f87b873
-    url: "https://github.com/mdadams/jasper/archive/version-${version}.zip"
-    base_path: "jasper-version-${version}"
-
-  "2.0.32":
-    sha256: "1b9dec36f4514d889de96acd73d5ac3ca495a43a67a4df48163ae26dc7420527"
-    url: "https://github.com/mdadams/jasper/archive/version-${version}.zip"
-    base_path: "jasper-version-${version}"
-
-  "2.0.28":
-    sha256: "ba989c039a323f92bf214c4b8839311b9e52b16609461ed6702f12c5c4b8d9fb"
-    url: "https://github.com/mdadams/jasper/archive/version-${version}.zip"
-    base_path: "jasper-version-${version}"
-
-  "2.0.27":
-    sha256: "bf338366a68b8364596be5187f09914be736e93f24bb815dc486debbfb140872"
-    url: "https://github.com/mdadams/jasper/archive/version-${version}.zip"
-    base_path: "jasper-version-${version}"
-
-  "2.0.26":
-    sha256: "a3e92bdf5f0ec5a39b2144e9a22fb745f5f3116e25a9ab206c30027454105f1c"
-    url: "https://github.com/mdadams/jasper/archive/version-${version}.zip"
-    base_path: "jasper-version-${version}"
-
-  "2.0.25":
-    sha256: "4972a58eb8fc137bc3b7e20a80a1fce88707e345c72412fb2a1c4ced2f4f26be"
-    url: "https://github.com/mdadams/jasper/archive/version-${version}.zip"
-    base_path: "jasper-version-${version}"
-
-  "2.0.22":
-    sha256: "a8301dcd5307562f3f8609b30a810d802650239a619e57147b46331379b0e89a"
-    url: "https://github.com/mdadams/jasper/archive/version-${version}.zip"
-    base_path: "jasper-version-${version}"
-
-  "2.0.16":
-    sha256: "912495d1074de635fe36884085214cf389403e51f1075d50c6008602e8d9480a"
-    url: "https://github.com/mdadams/jasper/archive/version-${version}.zip"
-    base_path: "jasper-version-${version}"
+  "3.0.6":
+    sha256: 12204f6b6780a72d7460adf8e40612e71320d0e0ee99888ff958fffbf7311e39
+    url: https://github.com/mdadams/jasper/archive/version-${version}.zip
+    base_path: jasper-version-${version}

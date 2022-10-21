@@ -1,5 +1,5 @@
 diff --git i/asyncqt/__init__.py w/asyncqt/__init__.py
-index e16e5d9..87f9fa4 100644
+index e16e5d9..52f8e15 100644
 --- i/asyncqt/__init__.py
 +++ w/asyncqt/__init__.py
 @@ -1,6 +1,7 @@
@@ -10,7 +10,7 @@ index e16e5d9..87f9fa4 100644
  Copyright (c) 2018 Gerard Marull-Paretas <gerard@teslabs.com>
  Copyright (c) 2014 Mark Harviston <mark.harviston@gmail.com>
  Copyright (c) 2014 Arve Knudsen <arve.knudsen@gmail.com>
-@@ -31,44 +32,19 @@ import functools
+@@ -31,44 +32,18 @@ import functools
  logger = logging.getLogger(__name__)
  
  
@@ -50,8 +50,7 @@ index e16e5d9..87f9fa4 100644
 +from PythonQt import QtCore
 +Slot = QtCore.Slot
 +QApplication = QtCore.QCoreApplication
-+# TODO: fix when QThread is wrapped
-+QThread = object
++QThread = QtCore.QThread
 +# MeVis end
  
  from ._common import with_logger  # noqa
@@ -63,7 +62,16 @@ index e16e5d9..87f9fa4 100644
  
      """
      Read jobs from the queue and then execute them.
-@@ -194,6 +170,8 @@ class _SimpleTimer(QtCore.QObject):
+@@ -112,7 +87,7 @@ class _QThreadWorker(QtCore.QThread):
+ 
+     def wait(self):
+         self._logger.debug('Waiting for thread #{} to stop...'.format(self.__num))
+-        super().wait()
++        QThread.wait(self)
+ 
+ 
+ @with_logger
+@@ -194,6 +169,8 @@ class _SimpleTimer(QtCore.QObject):
          self._stopped = False
  
      def add_callback(self, handle, delay=0):
@@ -72,7 +80,7 @@ index e16e5d9..87f9fa4 100644
          timerid = self.startTimer(delay * 1000)
          self._logger.debug("Registering timer id {0}".format(timerid))
          assert timerid not in self.__callbacks
-@@ -202,27 +180,23 @@ class _SimpleTimer(QtCore.QObject):
+@@ -202,27 +179,23 @@ class _SimpleTimer(QtCore.QObject):
  
      def timerEvent(self, event):  # noqa: N802
          timerid = event.timerId()
@@ -113,7 +121,7 @@ index e16e5d9..87f9fa4 100644
  
      def stop(self):
          self._logger.debug("Stopping timers")
-@@ -269,9 +243,21 @@ class _QEventLoop:
+@@ -269,9 +242,21 @@ class _QEventLoop:
  
          super().__init__()
  
@@ -135,7 +143,7 @@ index e16e5d9..87f9fa4 100644
          self._before_run_forever()
  
          try:
-@@ -281,6 +267,7 @@ class _QEventLoop:
+@@ -281,6 +266,7 @@ class _QEventLoop:
              return rslt
          finally:
              self._after_run_forever()

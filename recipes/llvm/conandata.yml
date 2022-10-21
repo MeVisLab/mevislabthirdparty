@@ -1,26 +1,18 @@
 type: cpp
-name: "llvm"
-display_name: "LLVM"
-version: "11.1.0"
-homepage: "https://llvm.org"
-description: "Low Level Virtual Machine"
-license: "Apache-2.0"
-
-pipeline: ["windows:release", "macos:release", "linux:release"]
+name: llvm
+cmake_name: LLVM
+display_name: LLVM
+version: "14.0.6"
+homepage: https://llvm.org
+description: Low Level Virtual Machine
+license: Apache-2.0
 
 sources:
-  "12.0.0":
-    sha256: "49dc47c8697a1a0abd4ee51629a696d7bfe803662f2a7252a3b16fc75f3a8b50"
-    url: "https://github.com/llvm/llvm-project/releases/download/llvmorg-12.0.0/llvm-12.0.0.src.tar.xz"
-    base_path: "llvm-${version}.src"
-
-  "11.1.0":
-    sha256: "ce8508e318a01a63d4e8b3090ab2ded3c598a50258cc49e2625b9120d4c03ea5"
-    url: "https://github.com/llvm/llvm-project/releases/download/llvmorg-11.1.0/llvm-11.1.0.src.tar.xz"
-    base_path: "llvm-${version}.src"
+  "14.0.6":
+    sha256: 050922ecaaca5781fdf6631ea92bc715183f202f9d2f15147226f023414f619a
+    url: https://github.com/llvm/llvm-project/releases/download/llvmorg-${version}/llvm-${version}.src.tar.xz
+    base_path: llvm-${version}.src
 
 patches:
-  "11.1.0":
-    - patch_file: "patches/11.1.0-cmake_conan.patch"
-    - patch_file: "patches/11.1.0-color_enum.patch"
-    - patch_file: "patches/11.1.0-type-traits.patch"
+  "14.0.6":
+    - patch_file: "patches/${version}-cmake_conan.patch"

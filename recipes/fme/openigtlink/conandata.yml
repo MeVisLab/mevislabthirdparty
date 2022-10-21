@@ -2,21 +2,12 @@ type: cpp
 name: openigtlink
 display_name: OpenIGTLink
 version: "2021.03.10"
-homepage: "https://github.com/openigtlink/OpenIGTLink"
-description: "network communication library for image-guided therapy"
+homepage: https://github.com/openigtlink/OpenIGTLink
+description: network communication library for image-guided therapy
 license: BSD-3-Clause
 
 sources:
   "2021.03.10":
     sha256: de2aca54298cec226cf90cb699b72b6d98a9d8b8f6e833fdaa8cb50a5a589959
-    url: "https://github.com/openigtlink/OpenIGTLink/archive/6825acf9d748d7d28726384b3fd078d5409a6d59.zip"
-    base_path: "OpenIGTLink-6825acf9d748d7d28726384b3fd078d5409a6d59"
-
-  "3.0":
-    sha256: 8eaf7b9895172152c1e1014e5d06a2a1c7588c00a03c0623be570a87a3a74b9e
-    url: "https://github.com/openigtlink/OpenIGTLink/archive/refs/tags/v${version}.tar.gz"
-    base_path: "OpenIGTLink-${version}"
-
-patches:
-  "3.0":
-    - patch_file: "patches/${version}-linux_install_header.patch"
+    url: https://github.com/openigtlink/OpenIGTLink/archive/6825acf9d748d7d28726384b3fd078d5409a6d59.zip
+    base_path: OpenIGTLink-6825acf9d748d7d28726384b3fd078d5409a6d59

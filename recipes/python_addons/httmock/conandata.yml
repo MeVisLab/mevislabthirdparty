@@ -1,12 +1,12 @@
 type: pure_c
-name: "httmock"
+name: httmock
 version: "1.4.0"
-homepage: "https://github.com/patrys/httmock"
-description: "A mocking library for requests"
-license: "Apache-2.0"
+homepage: https://github.com/patrys/httmock
+description: A mocking library for requests
+license: Apache-2.0
 
 sources:
   "1.4.0":
-    sha256: "e1f094f555fe5e17c82c102dcd9093f3a041f5457f8ac75829c17f32db362bf1"
-    url: "https://github.com/patrys/httmock/archive/refs/tags/${version}.tar.gz"
-    base_path: "httmock-${version}"
+    sha256: e1f094f555fe5e17c82c102dcd9093f3a041f5457f8ac75829c17f32db362bf1
+    url: https://github.com/patrys/httmock/archive/refs/tags/${version}.tar.gz
+    base_path: httmock-${version}

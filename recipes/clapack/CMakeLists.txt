@@ -38,5 +38,6 @@ if(MSVC)
   set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS} /wd4267")
 endif()
 
+add_compile_definitions("BUILD_CLAPACK")
 
 add_subdirectory(sources)

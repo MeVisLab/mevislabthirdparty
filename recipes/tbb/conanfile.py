@@ -11,13 +11,6 @@ class ConanRecipe(ConanFile):
 
     _cmake = None
 
-    def build_requirements(self):
-        if int(self.version.split('.')[0]) < 2021:
-            channel = "@{0}/{1}".format(self.user, self.channel)
-            if self.settings.os == "Windows":
-                self.build_requires("make_installer/[>4.0.0]" + channel)
-
-
     def _configure_cmake(self):
         if not self._cmake:
             self._cmake = CMake(self)
@@ -39,7 +32,7 @@ class ConanRecipe(ConanFile):
     def package(self):
         cmake = self._configure_cmake()
         cmake.install()
-        
+
         tools.rmdir(os.path.join(self.package_folder, "lib", "cmake"))
         tools.rmdir(os.path.join(self.package_folder, "lib", "pkgconfig"))
 

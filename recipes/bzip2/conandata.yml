@@ -1,14 +1,14 @@
 type: pure_c
-name: "bzip2"
-display_name: "BZip2"
-cmake_name: "BZip2"
+name: bzip2
+display_name: BZip2
+cmake_name: BZip2
 version: "1.0.8"
-homepage: "http://www.bzip.org"
-description: "bzip2 is a free and open-source file compression program that uses the Burrows–Wheeler algorithm"
-license: "bzip2-1.0.6" # license terms have not changed with 1.0.8
+homepage: https://sourceware.org/bzip2
+description: bzip2 is a free and open-source file compression program that uses the Burrows–Wheeler algorithm
+license: bzip2-1.0.6
 
 sources:
   "1.0.8":
-    sha256: "ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269"
-    url: "https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz"
-    base_path: "bzip2-${version}"
+    sha256: ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269
+    url: https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz
+    base_path: bzip2-${version}

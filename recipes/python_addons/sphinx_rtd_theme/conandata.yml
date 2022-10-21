@@ -1,12 +1,12 @@
 type: pure_c
-name: "sphinx_rtd_theme"
+name: sphinx_rtd_theme
 version: "0.1.8"
-homepage: "https://github.com/readthedocs/sphinx_rtd_theme"
-description: "Sphinx theme for readthedocs.org"
-license: "MIT"
+homepage: https://github.com/readthedocs/sphinx_rtd_theme
+description: Sphinx theme for readthedocs.org
+license: MIT
 
 sources:
   "0.1.8":
-    sha256: "802fc28b632afb9cfb5d81ea0794038e52e098b994054c366cb584b356db5919"
-    url: "https://github.com/readthedocs/sphinx_rtd_theme/archive/${version}.zip"
-    base_path: "sphinx_rtd_theme-${version}"
+    sha256: 802fc28b632afb9cfb5d81ea0794038e52e098b994054c366cb584b356db5919
+    url: https://github.com/readthedocs/sphinx_rtd_theme/archive/${version}.zip
+    base_path: sphinx_rtd_theme-${version}

@@ -1,0 +1,22 @@
+diff --git i/Lib/multiprocessing/pool.py w/Lib/multiprocessing/pool.py
+index bbe05a5..593e180 100644
+--- i/Lib/multiprocessing/pool.py
++++ w/Lib/multiprocessing/pool.py
+@@ -17,6 +17,7 @@ import collections
+ import itertools
+ import os
+ import queue
++import sys
+ import threading
+ import time
+ import traceback
+@@ -203,6 +204,9 @@ class Pool(object):
+             processes = os.cpu_count() or 1
+         if processes < 1:
+             raise ValueError("Number of processes must be at least 1")
++        if sys.platform == 'win32' and processes > 61:
++            processes = 61
++            warnings.warn("Limiting number of processes in multiprocessing.Pool to 61, because of _winapi.WaitForMultipleObjects limit")
+ 
+         if initializer is not None and not callable(initializer):
+             raise TypeError('initializer must be a callable')

@@ -2,7 +2,7 @@ type: pure_c
 name: zlib
 cmake_name: ZLIB
 mli_name: None
-version: 1.2.12
+version: "1.2.12"
 homepage: https://zlib.net
 description: A Massively Spiffy Yet Delicately Unobtrusive Compression Library
 license: Zlib

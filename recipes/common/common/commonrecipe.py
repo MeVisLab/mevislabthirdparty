@@ -97,17 +97,27 @@ class CommonRecipe(mixin.CMake, mixin.Debug, mixin.Download, mixin.License, mixi
                 pass
 
 
-    def default_source(self, rename_from=None, rename_to=None, apply_patches=True, strip=1, fuzz=None):
+    def default_source(self, rename_from=None, rename_to=None, apply_patches=True, strip=1, fuzz=None, source_data=None):
         """Download the source files as defined in conandata.yml"""
 
         # some packages have no sources
-        if not self.conan_data or not self.conan_data.get('sources', None):
+        if not source_data and (not self.conan_data or not self.conan_data.get('sources', None)):
             return
 
+        srcs_name = "conandata.yml" if not source_data else "source_data"
+
         # this may be correct, but still worth a warning
-        pkg = self.conan_data.get('sources', {}).get(self.version)
+        pkg = {}
+        if source_data:
+            if source_data.get(self.version, None):
+                pkg = source_data[self.version]
+            else:
+                pkg = source_data
+        else:
+            pkg = self.conan_data.get('sources', {}).get(self.version)
+
         if not pkg:
-            self.output.warn("No download information for this version '{}' found in conandata.yml".format(self.version))
+            self.output.warn(f"No download information found in {srcs_name}")
             return
 
         # now we really need a download URL
@@ -116,14 +126,14 @@ class CommonRecipe(mixin.CMake, mixin.Debug, mixin.Download, mixin.License, mixi
             if self._download_url:
                 url = self._download_url
             else:
-                self.output.error("No download url found in conandata.yml for version {}".format(self.version))
-                raise ConanException("No download url found in conandata.yml for version {}".format(self.version))
+                self.output.error(f"No download url found in {srcs_name}")
+                raise ConanException(f"No download url found in {srcs_name}")
 
         # a checksum should always be specified
         sha256 = pkg.get('sha256', None)
         if sha256 is None:
-            self.output.error("No sha256 checksum specified in conandata.yml for version {}. In rare cases it is not possible to specify one. In this case please specify 'False'".format(self.version))
-            raise ConanException("No sha256 checksum specified in conandata.yml for version {}. In rare cases it is not possible to specify one. In this case please specify 'False'".format(self.version))
+            self.output.error(f"No sha256 checksum specified in {srcs_name}. In rare cases it is not possible to specify one. In this case please specify 'False'")
+            raise ConanException(f"No sha256 checksum specified in {srcs_name}. In rare cases it is not possible to specify one. In this case please specify 'False'")
 
         # get the filename or try to derive the name from the given URL
         fileName = utils.substitute(self, pkg.get('filename', None))
@@ -132,9 +142,25 @@ class CommonRecipe(mixin.CMake, mixin.Debug, mixin.Download, mixin.License, mixi
                 fileName = self._download_filename
             else:
                 for ext in ['.tar.gz', '.tar', '.tzb2', '.tar.bz2', '.tgz', '.txz', '.tar.xz', '.zip', '.xz', '.7z', '.exe', '.msi', '.js', '.whl']:
+                    u = url.lower()
                     # sf.net download links look like https://sourceforge.net/projects/ftgl/files/FTGL Source/2.13.1/ftgl-2.13.1.tar.gz/download
-                    if url.lower().endswith(ext) or url.lower().endswith("%s/download" % ext):
-                        fileName = "{}-{}{}".format(self.name.lower(), self.version, ext)
+                    if u.endswith(f"{ext}/download"):
+                        u = u[:-len("/download")]
+
+                    if u.endswith(ext):
+                        fn = u.split('/')[-1]
+
+                        if not fn.endswith(ext):
+                            raise ConanException("internal logic error")
+
+                        if not self.version in fn:
+                            fn = f"{self.version}-{fn}"
+
+                        n = (self.name[:-len("_installer")] if self.name.endswith("_installer") else self.name).lower()
+                        if not n in fn.lower():
+                                fn = f"{n}-{fn}"
+
+                        fileName = fn
                         break
 
         if not fileName:

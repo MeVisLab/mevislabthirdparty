@@ -2,14 +2,15 @@
 from conans import ConanFile
 from conans import tools
 from conans import CMake
+from conan.tools.cmake import CMake, CMakeToolchain
 import os
 
 
 class ConanRecipe(ConanFile):
     python_requires = 'common/1.0.0@mevislab/stable'
     python_requires_extend = 'common.CommonRecipe'
+    generators = "cmake_find_package"
 
-    _cmake = None
 
     def build_requirements(self):
         channel = "@{0}/{1}".format(self.user, self.channel)
@@ -17,27 +18,27 @@ class ConanRecipe(ConanFile):
             self.build_requires("nasm_installer/[>=2.14]" + channel)
 
 
-    def _configure_cmake(self):
-        if not self._cmake:
-            self.create_cmake_wrapper()
-            self._cmake = CMake(self)
-            self._cmake.definitions["CMAKE_DEBUG_POSTFIX"] = "d"
-            self._cmake.definitions["CMAKE_POSITION_INDEPENDENT_CODE"] = True
-            self._cmake.definitions["BUILD_SHARED_LIBS"] = True
-            self._cmake.definitions["ENABLE_STATIC"] = False
-            self._cmake.definitions["ENABLE_SHARED"] = True
-            self._cmake.definitions["REQUIRE_SIMD"] = True  # no simd -> error!
-            self._cmake.configure()
-        return self._cmake
+    def generate(self):
+        toolchain = CMakeToolchain(self)
+        toolchain.variables["CMAKE_DEBUG_POSTFIX"] = "d"
+        toolchain.variables["CMAKE_POSITION_INDEPENDENT_CODE"] = True
+        toolchain.variables["BUILD_SHARED_LIBS"] = True
+        toolchain.variables["ENABLE_STATIC"] = False
+        toolchain.variables["ENABLE_SHARED"] = True
+        toolchain.variables["REQUIRE_SIMD"] = True  # no simd -> error!
+        toolchain.variables["CMAKE_INSTALL_DEFAULT_LIBDIR"] = 'lib'
+
+        toolchain.generate()
 
 
     def build(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
+        cmake.configure(build_script_folder="sources")
         cmake.build()
 
 
     def package(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
         cmake.install()
 
         tools.rmdir(os.path.join(self.package_folder, "lib", "pkgconfig"))

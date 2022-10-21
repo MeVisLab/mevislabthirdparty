@@ -1,8 +1,6 @@
 type: installer
-name: "gperf_installer"
+name: gperf_installer
 version: "3.1"
-homepage: "https://www.gnu.org/software/gperf"
-description: "GNU gperf is a perfect hash function generator"
-license: "GPL-3.0-or-later"
-
-pipeline: "windows:vs15:release"
+homepage: https://www.gnu.org/software/gperf
+description: GNU gperf is a perfect hash function generator
+license: GPL-3.0-or-later

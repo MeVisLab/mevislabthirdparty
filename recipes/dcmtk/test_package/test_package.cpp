@@ -21,9 +21,21 @@ int main(int argc, char *argv[])
     {
         DcmFileFormat fileformat;
         DcmDataset *dataset = fileformat.getDataset();
-        dataset->putAndInsertString(DCM_SOPClassUID, UID_SecondaryCaptureImageStorage);
-        dataset->putAndInsertString(DCM_SOPInstanceUID, uid);
-        dataset->putAndInsertString(DCM_PatientName, "Doe^John");
+        if(auto status = dataset->putAndInsertString(DCM_SOPClassUID, UID_SecondaryCaptureImageStorage); status.bad()) {
+            std::cerr << "ERROR: cannot add element DCM_SOPClassUID (" << status.text() << ")" << std::endl;
+            return 1;
+        }
+
+        if(auto status = dataset->putAndInsertString(DCM_SOPInstanceUID, uid); status.bad()) {
+            std::cerr << "ERROR: cannot add element DCM_SOPInstanceUID (" << status.text() << ")" << std::endl;
+            return 1;
+        }
+
+        if(auto status = dataset->putAndInsertString(DCM_PatientName, "Doe^John"); status.bad()) {
+            std::cerr << "ERROR: cannot add element DCM_PatientName (" << status.text() << ")" << std::endl;
+            return 1;
+        }
+
         if(auto status = fileformat.saveFile("generated_test_file.dcm", EXS_LittleEndianExplicit); status.bad()) {
             std::cerr << "ERROR: cannot write DICOM file (" << status.text() << ")" << std::endl;
             return 1;

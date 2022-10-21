@@ -1,14 +1,12 @@
 type: installer
-name: "python2_installer"
+name: python2_installer
 version: "2.7.17"
-homepage: "https://sourceforge.net/projects/portable-python/"
-description: "Minimum barebones and portable Python 2 distribution"
-license: "MIT"
-
-pipeline: "windows:vs15:release"
+homepage: https://sourceforge.net/projects/portable-python/
+description: Minimum barebones and portable Python 2 distribution
+license: MIT
 
 sources:
   "2.7.17":
-    sha256: "ecdd6b2cd256c62621e27950f2d4bef4cc0c63f061ca597bf893789256f7ad49"
-    filename: "python2_installer-${version}.exe"
-    url: "https://sourceforge.net/projects/portable-python/files/Portable%20Python%202.7/Portable%20Python-2.7.17%20x64.exe/download"
+    sha256: ecdd6b2cd256c62621e27950f2d4bef4cc0c63f061ca597bf893789256f7ad49
+    filename: python2_installer-${version}.exe
+    url: https://sourceforge.net/projects/portable-python/files/Portable%20Python%202.7/Portable%20Python-2.7.17%20x64.exe/download

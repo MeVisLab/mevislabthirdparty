@@ -21,13 +21,12 @@ class ConanRecipe(ConanFile):
 
     def requirements(self):
         channel = "@mevislab/stable"
-        self.requires("openssl/1.1.1o" + channel)
-
+        self.requires("openssl/1.1.1q" + channel)
 
 
     def imports(self):
-        if tools.os_info.is_macos:
-            self.copy("*.dylib*", src="lib", dst="lib")
+        self.copy("*.dylib*", src="lib", dst="lib")
+        self.copy("*.so*", src="lib", dst="sources")
 
 
     def _build_windows(self):

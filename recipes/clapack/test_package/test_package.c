@@ -8,6 +8,9 @@ void MAIN_() {}
 void MAIN__() {}
 void _MAIN_() {}
 
+#define MIN(a,b) (((a)<(b))?(a):(b))
+#define MAX(a,b) (((a)>(b))?(a):(b))
+
 int main()
 {
     char JOBU;
@@ -24,8 +27,8 @@ int main()
     integer LWORK;
     integer INFO;
 
-    integer mn = min(M, N);
-    integer MN = max(M, N);
+    integer mn = MIN(M, N);
+    integer MN = MAX(M, N);
 
     double a[SIZE * SIZE] = { 16.0, 5.0, 9.0, 4.0, 2.0, 11.0, 7.0, 14.0, 3.0, 10.0, 6.0, 15.0, 13.0, 8.0, 12.0, 1.0 };
     double s[SIZE];

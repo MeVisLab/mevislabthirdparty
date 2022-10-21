@@ -39,7 +39,7 @@ class ConanRecipe(ConanFile):
         self.requires("bzip2/[>=1.0.8]" + channel)
         self.requires("xz-utils/[>=5.2.5]" + channel)
         self.requires("libffi/[>=3.3]" + channel)
-        self.requires("openssl/1.1.1o" + channel)
+        self.requires("openssl/1.1.1q" + channel)
 
 
     def _unix_build(self):

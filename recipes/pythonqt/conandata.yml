@@ -1,8 +1,8 @@
 type: cpp
-name: "pythonqt"
-cmake_name: "PythonQt"
-display_name: "PythonQt"
+name: pythonqt
+cmake_name: PythonQt
+display_name: PythonQt
 version: "2022.02.11"
-homepage: "https://mevislab.github.io/pythonqt/"
-description: "PythonQt is a dynamic Python binding for Qt"
-license: "LGPL-2.1-only"
+homepage: https://mevislab.github.io/pythonqt
+description: PythonQt is a dynamic Python binding for Qt
+license: LGPL-2.1-only

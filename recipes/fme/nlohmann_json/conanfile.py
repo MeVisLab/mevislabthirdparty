@@ -35,5 +35,6 @@ class ConanRecipe(ConanFile):
         cmake.install()
 
         tools.rmdir(os.path.join(self.package_folder, "lib"))
+        tools.rmdir(os.path.join(self.package_folder, "share"))
 
         self.default_package()

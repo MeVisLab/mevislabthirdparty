@@ -16,80 +16,44 @@ sources:
     url: http://download.qt.io/official_releases/qt/5.12/${version}/single/qt-everywhere-src-${version}.tar.xz
     base_path: qt-everywhere-src-${version}
 
-  5.12.11:
-    sha256: 0c4cdef158c61827d70d6111423166e2c62b539eaf303f36ad1d0aa8af900b95
-    url: http://download.qt.io/official_releases/qt/5.12/${version}/single/qt-everywhere-src-${version}.tar.xz
-    base_path: qt-everywhere-src-${version}
-
 
 patches:
   5.12.12:
+    - patch_file: patches/${version}-CVE-2022-25255.patch
+    - patch_file: patches/${version}-CVE-2022-25643.patch
     - patch_file: patches/${version}-qtbase_backport_qt_relocatable_feature.patch
+    - patch_file: patches/${version}-qtbase_enable_debug_plugin_check.patch
+    - patch_file: patches/${version}-qtbase_gcc11_include_limits.patch
     - patch_file: patches/${version}-qtbase_libpng_disable_incorrect_profile_warning.patch
     - patch_file: patches/${version}-qtbase_linux_debug_suffix.patch
+    - patch_file: patches/${version}-qtbase_mac_cgcolorspace.patch
     - patch_file: patches/${version}-qtbase_mevis_qobject_clone_evento_hack.patch
-    #- patch_file: patches/${version}-qtbase_mkspecs_moc.patch
-    #- patch_file: patches/${version}-qtbase_mkspecs_uic.patch
     - patch_file: patches/${version}-qtbase_optimize_qglshaderprogram.patch
     - patch_file: patches/${version}-qtbase_qabstractitemview.patch
     - patch_file: patches/${version}-qtbase_qgl_workarround_broken_alpha.patch
     - patch_file: patches/${version}-qtbase_qgraphicsview_setCursorForItemOnly.patch
-    #- patch_file: patches/${version}-qtbase_qicon.patch
     - patch_file: patches/${version}-qtbase_qopenglvertexarrayobject.patch
     - patch_file: patches/${version}-qtbase_qopenglwidget.patch
+    - patch_file: patches/${version}-qtwebengine_abseil.patch
+    - patch_file: patches/${version}-qtwebengine_backport_move_re2_test_to_configure.patch
+    - patch_file: patches/${version}-qtwebengine_breakpad.patch
+    - patch_file: patches/${version}-qtwebengine_detect-ninja-1.10.patch
+    - patch_file: patches/${version}-qtwebengine_disable_debug_symbols.patch
+    - patch_file: patches/${version}-qtwebengine_fix_expat.patch
+    - patch_file: patches/${version}-qtwebengine_fix_linux_build_limit_rspfile_length.patch
+    - patch_file: patches/${version}-qtwebengine_fix_win_vs16_16_8_0_build.patch
+    - patch_file: patches/${version}-qtwebengine_icu-68.patch
+    - patch_file: patches/${version}-qtwebengine_mevis_escape_rpath_variable.patch
+    - patch_file: patches/${version}-qtwebengine_mevis_import_vision.patch
+    - patch_file: patches/${version}-qtwebengine_qtbug_101607.patch
+    # NOTE: already unused in MeVisLab 3.5.0
+    #- patch_file: patches/${version}-qtbase_mkspecs_moc.patch
+    #- patch_file: patches/${version}-qtbase_mkspecs_uic.patch
+    #- patch_file: patches/${version}-qtbase_qicon.patch
+    #- patch_file: patches/${version}-qtbase_qmacstyle.patch
     #- patch_file: patches/${version}-qtbase_qtabbar.patch
     #- patch_file: patches/${version}-qtbase_qtabwidget.patch
     #- patch_file: patches/${version}-qtbase_qwidget.patch
-    #- patch_file: patches/${version}-qtbase_qmacstyle.patch
     #- patch_file: patches/${version}-qtbase_widgets_styles_qfusionstyle_cpp.patch
     #- patch_file: patches/${version}-qtbase_widgets_styles_qstyle_qrc.patch
-    - patch_file: patches/${version}-CVE-2022-25255.patch
-    - patch_file: patches/${version}-CVE-2022-25643.patch
-    - patch_file: patches/${version}-qtbase_gcc11_include_limits.patch
-    - patch_file: patches/${version}-qtbase_enable_debug_plugin_check.patch
-    - patch_file: patches/${version}-qtbase_mac_cgcolorspace.patch
-    - patch_file: patches/${version}-qtwebengine_icu-68.patch
-    - patch_file: patches/${version}-qtwebengine_detect-ninja-1.10.patch
-    - patch_file: patches/${version}-qtwebengine_fix_expat.patch
-    - patch_file: patches/${version}-qtwebengine_disable_debug_symbols.patch
-    - patch_file: patches/${version}-qtwebengine_fix_win_vs16_16_8_0_build.patch
-    - patch_file: patches/${version}-qtwebengine_mevis_escape_rpath_variable.patch
-    - patch_file: patches/${version}-qtwebengine_mevis_import_vision.patch
-    - patch_file: patches/${version}-qtwebengine_fix_linux_build_limit_rspfile_length.patch
-    - patch_file: patches/${version}-qtwebengine_backport_move_re2_test_to_configure.patch
-    - patch_file: patches/${version}-qtwebengine_abseil.patch
-    - patch_file: patches/${version}-qtwebengine_breakpad.patch
-    - patch_file: patches/${version}-qtwebengine_qtbug_101607.patch
 
-  5.12.11:
-    - patch_file: patches/${version}-qtbase_backport_qt_relocatable_feature.patch
-    - patch_file: patches/${version}-qtbase_libpng_disable_incorrect_profile_warning.patch
-    - patch_file: patches/${version}-qtbase_linux_debug_suffix.patch
-    - patch_file: patches/${version}-qtbase_mevis_qobject_clone_evento_hack.patch
-    - patch_file: patches/${version}-qtbase_mkspecs_moc.patch
-    - patch_file: patches/${version}-qtbase_mkspecs_uic.patch
-    - patch_file: patches/${version}-qtbase_optimize_qglshaderprogram.patch
-    - patch_file: patches/${version}-qtbase_qabstractitemview.patch
-    - patch_file: patches/${version}-qtbase_qgl_workarround_broken_alpha.patch
-    - patch_file: patches/${version}-qtbase_qgraphicsview_setCursorForItemOnly.patch
-    - patch_file: patches/${version}-qtbase_qicon.patch
-    - patch_file: patches/${version}-qtbase_qopenglvertexarrayobject.patch
-    - patch_file: patches/${version}-qtbase_qopenglwidget.patch
-    - patch_file: patches/${version}-qtbase_qtabbar.patch
-    - patch_file: patches/${version}-qtbase_qtabwidget.patch
-    - patch_file: patches/${version}-qtbase_qwidget.patch
-    - patch_file: patches/${version}-qtbase_qmacstyle.patch
-    - patch_file: patches/${version}-qtbase_widgets_styles_qfusionstyle_cpp.patch
-    - patch_file: patches/${version}-qtbase_widgets_styles_qstyle_qrc.patch
-    - patch_file: patches/${version}-qtbase_gcc11_include_limits.patch
-    - patch_file: patches/${version}-qtbase_enable_debug_plugin_check.patch
-    - patch_file: patches/${version}-qtbase_mac_cgcolorspace.patch
-    - patch_file: patches/${version}-qtwebengine_icu-68.patch
-    - patch_file: patches/${version}-qtwebengine_detect-ninja-1.10.patch
-    - patch_file: patches/${version}-qtwebengine_fix_expat.patch
-    - patch_file: patches/${version}-qtwebengine_disable_debug_symbols.patch
-    - patch_file: patches/${version}-qtwebengine_fix_win_vs16_16_8_0_build.patch
-    - patch_file: patches/${version}-qtwebengine_mevis_escape_rpath_variable.patch
-    - patch_file: patches/${version}-qtwebengine_mevis_import_vision.patch
-    - patch_file: patches/${version}-qtwebengine_fix_linux_build_limit_rspfile_length.patch
-    - patch_file: patches/${version}-qtwebengine_backport_move_re2_test_to_configure.patch

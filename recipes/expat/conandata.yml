@@ -1,23 +1,13 @@
 type: pure_c
 name: expat
 display_name: Expat
-version: "2.4.7"
+version: "2.4.9"
 homepage: https://libexpat.github.io
 description: "Fast stream-oriented XML parser library"
 license: MIT
 
 sources:
-  "2.4.7":
-    sha256: 109fc891fe1c7ecd65f93c6810e9953c203f28056b68e1e741572699ce6e6ec0
+  "2.4.9":
+    sha256: 652fea5af50f72619219131f62695113c3212b2681144aeabd108c794b865a86
     url: https://github.com/libexpat/libexpat/archive/R_${version_major}_${version_minor}_${version_patch}.zip
     base_path: libexpat-R_${version_major}_${version_minor}_${version_patch}
-
-  "2.4.1":
-    sha256: "e95725023997258b35bc53da0a7cce0b8060bbff6fb3f44031f0bf2207d8a78b"
-    url: "https://github.com/libexpat/libexpat/archive/R_2_4_1.zip"
-    base_path: "libexpat-R_${version_major}_${version_minor}_${version_patch}"
-
-  "2.2.10":
-    sha256: "56180cf190d6bcb4c2999384025c35398c5a77e95a516d2bea5b4f8afcebaf38"
-    url: "https://github.com/libexpat/libexpat/archive/R_2_2_10.zip"
-    base_path: "libexpat-R_${version_major}_${version_minor}_${version_patch}"

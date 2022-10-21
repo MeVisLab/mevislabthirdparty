@@ -1,23 +1,23 @@
 type: pure_c
-name: "matplotlib"
-display_name: "Matplotlib"
+name: matplotlib
+display_name: Matplotlib
 version: "1.4.3"
-homepage: "https://matplotlib.org"
-description: "A comprehensive library for creating static, animated, and interactive visualizations in Python"
-license: "Python-2.0"
+homepage: https://matplotlib.org
+description: A comprehensive library for creating static, animated, and interactive visualizations in Python
+license: Python-2.0
 
 sources:
   "1.4.3":
-    sha256: "61f201c6a82e89e4d9e324266203fad44f95fd8f36d8eec0d8690273e1182f75"
-    url: "https://files.pythonhosted.org/packages/bb/ac/485df0ecb15aa6fec1991945dc0cabfeb724a64f6729e34bab3c6a766813/matplotlib-${version}.tar.gz"
-    base_path: "matplotlib-${version}"
+    sha256: 61f201c6a82e89e4d9e324266203fad44f95fd8f36d8eec0d8690273e1182f75
+    url: https://files.pythonhosted.org/packages/bb/ac/485df0ecb15aa6fec1991945dc0cabfeb724a64f6729e34bab3c6a766813/matplotlib-${version}.tar.gz
+    base_path: matplotlib-${version}
 
 patches:
   "1.4.3":
-    - patch_file: "patches/${version}-activate_PythonQt_backend.patch"
-    - patch_file: "patches/${version}-add_missing_include.patch"
-    - patch_file: "patches/${version}-add_support_for_a_PythonQt_backend.patch"
-    - patch_file: "patches/${version}-remove_py_decref_use_which_failed_on_linux.patch"
-    - patch_file: "patches/${version}-const_char_Py_PackageContext.patch"
-    - patch_file: "patches/${version}-Python3_remove_supportPrint.patch"
-    - patch_file: "patches/${version}-Python3_replace_tp_print.patch"
+    - patch_file: patches/${version}-activate_PythonQt_backend.patch
+    - patch_file: patches/${version}-add_missing_include.patch
+    - patch_file: patches/${version}-add_support_for_a_PythonQt_backend.patch
+    - patch_file: patches/${version}-remove_py_decref_use_which_failed_on_linux.patch
+    - patch_file: patches/${version}-const_char_Py_PackageContext.patch
+    - patch_file: patches/${version}-Python3_remove_supportPrint.patch
+    - patch_file: patches/${version}-Python3_replace_tp_print.patch

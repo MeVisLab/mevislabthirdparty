@@ -22,6 +22,9 @@ class ConanRecipe(ConanFile):
             self._cmake = CMake(self)
             self._cmake.definitions["CMAKE_DEBUG_POSTFIX"] = "d"
             self._cmake.definitions["BUILD_SHARED_LIBS"] = True
+
+            self._cmake.definitions["ASSIMP_WARNINGS_AS_ERRORS"] = False
+
             self._cmake.definitions["ASSIMP_DOUBLE_PRECISION"] = False
             self._cmake.definitions["ASSIMP_BUILD_ASSIMP_TOOLS"] = False
             self._cmake.definitions["ASSIMP_BUILD_TESTS"] = False

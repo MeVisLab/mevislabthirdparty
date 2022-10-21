@@ -9,7 +9,7 @@
 {%- if name == 'mesa' %}
 
 if(WIN32)
-    install(FILES "{{ rootpath }}/bin/opengl32.dll" DESTINATION "MeVisLab/IDE/bin/MESA/")
+    install(DIRECTORY "{{ rootpath }}/bin/" DESTINATION "MeVisLab/IDE/bin/MESA" FILES_MATCHING PATTERN "*.dll")
 endif()
 
 {%- elif name == 'qt5' %}
@@ -50,7 +50,7 @@ if(WIN32)
     DIRECTORY "{{ rootpath }}/bin/"
     DESTINATION "${MEVISLAB_INSTALL_THIRDPARTYDIR}/Python/DLLs"
     USE_SOURCE_PERMISSIONS
-    FILES_MATCHING PATTERN "*1_1-x64.dll" PATTERN "*1_1-x64d.dll"
+    FILES_MATCHING PATTERN "libcrypto*.dll" PATTERN "libssl*.dll"
   )
 endif()
 

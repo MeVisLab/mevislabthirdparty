@@ -17,6 +17,16 @@ class ConanRecipe(ConanFile):
         del self.info.settings.build_type
 
 
+    def validate(self):
+        if self.settings.os not in ["Linux", "Macos"]:
+            raise ConanInvalidConfiguration(f"{self.name} is only supported on Linux and macOS")
+
+
+    def validate_build(self):
+        if self.settings.build_type != "Release":
+            raise ConanInvalidConfiguration(f"{self.name} is built in release mode only.")
+
+
     def _configure_cmake(self):
         if not self._cmake:
             self.create_cmake_wrapper()

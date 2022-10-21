@@ -1,64 +1,25 @@
 type: cpp
 name: python
 display_name: Python
-mli_name: "None"
-version: "3.9.11"
+mli_name: None
+version: "3.9.14"
 homepage: https://www.python.org
 description: An interpreted, interactive, object-oriented programming language
 license: Python-2.0
 
 sources:
-  "3.9.11":
-    sha256: 3442400072f582ac2f0df30895558f08883b416c8c7877ea55d40d00d8a93112
-    url: "https://www.python.org/ftp/python/${version}/Python-${version}.tgz"
-    base_path: "Python-${version}"
-
-  "3.9.10":
-    sha256: 1aa9c0702edbae8f6a2c95f70a49da8420aaa76b7889d3419c186bfc8c0e571e
-    url: "https://www.python.org/ftp/python/${version}/Python-${version}.tgz"
-    base_path: "Python-${version}"
-
-  "3.9.9":
-    sha256: 2cc7b67c1f3f66c571acc42479cdf691d8ed6b47bee12c9b68430413a17a44ea
-    url: "https://www.python.org/ftp/python/${version}/Python-${version}.tgz"
-    base_path: "Python-${version}"
-
-  "3.9.7":
-    sha256: a838d3f9360d157040142b715db34f0218e535333696a5569dc6f854604eb9d1
-    url: "https://www.python.org/ftp/python/${version}/Python-${version}.tgz"
-    base_path: "Python-${version}"
-
-  "3.9.6":
-    sha256: d0a35182e19e416fc8eae25a3dcd4d02d4997333e4ad1f2eee6010aadc3fe866
-    url: "https://www.python.org/ftp/python/${version}/Python-${version}.tgz"
-    base_path: "Python-${version}"
-
-  "3.9.5":
-    sha256: "e0fbd5b6e1ee242524430dee3c91baf4cbbaba4a72dd1674b90fda87b713c7ab"
-    url: "https://www.python.org/ftp/python/${version}/Python-${version}.tgz"
-    base_path: "Python-${version}"
+  "3.9.14":
+    sha256: 9201836e2c16361b2b7408680502393737d44f227333fe2e5729c7d5f6041675
+    url: https://www.python.org/ftp/python/${version}/Python-${version}.tgz
+    base_path: Python-${version}
 
 patches:
-  "3.9.11":
-    - patch_file: "patches/${version}-macos_remove_rpath_prefix.patch"
-    - patch_file: "patches/${version}-pycore_byteswap.patch"
-
-  "3.9.10":
-    - patch_file: "patches/${version}-macos_remove_rpath_prefix.patch"
-    - patch_file: "patches/${version}-pycore_byteswap.patch"
-
-  "3.9.9":
-    - patch_file: "patches/${version}-macos_remove_rpath_prefix.patch"
-    - patch_file: "patches/${version}-pycore_byteswap.patch"
-
-  "3.9.7":
-    - patch_file: "patches/${version}-macos_remove_rpath_prefix.patch"
-    - patch_file: "patches/${version}-pycore_byteswap.patch"
-
-  "3.9.6":
-    - patch_file: "patches/${version}-macos_remove_rpath_prefix.patch"
-    - patch_file: "patches/${version}-pycore_byteswap.patch"
-
-  "3.9.5":
-    - patch_file: "patches/${version}-macos_remove_rpath_prefix.patch"
-    - patch_file: "patches/${version}-pycore_byteswap.patch"
+  "3.9.14":
+    - patch_file: patches/${version}-macos_remove_rpath_prefix.patch
+    - patch_file: patches/${version}-pycore_byteswap.patch
+    - patch_file: patches/${version}-recursive_future_repr.patch
+      patch_type: bugfix
+      patch_description: short term fix for https://github.com/python/cpython/issues/93837
+    - patch_file: patches/${version}-win32_multiprocessing_pool_limit.patch
+      patch_type: bugfix
+      patch_description: short term fix for https://github.com/python/cpython/issues/89240

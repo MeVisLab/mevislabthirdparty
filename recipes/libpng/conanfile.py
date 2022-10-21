@@ -32,8 +32,6 @@ class ConanRecipe(ConanFile):
             self._cmake.definitions["PNG_STATIC"] = False
             self._cmake.definitions["PNG_DEBUG"] = self.settings.build_type != "Release"
 
-            self._cmake.definitions["PNG_ARM_NEON"] = "on" if "arm" in self.settings.arch else "off"
-
             self._cmake.configure()
         return self._cmake
 

@@ -1,0 +1,20 @@
+type: cpp
+name: cdt
+cmake_name: cdt
+display_name: cdt
+version: 1.1.2
+homepage: https://github.com/artem-ogre/CDT/
+description: "CDT: Constrained Delaunay Triangulation."
+license: MPL-2.0
+
+sources:
+  1.1.2:
+    sha256: D947949069963A7CCAAA05D4B1D2F7F215A3DBC5988B4CAC973F338D1FDC5DA0
+    url: https://github.com/artem-ogre/CDT/archive/refs/tags/${version}.zip
+    base_path: CDT-${version}
+
+patches:
+  1.1.2:
+  - patch_file: patches/${version}-replace-use-of-std-random_shuffle-with-shuffle.patch
+  - patch_file: patches/${version}-use-same-seed-for-shuffle-as-random_shuffle.patch
+  - patch_file: patches/${version}-initialize_variables.patch

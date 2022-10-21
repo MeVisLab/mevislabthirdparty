@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from conans import ConanFile
 from conans import tools
+from conans.errors import ConanInvalidConfiguration
 import os
 import io
 

@@ -1,17 +1,12 @@
 type: pure_c
-name: "lz4"
-version: "1.9.3"
-homepage: "https://lz4.github.io/lz4"
-description: "Extremely fast compression algorithm"
-license: "BSD-3-Clause"
+name: lz4
+version: "1.9.4"
+homepage: https://lz4.github.io/lz4
+description: Extremely fast compression algorithm
+license: BSD-3-Clause
 
 sources:
-  "1.9.3":
-    sha256: "030644df4611007ff7dc962d981f390361e6c97a34e5cbc393ddfbe019ffe2c1"
-    url: "https://github.com/lz4/lz4/archive/v${version}.tar.gz"
-    base_path: "lz4-${version}"
-
-  "1.9.2":
-    sha256: "658ba6191fa44c92280d4aa2c271b0f4fbc0e34d249578dd05e50e76d0e5efcc"
-    url: "https://github.com/lz4/lz4/archive/v${version}.tar.gz"
-    base_path: "lz4-${version}"
+  "1.9.4":
+    sha256: 0b0e3aa07c8c063ddf40b082bdf7e37a1562bda40a0ff5272957f3e987e0e54b
+    url: https://github.com/lz4/lz4/archive/v${version}.tar.gz
+    base_path: lz4-${version}

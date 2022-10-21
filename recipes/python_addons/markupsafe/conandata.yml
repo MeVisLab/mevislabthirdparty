@@ -7,17 +7,7 @@ description: Implements a text object that escapes characters so it is safe to u
 license: BSD-3-Clause
 
 sources:
-  "2.1.0":
-    sha256: 6ebb81661a697ebfc724dd23d9a7652ba1e89d63c342158646d0a72d657e3c96
-    url: https://github.com/pallets/markupsafe/archive/${version}.zip
-    base_path: markupsafe-${version}
-
   "2.0.1":
     sha256: 7a8714996819a2d685bf0b1fcb585456b70970094efb4437d779d5ba387c1cc0
-    url: "https://github.com/pallets/markupsafe/archive/${version}.zip"
-    base_path: "markupsafe-${version}"
-
-  "0.23":
-    sha256: "3864d62364b8f523cd60ae7e09c374c741421e87667a33fb86c28c395e5dfb1a"
-    url: "https://github.com/pallets/markupsafe/archive/${version}.zip"
-    base_path: "markupsafe-${version}"
+    url: https://github.com/pallets/markupsafe/archive/${version}.zip
+    base_path: markupsafe-${version}

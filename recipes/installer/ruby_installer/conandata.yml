@@ -1,17 +1,11 @@
 type: installer
-name: "ruby_installer"
-version: "2.7.2"
-homepage: "https://www.ruby-lang.org"
-description: "An object-oriented scripting language"
-license: "BSD-2-Clause"
-
-pipeline: "windows:vs15:release"
+name: ruby_installer
+version: 2.7.2
+homepage: https://www.ruby-lang.org
+description: An object-oriented scripting language
+license: BSD-2-Clause
 
 sources:
   "2.7.2":
-    sha256: "925cc01d453951d1d0c077c44cec90849afc8d23e45946e19ecd3aaabc0c0ab3"
-    url: "https://github.com/oneclick/rubyinstaller2/releases/download/RubyInstaller-2.7.2-1/rubyinstaller-2.7.2-1-x64.7z"
-
-  "2.7.1":
-    sha256: "e89f11517bfa9b8f58956fa387d36a08299740b776d10b3827938242e5306c5d"
-    url: "https://github.com/oneclick/rubyinstaller2/releases/download/RubyInstaller-2.7.1-1/rubyinstaller-2.7.1-1-x64.7z"
+    sha256: 925cc01d453951d1d0c077c44cec90849afc8d23e45946e19ecd3aaabc0c0ab3
+    url: https://github.com/oneclick/rubyinstaller2/releases/download/RubyInstaller-${version}-1/rubyinstaller-${version}-1-x64.7z

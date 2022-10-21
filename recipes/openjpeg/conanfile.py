@@ -23,16 +23,15 @@ class ConanRecipe(ConanFile):
             self._cmake.definitions["BUILD_STATIC_LIBS"] = False
             self._cmake.definitions["BUILD_LUTS_GENERATOR"] = False
             self._cmake.definitions["BUILD_CODEC"] = False
-            self._cmake.definitions["BUILD_MJ2"] = False
-            self._cmake.definitions["BUILD_JPWL"] = False
             self._cmake.definitions["BUILD_JPIP"] = False
             self._cmake.definitions["BUILD_VIEWER"] = False
             self._cmake.definitions["BUILD_JAVA"] = False
-            self._cmake.definitions["BUILD_JP3D"] = False
             self._cmake.definitions["BUILD_TESTING"] = False
             self._cmake.definitions["BUILD_PKGCONFIG_FILES"] = False
             self._cmake.definitions["OPJ_DISABLE_TPSOT_FIX"] = False
             self._cmake.definitions["OPJ_USE_THREAD"] = True
+            self._cmake.definitions["BUILD_THIRDPARTY"] = False
+
             self._cmake.configure()
         return self._cmake
 

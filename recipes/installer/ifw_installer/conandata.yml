@@ -4,5 +4,3 @@ version: "4.1.1"
 homepage: "https://www.qt.io"
 description: "The Qt Installer Framework"
 license: "GPL-3.0-or-later" #FIXME!
-
-pipeline: ["windows:release", "macos:release", "linux:release"]

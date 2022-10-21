@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
+from email import generator
 from conans import ConanFile
 from conans import tools
-from conans import CMake
+#from conans import CMake
 import glob
 import os
 
+from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps
 
 class ConanRecipe(ConanFile):
     python_requires = 'common/1.0.0@mevislab/stable'
     python_requires_extend = 'common.CommonRecipe'
 
-    _cmake = None
-
+    generators = "cmake_find_package"
 
     def system_requirements(self):
         installer = tools.SystemPackageTool()
@@ -29,30 +30,28 @@ class ConanRecipe(ConanFile):
         self.requires("libjpeg/9e" + channel)
 
 
-    def _configure_cmake(self):
-        if not self._cmake:
-            self._cmake = CMake(self)
-            self._cmake.definitions["CMAKE_DEBUG_POSTFIX"] = "d"
-            self._cmake.definitions["BUILD_SHARED_LIBS"] = True
-            self._cmake.definitions["JAS_ENABLE_DOC"] = False
-            self._cmake.definitions["JAS_ENABLE_PROGRAMS"] = False
-            self._cmake.definitions["JAS_ENABLE_SHARED"] = True
-            self._cmake.definitions["JAS_LIBJPEG_REQUIRED"] = "REQUIRED"
-            self._cmake.definitions["JAS_ENABLE_OPENGL"] = False
-            self._cmake.definitions["ALLOW_IN_SOURCE_BUILD"] = True
-            self._cmake.definitions["JAS_ENABLE_AUTOMATIC_DEPENDENCIES"] = False
-
-            self._cmake.configure()
-        return self._cmake
+    def generate(self):
+        toolchain = CMakeToolchain(self)
+        toolchain.variables["CMAKE_DEBUG_POSTFIX"] = "d"
+        toolchain.variables["BUILD_SHARED_LIBS"] = True
+        toolchain.variables["JAS_ENABLE_DOC"] = False
+        toolchain.variables["JAS_ENABLE_PROGRAMS"] = False
+        toolchain.variables["JAS_ENABLE_SHARED"] = True
+        toolchain.variables["JAS_LIBJPEG_REQUIRED"] = "REQUIRED"
+        toolchain.variables["JAS_ENABLE_OPENGL"] = False
+        toolchain.variables["ALLOW_IN_SOURCE_BUILD"] = True
+        toolchain.variables["JAS_ENABLE_AUTOMATIC_DEPENDENCIES"] = False
+        toolchain.generate()
 
 
     def build(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
+        cmake.configure(build_script_folder="sources")
         cmake.build()
 
 
     def package(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
         cmake.install()
 
         self.copy("*.pdb", dst="bin", keep_path=False, excludes="*vc*.pdb")

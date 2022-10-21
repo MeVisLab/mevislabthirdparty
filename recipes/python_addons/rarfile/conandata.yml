@@ -1,17 +1,12 @@
 type: pure_c
-name: "rarfile"
-version: "3.3.0"
-homepage: "https://github.com/markokr/rarfile"
-description: "RAR archive reader for Python"
-license: "ISC"
+name: rarfile
+version: "4.0.0"
+homepage: https://github.com/markokr/rarfile
+description: RAR archive reader for Python
+license: ISC
 
 sources:
-  "3.3.0":
-    sha256: 568b1b4c4c0c10235db9b701743d4eb28cca8f6acd38960fc12952aa6c4fd889
-    url: "https://github.com/markokr/rarfile/archive/refs/tags/v${version_major}.${version_minor}.tar.gz"
-    base_path: "rarfile-${version_major}.${version_minor}"
-
-  "3.1":
-    sha256: "c89ed5d519c65c521fb4bd6294d79b4b69ba9643b01dc1b365f54bd272bb4efe"
-    url: "https://github.com/markokr/rarfile/archive/rarfile_${version_major}_${version_minor}.tar.gz"
-    base_path: "rarfile-rarfile_${version_major}_${version_minor}"
+  "4.0.0":
+    sha256: 1fc7c9e53d9d9c2fa89f5964300156f4adaebb5857bdb5151eabda52efc3f03c
+    url: https://github.com/markokr/rarfile/archive/refs/tags/v${version_major}.${version_minor}.tar.gz
+    base_path: rarfile-${version_major}.${version_minor}

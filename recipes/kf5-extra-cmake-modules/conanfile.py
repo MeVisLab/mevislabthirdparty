@@ -19,6 +19,7 @@ class ConanRecipe(ConanFile):
     def _configure_cmake(self):
         if not self._cmake:
             self._cmake = CMake(self)
+            self._cmake.definitions['BUILD_TESTING'] = False
             self._cmake.definitions['BUILD_HTML_DOCS'] = False
             self._cmake.definitions['BUILD_QTHELP_DOCS'] = False
             self._cmake.definitions['CMAKE_DISABLE_FIND_PACKAGE_Sphinx'] = True

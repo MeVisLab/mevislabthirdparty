@@ -1,63 +1,13 @@
 type: cpp
 name: harfbuzz
 display_name: HarfBuzz
-version: "4.0.1"
+version: "5.2.0"
 homepage: http://harfbuzz.org
 description: An OpenType text shaping engine
 license: MIT
 
 sources:
-  "4.0.1":
-    sha256: 98f68777272db6cd7a3d5152bac75083cd52a26176d87bc04c8b3929d33bce49
-    url: "https://github.com/harfbuzz/harfbuzz/releases/download/${version}/harfbuzz-${version}.tar.xz"
-    base_path: "harfbuzz-${version}"
-
-  "4.0.0":
-    sha256: ab61d4e3fc0c30072e98b46aa7727fc3eed36a85d2b6b9274cec7eaadea97cb7
-    url: "https://github.com/harfbuzz/harfbuzz/releases/download/${version}/harfbuzz-${version}.tar.xz"
-    base_path: "harfbuzz-${version}"
-
-  "3.2.0":
-    sha256: 0ada50a1c199bb6f70843ab893c55867743a443b84d087d54df08ad883ebc2cd
-    url: "https://github.com/harfbuzz/harfbuzz/releases/download/${version}/harfbuzz-${version}.tar.xz"
-    base_path: "harfbuzz-${version}"
-
-  "3.1.2":
-    sha256: 4056b1541dd8bbd8ec29207fe30e568805c0705515632d7fec53a94399bc7945
-    url: "https://github.com/harfbuzz/harfbuzz/releases/download/${version}/harfbuzz-${version}.tar.xz"
-    base_path: "harfbuzz-${version}"
-
-  "3.1.0":
-    sha256: 2359390944a74a933d2b1bd214754a5b3f817916a09c6d4ca3d263473cf19b8e
-    url: "https://github.com/harfbuzz/harfbuzz/releases/download/${version}/harfbuzz-${version}.tar.xz"
-    base_path: "harfbuzz-${version}"
-
-  "3.0.0":
-    sha256: 036b0ee118451539783ec7864148bb4106be42a2eb964df4e83e6703ec46f3d9
-    url: "https://github.com/harfbuzz/harfbuzz/releases/download/${version}/harfbuzz-${version}.tar.xz"
-    base_path: "harfbuzz-${version}"
-
-  "2.9.1":
-    sha256: "0edcc980f526a338452180e701d6aba6323aef457b6686976a7d17ccbddc51cf"
-    url: "https://github.com/harfbuzz/harfbuzz/releases/download/${version}/harfbuzz-${version}.tar.xz"
-    base_path: "harfbuzz-${version}"
-
-  "2.8.2":
-    sha256: "d58461395ce28b9dc03903254374dd70c38c8c28c5046db123c08f7ab9417be7"
-    url: "https://github.com/harfbuzz/harfbuzz/releases/download/${version}/harfbuzz-${version}.tar.xz"
-    base_path: "harfbuzz-${version}"
-
-  "2.8.1":
-    sha256: "4124f663ec4bf4e294d9cf230668370b4249a48ff34deaf0f06e8fc82d891300"
-    url: "https://github.com/harfbuzz/harfbuzz/releases/download/${version}/harfbuzz-${version}.tar.xz"
-    base_path: "harfbuzz-${version}"
-
-  "2.8.0":
-    sha256: "a1079fd021adaf5683351f34587a255975cc3bcadba31246ae40ebebb95ecd42"
-    url: "https://github.com/harfbuzz/harfbuzz/releases/download/${version}/harfbuzz-${version}.tar.xz"
-    base_path: "harfbuzz-${version}"
-
-  "2.7.4":
-    sha256: "6ad11d653347bd25d8317589df4e431a2de372c0cf9be3543368e07ec23bb8e7"
+  "5.2.0":
+    sha256: 735a94917b47936575acb4d4fa7e7986522f8a89527e4635721474dee2bc942c
     url: "https://github.com/harfbuzz/harfbuzz/releases/download/${version}/harfbuzz-${version}.tar.xz"
     base_path: "harfbuzz-${version}"

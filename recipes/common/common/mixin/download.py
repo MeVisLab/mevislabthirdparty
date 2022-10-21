@@ -8,6 +8,8 @@ from ftplib import FTP
 import shutil
 import os
 
+from common import utils
+
 class Download(object):
     def __ftp_upload(self:ConanFile, ftp: str, localfile: str, remotedir: str):
         # python is soooo ugly!
@@ -112,8 +114,11 @@ class Download(object):
 
 
     def download_distfile(self: ConanFile, url:str, fileName:str, sha256:str, baseFolder:Optional[str]=None, uncompress:bool=True, cache:bool=True):
+        url = utils.substitute(self, url)
         if not url:
             raise ConanException("url argument is required")
+
+        fileName = utils.substitute(self, fileName)
         if not fileName:
             raise ConanException("fileName argument is required")
 

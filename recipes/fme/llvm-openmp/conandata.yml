@@ -2,13 +2,10 @@ type: cpp
 name: llvm-openmp
 display_name: LLVM OpenMP
 cmake_name: OpenMP
-
 version: "12.0.1"
-homepage: "https://llvm.org"
+homepage: https://llvm.org
 description: ""
-license: "Apache-2.0"
-
-pipeline: ["macos:release", "linux:release"]
+license: Apache-2.0
 
 sources:
   "12.0.1":
@@ -18,5 +15,5 @@ sources:
 
 patches:
   "12.0.1":
-    - patch_file: "patches/${version}-disable_build_testing.patch"
-    - patch_file: "patches/${version}-disable_omp_target.patch"
+    - patch_file: patches/${version}-disable_build_testing.patch
+    - patch_file: patches/${version}-disable_omp_target.patch

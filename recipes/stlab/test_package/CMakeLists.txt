@@ -24,4 +24,15 @@ conan_basic_setup()
 
 # create the test application
 add_executable(test_package test_package.cpp)
+
+if (WIN32)
+  target_compile_definitions(
+    test_package 
+    PRIVATE 
+    -DNOMINMAX
+    -D_SILENCE_CXX17_RESULT_OF_DEPRECATION_WARNING
+  )
+endif()
+
+
 target_link_libraries(test_package ${CONAN_LIBS})

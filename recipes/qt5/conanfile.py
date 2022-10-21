@@ -94,7 +94,7 @@ class ConanRecipe(ConanFile):
         _add_dependency("libalsa/[>=1.1.9]", "ALSA", supported_os="Linux")
 
         # on macOS we want to use SecureTransport instead of OpenSSL
-        _add_dependency("openssl/1.1.1o", "OPENSSL", supported_os=["Linux", "Windows"])
+        _add_dependency("openssl/1.1.1q", "OPENSSL", supported_os=["Linux", "Windows"])
 
         # AAT is supported only with -qt-harfbuzz on macOS
         #_add_dependency("harfbuzz/[>=2.6.5]", "HARFBUZZ", supported_os=["Linux", "Windows"])
@@ -147,12 +147,13 @@ class ConanRecipe(ConanFile):
         shutil.rmtree("sources/qtandroidextras")   # we do not support Android yet
 
         # # patch to add macos highres icons
-        shutil.copy2(os.path.join("patches", "files", "closedock-down-macstyle-16@2x.png"), os.path.join("sources", "qtbase", "src", "widgets", "styles", "images"))
-        shutil.copy2(os.path.join("patches", "files", "closedock-macstyle-16@2x.png"), os.path.join("sources", "qtbase", "src", "widgets", "styles", "images"))
-        shutil.copy2(os.path.join("patches", "files", "closedock-macstyle.ai"), os.path.join("sources", "qtbase", "src", "widgets", "styles", "images"))
-        shutil.copy2(os.path.join("patches", "files", "dockdock-down-macstyle-16@2x.png"), os.path.join("sources", "qtbase", "src", "widgets", "styles", "images"))
-        shutil.copy2(os.path.join("patches", "files", "dockdock-macstyle-16@2x.png"), os.path.join("sources", "qtbase", "src", "widgets", "styles", "images"))
-        shutil.copy2(os.path.join("patches", "files", "dockdock-macstyle.ai"), os.path.join("sources", "qtbase", "src", "widgets", "styles", "images"))
+        # NOTE: already unused in MeVisLab 3.5.0
+        #shutil.copy2(os.path.join("patches", "files", "closedock-down-macstyle-16@2x.png"), os.path.join("sources", "qtbase", "src", "widgets", "styles", "images"))
+        #shutil.copy2(os.path.join("patches", "files", "closedock-macstyle-16@2x.png"), os.path.join("sources", "qtbase", "src", "widgets", "styles", "images"))
+        #shutil.copy2(os.path.join("patches", "files", "closedock-macstyle.ai"), os.path.join("sources", "qtbase", "src", "widgets", "styles", "images"))
+        #shutil.copy2(os.path.join("patches", "files", "dockdock-down-macstyle-16@2x.png"), os.path.join("sources", "qtbase", "src", "widgets", "styles", "images"))
+        #shutil.copy2(os.path.join("patches", "files", "dockdock-macstyle-16@2x.png"), os.path.join("sources", "qtbase", "src", "widgets", "styles", "images"))
+        #shutil.copy2(os.path.join("patches", "files", "dockdock-macstyle.ai"), os.path.join("sources", "qtbase", "src", "widgets", "styles", "images"))
 
         # see https://chromium.googlesource.com/chromium/deps/libsrtp/+/376772a4103db3ccd3ffbdce604a6b60ce926dd0
         shutil.move("sources/qtwebengine/src/3rdparty/chromium/third_party/libsrtp/VERSION", "sources/qtwebengine/src/3rdparty/chromium/third_party/libsrtp/LIBSRTP_VERSION")

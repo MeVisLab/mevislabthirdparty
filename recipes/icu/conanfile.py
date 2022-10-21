@@ -15,13 +15,13 @@ class ConanRecipe(ConanFile):
     def source(self):
         fileName = "icu4c-%s-src.tgz" % self.version.replace('.', '_')
         url = "https://github.com/unicode-org/icu/releases/download/release-%s/%s" % (self.version.replace('.', '-'), fileName)
-        sha256 = "8d205428c17bf13bb535300669ed28b338a157b1c01ae66d31d0d3e2d47c3fd5"
+        sha256 = self.conan_data['sha256'][self.version]['src']
         self.download_distfile(url=url, sha256=sha256, fileName=fileName)
         os.rename("icu", "sources")
 
         fileName = "icu4c-%s-data.zip" % self.version.replace('.', '_')
         url = "https://github.com/unicode-org/icu/releases/download/release-%s/%s" % (self.version.replace('.', '-'), fileName)
-        sha256 = "c72723ddba3300ffb231d6b09e2a728ea6e89de10ed5927f74bacbd77042336e"
+        sha256 = self.conan_data['sha256'][self.version]['data']
         self.download_distfile(url=url, sha256=sha256, fileName=fileName, baseFolder="sources/source")
 
 	    # Disable renaming as it breaks Qt, QtWebEngine and others
@@ -90,11 +90,17 @@ class ConanRecipe(ConanFile):
             tools.rmdir(os.path.join(self.package_folder, "share"))
             tools.rmdir(os.path.join(self.package_folder, "sbin"))
 
-        # change rpath of binaries on linux, but skip libicudata
-        self.patch_binaries(exclude=['libicudata'] if tools.os_info.is_linux else [],
-            executables=['derb', 'genbrk', 'gencfu', 'gencnval', 'gendict', 'genrb', 'icuinfo', 'makeconv', 'pkgdata'])
+        # change rpath of binaries
+        if tools.os_info.is_linux:
+            patchelf = tools.which("patchelf")
+            with tools.chdir(os.path.join(self.package_folder, "bin")):
+                for binary in ['derb', 'genbrk', 'gencfu', 'gencnval', 'gendict', 'genrb', 'icuinfo', 'makeconv', 'pkgdata']:
+                    self.run(f"{patchelf} --set-rpath '$ORIGIN/../lib' {binary}")
+            for lib in glob.glob(os.path.join(self.package_folder, "lib", "*.so")):
+                self.run(f"{patchelf} --set-rpath '$ORIGIN/../lib' {lib}")
 
-        self.default_package()
+        self.patch_binaries()
+        self.default_package(split_debug=False) # split_debug=True would corrupt libicudata.so
 
 
     def package_info(self):

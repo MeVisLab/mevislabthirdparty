@@ -1,24 +1,13 @@
 type: pure_c
-name: "pyodbc"
-homepage: "https://github.com/mkleehammer/pyodbc"
-description: "Python ODBC bridge"
-version: "4.0.32"
-license: "MIT"
-
-pipeline: ["windows"]
+name: pyodbc
+version: "4.0.34"
+homepage: https://github.com/mkleehammer/pyodbc
+description: Python ODBC bridge
+license: MIT
 
 sources:
-  "4.0.32":
-    sha256: 4ed213d0f67d639d03d37de52a613a4e5a0da113e6d0d56e90dca09d7060470c
-    url: "https://github.com/mkleehammer/pyodbc/archive/refs/tags/${version}.tar.gz"
-    base_path: "pyodbc-${version}"
-
-  "4.0.31":
-    sha256: 3ea585444c13fdf7e9d50651deff1be5d37fdb9d46a6c885e798baf0ee0165dc
-    url: "https://github.com/mkleehammer/pyodbc/archive/${version}.tar.gz"
-    base_path: "pyodbc-${version}"
-
-  "4.0.30":
-    sha256: "1be68880d64deffa6a57dca776be83d8367d81357642d24c8b2a3151921b7cd5"
-    url: "https://github.com/mkleehammer/pyodbc/archive/${version}.tar.gz"
-    base_path: "pyodbc-${version}"
+  "4.0.34":
+    sha256: 7ea7869532b96b8d529b1f08ea85765f94df7e4a58e968b2f8d455346a03e45c
+    # Attention: do not use the GitHub releases. They do not contain PKG-INFO, which makes PyODBC a developer build (4.0-dev)
+    url: https://files.pythonhosted.org/packages/1c/c3/b40c1e33fe5285158bf15e6eedd7bdbb929a250d4f4ed435bb1a62a8f1a3/pyodbc-${version}.tar.gz
+    base_path: pyodbc-${version}

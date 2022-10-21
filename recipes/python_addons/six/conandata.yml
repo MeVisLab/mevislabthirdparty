@@ -1,17 +1,12 @@
 type: pure_c
-name: "six"
-version: "1.16.0"
-homepage: "https://pypi.python.org/pypi/six"
-description: "Utility functions for compatibility with both Python versions 2 and 3"
-license: "MIT"
+name: six
+version: 1.16.0
+homepage: https://pypi.python.org/pypi/six
+description: Utility functions for compatibility with both Python versions 2 and 3
+license: MIT
 
 sources:
   "1.16.0":
-    sha256: "af6745f78dceb1ad5107dc6c2d3646c8cb57cf4668ba7b5427145a71a690f60e"
-    url: "https://github.com/benjaminp/six/archive/refs/tags/${version}.tar.gz"
-    base_path: "six-${version}"
-
-  "1.15.0":
-    sha256: "30639c035cdb23534cd4aa2dd52c3bf48f06e5f4a941509c8bafd8ce11080259"
-    url: "https://files.pythonhosted.org/packages/6b/34/415834bfdafca3c5f451532e8a8d9ba89a21c9743a0c59fbd0205c7f9426/six-${version}.tar.gz"
-    base_path: "six-${version}"
+    sha256: af6745f78dceb1ad5107dc6c2d3646c8cb57cf4668ba7b5427145a71a690f60e
+    url: https://github.com/benjaminp/six/archive/refs/tags/${version}.tar.gz
+    base_path: six-${version}

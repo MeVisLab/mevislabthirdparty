@@ -8,13 +8,12 @@ import os
 class ConanRecipe(ConanFile):
     python_requires = 'common/1.0.0@mevislab/stable'
     python_requires_extend = 'common.CommonRecipe'
-    settings = "os", "compiler"
 
     _meson = None
 
 
     def package_id(self):
-        self.info.header_only()
+        self.info.clear()
 
 
     def validate(self):
@@ -22,8 +21,15 @@ class ConanRecipe(ConanFile):
             raise ConanInvalidConfiguration(f"{self.name} is only supported on Windows")
 
 
+    def validate_build(self):
+        if self.settings.build_type != "Release":
+            raise ConanInvalidConfiguration(f"{self.name} is built in release mode only.")
+
+
     def build_requirements(self):
         channel = "@{0}/{1}".format(self.user, self.channel)
+        self.build_requires("mako/[>=1.0.0]" + channel)
+
         if tools.os_info.is_windows:
             self.build_requires("meson_installer/[>=0.54.1]" + channel)
             self.build_requires("winflexbison_installer/[>=2.5.22]" + channel)
@@ -31,7 +37,7 @@ class ConanRecipe(ConanFile):
 
     def requirements(self):
         channel = "@{0}/{1}".format(self.user, self.channel)
-        self.requires("llvm/[>=10.0.0]" + channel, private=True)
+        self.requires("llvm/[>=14.0.0]" + channel, private=True)
 
 
     def _configure_meson(self):
@@ -47,9 +53,9 @@ class ConanRecipe(ConanFile):
                     # defs={ "gallium-drivers": "swr,swrast" },
                     # This version only creates the OpenGL32.dll (with only AVX support):
                     defs={
-                        "gallium-drivers": "swr,swrast",
-                        "shared-swr": "false",
-                        "swr-arches": "avx"
+                        "gallium-drivers": "swrast",
+                        #"shared-swr": "false",
+                        #"swr-arches": "avx"
                     },
                     source_folder="sources",
                     build_folder="build")

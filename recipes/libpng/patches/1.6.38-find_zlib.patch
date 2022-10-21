@@ -1,0 +1,18 @@
+diff --git i/CMakeLists.txt w/CMakeLists.txt
+index 8652564..133f2aa 100644
+--- i/CMakeLists.txt
++++ w/CMakeLists.txt
+@@ -47,7 +47,12 @@ include(GNUInstallDirs)
+ option(PNG_BUILD_ZLIB "Custom zlib Location, else find_package is used" OFF)
+ 
+ if(NOT PNG_BUILD_ZLIB)
+-  find_package(ZLIB REQUIRED)
++  set(ZLIB_FOUND 1)
++  set(ZLIB_INCLUDE_DIR ${CONAN_INCLUDE_DIRS_ZLIB})
++  set(ZLIB_INCLUDE_DIRS ${CONAN_INCLUDE_DIRS_ZLIB})
++  set(ZLIB_LIBRARY ${CONAN_LIBS_ZLIB})
++  set(ZLIB_LIBRARIES ${CONAN_LIBS_ZLIB})
++
+   include_directories(${ZLIB_INCLUDE_DIRS})
+ endif()
+ 

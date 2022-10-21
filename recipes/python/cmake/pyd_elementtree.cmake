@@ -10,9 +10,3 @@ target_sources(_elementtree PRIVATE
     sources/Modules/expat/xmlrole.c
     sources/Modules/expat/xmltok.c
 )
-
-if(CMAKE_PROJECT_VERSION VERSION_LESS 3.9)
-    target_sources(_elementtree PRIVATE
-        sources/Modules/expat/loadlibrary.c
-    )
-endif()

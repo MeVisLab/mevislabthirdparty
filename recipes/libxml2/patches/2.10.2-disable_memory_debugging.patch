@@ -1,0 +1,14 @@
+diff --git i/include/libxml/xmlmemory.h w/include/libxml/xmlmemory.h
+index 17e375a..5cb3162 100644
+--- i/include/libxml/xmlmemory.h
++++ w/include/libxml/xmlmemory.h
+@@ -28,7 +28,8 @@
+
+ #ifdef DEBUG
+ #ifndef DEBUG_MEMORY
+-#define DEBUG_MEMORY
++// mba: disabled memory debugging
++//#define DEBUG_MEMORY
+ #endif
+ #endif
+

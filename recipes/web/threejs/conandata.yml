@@ -1,21 +1,13 @@
 type: header_only
-name: "threejs"
-display_name: "three.js"
-version: "135"
-homepage: "https://threejs.org"
-description: "JavaScript 3D library"
-license: "MIT"
-
-pipeline: "linux:gcc10:release"
+name: threejs
+display_name: three.js
+version: "140"
+homepage: https://threejs.org
+description: JavaScript 3D library
+license: MIT
 
 sources:
-  "135":
-    sha256: b2df33e7e42bc8e7bf51391fddb26b46da14a1df4b019aeca498fd4ce620c561
-    url: "https://github.com/mrdoob/three.js/archive/r${version}.zip"
-    base_path: "three.js-r${version}"
-
-  "71":
-    sha256: "68dacdee1b6ae3913e49f462901812fb0f01dc575bf22c84fc034da723047d07"
-    url: "https://github.com/mrdoob/three.js/archive/r${version}.zip"
-    base_path: "three.js-r${version}"
-
+  "140":
+    sha256: cd5b3458ff5bd979fd4dc693ecbad2d707522ec7e62aaa5a27a9103f167a6edb
+    url: https://github.com/mrdoob/three.js/archive/r${version}.zip
+    base_path: three.js-r${version}

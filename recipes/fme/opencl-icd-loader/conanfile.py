@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from conans import ConanFile
 from conans import CMake
+from conans import tools
 import os
 
 class ConanRecipe(ConanFile):
@@ -33,6 +34,8 @@ class ConanRecipe(ConanFile):
     def package(self):
         cmake = self._configure_cmake()
         cmake.install()
+
+        tools.rmdir(os.path.join(self.package_folder, "share"))
 
         self.copy("*.pdb", src="bin", dst="bin")
 

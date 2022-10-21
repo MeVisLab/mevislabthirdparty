@@ -1,11 +1,9 @@
 type: cpp
-name: "jemalloc"
+name: jemalloc
 version: "4.5.0"
-homepage: "http://jemalloc.net"
-description: "Jemalloc is a general-purpose scalable concurrent allocator"
-license: "BSD-2-Clause"
-
-pipeline: "windows"
+homepage: http://jemalloc.net
+description: Jemalloc is a general-purpose scalable concurrent allocator
+license: BSD-2-Clause
 
 sources:
   "5.2.1":

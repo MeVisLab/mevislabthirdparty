@@ -2,6 +2,7 @@
 from conans import ConanFile
 from conans import AutoToolsBuildEnvironment
 from conans import tools
+from conans.errors import ConanInvalidConfiguration
 import os
 
 class ConanRecipe(ConanFile):

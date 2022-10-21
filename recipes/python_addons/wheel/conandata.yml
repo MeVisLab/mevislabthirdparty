@@ -10,8 +10,3 @@ sources:
     sha256: a82516a039e521100ecdef137f9e44249bf6903f9aff7d368e84ac31d60597f5
     url: https://github.com/pypa/wheel/archive/refs/tags/${version}.tar.gz
     base_path: wheel-${version}
-
-  "0.37.0":
-    sha256: 30cabe12c95f925abcf88490399b693a8a18b2cef0e4938ece5a81c03e4ee7f9
-    url: https://github.com/pypa/wheel/archive/refs/tags/${version}.tar.gz
-    base_path: wheel-${version}

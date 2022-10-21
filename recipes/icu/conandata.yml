@@ -1,7 +1,12 @@
 type: cpp
-name: "icu"
-display_name: "ICU"
-version: "70.1"
-homepage: "http://site.icu-project.org"
-description: "Unicode support, software internationalization, and software globalization"
-license: "ICU"
+name: icu
+display_name: ICU
+version: "71.1"
+homepage: http://site.icu-project.org
+description: Unicode support, software internationalization, and software globalization
+license: ICU
+
+sha256:
+  "71.1":
+    src: 67a7e6e51f61faf1306b6935333e13b2c48abd8da6d2f46ce6adca24b1e21ebf
+    data: e3882b4fece6e5e039f22c3189b7ba224180fd26fdbfa9db284617455b93e804

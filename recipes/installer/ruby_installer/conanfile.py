@@ -28,7 +28,7 @@ class ConanRecipe(ConanFile):
 
     def source(self):
         self.default_source()
-        zipFile = f"ruby_installer-{self.version}.7z"
+        zipFile = f"rubyinstaller-{self.version}-1-x64.7z"
         self.run(f"7za x {zipFile}")
         os.remove(zipFile)
         os.rename(f"rubyinstaller-{self.version}-1-x64", "sources")

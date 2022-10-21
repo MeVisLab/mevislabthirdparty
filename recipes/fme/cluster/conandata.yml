@@ -5,7 +5,7 @@ display_name: Cluster
 version: "1.59"                                                         # ???
 homepage: http://bonsai.hgc.jp/~mdehoon/software/cluster/software.htm   # ???
 description: the C Clustering Library                                   # ???
-license: "MIT"
+license: MIT
 
 # sources:
 #   "1.59":

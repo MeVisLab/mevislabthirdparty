@@ -8,4 +8,8 @@ set(_IGNORED ${CMAKE_EXPORT_NO_PACKAGE_REGISTRY})
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/sources/build/cmake/modules/")
 
+if(WIN32)
+    add_definitions(/bigobj)
+endif()
+
 add_subdirectory(sources)

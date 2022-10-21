@@ -1,16 +1,16 @@
 type: cpp
-name: "newmat"
+name: newmat
 version: "11"
-homepage: "http://www.robertnz.net/nm_intro.htm"
-description: "A C++ matrix library"
-license: "PublicDomain"
+homepage: http://www.robertnz.net/nm_intro.htm
+description: A C++ matrix library
+license: PublicDomain
 
 sources:
   "11":
-    sha256: "e20470150d07fbef0b09eca6759b830ec2ac616ecf9abf0b0c1118b73fe3e5e5"
-    url: "http://www.robertnz.net/ftp/newmat11.zip"
+    sha256: e20470150d07fbef0b09eca6759b830ec2ac616ecf9abf0b0c1118b73fe3e5e5
+    url: http://www.robertnz.net/ftp/newmat11.zip
     base_path: ""
 
 patches:
   "11":
-    - patch_file: "patches/11-fix_ordered_comparison_between_pointer_and_zero.patch"
+    - patch_file: patches/11-fix_ordered_comparison_between_pointer_and_zero.patch

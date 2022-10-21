@@ -1,25 +1,17 @@
 type: cpp
-name: "libzmq"
-display_name: "ZeroMQ"
+name: libzmq
+display_name: ZeroMQ
 version: "4.3.4"
-homepage: "https://zeromq.org"
-description: "ZeroMQ core engine in C++, implements ZMTP/3.1."
-license: "LGPL-3.0-or-later"
+homepage: https://zeromq.org
+description: ZeroMQ core engine in C++, implements ZMTP/3.1
+license: LGPL-3.0-or-later
 
 sources:
   "4.3.4":
-    sha256: "c593001a89f5a85dd2ddf564805deb860e02471171b3f204944857336295c3e5"
-    url: "https://github.com/zeromq/libzmq/releases/download/v${version}/zeromq-${version}.tar.gz"
-    base_path: "zeromq-${version}"
-
-  "4.3.2":
-    sha256: "ebd7b5c830d6428956b67a0454a7f8cbed1de74b3b01e5c33c5378e22740f763"
-    url: "https://github.com/zeromq/libzmq/releases/download/v${version}/zeromq-${version}.tar.gz"
-    base_path: "zeromq-${version}"
+    sha256: c593001a89f5a85dd2ddf564805deb860e02471171b3f204944857336295c3e5
+    url: https://github.com/zeromq/libzmq/releases/download/v${version}/zeromq-${version}.tar.gz
+    base_path: zeromq-${version}
 
 patches:
   "4.3.4":
-    - patch_file: "patches/${version}-allow_in_source_build.patch"
-
-  "4.3.2":
-    - patch_file: "patches/${version}-allow_in_source_build.patch"
+    - patch_file: patches/${version}-allow_in_source_build.patch

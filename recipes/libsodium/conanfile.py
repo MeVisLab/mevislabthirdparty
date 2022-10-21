@@ -14,8 +14,17 @@ class ConanRecipe(ConanFile):
         if self.settings.compiler == "Visual Studio":
             msbuild = MSBuild(self)
             build_type = "DynDebug" if self.settings.build_type == "Debug" else "DynRelease"
-            msvc = {"16": "vs2019"}.get(str(self.settings.compiler.version))
-            with tools.chdir(os.path.join("sources", "builds", "msvc", msvc)):
+            msvc = {
+                "16": "vs2019",
+                "17": "vs2022"
+            }.get(str(self.settings.compiler.version))
+
+            sln_dir = os.path.join("sources", "builds", "msvc")
+
+            if not os.path.exists(os.path.join(sln_dir, msvc)):
+                msvc = "vs2019"
+
+            with tools.chdir(os.path.join(sln_dir, msvc)):
                 msbuild.build("libsodium.sln", build_type=build_type, upgrade_project=False, platforms={"x86": "Win32"}, properties={"PostBuildEventUseInBuild": "false"})
         else:
             with tools.chdir("sources"):

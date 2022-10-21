@@ -1,18 +1,13 @@
 type: pure_c
-name: "pyyaml"
-display_name: "PyYAML"
+name: pyyaml
+display_name: PyYAML
 version: "6.0.0"
-homepage: "https://github.com/yaml/pyyaml"
-description: "PyYAML is a YAML parser and emitter for Python"
-license: "MIT"
+homepage: https://github.com/yaml/pyyaml
+description: PyYAML is a YAML parser and emitter for Python
+license: MIT
 
 sources:
   "6.0.0":
     sha256: f33eaba25d8e0c1a959bbf00655198c287dfc5868f5b7b01e401eaa1796cc778
-    url: "https://github.com/yaml/pyyaml/archive/refs/tags/6.0.tar.gz"
-    base_path: "pyyaml-6.0"
-
-  "5.4.1.1":
-    sha256: "e79dbaae8d9253aad313ca68cf65193f810260fb44fe0508625c7e9561eb57f2"
-    url: "https://github.com/yaml/pyyaml/archive/refs/tags/${version}.tar.gz"
-    base_path: "pyyaml-${version}"
+    url: https://github.com/yaml/pyyaml/archive/refs/tags/6.0.tar.gz
+    base_path: pyyaml-6.0

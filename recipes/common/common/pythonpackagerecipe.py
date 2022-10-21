@@ -5,7 +5,6 @@ from conans.errors import ConanException
 from common import commonrecipe
 import os
 
-
 class PythonPackageRecipe(commonrecipe.CommonRecipe):
     generators = "pkg_config"
     parallel_make = True
@@ -70,6 +69,7 @@ class PythonPackageRecipe(commonrecipe.CommonRecipe):
 
             sitepackage += (os.pathsep + tools.get_env("PYTHONPATH")) if tools.get_env("PYTHONPATH") else ""
             env_vars.update({
+                "SETUPTOOLS_SCM_PRETEND_VERSION": self.version,    # prevent setuptools_scm from trying to determine the version itself, which fails
                 "PKG_CONFIG_PATH": self.build_folder,
                 "MAKEFLAGS": ("-j%d" % cpucount),
                 "MAKEOPTS": ("-j%d" % cpucount),

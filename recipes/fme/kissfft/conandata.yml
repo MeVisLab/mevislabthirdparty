@@ -1,12 +1,12 @@
 type: pure_c
-name: "kissfft"
+name: kissfft
 version: "131.1.0"
-homepage: "https://github.com/mborgerding/kissfft"
-description: "A mixed-radix Fast Fourier Transform"
-license: "BSD-3-Clause"
+homepage: https://github.com/mborgerding/kissfft
+description: A mixed-radix Fast Fourier Transform
+license: BSD-3-Clause
 
 sources:
   "131.1.0":
-    sha256: "76c1aac87ddb7258f34b08a13f0eebf9e53afa299857568346aa5c82bcafaf1a"
-    url: "https://github.com/mborgerding/kissfft/archive/refs/tags/${version}.tar.gz"
-    base_path: "kissfft-${version}"
+    sha256: 76c1aac87ddb7258f34b08a13f0eebf9e53afa299857568346aa5c82bcafaf1a
+    url: https://github.com/mborgerding/kissfft/archive/refs/tags/${version}.tar.gz
+    base_path: kissfft-${version}

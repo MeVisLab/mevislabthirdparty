@@ -19,7 +19,7 @@ class ConanRecipe(ConanFile):
 
     def source(self):
         self.default_source()
-        zipFile = f"lzma_sdk-{self.version}.7z"
+        zipFile = f"lzma1900.7z"
         self.run(f"7za x {zipFile} -osources")
         shutil.copy('sources/DOC/lzma-sdk.txt', 'sources/LICENSE')
         os.remove(zipFile)

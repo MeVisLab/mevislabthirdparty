@@ -48,8 +48,8 @@ class ConanRecipe(ConanFile):
             self._cmake.definitions["DCMTK_ENABLE_PRIVATE_TAGS"] = True
             self._cmake.definitions["DCMTK_ENABLE_CXX11"] = True
 
-            self._cmake.definitions["DCMTK_ENABLE_BUILTIN_DICTIONARY"] = True
-            self._cmake.definitions["DCMTK_ENABLE_EXTERNAL_DICTIONARY"] = True
+            self._cmake.definitions["DCMTK_DEFAULT_DICT"] = "builtin"
+            self._cmake.definitions["DCMTK_USE_DCMDICTPATH"] = False
 
             self._cmake.definitions["DCMTK_WIDE_CHAR_FILE_IO_FUNCTIONS"] = True
             self._cmake.definitions["DCMTK_WIDE_CHAR_MAIN_FUNCTION"] = True
@@ -104,6 +104,7 @@ class ConanRecipe(ConanFile):
             self.copy(Path(dll).stem + ".pdb", src="bin", dst="bin")
 
         tools.rmdir(os.path.join(self.package_folder, 'lib', 'cmake'))
+        tools.rmdir(os.path.join(self.package_folder, 'lib', 'pkgconfig'))
         tools.rmdir(os.path.join(self.package_folder, 'cmake'))
         tools.rmdir(os.path.join(self.package_folder, 'share'))
         tools.rmdir(os.path.join(self.package_folder, 'etc'))

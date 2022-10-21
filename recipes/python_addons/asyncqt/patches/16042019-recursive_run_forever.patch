@@ -1,0 +1,50 @@
+diff --git i/asyncqt/__init__.py w/asyncqt/__init__.py
+index 52f8e15..175853f 100644
+--- i/asyncqt/__init__.py
++++ w/asyncqt/__init__.py
+@@ -255,9 +255,13 @@ class _QEventLoop:
+ 
+     def run_forever(self):
+         """Run eventloop forever."""
+-        self.__is_running = True
+-        asyncio.events._set_running_loop(self)
+-        self._before_run_forever()
++        was_running = self.__is_running
++        if was_running:
++            # since exec() can't be called recursively on an event loop, we need to create a new local QEventLoop
++            old_qt_loop = self.__app
++            self.__app = QtCore.QEventLoop()
++        else:
++            self.run_forever_start()
+ 
+         try:
+             self._logger.debug('Starting Qt event loop')
+@@ -265,9 +269,10 @@ class _QEventLoop:
+             self._logger.debug('Qt event loop ended with result {}'.format(rslt))
+             return rslt
+         finally:
+-            self._after_run_forever()
+-            asyncio.events._set_running_loop(None)
+-            self.__is_running = False
++            if was_running:
++                self.__app = old_qt_loop
++            else:
++                self.run_forever_stop()
+ 
+     def run_until_complete(self, future):
+         """Run until Future is complete."""
+@@ -289,14 +294,8 @@ class _QEventLoop:
+ 
+     def stop(self):
+         """Stop event loop."""
+-        if not self.__is_running:
+-            self._logger.debug('Already stopped')
+-            return
+-
+         self._logger.debug('Stopping event loop...')
+-        self.__is_running = False
+         self.__app.exit()
+-        self._logger.debug('Stopped event loop')
+ 
+     def is_running(self):
+         """Return True if the event loop is running, False otherwise."""
