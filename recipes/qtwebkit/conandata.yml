@@ -19,4 +19,5 @@ patches:
     - patch_file: patches/${version}_disambiguate_handle_on_macos.patch
     - patch_file: patches/${version}_fix_for_bison37_and_newer.patch
     - patch_file: patches/${version}_fix_icu68.patch
+    - patch_file: patches/${version}_fix_usearch_assert.patch
     - patch_file: patches/${version}_pattern_include_macos.patch

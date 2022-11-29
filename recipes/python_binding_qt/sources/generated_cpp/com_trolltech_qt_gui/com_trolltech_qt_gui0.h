@@ -2031,8 +2031,10 @@ int  minimumHeightForWidth(int  arg__1) const override;
 QSize  minimumSize() const override;
 void setGeometry(const QRect&  arg__1) override;
 QSize  sizeHint() const override;
+QSpacerItem*  spacerItem() override;
 QLayoutItem*  takeAt(int  arg__1) override;
 void timerEvent(QTimerEvent*  event) override;
+QWidget*  widget() override;
 
   const QMetaObject* metaObject() const override;
   int qt_metacall(QMetaObject::Call call, int id, void** args) override;
@@ -2075,9 +2077,7 @@ void delete_QBoxLayout(QBoxLayout* obj) { delete obj; }
    int  py_q_count(QBoxLayout* theWrappedObject) const{  return (((PythonQtPublicPromoter_QBoxLayout*)theWrappedObject)->py_q_count());}
    QBoxLayout::Direction  direction(QBoxLayout* theWrappedObject) const;
    Qt::Orientations  py_q_expandingDirections(QBoxLayout* theWrappedObject) const{  return (((PythonQtPublicPromoter_QBoxLayout*)theWrappedObject)->py_q_expandingDirections());}
-   bool  hasHeightForWidth(QBoxLayout* theWrappedObject) const;
    bool  py_q_hasHeightForWidth(QBoxLayout* theWrappedObject) const{  return (((PythonQtPublicPromoter_QBoxLayout*)theWrappedObject)->py_q_hasHeightForWidth());}
-   int  heightForWidth(QBoxLayout* theWrappedObject, int  arg__1) const;
    int  py_q_heightForWidth(QBoxLayout* theWrappedObject, int  arg__1) const{  return (((PythonQtPublicPromoter_QBoxLayout*)theWrappedObject)->py_q_heightForWidth(arg__1));}
    void insertItem(QBoxLayout* theWrappedObject, int  index, PythonQtPassOwnershipToCPP<QLayoutItem* >  arg__2);
    void insertLayout(QBoxLayout* theWrappedObject, int  index, PythonQtPassOwnershipToCPP<QLayout* >  layout, int  stretch = 0);
@@ -2088,7 +2088,6 @@ void delete_QBoxLayout(QBoxLayout* obj) { delete obj; }
    void py_q_invalidate(QBoxLayout* theWrappedObject){  (((PythonQtPublicPromoter_QBoxLayout*)theWrappedObject)->py_q_invalidate());}
    QLayoutItem*  py_q_itemAt(QBoxLayout* theWrappedObject, int  arg__1) const{  return (((PythonQtPublicPromoter_QBoxLayout*)theWrappedObject)->py_q_itemAt(arg__1));}
    QSize  py_q_maximumSize(QBoxLayout* theWrappedObject) const{  return (((PythonQtPublicPromoter_QBoxLayout*)theWrappedObject)->py_q_maximumSize());}
-   int  minimumHeightForWidth(QBoxLayout* theWrappedObject, int  arg__1) const;
    int  py_q_minimumHeightForWidth(QBoxLayout* theWrappedObject, int  arg__1) const{  return (((PythonQtPublicPromoter_QBoxLayout*)theWrappedObject)->py_q_minimumHeightForWidth(arg__1));}
    QSize  py_q_minimumSize(QBoxLayout* theWrappedObject) const{  return (((PythonQtPublicPromoter_QBoxLayout*)theWrappedObject)->py_q_minimumSize());}
    void setDirection(QBoxLayout* theWrappedObject, QBoxLayout::Direction  arg__1);
@@ -2097,7 +2096,6 @@ void delete_QBoxLayout(QBoxLayout* obj) { delete obj; }
    void setStretch(QBoxLayout* theWrappedObject, int  index, int  stretch);
    bool  setStretchFactor(QBoxLayout* theWrappedObject, QLayout*  l, int  stretch);
    bool  setStretchFactor(QBoxLayout* theWrappedObject, QWidget*  w, int  stretch);
-   QSize  sizeHint(QBoxLayout* theWrappedObject) const;
    QSize  py_q_sizeHint(QBoxLayout* theWrappedObject) const{  return (((PythonQtPublicPromoter_QBoxLayout*)theWrappedObject)->py_q_sizeHint());}
    int  spacing(QBoxLayout* theWrappedObject) const;
    int  stretch(QBoxLayout* theWrappedObject, int  index) const;

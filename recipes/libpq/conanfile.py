@@ -21,7 +21,7 @@ class ConanRecipe(ConanFile):
 
     def requirements(self):
         channel = "@mevislab/stable"
-        self.requires("openssl/1.1.1q" + channel)
+        self.requires("openssl/1.1.1s" + channel)
 
 
     def imports(self):
@@ -124,6 +124,6 @@ class ConanRecipe(ConanFile):
         self.env_info.PostgreSQL_ROOT = self.package_folder
         self.cpp_info.libs = tools.collect_libs(self)
         if self.settings.os == "Linux":
-            self.cpp_info.libs.append("pthread")
+            self.cpp_info.system_libs.append("pthread")
         elif self.settings.os == "Windows":
-            self.cpp_info.libs.extend(["ws2_32", "secur32", "advapi32", "shell32", "crypt32", "wldap32"])
+            self.cpp_info.system_libs.extend(["ws2_32", "secur32", "advapi32", "shell32", "crypt32", "wldap32"])

@@ -118,6 +118,13 @@ class Download(object):
         if not url:
             raise ConanException("url argument is required")
 
+        # handle pypi url's like "pypi://pip/pip-19.3.1.tar.gz"
+        if url.startswith('pypi://'):
+            fn = url[len('pypi://'):]
+            d,f = fn.split('/', 2)
+            d = d.lower()
+            url = f"https://files.pythonhosted.org/packages/source/{d[0]}/{d}/{f}"
+
         fileName = utils.substitute(self, fileName)
         if not fileName:
             raise ConanException("fileName argument is required")

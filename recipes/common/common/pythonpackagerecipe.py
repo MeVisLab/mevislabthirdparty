@@ -23,17 +23,6 @@ class PythonPackageRecipe(commonrecipe.CommonRecipe):
         return f"lib/python{pv.major}.{pv.minor}/site-packages"
 
 
-    def system_requirements(self):
-        installer = tools.SystemPackageTool()
-        packages = []
-
-        if tools.os_info.linux_distro in ["ubuntu", "debian"]:
-            packages.append('pkg-config')
-
-        if packages:
-            installer.install_packages(packages)
-
-
     def requirements(self):
         self.default_requirements()
 

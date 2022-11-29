@@ -2,13 +2,13 @@ type: pure_c
 name: numpy
 display_name: NumPy
 mli_name: Python3__NumPy
-version: "1.23.3"
+version: "1.23.4"
 homepage: https://numpy.org
 description: NumPy is the fundamental package for scientific computing with Python
 license: BSD-3-Clause
 
 sources:
-  "1.23.3":
-    sha256: 51bf49c0cd1d52be0a240aa66f3458afc4b95d8993d2d04f0d91fa60c10af6cd
+  "1.23.4":
+    sha256: ed2cc92af0efad20198638c69bb0fc2870a58dabfba6eb722c933b48556c686c
     url: https://github.com/numpy/numpy/releases/download/v${version}/numpy-${version}.tar.gz
     base_path: numpy-${version}

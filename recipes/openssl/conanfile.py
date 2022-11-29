@@ -167,13 +167,11 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         if self.settings.compiler == "Visual Studio":
-            if self.settings.build_type == 'Debug':
-                self.cpp_info.libs = ['libssld', 'libcryptod']
-            else:
-                self.cpp_info.libs = ['libssl', 'libcrypto']
-            self.cpp_info.libs.extend(["crypt32", "msi", "ws2_32"])
-        elif self.settings.os == "Linux":
-            self.cpp_info.libs = ["ssl", "crypto", "dl", "pthread"]
+            self.cpp_info.libs = ['libssld', 'libcryptod'] if self.settings.build_type == 'Debug' else ['libssl', 'libcrypto']
+            self.cpp_info.system_libs.extend(["crypt32", "msi", "ws2_32"])
         else:
             self.cpp_info.libs = ["ssl", "crypto"]
+            if self.settings.os == "Linux":
+                self.cpp_info.system_libs = ["dl", "pthread"]
+
         self.env_info.path.append(os.path.join(self.package_folder, "bin"))

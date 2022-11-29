@@ -1,8 +1,8 @@
 diff --git i/CMakeLists.txt w/CMakeLists.txt
-index 8652564..133f2aa 100644
+index 86e0aff..a2389dd 100644
 --- i/CMakeLists.txt
 +++ w/CMakeLists.txt
-@@ -47,7 +47,12 @@ include(GNUInstallDirs)
+@@ -48,7 +48,12 @@ include(GNUInstallDirs)
  option(PNG_BUILD_ZLIB "Custom zlib Location, else find_package is used" OFF)
  
  if(NOT PNG_BUILD_ZLIB)

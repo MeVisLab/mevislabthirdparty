@@ -29,18 +29,8 @@ class CommonRecipe(mixin.CMake, mixin.Debug, mixin.Download, mixin.License, mixi
     display_name = None
     generate_cmake = True
 
-    _download_filename = None
-    _download_url = None
-
-    _timestamp = None
-
 
     def init(self):
-        self._timestamp = int(datetime.now().timestamp())
-
-        # if os.environ.get('CI_JOB_IMAGE'):
-        #     self.no_copy_source = True
-
         if not self.conan_data:
             self.output.warn("No 'conandata.yml' found")
         else:
@@ -123,11 +113,8 @@ class CommonRecipe(mixin.CMake, mixin.Debug, mixin.Download, mixin.License, mixi
         # now we really need a download URL
         url = utils.substitute(self, pkg.get('url', None))
         if not url:
-            if self._download_url:
-                url = self._download_url
-            else:
-                self.output.error(f"No download url found in {srcs_name}")
-                raise ConanException(f"No download url found in {srcs_name}")
+            self.output.error(f"No download url found in {srcs_name}")
+            raise ConanException(f"No download url found in {srcs_name}")
 
         # a checksum should always be specified
         sha256 = pkg.get('sha256', None)
@@ -138,30 +125,27 @@ class CommonRecipe(mixin.CMake, mixin.Debug, mixin.Download, mixin.License, mixi
         # get the filename or try to derive the name from the given URL
         fileName = utils.substitute(self, pkg.get('filename', None))
         if not fileName:
-            if self._download_filename:
-                fileName = self._download_filename
-            else:
-                for ext in ['.tar.gz', '.tar', '.tzb2', '.tar.bz2', '.tgz', '.txz', '.tar.xz', '.zip', '.xz', '.7z', '.exe', '.msi', '.js', '.whl']:
-                    u = url.lower()
-                    # sf.net download links look like https://sourceforge.net/projects/ftgl/files/FTGL Source/2.13.1/ftgl-2.13.1.tar.gz/download
-                    if u.endswith(f"{ext}/download"):
-                        u = u[:-len("/download")]
+            for ext in ['.tar.gz', '.tar', '.tzb2', '.tar.bz2', '.tgz', '.txz', '.tar.xz', '.zip', '.xz', '.7z', '.exe', '.msi', '.js', '.whl']:
+                u = url.lower()
+                # sf.net download links look like https://sourceforge.net/projects/ftgl/files/FTGL Source/2.13.1/ftgl-2.13.1.tar.gz/download
+                if u.endswith(f"{ext}/download"):
+                    u = u[:-len("/download")]
 
-                    if u.endswith(ext):
-                        fn = u.split('/')[-1]
+                if u.endswith(ext):
+                    fn = u.split('/')[-1]
 
-                        if not fn.endswith(ext):
-                            raise ConanException("internal logic error")
+                    if not fn.endswith(ext):
+                        raise ConanException("internal logic error")
 
-                        if not self.version in fn:
-                            fn = f"{self.version}-{fn}"
+                    if not self.version in fn:
+                        fn = f"{self.version}-{fn}"
 
-                        n = (self.name[:-len("_installer")] if self.name.endswith("_installer") else self.name).lower()
-                        if not n in fn.lower():
-                                fn = f"{n}-{fn}"
+                    n = (self.name[:-len("_installer")] if self.name.endswith("_installer") else self.name).lower()
+                    if not n in fn.lower():
+                            fn = f"{n}-{fn}"
 
-                        fileName = fn
-                        break
+                    fileName = fn
+                    break
 
         if not fileName:
             self.output.error(f"Could not derive file name from URL 'url'. Please set the 'filename' attribute")

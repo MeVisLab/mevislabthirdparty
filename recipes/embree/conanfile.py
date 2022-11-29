@@ -2,6 +2,7 @@
 from conans import ConanFile
 from conans import tools
 from conans import CMake
+from conans.errors import ConanInvalidConfiguration
 import os
 
 
@@ -10,6 +11,11 @@ class ConanRecipe(ConanFile):
     python_requires_extend = 'common.CommonRecipe'
 
     _cmake = None
+
+
+    def validate(self):
+        if "arm" in self.settings.arch:
+            raise ConanInvalidConfiguration(f"{self.name} not supported on {self.settings.arch}")
 
 
     def _configure_cmake(self):

@@ -16,6 +16,11 @@ class ConanRecipe(ConanFile):
         self.info.clear()
 
 
+    def configure(self):
+        if self.settings.os != "Windows":
+            raise ConanInvalidConfiguration(f"{self.name} is only supported on Windows")
+
+
     def validate(self):
         if self.settings.os != "Windows":
             raise ConanInvalidConfiguration(f"{self.name} is only supported on Windows")

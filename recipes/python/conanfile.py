@@ -21,17 +21,6 @@ class ConanRecipe(ConanFile):
     _cmake = None
 
 
-    def system_requirements(self):
-        installer = tools.SystemPackageTool()
-        packages = []
-
-        if tools.os_info.linux_distro in ["ubuntu", "debian"]:
-            packages.append('pkg-config')
-
-        if packages:
-            installer.install_packages(packages)
-
-
     def requirements(self):
         channel = "@{0}/{1}".format(self.user, self.channel)
         self.requires("zlib/[>=1.2.11]" + channel)
@@ -39,7 +28,7 @@ class ConanRecipe(ConanFile):
         self.requires("bzip2/[>=1.0.8]" + channel)
         self.requires("xz-utils/[>=5.2.5]" + channel)
         self.requires("libffi/[>=3.3]" + channel)
-        self.requires("openssl/1.1.1q" + channel)
+        self.requires("openssl/1.1.1s" + channel)
 
 
     def _unix_build(self):

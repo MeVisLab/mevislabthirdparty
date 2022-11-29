@@ -72,4 +72,4 @@ class ConanRecipe(ConanFile):
         self.default_package_info()
 
         if self.settings.os == "Linux":
-            self.cpp_info.libs.extend(["m"])
+            self.cpp_info.system_libs.extend(["m"])

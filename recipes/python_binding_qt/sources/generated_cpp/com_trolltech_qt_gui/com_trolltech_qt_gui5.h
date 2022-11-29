@@ -2327,6 +2327,7 @@ public:
 
 void childEvent(QChildEvent*  event) override;
 void customEvent(QEvent*  event) override;
+int  devType() const override;
 bool  event(QEvent*  event) override;
 bool  eventFilter(QObject*  watched, QEvent*  event) override;
 void exposeEvent(QExposeEvent*  arg__1) override;
@@ -2335,6 +2336,7 @@ QObject*  focusObject() const override;
 void focusOutEvent(QFocusEvent*  arg__1) override;
 QSurfaceFormat  format() const override;
 void hideEvent(QHideEvent*  arg__1) override;
+void initPainter(QPainter*  painter) const override;
 void initializeGL() override;
 void keyPressEvent(QKeyEvent*  arg__1) override;
 void keyReleaseEvent(QKeyEvent*  arg__1) override;
@@ -2352,6 +2354,7 @@ void paintUnderGL() override;
 QPaintDevice*  redirected(QPoint*  arg__1) const override;
 void resizeEvent(QResizeEvent*  event) override;
 void resizeGL(int  w, int  h) override;
+QPainter*  sharedPainter() const override;
 void showEvent(QShowEvent*  arg__1) override;
 QSize  size() const override;
 QSurface::SurfaceType  surfaceType() const override;
@@ -2413,7 +2416,6 @@ void delete_QOpenGLWindow(QOpenGLWindow* obj) { delete obj; }
    void py_q_paintOverGL(QOpenGLWindow* theWrappedObject){  (((PythonQtPublicPromoter_QOpenGLWindow*)theWrappedObject)->py_q_paintOverGL());}
    void paintUnderGL(QOpenGLWindow* theWrappedObject);
    void py_q_paintUnderGL(QOpenGLWindow* theWrappedObject){  (((PythonQtPublicPromoter_QOpenGLWindow*)theWrappedObject)->py_q_paintUnderGL());}
-   QPaintDevice*  redirected(QOpenGLWindow* theWrappedObject, QPoint*  arg__1) const;
    QPaintDevice*  py_q_redirected(QOpenGLWindow* theWrappedObject, QPoint*  arg__1) const{  return (((PythonQtPublicPromoter_QOpenGLWindow*)theWrappedObject)->py_q_redirected(arg__1));}
    void py_q_resizeEvent(QOpenGLWindow* theWrappedObject, QResizeEvent*  event){  (((PythonQtPublicPromoter_QOpenGLWindow*)theWrappedObject)->py_q_resizeEvent(event));}
    void resizeGL(QOpenGLWindow* theWrappedObject, int  w, int  h);

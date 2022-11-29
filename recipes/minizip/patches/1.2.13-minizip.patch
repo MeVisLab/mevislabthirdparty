@@ -123,7 +123,7 @@ index a49a426..b76eece 100644
                               const char* fileOutTmp,
                               uLong* nRecovered,
 diff --git c/contrib/minizip/unzip.c i/contrib/minizip/unzip.c
-index 5e12e47..dbe33b1 100644
+index 3036b47..f4f74de 100644
 --- c/contrib/minizip/unzip.c
 +++ i/contrib/minizip/unzip.c
 @@ -387,7 +387,7 @@ local int strcmpcasenosensitive_internal (const char* fileName1, const char* fil
@@ -285,7 +285,7 @@ index 5e12e47..dbe33b1 100644
                                              int* level, int raw, const char* password)
  {
      int err=UNZ_OK;
-@@ -1638,24 +1638,24 @@ extern int ZEXPORT unzOpenCurrentFile3 (unzFile file, int* method,
+@@ -1640,24 +1640,24 @@ extern int ZEXPORT unzOpenCurrentFile3 (unzFile file, int* method,
      return UNZ_OK;
  }
  
@@ -314,7 +314,7 @@ index 5e12e47..dbe33b1 100644
  {
      unz64_s* s;
      file_in_zip64_read_info_s* pfile_in_zip_read_info;
-@@ -1681,7 +1681,7 @@ extern ZPOS64_T ZEXPORT unzGetCurrentFileZStreamPos64( unzFile file)
+@@ -1683,7 +1683,7 @@ extern ZPOS64_T ZEXPORT unzGetCurrentFileZStreamPos64( unzFile file)
    return <0 with error code if there is an error
      (UNZ_ERRNO for IO error, or zLib error for uncompress error)
  */
@@ -323,7 +323,7 @@ index 5e12e47..dbe33b1 100644
  {
      int err=UNZ_OK;
      uInt iRead = 0;
-@@ -1889,7 +1889,7 @@ extern int ZEXPORT unzReadCurrentFile  (unzFile file, voidp buf, unsigned len)
+@@ -1891,7 +1891,7 @@ extern int ZEXPORT unzReadCurrentFile  (unzFile file, voidp buf, unsigned len)
  /*
    Give the current position in uncompressed data
  */
@@ -332,7 +332,7 @@ index 5e12e47..dbe33b1 100644
  {
      unz64_s* s;
      file_in_zip64_read_info_s* pfile_in_zip_read_info;
-@@ -1904,7 +1904,7 @@ extern z_off_t ZEXPORT unztell (unzFile file)
+@@ -1906,7 +1906,7 @@ extern z_off_t ZEXPORT unztell (unzFile file)
      return (z_off_t)pfile_in_zip_read_info->stream.total_out;
  }
  
@@ -341,7 +341,7 @@ index 5e12e47..dbe33b1 100644
  {
  
      unz64_s* s;
-@@ -1924,7 +1924,7 @@ extern ZPOS64_T ZEXPORT unztell64 (unzFile file)
+@@ -1926,7 +1926,7 @@ extern ZPOS64_T ZEXPORT unztell64 (unzFile file)
  /*
    return 1 if the end of file was reached, 0 elsewhere
  */
@@ -350,7 +350,7 @@ index 5e12e47..dbe33b1 100644
  {
      unz64_s* s;
      file_in_zip64_read_info_s* pfile_in_zip_read_info;
-@@ -1956,7 +1956,7 @@ more info in the local-header version than in the central-header)
+@@ -1958,7 +1958,7 @@ more info in the local-header version than in the central-header)
    the return value is the number of bytes copied in buf, or (if <0)
      the error code
  */
@@ -359,7 +359,7 @@ index 5e12e47..dbe33b1 100644
  {
      unz64_s* s;
      file_in_zip64_read_info_s* pfile_in_zip_read_info;
-@@ -2004,7 +2004,7 @@ extern int ZEXPORT unzGetLocalExtrafield (unzFile file, voidp buf, unsigned len)
+@@ -2006,7 +2006,7 @@ extern int ZEXPORT unzGetLocalExtrafield (unzFile file, voidp buf, unsigned len)
    Close the file in zip opened with unzOpenCurrentFile
    Return UNZ_CRCERROR if all the file was read but the CRC is not good
  */
@@ -368,7 +368,7 @@ index 5e12e47..dbe33b1 100644
  {
      int err=UNZ_OK;
  
-@@ -2051,7 +2051,7 @@ extern int ZEXPORT unzCloseCurrentFile (unzFile file)
+@@ -2053,7 +2053,7 @@ extern int ZEXPORT unzCloseCurrentFile (unzFile file)
    uSizeBuf is the size of the szComment buffer.
    return the number of byte copied or an error code <0
  */
@@ -377,7 +377,7 @@ index 5e12e47..dbe33b1 100644
  {
      unz64_s* s;
      uLong uReadThis ;
-@@ -2079,7 +2079,7 @@ extern int ZEXPORT unzGetGlobalComment (unzFile file, char * szComment, uLong uS
+@@ -2081,7 +2081,7 @@ extern int ZEXPORT unzGetGlobalComment (unzFile file, char * szComment, uLong uS
  }
  
  /* Additions by RX '2004 */
@@ -386,7 +386,7 @@ index 5e12e47..dbe33b1 100644
  {
      unz64_s* s;
  
-@@ -2094,7 +2094,7 @@ extern ZPOS64_T ZEXPORT unzGetOffset64(unzFile file)
+@@ -2096,7 +2096,7 @@ extern ZPOS64_T ZEXPORT unzGetOffset64(unzFile file)
      return s->pos_in_central_dir;
  }
  
@@ -395,7 +395,7 @@ index 5e12e47..dbe33b1 100644
  {
      ZPOS64_T offset64;
  
-@@ -2104,7 +2104,7 @@ extern uLong ZEXPORT unzGetOffset (unzFile file)
+@@ -2106,7 +2106,7 @@ extern uLong ZEXPORT unzGetOffset (unzFile file)
      return (uLong)offset64;
  }
  
@@ -404,7 +404,7 @@ index 5e12e47..dbe33b1 100644
  {
      unz64_s* s;
      int err;
-@@ -2122,7 +2122,7 @@ extern int ZEXPORT unzSetOffset64(unzFile file, ZPOS64_T pos)
+@@ -2124,7 +2124,7 @@ extern int ZEXPORT unzSetOffset64(unzFile file, ZPOS64_T pos)
      return err;
  }
  
@@ -661,7 +661,7 @@ index 6f95e94..d789958 100644
  
  
 diff --git c/contrib/minizip/zip.c i/contrib/minizip/zip.c
-index 4e611e1..2b30df7 100644
+index 66d693f..c938f39 100644
 --- c/contrib/minizip/zip.c
 +++ i/contrib/minizip/zip.c
 @@ -846,7 +846,7 @@ local int LoadCentralDirectoryRecord(zip64_internal* pziinit)
@@ -787,7 +787,7 @@ index 4e611e1..2b30df7 100644
  {
      zip64_internal* zi;
      int err=ZIP_OK;
-@@ -1506,12 +1506,12 @@ extern int ZEXPORT zipWriteInFileInZip (zipFile file,const void* buf,unsigned in
+@@ -1501,12 +1501,12 @@ extern int ZEXPORT zipWriteInFileInZip (zipFile file,const void* buf,unsigned in
      return err;
  }
  
@@ -802,7 +802,7 @@ index 4e611e1..2b30df7 100644
  {
      zip64_internal* zi;
      ZPOS64_T compressed_size;
-@@ -1747,7 +1747,7 @@ extern int ZEXPORT zipCloseFileInZipRaw64 (zipFile file, ZPOS64_T uncompressed_s
+@@ -1742,7 +1742,7 @@ extern int ZEXPORT zipCloseFileInZipRaw64 (zipFile file, ZPOS64_T uncompressed_s
      return err;
  }
  
@@ -811,7 +811,7 @@ index 4e611e1..2b30df7 100644
  {
      return zipCloseFileInZipRaw (file,0,0);
  }
-@@ -1879,7 +1879,7 @@ local int Write_GlobalComment(zip64_internal* zi, const char* global_comment)
+@@ -1874,7 +1874,7 @@ local int Write_GlobalComment(zip64_internal* zi, const char* global_comment)
    return err;
  }
  
@@ -820,7 +820,7 @@ index 4e611e1..2b30df7 100644
  {
      zip64_internal* zi;
      int err = 0;
-@@ -1948,7 +1948,7 @@ extern int ZEXPORT zipClose (zipFile file, const char* global_comment)
+@@ -1943,7 +1943,7 @@ extern int ZEXPORT zipClose (zipFile file, const char* global_comment)
      return err;
  }
  

@@ -4,6 +4,7 @@ from conans import AutoToolsBuildEnvironment
 from conans import MSBuild
 from conans import tools
 import os
+import xml.etree.ElementTree as ET
 
 
 class ConanRecipe(ConanFile):
@@ -17,6 +18,21 @@ class ConanRecipe(ConanFile):
 
         # fix/remove rpath (for macos)
         tools.replace_in_file(os.path.join("sources", "configure"), r"-install_name \$rpath/", "-install_name ")
+
+        if tools.os_info.is_windows:
+            liblzmaFile = os.path.join('sources', 'windows', 'vs2019', 'liblzma_dll.vcxproj')
+            # Adapt VC project file for debug suffix:
+            ns = {'': 'http://schemas.microsoft.com/developer/msbuild/2003'}
+            ET.register_namespace('', ns[''])
+            tree = ET.parse(liblzmaFile)
+            root = tree.getroot()
+            # we need to add the debug suffix to the liblzma_dll.vcxproj
+            for child in root.findall("PropertyGroup", ns):
+                if "Debug" in child.get("Condition", ""):
+                    targetNameElem = child.find("TargetName", ns)
+                    if targetNameElem is not None and not targetNameElem.text.endswith('d'):
+                        targetNameElem.text += 'd'
+            tree.write(liblzmaFile, encoding="utf-8", xml_declaration=True)
 
 
     def _configure_autotools(self):

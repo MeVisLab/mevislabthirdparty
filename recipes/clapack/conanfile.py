@@ -39,5 +39,5 @@ class ConanRecipe(ConanFile):
             self.cpp_info.libs = [x + "d" for x in self.cpp_info.libs]
 
         if self.settings.os == "Linux":
-            self.cpp_info.libs.append("m")
+            self.cpp_info.system_libs.append("m")
 

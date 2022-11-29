@@ -15862,6 +15862,39 @@ if (_wrapper) {
 }
   return QBoxLayout::sizeHint();
 }
+QSpacerItem*  PythonQtShell_QBoxLayout::spacerItem()
+{
+if (_wrapper) {
+  PYTHONQT_GIL_SCOPE
+  if (((PyObject*)_wrapper)->ob_refcnt > 0) {
+    static PyObject* name = PyString_FromString("spacerItem");
+    PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
+    if (obj) {
+      static const char* argumentList[] ={"QSpacerItem*"};
+      static const PythonQtMethodInfo* methodInfo = PythonQtMethodInfo::getCachedMethodInfoFromArgumentList(1, argumentList);
+      QSpacerItem* returnValue{};
+      void* args[1] = {nullptr};
+      PyObject* result = PythonQtSignalTarget::call(obj, methodInfo, args, true);
+      if (result) {
+        args[0] = PythonQtConv::ConvertPythonToQt(methodInfo->parameters().at(0), result, false, nullptr, &returnValue);
+        if (args[0]!=&returnValue) {
+          if (args[0]==nullptr) {
+            PythonQt::priv()->handleVirtualOverloadReturnError("spacerItem", methodInfo, result);
+          } else {
+            returnValue = *((QSpacerItem**)args[0]);
+          }
+        }
+      }
+      if (result) { Py_DECREF(result); } 
+      Py_DECREF(obj);
+      return returnValue;
+    } else {
+      PyErr_Clear();
+    }
+  }
+}
+  return QBoxLayout::spacerItem();
+}
 QLayoutItem*  PythonQtShell_QBoxLayout::takeAt(int  arg__1)
 {
 if (_wrapper) {
@@ -15917,6 +15950,39 @@ if (_wrapper) {
 }
   QBoxLayout::timerEvent(event0);
 }
+QWidget*  PythonQtShell_QBoxLayout::widget()
+{
+if (_wrapper) {
+  PYTHONQT_GIL_SCOPE
+  if (((PyObject*)_wrapper)->ob_refcnt > 0) {
+    static PyObject* name = PyString_FromString("widget");
+    PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
+    if (obj) {
+      static const char* argumentList[] ={"QWidget*"};
+      static const PythonQtMethodInfo* methodInfo = PythonQtMethodInfo::getCachedMethodInfoFromArgumentList(1, argumentList);
+      QWidget* returnValue{};
+      void* args[1] = {nullptr};
+      PyObject* result = PythonQtSignalTarget::call(obj, methodInfo, args, true);
+      if (result) {
+        args[0] = PythonQtConv::ConvertPythonToQt(methodInfo->parameters().at(0), result, false, nullptr, &returnValue);
+        if (args[0]!=&returnValue) {
+          if (args[0]==nullptr) {
+            PythonQt::priv()->handleVirtualOverloadReturnError("widget", methodInfo, result);
+          } else {
+            returnValue = *((QWidget**)args[0]);
+          }
+        }
+      }
+      if (result) { Py_DECREF(result); } 
+      Py_DECREF(obj);
+      return returnValue;
+    } else {
+      PyErr_Clear();
+    }
+  }
+}
+  return QBoxLayout::widget();
+}
 QBoxLayout* PythonQtWrapper_QBoxLayout::new_QBoxLayout(QBoxLayout::Direction  arg__1, QWidget*  parent)
 { 
 return new PythonQtShell_QBoxLayout(arg__1, parent); }
@@ -15969,16 +16035,6 @@ QBoxLayout::Direction  PythonQtWrapper_QBoxLayout::direction(QBoxLayout* theWrap
   return ( theWrappedObject->direction());
 }
 
-bool  PythonQtWrapper_QBoxLayout::hasHeightForWidth(QBoxLayout* theWrappedObject) const
-{
-  return ( theWrappedObject->hasHeightForWidth());
-}
-
-int  PythonQtWrapper_QBoxLayout::heightForWidth(QBoxLayout* theWrappedObject, int  arg__1) const
-{
-  return ( theWrappedObject->heightForWidth(arg__1));
-}
-
 void PythonQtWrapper_QBoxLayout::insertItem(QBoxLayout* theWrappedObject, int  index, PythonQtPassOwnershipToCPP<QLayoutItem* >  arg__2)
 {
   ( theWrappedObject->insertItem(index, arg__2));
@@ -16009,11 +16065,6 @@ void PythonQtWrapper_QBoxLayout::insertWidget(QBoxLayout* theWrappedObject, int 
   ( theWrappedObject->insertWidget(index, widget, stretch, alignment));
 }
 
-int  PythonQtWrapper_QBoxLayout::minimumHeightForWidth(QBoxLayout* theWrappedObject, int  arg__1) const
-{
-  return ( theWrappedObject->minimumHeightForWidth(arg__1));
-}
-
 void PythonQtWrapper_QBoxLayout::setDirection(QBoxLayout* theWrappedObject, QBoxLayout::Direction  arg__1)
 {
   ( theWrappedObject->setDirection(arg__1));
@@ -16037,11 +16088,6 @@ bool  PythonQtWrapper_QBoxLayout::setStretchFactor(QBoxLayout* theWrappedObject,
 bool  PythonQtWrapper_QBoxLayout::setStretchFactor(QBoxLayout* theWrappedObject, QWidget*  w, int  stretch)
 {
   return ( theWrappedObject->setStretchFactor(w, stretch));
-}
-
-QSize  PythonQtWrapper_QBoxLayout::sizeHint(QBoxLayout* theWrappedObject) const
-{
-  return ( theWrappedObject->sizeHint());
 }
 
 int  PythonQtWrapper_QBoxLayout::spacing(QBoxLayout* theWrappedObject) const

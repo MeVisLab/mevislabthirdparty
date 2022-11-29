@@ -9,6 +9,7 @@ import os
 class ConanRecipe(ConanFile):
     python_requires = 'common/1.0.0@mevislab/stable'
     python_requires_extend = 'common.CommonRecipe'
+    generators = "cmake", "cmake_find_package"
 
     _modules = [
         "ofstd",     "oflog",        "dcmdata",     "dcmimgle",
@@ -28,6 +29,7 @@ class ConanRecipe(ConanFile):
         self.requires("libxml2/[>=2.9.12]" + channel)
         self.requires("libpng/[>=1.6.37]" + channel)
         self.requires("tiff/[>=4.1.0]" + channel)
+        # self.requires("openssl/1.1.1s" + channel)
         self.requires("libjpeg/9e" + channel)
 
         if not tools.os_info.is_macos:

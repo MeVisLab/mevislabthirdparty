@@ -1,8 +1,8 @@
 diff --git i/zconf.h w/zconf.h
-index 5e1d68a..0f76af7 100644
+index bf977d3..75bf167 100644
 --- i/zconf.h
 +++ w/zconf.h
-@@ -431,11 +431,11 @@ typedef uLong FAR uLongf;
+@@ -437,11 +437,11 @@ typedef uLong FAR uLongf;
     typedef unsigned long z_crc_t;
  #endif
  
@@ -17,10 +17,10 @@ index 5e1d68a..0f76af7 100644
  #endif
  
 diff --git i/zconf.h.cmakein w/zconf.h.cmakein
-index a7f24cc..09d71ed 100644
+index 247ba24..c1c7261 100644
 --- i/zconf.h.cmakein
 +++ w/zconf.h.cmakein
-@@ -433,11 +433,11 @@ typedef uLong FAR uLongf;
+@@ -439,11 +439,11 @@ typedef uLong FAR uLongf;
     typedef unsigned long z_crc_t;
  #endif
  
@@ -35,10 +35,10 @@ index a7f24cc..09d71ed 100644
  #endif
  
 diff --git i/zconf.h.in w/zconf.h.in
-index 5e1d68a..0f76af7 100644
+index bf977d3..75bf167 100644
 --- i/zconf.h.in
 +++ w/zconf.h.in
-@@ -431,11 +431,11 @@ typedef uLong FAR uLongf;
+@@ -437,11 +437,11 @@ typedef uLong FAR uLongf;
     typedef unsigned long z_crc_t;
  #endif
  

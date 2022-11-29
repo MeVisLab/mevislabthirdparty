@@ -5,6 +5,7 @@ from conan.tools.files import patch
 from conans.errors import ConanException
 from common import utils
 from conans import ConanFile
+import os
 
 class Patch(object):
     def apply_patches(self:ConanFile, base_path:str='sources', strip:int=1, fuzz:Optional[bool]=None):
@@ -24,10 +25,14 @@ class Patch(object):
                 raise ConanException("Invalid patches section found.")
 
             for key in it:
-                it[key] = utils.substitute(self, it[key])
+                if isinstance(it[key], str):
+                    it[key] = utils.substitute(self, it[key])
 
-            if base_path and not 'base_path' in it:
-                it['base_path'] = base_path
+            if base_path:
+                if not 'base_path' in it:
+                    it['base_path'] = base_path
+                else:
+                    it['base_path'] = os.path.join(base_path, it['base_path'])
 
             if strip and not 'strip' in it:
                 it['strip'] = strip
@@ -37,4 +42,3 @@ class Patch(object):
 
             self.output.info(f"Applying patch \'{it['patch_file']}\'")
             patch(self, **it)
-

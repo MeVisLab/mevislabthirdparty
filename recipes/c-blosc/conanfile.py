@@ -14,7 +14,7 @@ class ConanRecipe(ConanFile):
 
     def requirements(self):
         channel = "@{0}/{1}".format(self.user, self.channel)
-        self.requires("lz4/[>=1.9.3]" + channel)
+        self.requires("lz4/[>=1.9.4]" + channel)
         self.requires("zlib/[>=1.2.11]" + channel)
         self.requires("zstd/[>=1.4.9]" + channel)
 
@@ -74,4 +74,4 @@ class ConanRecipe(ConanFile):
         self.cpp_info.names["pkg_config"] = "blosc"
 
         if self.settings.os == "Linux":
-            self.cpp_info.libs.extend(["pthread"])
+            self.cpp_info.system_libs.extend(["pthread"])

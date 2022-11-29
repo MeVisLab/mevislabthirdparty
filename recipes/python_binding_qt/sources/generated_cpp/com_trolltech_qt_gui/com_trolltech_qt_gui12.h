@@ -273,8 +273,10 @@ int  minimumHeightForWidth(int  arg__1) const override;
 QSize  minimumSize() const override;
 void setGeometry(const QRect&  arg__1) override;
 QSize  sizeHint() const override;
+QSpacerItem*  spacerItem() override;
 QLayoutItem*  takeAt(int  arg__1) override;
 void timerEvent(QTimerEvent*  event) override;
+QWidget*  widget() override;
 
   const QMetaObject* metaObject() const override;
   int qt_metacall(QMetaObject::Call call, int id, void** args) override;

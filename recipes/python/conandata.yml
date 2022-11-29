@@ -2,24 +2,30 @@ type: cpp
 name: python
 display_name: Python
 mli_name: None
-version: "3.9.14"
+version: "3.9.15"
 homepage: https://www.python.org
 description: An interpreted, interactive, object-oriented programming language
 license: Python-2.0
 
 sources:
-  "3.9.14":
-    sha256: 9201836e2c16361b2b7408680502393737d44f227333fe2e5729c7d5f6041675
+  "3.9.15":
+    sha256: 48d1ccb29d5fbaf1fb8f912271d09f7450e426d4dfe95978ef6aaada70ece4d8
     url: https://www.python.org/ftp/python/${version}/Python-${version}.tgz
     base_path: Python-${version}
 
 patches:
-  "3.9.14":
+  "3.9.15":
     - patch_file: patches/${version}-macos_remove_rpath_prefix.patch
     - patch_file: patches/${version}-pycore_byteswap.patch
     - patch_file: patches/${version}-recursive_future_repr.patch
-      patch_type: bugfix
       patch_description: short term fix for https://github.com/python/cpython/issues/93837
-    - patch_file: patches/${version}-win32_multiprocessing_pool_limit.patch
       patch_type: bugfix
+    - patch_file: patches/${version}-win32_multiprocessing_pool_limit.patch
       patch_description: short term fix for https://github.com/python/cpython/issues/89240
+      patch_type: bugfix
+    - patch_file: patches/${version}-CVE-2022-42919.patch
+      patch_description: fix for CVE-2022-42919, see https://github.com/python/cpython/pull/98504
+      patch_type: bugfix
+    - patch_file: patches/${version}-CVE-2022-45061.patch
+      patch_description: fix for CVE-2022-45061, see https://github.com/python/cpython/pull/99230
+      patch_type: bugfix

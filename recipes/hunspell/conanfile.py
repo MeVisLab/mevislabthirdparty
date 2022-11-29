@@ -4,6 +4,7 @@ from conans import tools
 from conans import MSBuild
 from conans import AutoToolsBuildEnvironment
 import os
+import xml.etree.ElementTree as ET
 
 
 class ConanRecipe(ConanFile):
@@ -40,6 +41,23 @@ class ConanRecipe(ConanFile):
                 tools.replace_in_file(os.path.join('sources', 'msvc', 'hunspell.vcxproj'), '</PropertyGroup>', sdk_str)
                 tools.replace_in_file(os.path.join('sources', 'msvc', 'libhunspell.vcxproj'), '</PropertyGroup>', sdk_str)
                 tools.replace_in_file(os.path.join('sources', 'msvc', 'testparser.vcxproj'), '</PropertyGroup>', sdk_str)
+
+            libhunspellFile = os.path.join('sources', 'msvc', 'libhunspell.vcxproj')
+            # to avoid that the pdb file is created with and without debug suffix:
+            tools.replace_in_file(libhunspellFile, "$(ProjectName).pdb", "$(TargetName).pdb")
+            # Adapt VC project file for debug suffix:
+            ns = {'': 'http://schemas.microsoft.com/developer/msbuild/2003'}
+            ET.register_namespace('', ns[''])
+            tree = ET.parse(libhunspellFile)
+            root = tree.getroot()
+            # we need to add the debug suffix to the libhunspell.vcxproj
+            for child in root.findall("PropertyGroup", ns):
+                if "Debug" in child.get("Condition", ""):
+                    # there are several PropertyGroup elements, only add to the one which contains IntDir
+                    if child.find("IntDir", ns) is not None:
+                        print("Adding TargetName sub-element...")
+                        ET.SubElement(child, "TargetName").text = "$(ProjectName)_d"
+            tree.write(libhunspellFile, encoding="utf-8", xml_declaration=True)
 
 
     def build(self):

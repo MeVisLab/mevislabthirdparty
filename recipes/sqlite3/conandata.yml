@@ -1,13 +1,13 @@
 type: pure_c
 name: sqlite3
 display_name: SQLite3
-version: "3.39.3"
+version: "3.40.0"
 homepage: https://www.sqlite.org
 description: Self-contained, serverless, in-process SQL database engine
 license: PublicDomain
 
 sources:
-  "3.39.3":
-    sha256: a89db3030d229d860ae56a8bac50ac9761434047ae886e47e7c8f9f428fa98ad
-    url: https://www.sqlite.org/2022/sqlite-amalgamation-3390300.zip
-    base_path: sqlite-amalgamation-3390300
+  "3.40.0":
+    sha256: 7c23eb51409315738c930a222cf7cd41518ae5823c41e60a81b93a07070ef22a
+    url: https://www.sqlite.org/2022/sqlite-amalgamation-3400000.zip
+    base_path: sqlite-amalgamation-3400000

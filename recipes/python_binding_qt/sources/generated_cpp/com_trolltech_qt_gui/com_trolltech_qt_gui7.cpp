@@ -9778,6 +9778,39 @@ if (_wrapper) {
 }
   QRasterWindow::customEvent(event0);
 }
+int  PythonQtShell_QRasterWindow::devType() const
+{
+if (_wrapper) {
+  PYTHONQT_GIL_SCOPE
+  if (((PyObject*)_wrapper)->ob_refcnt > 0) {
+    static PyObject* name = PyString_FromString("devType");
+    PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
+    if (obj) {
+      static const char* argumentList[] ={"int"};
+      static const PythonQtMethodInfo* methodInfo = PythonQtMethodInfo::getCachedMethodInfoFromArgumentList(1, argumentList);
+      int returnValue{};
+      void* args[1] = {nullptr};
+      PyObject* result = PythonQtSignalTarget::call(obj, methodInfo, args, true);
+      if (result) {
+        args[0] = PythonQtConv::ConvertPythonToQt(methodInfo->parameters().at(0), result, false, nullptr, &returnValue);
+        if (args[0]!=&returnValue) {
+          if (args[0]==nullptr) {
+            PythonQt::priv()->handleVirtualOverloadReturnError("devType", methodInfo, result);
+          } else {
+            returnValue = *((int*)args[0]);
+          }
+        }
+      }
+      if (result) { Py_DECREF(result); } 
+      Py_DECREF(obj);
+      return returnValue;
+    } else {
+      PyErr_Clear();
+    }
+  }
+}
+  return QRasterWindow::devType();
+}
 bool  PythonQtShell_QRasterWindow::event(QEvent*  event0)
 {
 if (_wrapper) {
@@ -9997,6 +10030,28 @@ if (_wrapper) {
   }
 }
   QRasterWindow::hideEvent(arg__1);
+}
+void PythonQtShell_QRasterWindow::initPainter(QPainter*  painter0) const
+{
+if (_wrapper) {
+  PYTHONQT_GIL_SCOPE
+  if (((PyObject*)_wrapper)->ob_refcnt > 0) {
+    static PyObject* name = PyString_FromString("initPainter");
+    PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
+    if (obj) {
+      static const char* argumentList[] ={"" , "QPainter*"};
+      static const PythonQtMethodInfo* methodInfo = PythonQtMethodInfo::getCachedMethodInfoFromArgumentList(2, argumentList);
+      void* args[2] = {nullptr, (void*)&painter0};
+      PyObject* result = PythonQtSignalTarget::call(obj, methodInfo, args, true);
+      if (result) { Py_DECREF(result); } 
+      Py_DECREF(obj);
+      return;
+    } else {
+      PyErr_Clear();
+    }
+  }
+}
+  QRasterWindow::initPainter(painter0);
 }
 void PythonQtShell_QRasterWindow::keyPressEvent(QKeyEvent*  arg__1)
 {
@@ -10295,6 +10350,39 @@ if (_wrapper) {
 }
   QRasterWindow::resizeEvent(arg__1);
 }
+QPainter*  PythonQtShell_QRasterWindow::sharedPainter() const
+{
+if (_wrapper) {
+  PYTHONQT_GIL_SCOPE
+  if (((PyObject*)_wrapper)->ob_refcnt > 0) {
+    static PyObject* name = PyString_FromString("sharedPainter");
+    PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
+    if (obj) {
+      static const char* argumentList[] ={"QPainter*"};
+      static const PythonQtMethodInfo* methodInfo = PythonQtMethodInfo::getCachedMethodInfoFromArgumentList(1, argumentList);
+      QPainter* returnValue{};
+      void* args[1] = {nullptr};
+      PyObject* result = PythonQtSignalTarget::call(obj, methodInfo, args, true);
+      if (result) {
+        args[0] = PythonQtConv::ConvertPythonToQt(methodInfo->parameters().at(0), result, false, nullptr, &returnValue);
+        if (args[0]!=&returnValue) {
+          if (args[0]==nullptr) {
+            PythonQt::priv()->handleVirtualOverloadReturnError("sharedPainter", methodInfo, result);
+          } else {
+            returnValue = *((QPainter**)args[0]);
+          }
+        }
+      }
+      if (result) { Py_DECREF(result); } 
+      Py_DECREF(obj);
+      return returnValue;
+    } else {
+      PyErr_Clear();
+    }
+  }
+}
+  return QRasterWindow::sharedPainter();
+}
 void PythonQtShell_QRasterWindow::showEvent(QShowEvent*  arg__1)
 {
 if (_wrapper) {
@@ -10488,11 +10576,6 @@ int PythonQtShell_QRasterWindow::qt_metacall(QMetaObject::Call call, int id, voi
   int result = QRasterWindow::qt_metacall(call, id, args);
   return result >= 0 ? PythonQt::priv()->handleMetaCall(this, _wrapper, call, id, args) : result;
 }
-QPaintDevice*  PythonQtWrapper_QRasterWindow::redirected(QRasterWindow* theWrappedObject, QPoint*  arg__1) const
-{
-  return ( ((PythonQtPublicPromoter_QRasterWindow*)theWrappedObject)->promoted_redirected(arg__1));
-}
-
 
 
 QRawFont* PythonQtWrapper_QRawFont::new_QRawFont()

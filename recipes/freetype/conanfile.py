@@ -38,18 +38,22 @@ class ConanRecipe(ConanFile):
 
             self._cmake.definitions["PROJECT_VERSION"] = self.conan_data["sources"][self.version]['libtool_version']
 
-            self._cmake.definitions["FT_WITH_ZLIB"] = True if 'zlib' in self.deps_cpp_info.deps else False
-            self._cmake.definitions["CMAKE_DISABLE_FIND_PACKAGE_ZLIB"] = False if 'zlib' in self.deps_cpp_info.deps else True
+            self._cmake.definitions["FT_REQUIRE_ZLIB"] = True if 'zlib' in self.deps_cpp_info.deps else False
+            self._cmake.definitions["FT_DISABLE_ZLIB"] = False if 'zlib' in self.deps_cpp_info.deps else True
 
-            self._cmake.definitions["FT_WITH_PNG"] = True if 'libpng' in self.deps_cpp_info.deps else False
-            self._cmake.definitions["CMAKE_DISABLE_FIND_PACKAGE_PNG"] = False if 'libpng' in self.deps_cpp_info.deps else True
+            self._cmake.definitions["FT_REQUIRE_PNG"] = True if 'libpng' in self.deps_cpp_info.deps else False
+            self._cmake.definitions["FT_DISABLE_PNG"] = False if 'libpng' in self.deps_cpp_info.deps else True
 
-            self._cmake.definitions["FT_WITH_BZIP2"] = True if 'bzip2' in self.deps_cpp_info.deps else False
-            self._cmake.definitions["CMAKE_DISABLE_FIND_PACKAGE_BZip2"] = False if 'bzip2' in self.deps_cpp_info.deps else True
+            self._cmake.definitions["FT_REQUIRE_BZIP2"] = True if 'bzip2' in self.deps_cpp_info.deps else False
+            self._cmake.definitions["FT_DISABLE_BZIP2"] = False if 'bzip2' in self.deps_cpp_info.deps else True
 
             # TODO: Harfbuzz can be added as an option as soon as it is available.
-            self._cmake.definitions["FT_WITH_HARFBUZZ"] = True if 'harfbuzz' in self.deps_cpp_info.deps else False
-            self._cmake.definitions["CMAKE_DISABLE_FIND_PACKAGE_HarfBuzz"] = False if 'harfbuzz' in self.deps_cpp_info.deps else True
+            self._cmake.definitions["FT_REQUIRE_HARFBUZZ"] = True if 'harfbuzz' in self.deps_cpp_info.deps else False
+            self._cmake.definitions["FT_DISABLE_HARFBUZZ"] = False if 'harfbuzz' in self.deps_cpp_info.deps else True
+
+            # TODO: Brotli (WOFF2 format) can be added as an option as soon as it is available.
+            self._cmake.definitions["FT_REQUIRE_BROTLI"] = True if 'brotli' in self.deps_cpp_info.deps else False
+            self._cmake.definitions["FT_DISABLE_BROTLI"] = False if 'brotli' in self.deps_cpp_info.deps else True
 
             self._cmake.configure()
         return self._cmake
@@ -79,4 +83,4 @@ class ConanRecipe(ConanFile):
 
         self.cpp_info.includedirs.append(os.path.join("include", "freetype2"))
         if self.settings.os == "Linux":
-            self.cpp_info.libs.append("m")
+            self.cpp_info.system_libs.append("m")

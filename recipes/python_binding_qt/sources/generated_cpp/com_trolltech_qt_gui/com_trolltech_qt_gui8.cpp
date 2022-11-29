@@ -10332,6 +10332,39 @@ if (_wrapper) {
 }
   return QStackedLayout::maximumSize();
 }
+int  PythonQtShell_QStackedLayout::minimumHeightForWidth(int  arg__1) const
+{
+if (_wrapper) {
+  PYTHONQT_GIL_SCOPE
+  if (((PyObject*)_wrapper)->ob_refcnt > 0) {
+    static PyObject* name = PyString_FromString("minimumHeightForWidth");
+    PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
+    if (obj) {
+      static const char* argumentList[] ={"int" , "int"};
+      static const PythonQtMethodInfo* methodInfo = PythonQtMethodInfo::getCachedMethodInfoFromArgumentList(2, argumentList);
+      int returnValue{};
+      void* args[2] = {nullptr, (void*)&arg__1};
+      PyObject* result = PythonQtSignalTarget::call(obj, methodInfo, args, true);
+      if (result) {
+        args[0] = PythonQtConv::ConvertPythonToQt(methodInfo->parameters().at(0), result, false, nullptr, &returnValue);
+        if (args[0]!=&returnValue) {
+          if (args[0]==nullptr) {
+            PythonQt::priv()->handleVirtualOverloadReturnError("minimumHeightForWidth", methodInfo, result);
+          } else {
+            returnValue = *((int*)args[0]);
+          }
+        }
+      }
+      if (result) { Py_DECREF(result); } 
+      Py_DECREF(obj);
+      return returnValue;
+    } else {
+      PyErr_Clear();
+    }
+  }
+}
+  return QStackedLayout::minimumHeightForWidth(arg__1);
+}
 QSize  PythonQtShell_QStackedLayout::minimumSize() const
 {
 if (_wrapper) {
@@ -10419,6 +10452,39 @@ if (_wrapper) {
   }
 }
   return QStackedLayout::sizeHint();
+}
+QSpacerItem*  PythonQtShell_QStackedLayout::spacerItem()
+{
+if (_wrapper) {
+  PYTHONQT_GIL_SCOPE
+  if (((PyObject*)_wrapper)->ob_refcnt > 0) {
+    static PyObject* name = PyString_FromString("spacerItem");
+    PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
+    if (obj) {
+      static const char* argumentList[] ={"QSpacerItem*"};
+      static const PythonQtMethodInfo* methodInfo = PythonQtMethodInfo::getCachedMethodInfoFromArgumentList(1, argumentList);
+      QSpacerItem* returnValue{};
+      void* args[1] = {nullptr};
+      PyObject* result = PythonQtSignalTarget::call(obj, methodInfo, args, true);
+      if (result) {
+        args[0] = PythonQtConv::ConvertPythonToQt(methodInfo->parameters().at(0), result, false, nullptr, &returnValue);
+        if (args[0]!=&returnValue) {
+          if (args[0]==nullptr) {
+            PythonQt::priv()->handleVirtualOverloadReturnError("spacerItem", methodInfo, result);
+          } else {
+            returnValue = *((QSpacerItem**)args[0]);
+          }
+        }
+      }
+      if (result) { Py_DECREF(result); } 
+      Py_DECREF(obj);
+      return returnValue;
+    } else {
+      PyErr_Clear();
+    }
+  }
+}
+  return QStackedLayout::spacerItem();
 }
 QLayoutItem*  PythonQtShell_QStackedLayout::takeAt(int  arg__1)
 {
@@ -10515,16 +10581,6 @@ QWidget*  PythonQtWrapper_QStackedLayout::currentWidget(QStackedLayout* theWrapp
   return ( theWrappedObject->currentWidget());
 }
 
-bool  PythonQtWrapper_QStackedLayout::hasHeightForWidth(QStackedLayout* theWrappedObject) const
-{
-  return ( theWrappedObject->hasHeightForWidth());
-}
-
-int  PythonQtWrapper_QStackedLayout::heightForWidth(QStackedLayout* theWrappedObject, int  width) const
-{
-  return ( theWrappedObject->heightForWidth(width));
-}
-
 int  PythonQtWrapper_QStackedLayout::insertWidget(QStackedLayout* theWrappedObject, int  index, PythonQtPassOwnershipToCPP<QWidget* >  w)
 {
   return ( theWrappedObject->insertWidget(index, w));
@@ -10533,11 +10589,6 @@ int  PythonQtWrapper_QStackedLayout::insertWidget(QStackedLayout* theWrappedObje
 void PythonQtWrapper_QStackedLayout::setStackingMode(QStackedLayout* theWrappedObject, QStackedLayout::StackingMode  stackingMode)
 {
   ( theWrappedObject->setStackingMode(stackingMode));
-}
-
-QSize  PythonQtWrapper_QStackedLayout::sizeHint(QStackedLayout* theWrappedObject) const
-{
-  return ( theWrappedObject->sizeHint());
 }
 
 QStackedLayout::StackingMode  PythonQtWrapper_QStackedLayout::stackingMode(QStackedLayout* theWrappedObject) const

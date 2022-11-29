@@ -17,7 +17,9 @@ class ConanRecipe(ConanFile):
         self.requires("qt5/[>=5.12.7]" + channel)
         self.requires("python/[>=3.9.7]" + channel)
         self.requires("pythonqt/[>=2022.02.11]" + channel)
-        self.requires("qtwebkit/[>=5.212.0-alpha4]" + channel)
+
+        if "arm" not in self.settings.arch:
+            self.requires("qtwebkit/[>=5.212.0-alpha4]" + channel)
 
 
     def _configure_cmake(self):
@@ -33,6 +35,10 @@ class ConanRecipe(ConanFile):
             self._cmake.definitions["python_VERSION_MAJOR"] = major
             self._cmake.definitions["python_VERSION_MINOR"] = minor
             self._cmake.definitions["MEVIS_PYTHON_SITE_PACKAGES_FOLDER"] = os.environ['MEVIS_PYTHON_SITE_PACKAGES_FOLDER']
+
+            if "arm" in self.settings.arch:
+                self._cmake.definitions["BUILD_WEBKIT_BINDING"] =  False
+
             self._cmake.configure(source_folder="sources")
         return self._cmake
 

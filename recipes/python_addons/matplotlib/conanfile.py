@@ -17,7 +17,6 @@ class ConanRecipe(ConanFile):
 
         if tools.os_info.linux_distro in ["ubuntu", "debian"]:
             packages.append('libfreetype6-dev')
-            packages.append('pkg-config')
 
         if packages:
             installer.install_packages(packages)

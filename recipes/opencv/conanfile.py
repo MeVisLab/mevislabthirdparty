@@ -31,7 +31,7 @@ class ConanRecipe(ConanFile):
         self.requires("tiff/[>=4.0.9]" + channel)
         self.requires("webp/[>=1.1.0]" + channel)
         self.requires("numpy/[>=1.17.5]" + channel)
-        self.requires("protobuf/[>=3.17.1]" + channel)
+        self.requires("protobuf/[>=21.9]" + channel)
         #self.requires("openexr/[>=2.5.3]" + channel)
         #self.requires("openjpeg/[>=2.4.0]" + channel)
         self.requires("python/[>=3.9.7]" + channel)
@@ -269,7 +269,7 @@ class ConanRecipe(ConanFile):
 
         if tools.os_info.is_linux:
             self.cpp_info.includedirs = ['include', 'include/opencv4']
-            self.cpp_info.libs.extend(["pthread", "m", "dl"])
+            self.cpp_info.system_libs.extend(["pthread", "m", "dl"])
         elif tools.os_info.is_macos:
             self.cpp_info.includedirs = ['include', 'include/opencv4']
             frameworks = ['OpenCL', 'Accelerate', 'CoreMedia', 'CoreVideo', 'CoreGraphics', 'AVFoundation', 'QuartzCore', 'Cocoa']
@@ -277,4 +277,4 @@ class ConanRecipe(ConanFile):
                 self.cpp_info.exelinkflags.append('-framework %s' % framework)
             self.cpp_info.sharedlinkflags = self.cpp_info.exelinkflags
         elif tools.os_info.is_windows:
-            self.cpp_info.libs.append('Vfw32')
+            self.cpp_info.system_libs.append('Vfw32')

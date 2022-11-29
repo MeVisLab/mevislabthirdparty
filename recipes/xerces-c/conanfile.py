@@ -50,5 +50,5 @@ class ConanRecipe(ConanFile):
 
         self.cpp_info.frameworks.extend(["CoreFoundation", "CoreServices"])
         if self.settings.compiler == "Visual Studio":
-            self.cpp_info.libs.append("advapi32")
-            self.cpp_info.libs.append("ws2_32")
+            self.cpp_info.system_libs.append("advapi32")
+            self.cpp_info.system_libs.append("ws2_32")

@@ -36,6 +36,8 @@ class ConanRecipe(ConanFile):
             self._cmake.definitions["HDF5_BUILD_TOOLS"] = False
             self._cmake.definitions["HDF5_BUILD_UTILS"] = False
             self._cmake.definitions["HDF5_BUILD_EXAMPLES"] = False
+            self._cmake.definitions["HDF5_BUILD_CPP_LIB"] = True
+
             self._cmake.configure(build_folder='build')
         return self._cmake
 

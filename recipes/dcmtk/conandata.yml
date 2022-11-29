@@ -50,3 +50,4 @@ patches:
     - patch_file: patches/${version}_warning_4351.patch
       patch_type: bugfix
       patch_description: warning compatibility with newer VC++ compilers, see https://github.com/DCMTK/dcmtk/pull/66
+    - patch_file: patches/${version}_find_3rdparty.patch

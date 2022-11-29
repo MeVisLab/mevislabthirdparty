@@ -1,0 +1,13 @@
+diff --git i/CMakeLists.txt w/CMakeLists.txt
+index 01e5bd6..e8ae611 100644
+--- i/CMakeLists.txt
++++ w/CMakeLists.txt
+@@ -12,7 +12,7 @@ include(CheckSymbolExists)
+ include(CMakePackageConfigHelpers)
+ include(GNUInstallDirs)
+ 
+-find_package(LibXml2 CONFIG REQUIRED)
++find_package(LibXml2 REQUIRED)
+ 
+ option(BUILD_SHARED_LIBS "Build shared libraries" ON)
+ option(LIBXSLT_WITH_DEBUGGER "Add the debugging support" ON)

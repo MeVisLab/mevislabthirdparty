@@ -2,7 +2,7 @@ type: cpp
 name: python_binding_qt
 cmake_name: PythonBindingQt
 display_name: PythonBindingQt
-version: "2022.02.11"
+version: "2022.10.26"
 homepage: https://mevislab.de
 description: Python binding into Qt
 license: LGPL-2.1-only

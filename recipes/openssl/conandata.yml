@@ -1,18 +1,18 @@
 type: pure_c
 name: openssl
 display_name: OpenSSL
-version: "1.1.1q"
+version: "1.1.1s"
 homepage: https://www.openssl.org
 description: full-strength general purpose cryptography library (including SSL and TLS)
 license: OpenSSL
 
 sources:
-  "1.1.1q":
-    sha256: d7939ce614029cdff0b6c20f0e2e5703158a489a72b2507b8bd51bf8c8fd10ca
+  "1.1.1s":
+    sha256: c5ac01e760ee6ff0dab61d6b2bbd30146724d063eb322180c6f18a6f74e4b6aa
     url: https://www.openssl.org/source/openssl-${version}.tar.gz
     base_path: openssl-${version}
 
 patches:
-  "1.1.1q":
+  "1.1.1s":
     - patch_file: patches/${version}-masm_multilib_suffix.patch
     - patch_file: patches/${version}-add_missing_string_include.patch

@@ -18,17 +18,6 @@ class ConanRecipe(ConanFile):
             raise ConanInvalidConfiguration(f"{self.name} is only supported on Linux")
 
 
-    def system_requirements(self):
-        installer = tools.SystemPackageTool()
-        packages = []
-
-        if tools.os_info.linux_distro in ["ubuntu", "debian"]:
-            packages.append('libtool')
-
-        if packages:
-            installer.install_packages(packages)
-
-
     def _configure_autotools(self):
         if not self._autotools:
             self._autotools = AutoToolsBuildEnvironment(self)

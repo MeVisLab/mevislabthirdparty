@@ -44,4 +44,4 @@ class ConanRecipe(ConanFile):
     def package_info(self):
         self.default_package_info()
         if self.settings.os == "Linux":
-            self.cpp_info.libs.extend(["pthread"])
+            self.cpp_info.system_libs.extend(["pthread"])

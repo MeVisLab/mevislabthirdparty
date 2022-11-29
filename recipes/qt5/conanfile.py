@@ -36,7 +36,6 @@ class ConanRecipe(ConanFile):
             packages.append('libxcomposite-dev')
             packages.append('libx11-xcb-dev')
             packages.append('libpci-dev')
-            packages.append('libnss3-dev')
             packages.append('libglu1-mesa-dev')
             packages.append('libglib2.0-dev')
             packages.append('libgl1-mesa-dev')
@@ -49,12 +48,7 @@ class ConanRecipe(ConanFile):
             packages.append('libfontconfig-dev')
             packages.append('libfreetype6-dev')
             packages.append('fontconfig')
-            packages.append('gyp')
-            packages.append('flex')
-            packages.append('bison')
-            packages.append('ruby')
             packages.append('python2')
-            packages.append('pkg-config')
 
         if packages:
             installer.install_packages(packages)
@@ -94,7 +88,7 @@ class ConanRecipe(ConanFile):
         _add_dependency("libalsa/[>=1.1.9]", "ALSA", supported_os="Linux")
 
         # on macOS we want to use SecureTransport instead of OpenSSL
-        _add_dependency("openssl/1.1.1q", "OPENSSL", supported_os=["Linux", "Windows"])
+        _add_dependency("openssl/1.1.1s", "OPENSSL", supported_os=["Linux", "Windows"])
 
         # AAT is supported only with -qt-harfbuzz on macOS
         #_add_dependency("harfbuzz/[>=2.6.5]", "HARFBUZZ", supported_os=["Linux", "Windows"])

@@ -2,17 +2,17 @@ type: cpp
 name: protobuf
 cmake_name: ProtobufDummy
 display_name: Protocol Buffers
-version: "3.21.6"
+version: "21.9"
 homepage: https://developers.google.com/protocol-buffers
 description: Google's Protocol Buffers are a language-neutral, platform-neutral extensible mechanism for serializing structured data
 license: BSD-3-Clause
 
 sources:
-  "3.21.6":
-    sha256: 73c95c7b0c13f597a6a1fec7121b07e90fd12b4ed7ff5a781253b3afe07fc077
-    url: https://github.com/protocolbuffers/protobuf/archive/v${version}.tar.gz
+  "21.9":
+    sha256: c00f05e19e89b04ea72e92a3c204eedda91f871cd29b0bbe5188550d783c73c7
+    url: https://github.com/protocolbuffers/protobuf/releases/download/v${version}/protobuf-all-${version}.tar.gz
     base_path: protobuf-${version}
 
 patches:
-  "3.21.6":
+  "21.9":
     - patch_file: patches/${version}-protoc_debug_suffix.patch

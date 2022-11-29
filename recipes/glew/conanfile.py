@@ -66,6 +66,6 @@ class ConanRecipe(ConanFile):
         if tools.os_info.is_macos:
             self.cpp_info.exelinkflags.append("-framework OpenGL")
         elif tools.os_info.is_windows:
-            self.cpp_info.libs.append("opengl32")
+            self.cpp_info.system_libs.append("opengl32")
         else:
-            self.cpp_info.libs.append("GL")
+            self.cpp_info.system_libs.append("GL")

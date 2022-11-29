@@ -25,3 +25,6 @@ patches:
     - patch_file: patches/7.1.1-Python3.9-const_char.patch
     - patch_file: patches/7.1.1-apple_opengl_deprecation_warnings.patch
     - patch_file: patches/7.1.1-use_system_glew.patch
+    - patch_file: patches/7.1.1-libxml2.patch
+    - patch_file: patches/7.1.1-include_qpainterpath.patch
+    - patch_file: patches/7.1.1-no_python_debug_postfix.patch

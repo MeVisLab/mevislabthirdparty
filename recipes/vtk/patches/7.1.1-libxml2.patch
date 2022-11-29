@@ -1,0 +1,60 @@
+diff --git i/CMake/vtkModuleMacros.cmake w/CMake/vtkModuleMacros.cmake
+index 038d9f1c..3c64b1f3 100644
+--- i/CMake/vtkModuleMacros.cmake
++++ w/CMake/vtkModuleMacros.cmake
+@@ -858,7 +858,9 @@ macro(vtk_module_third_party _pkg)
+         list(APPEND __extra_args ${_optional_components})
+       endif()
+     endif()
+-    find_package(${_pkg} ${_version} REQUIRED ${__extra_args})
++    if(NOT ${_upper}_FOUND AND NOT ${_pkg}_FOUND)
++      find_package(${_pkg} ${_version} REQUIRED ${__extra_args})
++    endif()
+     if(NOT ${_upper}_FOUND AND NOT ${_pkg}_FOUND)
+       message(FATAL_ERROR "VTK_USE_SYSTEM_${_upper} is ON but ${_pkg} is not found!")
+     endif()
+diff --git i/ThirdParty/xdmf2/vtkxdmf2/CMakeLists.txt w/ThirdParty/xdmf2/vtkxdmf2/CMakeLists.txt
+index 9fe3e947..6135de4f 100644
+--- i/ThirdParty/xdmf2/vtkxdmf2/CMakeLists.txt
++++ w/ThirdParty/xdmf2/vtkxdmf2/CMakeLists.txt
+@@ -15,7 +15,7 @@ if (XDMF_BUILT_INVTK)
+   set(XDMF_LIBXML2_LIBRARIES ${vtklibxml2_LIBRARIES})
+   set(XDMF_LIBXML2_INCLUDE_DIRS ${vtklibxml2_INCLUDE_DIRS})
+ else()
+-  find_package(LibXml2 REQUIRED)
++  #find_package(LibXml2 REQUIRED)
+   set(XDMF_LIBXML2_LIBRARIES ${LIBXML2_LIBRARIES})
+   set(XDMF_LIBXML2_INCLUDE_DIRS ${LIBXML2_INCLUDE_DIR})
+ endif()
+diff --git i/ThirdParty/xdmf3/vtkxdmf3/core/CMakeLists.txt w/ThirdParty/xdmf3/vtkxdmf3/core/CMakeLists.txt
+index 38240fc8..91a77882 100644
+--- i/ThirdParty/xdmf3/vtkxdmf3/core/CMakeLists.txt
++++ w/ThirdParty/xdmf3/vtkxdmf3/core/CMakeLists.txt
+@@ -95,10 +95,10 @@ if(HDF5_FOUND)
+ endif()
+ 
+ 
+-set(LIBXML2_LIBRARIES ${vtklibxml2_LIBRARIES})
+-set(LIBXML2_INCLUDE_DIR ${vtklibxml2_INCLUDE_DIRS})
+-set(LIBXML2_FOUND TRUE)
+-find_package(LibXml2 REQUIRED)
++#set(LIBXML2_LIBRARIES ${vtklibxml2_LIBRARIES})
++#set(LIBXML2_INCLUDE_DIR ${vtklibxml2_INCLUDE_DIRS})
++#set(LIBXML2_FOUND TRUE)
++#find_package(LibXml2 REQUIRED)
+ if(LIBXML2_FOUND)
+   include_directories(${LIBXML2_INCLUDE_DIR})
+   get_filename_component(LIBXML2_ROOT "${LIBXML2_INCLUDE_DIR}/../" REALPATH)
+diff --git i/ThirdParty/xdmf3/vtkxdmf3/core/dsm/CMakeLists.txt w/ThirdParty/xdmf3/vtkxdmf3/core/dsm/CMakeLists.txt
+index 36d0ed67..b70288d5 100644
+--- i/ThirdParty/xdmf3/vtkxdmf3/core/dsm/CMakeLists.txt
++++ w/ThirdParty/xdmf3/vtkxdmf3/core/dsm/CMakeLists.txt
+@@ -47,7 +47,7 @@ if(HDF5_FOUND)
+ endif()
+ 
+ 
+-find_package(LibXml2 REQUIRED)
++#find_package(LibXml2 REQUIRED)
+ if(LIBXML2_FOUND)
+   include_directories(${LIBXML2_INCLUDE_DIR})
+   set(XdmfDSMLinkLibraries ${XdmfDSMLinkLibraries} ${LIBXML2_LIBRARIES})

@@ -1,13 +1,13 @@
 type: cpp
 name: opencl-icd-loader
 cmake_name: OpenCLICDLoader
-version: "2022.05.18"
+version: "2022.09.30"
 homepage: https://github.com/KhronosGroup/OpenCL-ICD-Loader
 description: OpenCL ICD Loader
 license: Apache-2.0
 
 sources:
-  "2022.05.18":
-    sha256: 71f70bba797a501b13b6b0905dc852f3fd6e264d74ce294f2df98d29914c4303
+  "2022.09.30":
+    sha256: e9522fb736627dd4feae2a9c467a864e7d25bb715f808de8a04eea5a7d394b74
     url: https://github.com/KhronosGroup/OpenCL-ICD-Loader/archive/refs/tags/v${version}.tar.gz
     base_path: OpenCL-ICD-Loader-${version}

@@ -11,17 +11,6 @@ class ConanRecipe(ConanFile):
     python_requires = 'common/1.0.0@mevislab/stable'
     python_requires_extend = 'common.CommonRecipe'
 
-    def system_requirements(self):
-        installer = tools.SystemPackageTool()
-        packages = []
-
-        if tools.os_info.linux_distro in ["ubuntu", "debian"]:
-            packages.append('pkg-config')
-            packages.append('uuid-dev')
-
-        if packages:
-            installer.install_packages(packages)
-
 
     def validate(self):
         if self.settings.os == "Windows":
@@ -97,4 +86,4 @@ class ConanRecipe(ConanFile):
         self.default_package_info()
 
         if self.settings.os == "Linux":
-            self.cpp_info.libs.extend(["m", "pthread"])
+            self.cpp_info.system_libs.extend(["m", "pthread"])

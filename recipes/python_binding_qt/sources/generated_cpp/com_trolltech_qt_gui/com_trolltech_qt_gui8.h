@@ -981,9 +981,11 @@ bool  isEmpty() const override;
 QLayoutItem*  itemAt(int  arg__1) const override;
 QLayout*  layout() override;
 QSize  maximumSize() const override;
+int  minimumHeightForWidth(int  arg__1) const override;
 QSize  minimumSize() const override;
 void setGeometry(const QRect&  rect) override;
 QSize  sizeHint() const override;
+QSpacerItem*  spacerItem() override;
 QLayoutItem*  takeAt(int  arg__1) override;
 void timerEvent(QTimerEvent*  event) override;
 
@@ -1018,16 +1020,13 @@ void delete_QStackedLayout(QStackedLayout* obj) { delete obj; }
    int  py_q_count(QStackedLayout* theWrappedObject) const{  return (((PythonQtPublicPromoter_QStackedLayout*)theWrappedObject)->py_q_count());}
    int  currentIndex(QStackedLayout* theWrappedObject) const;
    QWidget*  currentWidget(QStackedLayout* theWrappedObject) const;
-   bool  hasHeightForWidth(QStackedLayout* theWrappedObject) const;
    bool  py_q_hasHeightForWidth(QStackedLayout* theWrappedObject) const{  return (((PythonQtPublicPromoter_QStackedLayout*)theWrappedObject)->py_q_hasHeightForWidth());}
-   int  heightForWidth(QStackedLayout* theWrappedObject, int  width) const;
    int  py_q_heightForWidth(QStackedLayout* theWrappedObject, int  width) const{  return (((PythonQtPublicPromoter_QStackedLayout*)theWrappedObject)->py_q_heightForWidth(width));}
    int  insertWidget(QStackedLayout* theWrappedObject, int  index, PythonQtPassOwnershipToCPP<QWidget* >  w);
    QLayoutItem*  py_q_itemAt(QStackedLayout* theWrappedObject, int  arg__1) const{  return (((PythonQtPublicPromoter_QStackedLayout*)theWrappedObject)->py_q_itemAt(arg__1));}
    QSize  py_q_minimumSize(QStackedLayout* theWrappedObject) const{  return (((PythonQtPublicPromoter_QStackedLayout*)theWrappedObject)->py_q_minimumSize());}
    void py_q_setGeometry(QStackedLayout* theWrappedObject, const QRect&  rect){  (((PythonQtPublicPromoter_QStackedLayout*)theWrappedObject)->py_q_setGeometry(rect));}
    void setStackingMode(QStackedLayout* theWrappedObject, QStackedLayout::StackingMode  stackingMode);
-   QSize  sizeHint(QStackedLayout* theWrappedObject) const;
    QSize  py_q_sizeHint(QStackedLayout* theWrappedObject) const{  return (((PythonQtPublicPromoter_QStackedLayout*)theWrappedObject)->py_q_sizeHint());}
    QStackedLayout::StackingMode  stackingMode(QStackedLayout* theWrappedObject) const;
    QLayoutItem*  py_q_takeAt(QStackedLayout* theWrappedObject, int  arg__1){  return (((PythonQtPublicPromoter_QStackedLayout*)theWrappedObject)->py_q_takeAt(arg__1));}

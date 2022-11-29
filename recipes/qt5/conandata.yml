@@ -13,9 +13,8 @@ restricted_builds: ['windows','linux','mac']
 sources:
   5.12.12:
     sha256: 1979a3233f689cb8b3e2783917f8f98f6a2e1821a70815fb737f020cd4b6ab06
-    url: http://download.qt.io/official_releases/qt/5.12/${version}/single/qt-everywhere-src-${version}.tar.xz
+    url: http://download.qt.io/archive/qt/5.12/${version}/single/qt-everywhere-src-${version}.tar.xz
     base_path: qt-everywhere-src-${version}
-
 
 patches:
   5.12.12:
@@ -26,6 +25,7 @@ patches:
     - patch_file: patches/${version}-qtbase_gcc11_include_limits.patch
     - patch_file: patches/${version}-qtbase_libpng_disable_incorrect_profile_warning.patch
     - patch_file: patches/${version}-qtbase_linux_debug_suffix.patch
+    - patch_file: patches/${version}-qtbase_linux_debug_suffix_cmake.patch
     - patch_file: patches/${version}-qtbase_mac_cgcolorspace.patch
     - patch_file: patches/${version}-qtbase_mevis_qobject_clone_evento_hack.patch
     - patch_file: patches/${version}-qtbase_optimize_qglshaderprogram.patch

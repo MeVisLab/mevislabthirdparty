@@ -19,4 +19,5 @@ conan_basic_setup()
 
 # create the test application
 add_executable(test_package test_package.c)
-target_link_libraries(test_package ${CONAN_LIBS})
+target_link_libraries(test_package PRIVATE ${CONAN_LIBS})
+target_compile_definitions(test_package PRIVATE EXPECTED_SQLITE3_VERSION="${EXPECTED_SQLITE3_VERSION}")

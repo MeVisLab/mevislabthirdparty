@@ -112,26 +112,27 @@ class mlabdocbook(CMakeFindPackageGenerator):
                 name = "Qt"
 
             public_sdk_only = pkg_name in [
-                'dirsync',
-                'httmock',
-                'pyyaml',
-                'pyzmq',
-                'requests',
-                'urllib3',
                 'cluster',
+                'ctk-cli',
+                'dirsync',
                 'flann',
+                'httmock',
                 'kissfft',
                 'libzmq',
                 'muparser',
                 'nlohmann_json',
-                'opencl',
-                'opencl',
+                'opencl-headers',
+                'opencl-icd-loader',
                 'openigtlink',
                 'pcl',
                 'picojson',
+                'pyyaml',
+                'pyzmq',
+                'requests',
                 'spline',
+                'urllib3',
                 'vigra',
-                'xylib'
+                'xylib',
             ]
 
             components = self._get_components(pkg_name, cpp_info) if cpp_info.components else None

@@ -12,18 +12,6 @@ class ConanRecipe(ConanFile):
     _cmake = None
 
 
-    def system_requirements(self):
-        installer = tools.SystemPackageTool()
-        packages = []
-
-        if tools.os_info.linux_distro in ["ubuntu", "debian"]:
-            packages.append('pkg-config')
-
-        if packages:
-            installer.install_packages(packages)
-
-
-
     def requirements(self):
         channel = "@{0}/{1}".format(self.user, self.channel)
         self.requires('libsodium/[>=1.0.18]' + channel)

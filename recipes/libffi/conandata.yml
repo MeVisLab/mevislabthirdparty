@@ -1,12 +1,12 @@
 type: pure_c
 name: libffi
-version: "3.4.3"
+version: "3.4.4"
 homepage: https://sourceware.org/libffi/
 description: A portable foreign-function interface library
 license: MIT
 
 sources:
-  "3.4.3":
-    sha256: 4416dd92b6ae8fcb5b10421e711c4d3cb31203d77521a77d85d0102311e6c3b8
+  "3.4.4":
+    sha256: d66c56ad259a82cf2a9dfc408b32bf5da52371500b84745f7fb8b645712df676
     url: https://github.com/libffi/libffi/releases/download/v${version}/libffi-${version}.tar.gz
     base_path: libffi-${version}

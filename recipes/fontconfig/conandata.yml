@@ -2,17 +2,17 @@ type: pure_c
 name: fontconfig
 display_name: Fontconfig
 cmake_name: Fontconfig
-version: "2.14.0"
+version: "2.14.1"
 homepage: http://www.freedesktop.org/wiki/Software/fontconfig
 description: A library for configuring and customizing font access
 license: MIT
 
 sources:
-  "2.14.0":
-    sha256: b8f607d556e8257da2f3616b4d704be30fd73bd71e367355ca78963f9a7f0434
+  "2.14.1":
+    sha256: ae480e9ca34382790312ff062c625ec70df94d6d9a9366e2b2b3d525f7f90387
     url: https://www.freedesktop.org/software/fontconfig/release/fontconfig-${version}.tar.gz
     base_path: fontconfig-${version}
 
 patches:
-  "2.14.0":
+  "2.14.1":
     - patch_file: patches/${version}-fix_rpath.patch

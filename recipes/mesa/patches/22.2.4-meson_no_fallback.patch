@@ -1,8 +1,8 @@
 diff --git i/meson.build w/meson.build
-index 70a0d57..f8171eb 100644
+index 1550bb2..c6f4454 100644
 --- i/meson.build
 +++ w/meson.build
-@@ -1512,7 +1512,6 @@ else
+@@ -1561,7 +1561,6 @@ else
  endif
  
  dep_zlib = dependency('zlib', version : '>= 1.2.3',
@@ -10,7 +10,7 @@ index 70a0d57..f8171eb 100644
                        required : get_option('zlib'))
  if dep_zlib.found()
    pre_args += '-DHAVE_ZLIB'
-@@ -1556,7 +1555,7 @@ endif
+@@ -1605,7 +1604,7 @@ endif
  if host_machine.system() == 'darwin'
    dep_expat = meson.get_compiler('c').find_library('expat')
  elif host_machine.system() != 'windows'
@@ -19,7 +19,7 @@ index 70a0d57..f8171eb 100644
                           required: not with_platform_android)
  else
    dep_expat = null_dep
-@@ -1722,7 +1721,6 @@ if _llvm != 'disabled'
+@@ -1790,7 +1789,6 @@ if _llvm != 'disabled'
      ),
      static : not _shared_llvm,
      method : _llvm_method,

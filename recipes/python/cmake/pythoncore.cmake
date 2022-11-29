@@ -18,7 +18,7 @@ target_compile_definitions(pythoncore PRIVATE _WIN64)
 target_compile_definitions(pythoncore PRIVATE _M_X64)
 target_compile_definitions(pythoncore PRIVATE _WINDLL)
 target_compile_definitions(pythoncore PRIVATE MS_DLL_ID=\"${CMAKE_PROJECT_VERSION}\")
-target_compile_definitions(pythoncore PRIVATE PY3_DLLNAME=L\"python3${CMAKE_DEBUG_POSTFIX}\")
+target_compile_definitions(pythoncore PRIVATE PY3_DLLNAME=L\"python3$<$<CONFIG:Debug>:${CMAKE_DEBUG_POSTFIX}>\")
 message(PY3_DLLNAME=python3${CMAKE_DEBUG_POSTFIX})
 
 

@@ -68,8 +68,11 @@ public:
    ~PythonQtShell_QBitmap() override;
 
 int  devType() const override;
+void initPainter(QPainter*  painter) const override;
 int  metric(QPaintDevice::PaintDeviceMetric  arg__1) const override;
 QPaintEngine*  paintEngine() const override;
+QPaintDevice*  redirected(QPoint*  offset) const override;
+QPainter*  sharedPainter() const override;
 
   PythonQtInstanceWrapper* _wrapper;
 };

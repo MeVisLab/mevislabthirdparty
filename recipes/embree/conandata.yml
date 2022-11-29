@@ -16,3 +16,5 @@ sources:
 patches:
   "2.17.7":
     - patch_file: "patches/${version}-find_tbb.patch"
+    - patch_file: "patches/${version}-ignore_broken_sse_4_1_isa.patch"
+

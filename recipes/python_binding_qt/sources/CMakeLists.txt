@@ -1,19 +1,24 @@
 cmake_minimum_required(VERSION 3.17)
 project(PythonBindingQt LANGUAGES CXX)
 
+option(BUILD_WEBKIT_BINDING "Build QtWebKit bindings" ON)
+
+message(STATUS "BUILD_WEBKIT_BINDING: ${BUILD_WEBKIT_BINDING}")
+
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 
-set(_UNUSED 
-    ${CMAKE_DEBUG_POSTFIX} 
-    ${CMAKE_EXPORT_NO_PACKAGE_REGISTRY} 
-    ${CMAKE_INSTALL_BINDIR} 
-    ${CMAKE_INSTALL_DATAROOTDIR} 
-    ${CMAKE_INSTALL_INCLUDEDIR} 
-    ${CMAKE_INSTALL_LIBDIR} 
-    ${CMAKE_INSTALL_LIBEXECDIR} 
-    ${CMAKE_INSTALL_OLDINCLUDEDIR} 
-    ${CMAKE_INSTALL_SBINDIR})
+set(_UNUSED
+    ${CMAKE_DEBUG_POSTFIX}
+    ${CMAKE_EXPORT_NO_PACKAGE_REGISTRY}
+    ${CMAKE_INSTALL_BINDIR}
+    ${CMAKE_INSTALL_DATAROOTDIR}
+    ${CMAKE_INSTALL_INCLUDEDIR}
+    ${CMAKE_INSTALL_LIBDIR}
+    ${CMAKE_INSTALL_LIBEXECDIR}
+    ${CMAKE_INSTALL_OLDINCLUDEDIR}
+    ${CMAKE_INSTALL_SBINDIR}
+)
 
 find_library(Python3_LIBRARY NAMES ${CONAN_LIBS_PYTHON} PATHS ${CONAN_LIB_DIRS_PYTHON})
 if(WIN32)
@@ -50,6 +55,9 @@ add_subdirectory(QtQuick)
 add_subdirectory(QtSql)
 add_subdirectory(QtSvg)
 add_subdirectory(QtWebEngineWidgets)
-add_subdirectory(QtWebKit)
 add_subdirectory(QtXml)
 add_subdirectory(QtXmlPatterns)
+
+if(BUILD_WEBKIT_BINDING)
+    add_subdirectory(QtWebKit)
+endif()

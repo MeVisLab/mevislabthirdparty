@@ -27,7 +27,11 @@
 #include <qgraphicseffect.h>
 #include <qgraphicsitem.h>
 #include <qgraphicsproxywidget.h>
+#include <qgraphicsscene.h>
+#include <qgraphicssceneevent.h>
 #include <qgraphicssvgitem.h>
+#include <qgraphicstransform.h>
+#include <qgraphicswidget.h>
 #include <qicon.h>
 #include <qiodevice.h>
 #include <qkeysequence.h>
@@ -41,9 +45,11 @@
 #include <qpaintdevice.h>
 #include <qpaintengine.h>
 #include <qpainter.h>
+#include <qpainterpath.h>
 #include <qpalette.h>
 #include <qpixmap.h>
 #include <qpoint.h>
+#include <qpolygon.h>
 #include <qrect.h>
 #include <qregion.h>
 #include <qsize.h>
@@ -54,6 +60,7 @@
 #include <qsvgrenderer.h>
 #include <qsvgwidget.h>
 #include <qthread.h>
+#include <qtransform.h>
 #include <qwidget.h>
 #include <qwindow.h>
 #include <qxmlstream.h>
@@ -68,14 +75,46 @@ public:
 
    ~PythonQtShell_QGraphicsSvgItem() override;
 
+void advance(int  phase) override;
 QRectF  boundingRect() const override;
 void childEvent(QChildEvent*  event) override;
+bool  collidesWithItem(const QGraphicsItem*  other, Qt::ItemSelectionMode  mode = Qt::IntersectsItemShape) const override;
+bool  collidesWithPath(const QPainterPath&  path, Qt::ItemSelectionMode  mode = Qt::IntersectsItemShape) const override;
+bool  contains(const QPointF&  point) const override;
+void contextMenuEvent(QGraphicsSceneContextMenuEvent*  event) override;
 void customEvent(QEvent*  event) override;
+void dragEnterEvent(QGraphicsSceneDragDropEvent*  event) override;
+void dragLeaveEvent(QGraphicsSceneDragDropEvent*  event) override;
+void dragMoveEvent(QGraphicsSceneDragDropEvent*  event) override;
+void dropEvent(QGraphicsSceneDragDropEvent*  event) override;
 bool  event(QEvent*  ev) override;
 bool  eventFilter(QObject*  watched, QEvent*  event) override;
+QVariant  extension(const QVariant&  variant) const override;
+void focusInEvent(QFocusEvent*  event) override;
+void focusOutEvent(QFocusEvent*  event) override;
+void hoverEnterEvent(QGraphicsSceneHoverEvent*  event) override;
+void hoverLeaveEvent(QGraphicsSceneHoverEvent*  event) override;
+void hoverMoveEvent(QGraphicsSceneHoverEvent*  event) override;
+void inputMethodEvent(QInputMethodEvent*  event) override;
+QVariant  inputMethodQuery(Qt::InputMethodQuery  query) const override;
+bool  isObscuredBy(const QGraphicsItem*  item) const override;
+QVariant  itemChange(QGraphicsItem::GraphicsItemChange  change, const QVariant&  value) override;
+void keyPressEvent(QKeyEvent*  event) override;
+void keyReleaseEvent(QKeyEvent*  event) override;
+void mouseDoubleClickEvent(QGraphicsSceneMouseEvent*  event) override;
+void mouseMoveEvent(QGraphicsSceneMouseEvent*  event) override;
+void mousePressEvent(QGraphicsSceneMouseEvent*  event) override;
+void mouseReleaseEvent(QGraphicsSceneMouseEvent*  event) override;
+QPainterPath  opaqueArea() const override;
 void paint(QPainter*  painter, const QStyleOptionGraphicsItem*  option, QWidget*  widget = nullptr) override;
+bool  sceneEvent(QEvent*  event) override;
+bool  sceneEventFilter(QGraphicsItem*  watched, QEvent*  event) override;
+void setExtension(QGraphicsItem::Extension  extension, const QVariant&  variant) override;
+QPainterPath  shape() const override;
+bool  supportsExtension(QGraphicsItem::Extension  extension) const override;
 void timerEvent(QTimerEvent*  event) override;
 int  type() const override;
+void wheelEvent(QGraphicsSceneWheelEvent*  event) override;
 
   const QMetaObject* metaObject() const override;
   int qt_metacall(QMetaObject::Call call, int id, void** args) override;
@@ -99,19 +138,16 @@ public slots:
 QGraphicsSvgItem* new_QGraphicsSvgItem(QGraphicsItem*  parentItem = nullptr);
 QGraphicsSvgItem* new_QGraphicsSvgItem(const QString&  fileName, QGraphicsItem*  parentItem = nullptr);
 void delete_QGraphicsSvgItem(QGraphicsSvgItem* obj) { delete obj; }
-   QRectF  boundingRect(QGraphicsSvgItem* theWrappedObject) const;
    QRectF  py_q_boundingRect(QGraphicsSvgItem* theWrappedObject) const{  return (((PythonQtPublicPromoter_QGraphicsSvgItem*)theWrappedObject)->py_q_boundingRect());}
    QString  elementId(QGraphicsSvgItem* theWrappedObject) const;
    bool  isCachingEnabled(QGraphicsSvgItem* theWrappedObject) const;
    QSize  maximumCacheSize(QGraphicsSvgItem* theWrappedObject) const;
-   void paint(QGraphicsSvgItem* theWrappedObject, QPainter*  painter, const QStyleOptionGraphicsItem*  option, QWidget*  widget = nullptr);
    void py_q_paint(QGraphicsSvgItem* theWrappedObject, QPainter*  painter, const QStyleOptionGraphicsItem*  option, QWidget*  widget = nullptr){  (((PythonQtPublicPromoter_QGraphicsSvgItem*)theWrappedObject)->py_q_paint(painter, option, widget));}
    QSvgRenderer*  renderer(QGraphicsSvgItem* theWrappedObject) const;
    void setCachingEnabled(QGraphicsSvgItem* theWrappedObject, bool  arg__1);
    void setElementId(QGraphicsSvgItem* theWrappedObject, const QString&  id);
    void setMaximumCacheSize(QGraphicsSvgItem* theWrappedObject, const QSize&  size);
    void setSharedRenderer(QGraphicsSvgItem* theWrappedObject, QSvgRenderer*  renderer);
-   int  type(QGraphicsSvgItem* theWrappedObject) const;
    int  py_q_type(QGraphicsSvgItem* theWrappedObject) const{  return (((PythonQtPublicPromoter_QGraphicsSvgItem*)theWrappedObject)->py_q_type());}
 };
 

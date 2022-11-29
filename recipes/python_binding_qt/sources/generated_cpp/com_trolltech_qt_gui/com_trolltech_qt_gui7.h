@@ -1102,6 +1102,7 @@ public:
 
 void childEvent(QChildEvent*  event) override;
 void customEvent(QEvent*  event) override;
+int  devType() const override;
 bool  event(QEvent*  event) override;
 bool  eventFilter(QObject*  watched, QEvent*  event) override;
 void exposeEvent(QExposeEvent*  arg__1) override;
@@ -1110,6 +1111,7 @@ QObject*  focusObject() const override;
 void focusOutEvent(QFocusEvent*  arg__1) override;
 QSurfaceFormat  format() const override;
 void hideEvent(QHideEvent*  arg__1) override;
+void initPainter(QPainter*  painter) const override;
 void keyPressEvent(QKeyEvent*  arg__1) override;
 void keyReleaseEvent(QKeyEvent*  arg__1) override;
 int  metric(QPaintDevice::PaintDeviceMetric  metric) const override;
@@ -1122,6 +1124,7 @@ bool  nativeEvent(const QByteArray&  eventType, void*  message, long*  result) o
 void paintEvent(QPaintEvent*  event) override;
 QPaintDevice*  redirected(QPoint*  arg__1) const override;
 void resizeEvent(QResizeEvent*  arg__1) override;
+QPainter*  sharedPainter() const override;
 void showEvent(QShowEvent*  arg__1) override;
 QSize  size() const override;
 QSurface::SurfaceType  surfaceType() const override;
@@ -1150,7 +1153,6 @@ public slots:
 QRasterWindow* new_QRasterWindow(QWindow*  parent = nullptr);
 void delete_QRasterWindow(QRasterWindow* obj) { delete obj; }
    int  py_q_metric(QRasterWindow* theWrappedObject, QPaintDevice::PaintDeviceMetric  metric) const{  return (((PythonQtPublicPromoter_QRasterWindow*)theWrappedObject)->py_q_metric(metric));}
-   QPaintDevice*  redirected(QRasterWindow* theWrappedObject, QPoint*  arg__1) const;
    QPaintDevice*  py_q_redirected(QRasterWindow* theWrappedObject, QPoint*  arg__1) const{  return (((PythonQtPublicPromoter_QRasterWindow*)theWrappedObject)->py_q_redirected(arg__1));}
 };
 

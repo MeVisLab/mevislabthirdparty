@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sqlite3.h>
 
 int main() {
@@ -7,7 +8,10 @@ int main() {
     char* errmsg = NULL;
     int result = 0;
 
-    printf("SQLite Version: %s\n", sqlite3_libversion());
+    printf("Expected SQLite Version %s, found version: %s\n", EXPECTED_SQLITE3_VERSION, sqlite3_libversion());
+    if(strcmp(sqlite3_libversion(), EXPECTED_SQLITE3_VERSION) != 0) {
+        return EXIT_FAILURE;
+    }
 
     printf("Creating new data base ...\n");
     result = sqlite3_open("bincrafters.db", &db_instance);

@@ -1,13 +1,13 @@
 type: cpp
 name: harfbuzz
 display_name: HarfBuzz
-version: "5.2.0"
+version: "5.3.1"
 homepage: http://harfbuzz.org
 description: An OpenType text shaping engine
 license: MIT
 
 sources:
-  "5.2.0":
-    sha256: 735a94917b47936575acb4d4fa7e7986522f8a89527e4635721474dee2bc942c
+  "5.3.1":
+    sha256: 4a6ce097b75a8121facc4ba83b5b083bfec657f45b003cd5a3424f2ae6b4434d
     url: "https://github.com/harfbuzz/harfbuzz/releases/download/${version}/harfbuzz-${version}.tar.xz"
     base_path: "harfbuzz-${version}"

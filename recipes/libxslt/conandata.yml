@@ -13,4 +13,4 @@ sources:
 
 patches:
   "1.1.37":
-    - patch_file: "patches/${version}-change_rpath.diff"
+    - patch_file: patches/${version}-find_libxml2.patch

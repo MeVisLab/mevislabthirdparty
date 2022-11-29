@@ -20,3 +20,4 @@ patches:
     - patch_file: patches/${version}-external_lz4.patch
     - patch_file: patches/${version}-export_symbols.patch
     - patch_file: patches/${version}-cpp17.patch
+    - patch_file: patches/${version}-arm_neon_include.patch

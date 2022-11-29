@@ -2,16 +2,19 @@
 from conans import ConanFile
 from conans import CMake
 from conans import tools
-from conans.errors import ConanException
+from conans.errors import ConanInvalidConfiguration
 import shutil
-import glob
 import os
 
 
 cmake_header='''project(WebKit)
 
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+include(${CMAKE_BINARY_DIR}/../conanbuildinfo.cmake)
 conan_basic_setup()
+
+set(_UNUSED ${CMAKE_DISABLE_FIND_PACKAGE_Fontconfig} ${CMAKE_EXPORT_NO_PACKAGE_REGISTRY} ${CMAKE_INSTALL_OLDINCLUDEDIR} ${CMAKE_DEBUG_POSTFIX} ${CONAN_COMPILER_VERSION} ${CMAKE_VS_PLATFORM_TOOLSET_HOST_ARCHITECTURE})
+
+set(CMAKE_MODULE_PATH "${CMAKE_BINARY_DIR}/..")
 
 find_path(ZLIB_INCLUDE_DIR NAMES zlib.h PATHS ${CONAN_INCLUDE_DIRS_ZLIB})
 find_library(ZLIB_LIBRARY NAMES ${CONAN_LIBS_ZLIB} PATHS ${CONAN_LIB_DIRS_ZLIB})
@@ -35,7 +38,10 @@ set(ICU_LIBRARIES ${CONAN_LIBS_ICU})
 set(ICU_I18N_LIBRARIES ${CONAN_LIBS_ICU})
 mark_as_advanced(ICU_LIBRARY ICU_INCLUDE_DIR)
 
-set(_UNUSED ${CMAKE_DISABLE_FIND_PACKAGE_Fontconfig} ${CMAKE_EXPORT_NO_PACKAGE_REGISTRY} ${CMAKE_INSTALL_OLDINCLUDEDIR})
+set(LIBXML2_FOUND TRUE)
+set(LIBXML2_INCLUDE_DIR ${CONAN_INCLUDE_DIRS_LIBXML2})
+set(LIBXML2_LIBRARIES ${CONAN_LIBS_LIBXML2})
+mark_as_advanced(LIBXML2_LIBRARIES LIBXML2_INCLUDE_DIR)
 
 add_compile_definitions(_ENABLE_EXTENDED_ALIGNED_STORAGE)
 
@@ -54,9 +60,15 @@ endif()
 class ConanRecipe(ConanFile):
     python_requires = 'common/1.0.0@mevislab/stable'
     python_requires_extend = 'common.CommonRecipe'
+    generators = "cmake", "pkg_config", "cmake_find_package"
 
     short_paths = True
     _cmake = None
+
+
+    def validate(self):
+        if "arm" in self.settings.arch:
+            raise ConanInvalidConfiguration(f"{self.name} not supported on {self.settings.arch}")
 
 
     def system_requirements(self):
@@ -68,10 +80,6 @@ class ConanRecipe(ConanFile):
             packages.append('libgl1-mesa-dev')
             packages.append('libxrender-dev')
             packages.append('libdrm-dev')
-            packages.append('python2.7')
-            packages.append('ruby')
-            packages.append('bison')
-            packages.append('flex')
 
         if packages:
             installer.install_packages(packages)
@@ -83,7 +91,6 @@ class ConanRecipe(ConanFile):
             self.build_requires("winflexbison_installer/[>=2.5.18]" + channel)
             self.build_requires("gperf_installer/[>=3.1]" + channel)
             self.build_requires("ruby_installer/[>=2.7.0]" + channel)
-            self.build_requires("python2_installer/[>=2.7.17]" + channel)
             self.build_requires("strawberryperl_installer/[>=5.30]" + channel)
 
 
@@ -96,6 +103,7 @@ class ConanRecipe(ConanFile):
         self.requires("kf5-extra-cmake-modules/[>=5.75.0]" + channel)
         self.requires("zlib/[>=1.2.11]" + channel)
         self.requires("icu/[>=56.1]" + channel)
+        self.requires("sqlite3/[>=3.39.4]" + channel)
 
 
     def source(self):
@@ -114,6 +122,7 @@ class ConanRecipe(ConanFile):
         tools.replace_in_file(file, 'find_package(ZLIB REQUIRED)', 'set(ZLIB_FOUND 1)')
         tools.replace_in_file(file, 'find_package(PNG REQUIRED)', 'set(PNG_FOUND 1)')
         tools.replace_in_file(file, 'find_package(ICU REQUIRED)', 'set(ICU_FOUND 1)')
+        tools.replace_in_file(file, 'find_package(LibXml2 2.8.0 REQUIRED)', 'set(LIBXML2_FOUND 1)')
 
         tools.replace_in_file(file, 'CHECK_QT5_PRIVATE_INCLUDE_DIRS(Gui private/qhexstring_p.h)', '#CHECK_QT5_PRIVATE_INCLUDE_DIRS(Gui private/qhexstring_p.h)')
         tools.replace_in_file(file, 'CHECK_QT5_PRIVATE_INCLUDE_DIRS(Network private/http2protocol_p.h)', '#CHECK_QT5_PRIVATE_INCLUDE_DIRS(Network private/http2protocol_p.h)')
@@ -122,7 +131,8 @@ class ConanRecipe(ConanFile):
         tools.replace_in_file(file, 'set(ECM_MODULE_DIR ${CMAKE_MODULE_PATH})', 'set(ECM_MODULE_DIR "${CMAKE_SOURCE_DIR}/Source/cmake")')
 
         tools.replace_in_file(os.path.join('sources', 'Source', 'cmake', 'FindSqlite.cmake'), 'find_library(SQLITE_LIBRARIES NAMES sqlite3', 'find_library(SQLITE_LIBRARIES NAMES sqlite3 sqlite3d')
-        tools.replace_in_file(os.path.join('sources', 'CMakeLists.txt'), 'set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/Source/cmake")', 'set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/Source/cmake" ${CMAKE_MODULE_PATH})')
+
+        tools.replace_in_file(os.path.join('sources', 'CMakeLists.txt'), 'set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/Source/cmake")', 'set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/Source/cmake")')
         tools.replace_in_file(os.path.join('sources', 'Source', 'PlatformQt.cmake'), 'target_compile_options(WebKit2', '#target_compile_options(WebKit2')
 
         tools.replace_in_file(os.path.join('sources', 'Source', 'cmake', 'WebKitMacros.cmake'), 'if (APPLE AND NOT PORT STREQUAL "GTK" AND', 'if (APPLE AND MACOS_BUILD_FRAMEWORKS AND NOT PORT STREQUAL "GTK" AND')
@@ -130,6 +140,10 @@ class ConanRecipe(ConanFile):
         tools.replace_in_file(os.path.join('sources', 'Source', 'cmake', 'OptionsQt.cmake'),
             'set(ICU_LIBRARIES ${ICU_LIBRARY_PREFIX}icuuc${CMAKE_DEBUG_POSTFIX} ${ICU_LIBRARY_PREFIX}icuin${CMAKE_DEBUG_POSTFIX} ${ICU_LIBRARY_PREFIX}icudt${CMAKE_DEBUG_POSTFIX})',
             'set(ICU_LIBRARIES ${ICU_LIBRARY_PREFIX}icuuc${CMAKE_DEBUG_POSTFIX} ${ICU_LIBRARY_PREFIX}icuin${CMAKE_DEBUG_POSTFIX} ${ICU_LIBRARY_PREFIX}icudt)')
+
+        # fix python3 support
+        tools.replace_in_file(os.path.join('sources', 'Source', 'JavaScriptCore', 'generate-bytecode-files'), '#! /usr/bin/python', '#!/usr/bin/env python3')
+        tools.replace_in_file(os.path.join('sources', 'Source', 'JavaScriptCore', 'generate-bytecode-files'), 'json.load(bytecodeFile, encoding = "utf-8")', 'json.load(bytecodeFile)')
 
 
     def _configure_cmake(self):
@@ -148,6 +162,9 @@ class ConanRecipe(ConanFile):
             self._cmake.definitions['USE_MINIMAL_DEBUG_INFO'] = True
             self._cmake.definitions['USE_MINIMAL_DEBUG_INFO_MSVC'] = True
 
+            self._cmake.definitions['CMAKE_DISABLE_FIND_PACKAGE_WebP'] = True
+
+            self._cmake.definitions['SKIP_DWZ'] = True
             self._cmake.definitions['USE_WOFF2'] = False
             self._cmake.definitions['ENABLE_WEBKIT'] = True
             self._cmake.definitions['ENABLE_WEBKIT2'] = False
@@ -172,7 +189,7 @@ class ConanRecipe(ConanFile):
 
             self._cmake.definitions['CMAKE_DISABLE_FIND_PACKAGE_Fontconfig'] = True
 
-            self._cmake.configure(source_folder='sources')
+            self._cmake.configure(source_folder='sources', build_folder='build')
         return self._cmake
 
 

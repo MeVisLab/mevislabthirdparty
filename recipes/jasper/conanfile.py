@@ -41,6 +41,8 @@ class ConanRecipe(ConanFile):
         toolchain.variables["JAS_ENABLE_OPENGL"] = False
         toolchain.variables["ALLOW_IN_SOURCE_BUILD"] = True
         toolchain.variables["JAS_ENABLE_AUTOMATIC_DEPENDENCIES"] = False
+        toolchain.variables["JAS_ENABLE_LIBHEIF"] = False
+
         toolchain.generate()
 
 
@@ -71,4 +73,4 @@ class ConanRecipe(ConanFile):
     def package_info(self):
         self.default_package_info()
         if self.settings.os == "Linux":
-            self.cpp_info.libs.append("m")
+            self.cpp_info.system_libs.append("m")

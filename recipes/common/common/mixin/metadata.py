@@ -51,51 +51,6 @@ class Metadata(object):
             raise ConanInvalidConfiguration("Unknown license type '" + data['license'] + "'")
         data['license_name'] = lic['name']
 
-        # collect some build related informations
-        data['build'] = {}
-        data['build']['timestamp'] = int(datetime.now().timestamp())
-        data['build']['duration'] = int(datetime.now().timestamp()) - self._timestamp
-        data['build']['os'] = self.settings.get_safe("os")
-        data['build']['arch'] = self.settings.get_safe("arch")
-        data['build']['build_type'] = self.settings.get_safe("build_type")
-        data['build']['compiler'] = self.settings.get_safe("compiler")
-        data['build']['compiler_version'] = self.settings.get_safe("compiler.version")
-        if self.settings.get_safe("compiler.runtime"):
-            data['build']['compiler_runtime'] = self.settings.get_safe("compiler.runtime")
-        if self.settings.get_safe("compiler.libcxx"):
-            data['build']['compiler_libcxx'] = self.settings.get_safe("compiler.libcxx")
-
-        if self.deps_cpp_info.deps:
-            data['build']['dependencies'] = []
-            for dependency in self.deps_cpp_info.deps:
-                data['build']['dependencies'].append({ 'id': dependency, 'version': self.deps_cpp_info[dependency].version })
-
-        # jenkins ci environment variables
-        ci = {}
-        if os.environ.get("BRANCH_NAME"):
-            ci['branch_name'] = os.environ.get("BRANCH_NAME")
-
-        if os.environ.get("BUILD_NUMBER"):
-            ci['build_number'] = os.environ.get("BUILD_NUMBER")
-
-        if os.environ.get("NODE_NAME"):
-            ci['node_name'] = os.environ.get("NODE_NAME")
-
-        if os.environ.get("CHANGE_ID"):
-            ci['change_id'] = os.environ.get("CHANGE_ID")
-
-        if os.environ.get("TAG_NAME"):
-            ci['tag_name'] = os.environ.get("TAG_NAME")
-
-        if os.environ.get("GIT_COMMIT"):
-            ci['git_commit'] = os.environ.get("GIT_COMMIT")
-
-        if os.environ.get("GIT_BRANCH"):
-            ci['git_branch'] = os.environ.get("GIT_BRANCH")
-
-        if ci:
-            data['build']['ci'] = ci
-
         # write file
         with io.open("metadata.json", mode='w', encoding='utf8') as outfile:
             outfile.write(json.dumps(data, indent=4, ensure_ascii=False))

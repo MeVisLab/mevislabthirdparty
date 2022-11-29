@@ -27,7 +27,6 @@ class ConanRecipe(ConanFile):
 
         if tools.os_info.linux_distro in ["ubuntu", "debian"]:
             packages.append('libxt-dev')
-            packages.append('pkg-config')
 
         if packages:
             installer.install_packages(packages)
@@ -53,7 +52,6 @@ class ConanRecipe(ConanFile):
 
     def _configure_cmake(self):
         if not self._cmake:
-            self.create_cmake_wrapper()
             self._cmake = CMake(self)
 
             self._cmake.definitions["CMAKE_DEBUG_POSTFIX"] = "d" if self.settings.build_type == "Debug" else ""
@@ -152,7 +150,7 @@ class ConanRecipe(ConanFile):
             self._cmake.definitions["VTK_USE_SYSTEM_XDMF2"] = False
             self._cmake.definitions["VTK_USE_SYSTEM_XDMF3"] = False
 
-            self._cmake.configure()
+            self._cmake.configure(build_folder="build")
         return self._cmake
 
 

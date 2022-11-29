@@ -1,20 +1,13 @@
 type: pure_c
 name: xz-utils
 display_name: XZ Utils
-version: "5.2.6"
+version: "5.2.8"
 homepage: https://tukaani.org/xz/
 description: XZ Utils is free general-purpose data compression software with a high compression ratio
 license: PublicDomain
 
 sources:
-  "5.2.6":
-    sha256: a2105abee17bcd2ebd15ced31b4f5eda6e17efd6b10f921a01cda4a44c91b3a0
+  "5.2.8":
+    sha256: ec5cda9f0b91336ab1b881d3d144e8203fcca604e607caca8ae678ddbc29207d
     url: https://tukaani.org/xz/xz-${version}.tar.gz
     base_path: xz-${version}
-
-patches:
-  "5.2.6":
-    - patch_file: patches/5.2.6-fix_broken_vcxproj.patch
-      patch_type: buildsystem
-      patch_description: fix broken liblzma.dll build with Visual Studio project files
-      patch_source: https://git.tukaani.org/?p=xz.git;a=patch;h=e66787bcfefdb93f19c974f895f65969a77937b0

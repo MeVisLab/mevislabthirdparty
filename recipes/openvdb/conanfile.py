@@ -30,6 +30,8 @@ class ConanRecipe(ConanFile):
 
             self._cmake.definitions["BUILD_SHARED_LIBS"] = True
 
+            self._cmake.definitions['CONCURRENT_MALLOC'] = 'None'
+
             # OpenVDB sets absolute RPATH paths when this option is on, making OpenVDB no longer relocatable.
             # Therefore, we disable this option (ON by default) and do it ourselves. ;)
             self._cmake.definitions["OPENVDB_ENABLE_RPATH"] = False
@@ -88,3 +90,7 @@ class ConanRecipe(ConanFile):
     def package_info(self):
         self.default_package_info()
         self.cpp_info.defines.append("OPENVDB_DLL")
+
+        if self.settings.os == "Linux":
+            self.cpp_info.system_libs.extend(["pthread"])
+
