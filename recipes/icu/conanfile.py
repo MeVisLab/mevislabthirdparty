@@ -24,9 +24,7 @@ class ConanRecipe(ConanFile):
         sha256 = self.conan_data['sha256'][self.version]['data']
         self.download_distfile(url=url, sha256=sha256, fileName=fileName, baseFolder="sources/source")
 
-	    # Disable renaming as it breaks Qt, QtWebEngine and others
-        tools.replace_in_file(os.path.join('sources', 'source', 'common', 'unicode', 'uconfig.h'), '#define U_DISABLE_RENAMING 0', '#define U_DISABLE_RENAMING 1')
-
+        self.apply_patches()
 
     def build(self):
         if tools.os_info.is_windows:

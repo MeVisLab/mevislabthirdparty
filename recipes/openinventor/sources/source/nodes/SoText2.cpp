@@ -113,10 +113,10 @@ public:
 
   // Returns the amount the current raster position will be advanced
   // after drawing the given unicode character.
-  SbVec3f getCharOffset(char *c);
+  SbVec3f getCharOffset(unsigned int c);
 
   // Get the pixel-space bounding box of a given unicode character.
-  void getCharBbox(char *c, SbBox3f &box);
+  void getCharBbox(unsigned int c, SbBox3f &box);
 
   // Gets the width (in pixels) of specified UCS-2 string
   float getWidth(int line);
@@ -128,16 +128,16 @@ public:
   void drawString(int line);
 
   // Draws the given unicode character (using GL)
-  void drawCharacter(const char *c);
+  void drawCharacter(unsigned int c);
 
   // Convert string to UCS-2 format, keep a copy in this cache.
   // Use nodeid to know when to reconvert.
   bool convertToUCS(SbNodeIdType nodeid, const SoMFString &string);
 
   // Returns line of UCS-2 text
-  char *getUCSString(int line)
+  unsigned short *getUCSString(int line)
   {
-    return (char *)UCSStrings[line];
+    return (unsigned short *)UCSStrings[line];
   }
 
   int getNumUCSChars(int line)
@@ -159,12 +159,12 @@ private:
   // Returns TRUE if this font cache has a display list for the
   // given unicode UCS-2 character.  It will try to build a display list, if it
   // can.
-  bool hasDisplayList(const char *c);
+  bool hasDisplayList(unsigned int c);
 
   // Renders an entire UCS-2 string by using the GL callList() function.
-  void callLists(const char *string, int length);
+  void callLists(const unsigned short *string, int length);
 
-  const FL::Bitmap *getBitmap(unsigned char *c);
+  const FL::Bitmap *getBitmap(unsigned int c);
 
   // Static list of all fonts.  OPTIMIZATION:  If there turn out to
   // be applications that use lots of fonts, we could change this
@@ -200,7 +200,7 @@ private:
   std::vector<FL::FontNumber> fontNumList;
   SbPList *fontNums;
 
-  // char* pointers of UCS-2 strings:
+  // unsigned short* pointers of UCS-2 strings:
   SbPList UCSStrings;
   // size of these strings, in UCS-2 characters:
   SbPList UCSNumChars;
@@ -477,7 +477,7 @@ void SoText2::rayPick(SoRayPickAction *action)
 
     int len = myFont->getNumUCSChars(line);
 
-    char *str = myFont->getUCSString(line);
+    unsigned short *str = myFont->getUCSString(line);
 
     // Intersect against each line of text's bounding box:
     SbBox3f lineBbox, charBbox;
@@ -489,7 +489,7 @@ void SoText2::rayPick(SoRayPickAction *action)
     int chr;
     for (chr = 0; chr < len; chr++)
     {
-      myFont->getCharBbox(str + 2 * chr, charBbox);
+      myFont->getCharBbox(str[chr], charBbox);
 
       if (!charBbox.isEmpty())
       {
@@ -503,7 +503,7 @@ void SoText2::rayPick(SoRayPickAction *action)
         lineBbox.extendBy(charMax);
 
         // Advance to next character...
-        charPosition += myFont->getCharOffset(str + 2 * chr);
+        charPosition += myFont->getCharOffset(str[chr]);
       }
     }
     // And transform line's box into object space:
@@ -544,7 +544,7 @@ void SoText2::rayPick(SoRayPickAction *action)
         charPosition = getPixelStringOffset(line) + screenOrigin;
         for (chr = 0; chr < len; chr++)
         {
-          charPosition += myFont->getCharOffset(str + 2 * chr);
+          charPosition += myFont->getCharOffset(str[chr]);
           // Assuming left-to-right drawing of characters:
           if (charPosition[0] >= screenPoint[0])
             break;
@@ -638,14 +638,14 @@ void SoText2::computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center)
   {
 
     int len = myFont->getNumUCSChars(line);
-    char *str = myFont->getUCSString(line);
+    unsigned short *str = myFont->getUCSString(line);
 
     // Starting position of string, based on justification:
     SbVec3f charPosition = getPixelStringOffset(line) + screenOrigin;
 
     for (int chr = 0; chr < len; chr++)
     {
-      myFont->getCharBbox(str + 2 * chr, charBbox);
+      myFont->getCharBbox(str[chr], charBbox);
       if (!charBbox.isEmpty())
       {
         SbVec3f min = charBbox.getMin() + charPosition;
@@ -655,7 +655,7 @@ void SoText2::computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center)
       }
 
       // And advance...
-      charPosition += myFont->getCharOffset(str + 2 * chr);
+      charPosition += myFont->getCharOffset(str[chr]);
     }
   }
   // Ok, screenBbox now contains the pixel-space extent of the
@@ -774,7 +774,7 @@ bool SoBitmapFontCache::convertToUCS(SbNodeIdType nodeid, const SoMFString &stri
   // An extra two bytes allocated, since glCallLists likes to trample it.
   for (i = 0; i < strings.getNum(); i++)
   {
-    UCSStrings[i] = new char[2 * strings[i].getLength() + 2];
+    UCSStrings[i] = new unsigned short[strings[i].getLength() + 1];
 
     char *input = (char *)strings[i].getString();
     size_t inbytes = strings[i].getLength();
@@ -801,8 +801,8 @@ bool SoBitmapFontCache::convertToUCS(SbNodeIdType nodeid, const SoMFString &stri
     int j;
     for (j = 0; j < getNumUCSChars(i); j++)
     {
-      char *c = (char *)UCSStrings[i] + j * 2;
-      DGL_HTON_SHORT(SHORT(c), SHORT(c));
+      unsigned short* c = static_cast<unsigned short*>(UCSStrings[i]) + j;
+      DGL_HTON_SHORT(*c, *c);
     }
   }
 
@@ -1117,6 +1117,7 @@ void SoBitmapFontCache::setupToRender(SoState *state)
   }
 }
 
+
 ////////////////////////////////////////////////////////////////////////
 //
 // Description:
@@ -1125,15 +1126,13 @@ void SoBitmapFontCache::setupToRender(SoState *state)
 //
 // Use: internal
 
-bool SoBitmapFontCache::hasDisplayList(const char *c)
+bool SoBitmapFontCache::hasDisplayList(unsigned int c)
 //
 ////////////////////////////////////////////////////////////////////////
 {
-  unsigned char *uc = (unsigned char *)c;
-  unsigned long key = (uc[0] << 8) | uc[1];
   // If we have one, return TRUE
   void *value = nullptr;
-  if (displayListDict->find((size_t)key, value))
+  if (displayListDict->find((size_t)c, value))
     return TRUE;
 
   // If we don't and we can't build one, return FALSE.
@@ -1141,11 +1140,11 @@ bool SoBitmapFontCache::hasDisplayList(const char *c)
     return FALSE;
 
   // Build one:
-  glNewList(list->getFirstIndex() + key, GL_COMPILE);
+  glNewList(list->getFirstIndex() + c, GL_COMPILE);
   drawCharacter(c);
   glEndList();
 
-  displayListDict->enter(key, value);
+  displayListDict->enter(c, value);
 
   return TRUE;
 }
@@ -1159,12 +1158,12 @@ bool SoBitmapFontCache::hasDisplayList(const char *c)
 //
 // Use: internal
 
-void SoBitmapFontCache::callLists(const char *string, int len)
+void SoBitmapFontCache::callLists(const unsigned short *string, int len)
 //
 ////////////////////////////////////////////////////////////////////////
 {
 
-  glCallLists(len, GL_2_BYTES, (unsigned char *)string);
+  glCallLists(len, GL_UNSIGNED_SHORT, string);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -1174,13 +1173,13 @@ void SoBitmapFontCache::callLists(const char *string, int len)
 //
 // Use: internal, public
 
-void SoBitmapFontCache::getCharBbox(char *c, SbBox3f &box)
+void SoBitmapFontCache::getCharBbox(unsigned int c, SbBox3f &box)
 //
 ////////////////////////////////////////////////////////////////////////
 {
   box.makeEmpty();
 
-  const auto *bmap = getBitmap((unsigned char *)c);
+  const auto *bmap = getBitmap(c);
   if (bmap == nullptr)
     return;
 
@@ -1196,11 +1195,11 @@ void SoBitmapFontCache::getCharBbox(char *c, SbBox3f &box)
 //
 // Use: internal, public
 
-SbVec3f SoBitmapFontCache::getCharOffset(char *c)
+SbVec3f SoBitmapFontCache::getCharOffset(unsigned int c)
 //
 ////////////////////////////////////////////////////////////////////////
 {
-  const auto *bmap = getBitmap((unsigned char *)c);
+  const auto *bmap = getBitmap(c);
   if (!bmap)
   {
     return SbVec3f(0, 0, 0);
@@ -1222,10 +1221,10 @@ float SoBitmapFontCache::getWidth(int line)
 {
   float result = 0.0;
 
-  char *str = getUCSString(line);
+  unsigned short *str = getUCSString(line);
   for (int i = 0; i < getNumUCSChars(line); i++)
   {
-    const auto *bmap = getBitmap((unsigned char *)(str + 2 * i));
+    const auto *bmap = getBitmap(str[i]);
     if (bmap)
     {
       result += bmap->_xmove;
@@ -1246,7 +1245,7 @@ float SoBitmapFontCache::getHeight()
 ////////////////////////////////////////////////////////////////////////
 {
   // take height from UCS-2 code for "M"
-  const auto *bmap = getBitmap((unsigned char *)"\000M");
+  const auto *bmap = getBitmap(static_cast<unsigned int>('M'));
   if (bmap)
   {
     return bmap->_height - bmap->_yorig;
@@ -1262,12 +1261,11 @@ float SoBitmapFontCache::getHeight()
 //
 // Use: internal public
 
-void SoBitmapFontCache::drawCharacter(const char *c)
+void SoBitmapFontCache::drawCharacter(unsigned int c)
 //
 ////////////////////////////////////////////////////////////////////////
 {
-  unsigned char *uc = (unsigned char *)c;
-  const auto *bmap = getBitmap(uc);
+  const auto *bmap = getBitmap(c);
 
   if (bmap)
     glBitmap(bmap->_width, bmap->_height, bmap->_xorig, bmap->_yorig, bmap->_xmove, bmap->_ymove,
@@ -1293,8 +1291,7 @@ void SoBitmapFontCache::drawString(int line)
 {
   bool useCallLists = TRUE;
 
-  char *str = getUCSString(line);
-  unsigned char *ustr = (unsigned char *)str;
+  unsigned short *str = getUCSString(line);
 
   // If there aren't any other caches open, build display lists for
   // the characters we can:
@@ -1302,7 +1299,7 @@ void SoBitmapFontCache::drawString(int line)
   {
     // See if the font cache already has (or can build) a display
     // list for this character:
-    if (!hasDisplayList(str + 2 * i))
+    if (!hasDisplayList(str[i]))
     {
       useCallLists = FALSE;
       break;
@@ -1321,12 +1318,12 @@ void SoBitmapFontCache::drawString(int line)
     // display lists we do have:
     for (int i = 0; i < getNumUCSChars(line); i++)
     {
-      if (!hasDisplayList(str + 2 * i))
+      if (!hasDisplayList(str[i]))
       {
-        drawCharacter(str + 2 * i);
+        drawCharacter(str[i]);
       }
       else
-        glCallList(list->getFirstIndex() + ((ustr[2 * i] << 8) | ustr[2 * i + 1]));
+        glCallList(list->getFirstIndex() + str[i]);
     }
   }
 }
@@ -1338,7 +1335,7 @@ void SoBitmapFontCache::drawString(int line)
 //
 // Use: private
 
-const FL::Bitmap *SoBitmapFontCache::getBitmap(unsigned char *c)
+const FL::Bitmap *SoBitmapFontCache::getBitmap(unsigned int c)
 //
 ////////////////////////////////////////////////////////////////////////
 {
@@ -1347,14 +1344,12 @@ const FL::Bitmap *SoBitmapFontCache::getBitmap(unsigned char *c)
   if (fontNumList.empty())
     return result;
 
-  const auto key = static_cast<std::size_t>(c[0] << 8 | c[1]);
-
-  if (auto itFind = bitmapDict.find(key); itFind == bitmapDict.end())
+  if (auto itFind = bitmapDict.find(c); itFind == bitmapDict.end())
   {
     auto newBitmap = FL::Context::uniBitmap(fontNumList, c);
     if (newBitmap)
     {
-      auto itInsert = bitmapDict.insert(std::make_pair(key, newBitmap));
+      auto itInsert = bitmapDict.insert(std::make_pair(c, newBitmap));
       result = itInsert.first->second;
     }
 
@@ -1362,7 +1357,7 @@ const FL::Bitmap *SoBitmapFontCache::getBitmap(unsigned char *c)
     if (value == nullptr)
     {
       SoDebugError::post("SoBitmapFontCache::getBitmap", "Invalid Unicode bitmap for character %d",
-                         key);
+                         c);
     }
 #endif /*DEBUG*/
   }

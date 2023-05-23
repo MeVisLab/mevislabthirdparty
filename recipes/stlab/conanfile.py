@@ -11,19 +11,6 @@ class ConanRecipe(ConanFile):
     python_requires_extend = 'common.CommonRecipe'
     generators = "cmake_find_package"
 
-    def source(self):
-        self.default_source()
-        tools.replace_in_file('sources/stlab/CMakeLists.txt',
-          'concurrency/channel.hpp', 
-          '    pre_exit.hpp\n'\
-          '    concurrency/channel.hpp\n'\
-          '    concurrency/await.hpp\n'\
-          '    concurrency/concurrency.hpp\n'\
-          '    concurrency/ready_future.hpp\n'\
-          '    concurrency/serial_queue.hpp\n'\
-          '    concurrency/set_current_thread_name.hpp')
-
-
     def layout(self):
         cmake_layout(self)
 
@@ -37,7 +24,6 @@ class ConanRecipe(ConanFile):
     def build(self):
         cmake = CMake(self)
         cmake.configure(build_script_folder="sources", )
-        #cmake.build()
 
 
     def package(self):

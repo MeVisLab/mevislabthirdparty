@@ -51,3 +51,7 @@ patches:
       patch_type: bugfix
       patch_description: warning compatibility with newer VC++ compilers, see https://github.com/DCMTK/dcmtk/pull/66
     - patch_file: patches/${version}_find_3rdparty.patch
+    - patch_file: patches/${version}_assoc_leak.patch
+      patch_type: bugfix
+      patch_description: fixes leak in dcmqrsrv, see https://github.com/songxpu/bug_report/tree/master/DCMTK/memory_leak_in_3.6.7
+      

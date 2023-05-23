@@ -1,0 +1,12 @@
+type: pure_c
+name: cppy
+version: "1.2.0"
+homepage: https://github.com/nucleic/cppy
+description: "A collection of C++ headers which make it easier to write Python C extension modules"
+license: BSD-3-Clause
+
+sources:
+  "1.2.0":
+    sha256: 95e8862e4f826c3f2a6b7b658333b162f80cbe9f943aa0d0a7a6b2ef850aeffc
+    url: pypi://cppy/cppy-${version}.tar.gz
+    base_path: cppy-${version}

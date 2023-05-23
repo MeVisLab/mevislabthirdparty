@@ -1,13 +1,13 @@
 type: pure_c
 name: coveragepy
 display_name: Coverage.py
-version: "4.5.4"
+version: "6.5.0"
 homepage: https://coverage.readthedocs.io/
 description: Coverage.py is a tool for measuring code coverage of Python programs
 license: Apache-2.0
 
 sources:
-  "4.5.4":
-    sha256: 4dfa08ca5db331928e5798f4a7778afa13f3658bf726e55abb2ce2c14b43deff
+  "6.5.0":
+    sha256: 96abc2385b718f72807efd289480e49f93fe81ac3330bcfb1dc1fad0c9dd3603
     url: https://github.com/nedbat/coveragepy/archive/refs/tags/${version}.tar.gz
     base_path: coveragepy-${version}

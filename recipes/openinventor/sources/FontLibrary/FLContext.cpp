@@ -6,7 +6,6 @@
 
 #include "FLContext.h"
 
-#include "FLEndian.h"
 #include "FLEnums.h"
 
 #include <algorithm>
@@ -121,11 +120,8 @@ const FL::Outline *FL::Context::outline(const std::vector<FontNumber> &numbers, 
 }
 
 
-const FL::Outline *FL::Context::outline(const std::vector<FreeTypeFont *> &fonts,
-                                        const GLubyte *ucs2)
+const FL::Outline *FL::Context::outline(const std::vector<FreeTypeFont *> &fonts, GLuint c)
 {
-  auto c = correctEndianes(ucs2);
-
   for (auto font : fonts)
   {
     auto result = font->characterOutline(c);
@@ -139,13 +135,11 @@ const FL::Outline *FL::Context::outline(const std::vector<FreeTypeFont *> &fonts
 }
 
 
-const FL::Outline *FL::Context::uniOutline(const std::vector<FontNumber> &numbers,
-                                           const GLubyte *ucs2)
+const FL::Outline *FL::Context::uniOutline(const std::vector<FontNumber> &numbers, GLuint c)
 {
   const Outline *result{};
 
   auto fonts = fontInfos(numbers);
-  auto c = correctEndianes(ucs2);
 
   for (auto font : fonts)
   {
@@ -160,14 +154,12 @@ const FL::Outline *FL::Context::uniOutline(const std::vector<FontNumber> &number
 }
 
 
-const FL::Bitmap *FL::Context::uniBitmap(const std::vector<FontNumber> &numbers,
-                                         const GLubyte *ucs2)
+const FL::Bitmap *FL::Context::uniBitmap(const std::vector<FontNumber> &numbers, GLuint c)
 {
 
   const Bitmap *result{};
 
   auto fonts = fontInfos(numbers);
-  auto c = correctEndianes(ucs2);
 
   for (auto font : fonts)
   {

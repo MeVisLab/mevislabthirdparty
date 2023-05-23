@@ -1,0 +1,17 @@
+diff --git i/qtwebengine/mkspecs/features/default_pre.prf w/qtwebengine/mkspecs/features/default_pre.prf
+index c7440fa..961fb22 100644
+--- i/qtwebengine/mkspecs/features/default_pre.prf
++++ w/qtwebengine/mkspecs/features/default_pre.prf
+@@ -1,10 +1,6 @@
+ QTWEBENGINEPROCESS_NAME_RELEASE = QtWebEngineProcess
+-debug_and_release {
+-    QTWEBENGINEPROCESS_NAME_DEBUG = $$join(QTWEBENGINEPROCESS_NAME_RELEASE,,,d)
+-} else {
+-    QTWEBENGINEPROCESS_NAME_DEBUG = $$QTWEBENGINEPROCESS_NAME_RELEASE
+-}
+-build_pass:CONFIG(debug, debug|release) {
++QTWEBENGINEPROCESS_NAME_DEBUG = $$join(QTWEBENGINEPROCESS_NAME_RELEASE,,,d)
++CONFIG(debug, debug|release) {
+     QTWEBENGINEPROCESS_NAME = $$QTWEBENGINEPROCESS_NAME_DEBUG
+ } else {
+     QTWEBENGINEPROCESS_NAME = $$QTWEBENGINEPROCESS_NAME_RELEASE

@@ -2,17 +2,17 @@ pure_c: false
 header_only: false
 name: hdf5
 display_name: HDF5
-version: "1.12.2"
+version: "1.14.0"
 homepage: http://www.hdfgroup.org/HDF5/
 description: General purpose library and file format for storing scientific data
 license: BSD-3-Clause
 
 sources:
-  "1.12.2":
-    sha256: 04621dd1b96426f7f7883d508657fb1ee579ddd22f4c38ababfd8a408abd6525
-    url: https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.12/hdf5-${version}/src/CMake-hdf5-${version}.tar.gz
+  "1.14.0":
+    sha256: 375e25b505f6fb2c554d6055dfe909a2bd16351fddebf4c4268ad6cab1ced695
+    url: https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-${version_major}.${version_minor}/hdf5-${version}/src/CMake-hdf5-${version}.tar.gz
     base_path: CMake-hdf5-${version}
 
 patches:
-  "1.12.2":
+  "1.14.0":
     - patch_file: patches/${version}-link_szip.patch

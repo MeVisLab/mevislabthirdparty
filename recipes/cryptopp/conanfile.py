@@ -1,47 +1,42 @@
 # -*- coding: utf-8 -*-
 from conans import ConanFile
-from conans import tools
-from conans import CMake
+from conan import ConanFile
+from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
+from conan.tools.files import export_conandata_patches, get
 import shutil
 import os
-
 
 class ConanRecipe(ConanFile):
     python_requires = 'common/1.0.0@mevislab/stable'
     python_requires_extend = 'common.CommonRecipe'
-    exports_sources = ["CMakeLists.txt", "CMakeLists.txt.*"]
+    generators = "cmake_find_package"
 
-    _cmake = None
+    def export_sources(self):
+        export_conandata_patches(self)
+
+    def layout(self):
+        cmake_layout(self, src_folder="src")
 
     def source(self):
-        self.default_source()
-        shutil.copy('CMakeLists.txt.%s' % self.version, "sources/CMakeLists.txt")
-        tools.save("sources/cryptopp-config.cmake", 'include("${CMAKE_CURRENT_LIST_DIR}/cryptopp-targets.cmake")')
+        get(self, **self.conan_data["sources"]["source"], strip_root=True)
+        get(self, **self.conan_data["sources"]["cmake"], destination=os.path.join(self.source_folder, "cryptopp-cmake"), strip_root=True)
 
-
-    def _configure_cmake(self):
-        if not self._cmake:
-            self._cmake = CMake(self)
-            self._cmake.definitions["CMAKE_DEBUG_POSTFIX"] = "d"
-            self._cmake.definitions["CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS"] = True
-            self._cmake.definitions["BUILD_STATIC"] = True
-            self._cmake.definitions["BUILD_SHARED"] = False
-            self._cmake.definitions['CMAKE_POSITION_INDEPENDENT_CODE'] = True
-            self._cmake.definitions["BUILD_TESTING"] = False
-            self._cmake.definitions["BUILD_DOCUMENTATION"] = False
-            self._cmake.configure()
-        return self._cmake
-
+    def generate(self):
+        tc = CMakeToolchain(self)
+        tc.cache_variables["CRYPTOPP_SOURCES"] = self.source_folder.replace("\\", "/")
+        tc.cache_variables["CRYPTOPP_BUILD_TESTING"] = False
+        tc.cache_variables["CRYPTOPP_BUILD_DOCUMENTATION"] = False
+        tc.cache_variables["CRYPTOPP_USE_INTERMEDIATE_OBJECTS_TARGET"] = False
+        tc.cache_variables["CMAKE_DEBUG_POSTFIX"] = "d"
+        tc.generate()
 
     def build(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
+        cmake.configure(build_script_folder="cryptopp-cmake")
         cmake.build()
 
-
     def package(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
         cmake.install()
-
-        shutil.rmtree(os.path.join(self.package_folder, "lib", "cmake"))
-
+        shutil.rmtree(os.path.join(self.package_folder, "share"))
         self.default_package()

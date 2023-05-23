@@ -33,6 +33,9 @@ class ConanRecipe(ConanFile):
         self.requires("pyparsing/[>=2.0.3]" + channel)
         self.requires("libpng/[>=1.6.37]" + channel)
         self.requires("zlib/[>=1.2.11]" + channel)
+        self.requires("cycler/[>=0.11.0]" + channel)
+        # current version does not work with newer versions of kiwisolver
+        self.requires("kiwisolver/[==1.4.1]" + channel)
 
         if not tools.os_info.is_linux:
             self.requires("freetype/[>=2.10.2]" + channel)
@@ -42,31 +45,38 @@ class ConanRecipe(ConanFile):
     def source(self):
         self.default_source()
         shutil.move(os.path.join("sources", "LICENSE", "LICENSE"), os.path.join("sources", "COPYING"))
-        tools.replace_in_file('sources/setupext.py', "version = 'Failed to identify version.'", "version = None")
-        tools.replace_in_file('sources/setupext.py', 'ext.extra_link_args.append("-mwindows")', '')
+        # tools.replace_in_file('sources/setupext.py', "version = 'Failed to identify version.'", "version = None")
+        tools.replace_in_file('sources/setupext.py', 'ext.extra_link_args.extend(["-mwindows"])', '')
+        # Conan currently uses the library version for the pkg-config, but freetype should use the libtool version:
+        tools.replace_in_file('sources/setupext.py', "atleast_version='9.11.3',", "atleast_version='2.3.0',")
 
 
     def build(self):
-        if tools.os_info.is_linux:
-            tools.replace_in_file('sources/setupext.py', "default_libraries=['freetype', 'z'])", "default_libraries=['freetype', 'zlibstatic{d}', 'libpng16{d}'])".format(d="d" if self.settings.build_type=="Debug" else ""))
-            tools.replace_in_file('sources/setupext.py', "default_libraries=['png', 'z'],", "default_libraries=['libpng16{d}', 'zlibstatic{d}'],".format(d="d" if self.settings.build_type=="Debug" else ""))
+        d_suffix = "d" if self.settings.build_type=="Debug" else ""
+        tools.replace_in_file('sources/setupext.py', "['png', 'z'] if os.name == 'posix' else",
+            "['libpng16{d}', 'zlibstatic{d}'] if os.name == 'posix' else".format(d=d_suffix))
+        tools.replace_in_file('sources/setupext.py', "[deplib('libpng16'), deplib('z')] if os.name == 'nt' else",
+            "['libpng16{d}', 'zlibstatic{d}'] if os.name == 'nt' else".format(d=d_suffix))
 
+        if tools.os_info.is_linux:
+            tools.replace_in_file('sources/setupext.py', "default_libraries=['freetype', deplib('z')])",
+                "default_libraries=['freetype', 'zlibstatic{d}', 'libpng16{d}'])".format(d=d_suffix))
+
+        else:
+            tools.replace_in_file('sources/setupext.py', "default_libraries=['freetype', deplib('z')])",
+                "default_libraries=['freetype{d}', 'zlibstatic{d}', 'libpng16{d}'])".format(d=d_suffix))
+
+        if tools.os_info.is_windows:
             extra_env = {
-                "INCLUDE": ";".join([os.path.join(self.deps_cpp_info["libpng"].rootpath, x) for x in self.deps_cpp_info["libpng"].includedirs] + [os.path.join(self.deps_cpp_info["numpy"].rootpath, x) for x in self.deps_cpp_info["numpy"].includedirs]),
-                "LIB": ";".join([os.path.join(self.deps_cpp_info["libpng"].rootpath, x) for x in self.deps_cpp_info["libpng"].libdirs] + [os.path.join(self.deps_cpp_info["zlib"].rootpath, x) for x in self.deps_cpp_info["zlib"].libdirs])
+                "INCLUDE": os.pathsep.join(
+                    [os.path.join(self.deps_cpp_info[dep].rootpath, x)
+                        for dep in ("freetype", "libpng", "numpy") for x in self.deps_cpp_info[dep].includedirs]),
+                "LIB": os.pathsep.join(
+                    [os.path.join(self.deps_cpp_info[dep].rootpath, x)
+                        for dep in ("freetype", "libpng", "zlib") for x in self.deps_cpp_info[dep].libdirs])
             }
         else:
-            tools.replace_in_file('sources/setupext.py', "default_libraries=['freetype', 'z'])", "default_libraries=['freetype{d}', 'zlibstatic{d}', 'libpng16{d}'])".format(d="d" if self.settings.build_type=="Debug" else ""))
-            tools.replace_in_file('sources/setupext.py', "default_libraries=['png', 'z'],", "default_libraries=['libpng16{d}', 'zlibstatic{d}'],".format(d="d" if self.settings.build_type=="Debug" else ""))
-            extra_env = {"INCLUDE": ";".join(
-                [os.path.join(self.deps_cpp_info["freetype"].rootpath, x) for x in self.deps_cpp_info["freetype"].includedirs]+
-                [os.path.join(self.deps_cpp_info["libpng"].rootpath, x) for x in self.deps_cpp_info["libpng"].includedirs]+
-                [os.path.join(self.deps_cpp_info["numpy"].rootpath, x) for x in self.deps_cpp_info["numpy"].includedirs]),
-                "LIB": ";".join(
-                [os.path.join(self.deps_cpp_info["freetype"].rootpath, x) for x in self.deps_cpp_info["freetype"].libdirs]+
-                [os.path.join(self.deps_cpp_info["libpng"].rootpath, x) for x in self.deps_cpp_info["libpng"].libdirs]+
-                [os.path.join(self.deps_cpp_info["zlib"].rootpath, x) for x in self.deps_cpp_info["zlib"].libdirs])
-                }
+            extra_env = {}
 
-        with tools.environment_append(extra_env) if tools.os_info.is_windows else tools.no_op():
+        with tools.environment_append(extra_env):
             super().build()

@@ -1538,8 +1538,7 @@ const FL::Outline *FL::FreeTypeFont::uniOutline(GLuint c)
 
   auto codePointSort = [](const auto &x, const auto &y) { return x.first < y.first; };
 
-  auto findIt = std::lower_bound(_char16.begin(), _char16.end(),
-                                 std::make_pair(c, FreeTypeOutline{}), codePointSort);
+  auto findIt = _char16.lower_bound(c);
 
   if (findIt != _char16.end() && findIt->first == c)
   {

@@ -60,7 +60,7 @@ class ConanRecipe(ConanFile):
 
 
     def package_info(self):
-        libname = lambda name: name + "d" if self.settings.build_type == 'Debug' else name
+        libname = lambda name: ("lib" if tools.os_info.is_windows else "") + (name + "d" if self.settings.build_type == 'Debug' else name)
 
         self.cpp_info.names["cmake_find_package"] = "WebP"
         self.cpp_info.names["cmake_find_package_multi"] = "WebP"

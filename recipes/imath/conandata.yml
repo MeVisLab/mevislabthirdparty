@@ -2,13 +2,13 @@ type: cpp
 name: imath
 cmake_name: Imath
 display_name: Imath
-version: "3.1.6"
+version: "3.1.7"
 homepage: https://imath.readthedocs.io
 description: Imath is a C++ and python library of 2D and 3D vector, matrix, and math operations for computer graphics
 license: BSD-3-Clause
 
 sources:
-  "3.1.6":
-    sha256: ea5592230f5ab917bea3ceab266cf38eb4aa4a523078d46eac0f5a89c52304db
+  "3.1.7":
+    sha256: bff1fa140f4af0e7f02c6cb78d41b9a7d5508e6bcdfda3a583e35460eb6d4b47
     url: https://github.com/AcademySoftwareFoundation/Imath/archive/refs/tags/v${version}.tar.gz
     base_path: Imath-${version}

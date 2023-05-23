@@ -22,6 +22,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         self.default_source()
         shutil.copy2(os.path.join("sources", "LICENSES", "BLOSC.txt"), os.path.join("sources", "LICENSE"))
+        tools.rmdir(os.path.join("sources", "internal-complibs"))
 
 
     def _configure_cmake(self):

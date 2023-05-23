@@ -24,7 +24,7 @@ void run_program(const char *desc, const char *prog)
 int main() {
     Py_Initialize();
 
-    //run_stmt("import lzma");
+    run_stmt("import lzma");
     run_stmt("import argparse");
     run_stmt("import asyncio");
     run_stmt("import base64");

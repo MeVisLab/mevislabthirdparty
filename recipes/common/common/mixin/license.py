@@ -7,7 +7,8 @@ from conans import ConanFile
 class License(object):
     def find_license_file(self:ConanFile):
         checkFiles = []
-        for i in ["LICENSE", "License", "COPYING", "COPYRIGHT", "Copyright", "COPYING.BSD", "COPYING.LIB"]:
+        for i in ["LICENSE", "License", "COPYING", "COPYRIGHT", "Copyright",
+                  "COPYING.BSD", "COPYING.LIB", "LICENSE.BSD"]:
             checkFiles.append(os.path.join('sources', i))
             checkFiles.append(os.path.join('s', i))
             checkFiles.append(os.path.join('sources', f"{i}.md"))

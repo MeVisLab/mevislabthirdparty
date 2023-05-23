@@ -1,0 +1,103 @@
+diff --git i/qtbase/src/corelib/kernel/qobject.cpp w/qtbase/src/corelib/kernel/qobject.cpp
+index c294868c..dbc6dcec 100644
+--- i/qtbase/src/corelib/kernel/qobject.cpp
++++ w/qtbase/src/corelib/kernel/qobject.cpp
+@@ -639,6 +639,56 @@ void QMetaCallEvent::placeMetaCall(QObject *object)
+     }
+ }
+ 
++// MEVIS BEGIN
++QEvent* mevis_cloneAndClearQMetaCallEvent(QEvent* event)
++{
++    if (event->type() == QEvent::MetaCall) {
++        return static_cast<QMetaCallEvent*>(event)->cloneAndClear();
++    } else {
++        return nullptr;
++    }
++}
++
++QEvent* QMetaCallEvent::cloneAndClear()
++{
++    QMetaCallEvent* newEvent = nullptr;
++    if (d.nargs_) {
++        // non-blocking call, arguments need to be copied
++        if (d.slotObj_) {
++            newEvent = new QMetaCallEvent(d.slotObj_,
++                                          sender(), signalId(),
++                                          d.nargs_);
++        } else {
++            newEvent = new QMetaCallEvent(d.method_offset_, d.method_relative_, d.callFunction_,
++                                          sender(), signalId(),
++                                          d.nargs_);
++        }
++        int *sourceTypeIDs = types();
++        int *targetTypeIDs = newEvent->types();
++        void **targetArgs = newEvent->args();
++        // move args:
++        for (int i = 0; i < d.nargs_; ++i) {
++            targetTypeIDs[i] = sourceTypeIDs[i]; sourceTypeIDs[i] = 0;
++            targetArgs[i] = d.args_[i]; d.args_[i] = nullptr;
++        }
++    } else {
++        // blocking call, arguments stay with sender
++        if (d.slotObj_) {
++            newEvent = new QMetaCallEvent(d.slotObj_,
++                                          sender(), signalId(),
++                                          d.args_, semaphore_);
++        } else {
++            newEvent = new QMetaCallEvent(d.method_offset_, d.method_relative_, d.callFunction_,
++                                          sender(), signalId(),
++                                          d.args_, semaphore_);
++        }
++        // semaphore is moved to new event:
++        semaphore_ = nullptr;
++    }
++    return newEvent;
++}
++// MEVIS END
++
+ /*!
+     \class QSignalBlocker
+     \brief Exception-safe wrapper around QObject::blockSignals().
+diff --git i/qtbase/src/corelib/kernel/qobject.h w/qtbase/src/corelib/kernel/qobject.h
+index f5d7c22e..1cd7e402 100644
+--- i/qtbase/src/corelib/kernel/qobject.h
++++ w/qtbase/src/corelib/kernel/qobject.h
+@@ -96,6 +96,12 @@ Q_CORE_EXPORT void qt_qFindChildren_helper(const QObject *parent, const QRegular
+                                            const QMetaObject &mo, QList<void *> *list, Qt::FindChildOptions options);
+ Q_CORE_EXPORT QObject *qt_qFindChild_helper(const QObject *parent, const QString &name, const QMetaObject &mo, Qt::FindChildOptions options);
+ 
++// MEVIS BEGIN
++// Method added for MeVisLab to allow to clone and clear a QMetaCallEvent, which is private in Qt
++#define MEVIS_QMETACALLEVENT_HACK
++Q_CORE_EXPORT QEvent* mevis_cloneAndClearQMetaCallEvent(QEvent* event);
++// MEVIS END
++
+ class Q_CORE_EXPORT QObjectData {
+     Q_DISABLE_COPY(QObjectData)
+ public:
+diff --git i/qtbase/src/corelib/kernel/qobject_p.h w/qtbase/src/corelib/kernel/qobject_p.h
+index 0b827a52..3f7131a8 100644
+--- i/qtbase/src/corelib/kernel/qobject_p.h
++++ w/qtbase/src/corelib/kernel/qobject_p.h
+@@ -552,6 +552,7 @@ public:
+ private:
+     int signalId_;
+     const QObject *sender_;
++protected:  // added by MeVis to allow access from QMetaCallEvent
+ #if QT_CONFIG(thread)
+     QSemaphore *semaphore_;
+ #endif
+@@ -588,6 +589,12 @@ public:
+ 
+     virtual void placeMetaCall(QObject *object) override;
+ 
++    // MEVIS BEGIN
++    //! Returns a cloned QMetaCallEvent and clears the data of the original event.
++    //! Added for MeVis use case, used in mevis_cloneAndClearQMetaCallEvent
++    QEvent* cloneAndClear();
++    // MEVIS END
++
+ private:
+     inline void allocArgs();
+ 

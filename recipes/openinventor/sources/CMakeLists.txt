@@ -31,7 +31,6 @@ target_sources(FL PRIVATE
     FontLibrary/FLBitmap.h
     FontLibrary/FLContext.cpp
     FontLibrary/FLContext.h
-    FontLibrary/FLEndian.h
     FontLibrary/FLEnums.h
     FontLibrary/FLFreetypeFont.cpp
     FontLibrary/FLFreetypeFont.h

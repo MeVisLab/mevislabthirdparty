@@ -2,7 +2,7 @@
 from conans import ConanFile
 from conans import tools
 from conans import CMake
-from conan.tools.cmake import CMake, CMakeToolchain
+from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
 import os
 
 
@@ -16,6 +16,10 @@ class ConanRecipe(ConanFile):
         channel = "@{0}/{1}".format(self.user, self.channel)
         if self.settings.os == 'Windows':
             self.build_requires("nasm_installer/[>=2.14]" + channel)
+
+
+    def layout(self):
+        cmake_layout(self)
 
 
     def generate(self):

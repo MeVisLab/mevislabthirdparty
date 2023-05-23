@@ -1,12 +1,12 @@
 type: pure_c
 name: sphinx_rtd_theme
-version: "0.1.8"
+version: "1.1.1"
 homepage: https://github.com/readthedocs/sphinx_rtd_theme
 description: Sphinx theme for readthedocs.org
 license: MIT
 
 sources:
-  "0.1.8":
-    sha256: 802fc28b632afb9cfb5d81ea0794038e52e098b994054c366cb584b356db5919
-    url: https://github.com/readthedocs/sphinx_rtd_theme/archive/${version}.zip
+  "1.1.1":
+    sha256: f9ea6cb76cfe09e6459bae4f9aac0f25cea64e063c031d97c85a6ebfd62fd736
+    url: https://github.com/readthedocs/sphinx_rtd_theme/archive/refs/tags/${version}.tar.gz
     base_path: sphinx_rtd_theme-${version}

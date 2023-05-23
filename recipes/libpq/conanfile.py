@@ -21,7 +21,7 @@ class ConanRecipe(ConanFile):
 
     def requirements(self):
         channel = "@mevislab/stable"
-        self.requires("openssl/1.1.1s" + channel)
+        self.requires("openssl/1.1.1t" + channel)
 
 
     def imports(self):

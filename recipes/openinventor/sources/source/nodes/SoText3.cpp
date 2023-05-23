@@ -169,7 +169,7 @@ class SoOutlineFontCache : public SoCache
     float       getHeight() { return fontSize; }
 
     // Returns the 2D bounding box of a UCS character
-    void        getCharBBox(const char* c, SbBox2f &result);
+    void        getCharBBox(unsigned int c, SbBox2f &result);
     // ... and the bounding box of the font's bevel
     void        getProfileBBox(SbBox2f &result);
 
@@ -181,15 +181,15 @@ class SoOutlineFontCache : public SoCache
     bool        hasProfile() const { return  (nProfileVerts > 1); }
 
     // Returns how far to advance after drawing given character:
-    SbVec2f     getCharOffset(const char* c);
+    SbVec2f     getCharOffset(unsigned int c);
 
     // Uses the given glu tesselator to generate triangles for the
     // given character.  This is used for both rendering and
     // generating primitives, with just different callback routines
     // registered.
-    void        generateFrontChar(const char* c, gluTESSELATOR *tobj);
+    void        generateFrontChar(unsigned int c, gluTESSELATOR *tobj);
     // Ditto, for sides of characters:
-    void        generateSideChar(const char* c, SideCB *callbackFunc);
+    void        generateSideChar(unsigned int c, SideCB *callbackFunc);
 
     // Set up for GL rendering:
     void        setupToRenderFront(SoState *state);
@@ -198,8 +198,8 @@ class SoOutlineFontCache : public SoCache
     // Returns TRUE if this font cache has a display list for the
     // given UCS character.  It will try to build a display list, if it
     // can.
-    bool        hasFrontDisplayList(const char* c, gluTESSELATOR *tobj);
-    bool        hasSideDisplayList(const char* c, SideCB *callbackFunc);
+    bool        hasFrontDisplayList(unsigned int c, gluTESSELATOR *tobj);
+    bool        hasSideDisplayList(unsigned int c, SideCB *callbackFunc);
 
     // Renders an entire line by using the GL callList() function.
     void        callFrontLists(int line);
@@ -217,8 +217,8 @@ class SoOutlineFontCache : public SoCache
     void        convertToUCS(SbNodeIdType nodeid, const SoMFString& string);
 
     //Returns line of UCS-2 text
-    char *      getUCSString(int line)
-        { return (char*)UCSStrings[line];}
+    unsigned short * getUCSString(int line)
+        { return (unsigned short*)UCSStrings[line];}
 
     int         getNumUCSChars(int line)
         { return (int)(size_t)UCSNumChars[line];}
@@ -238,7 +238,7 @@ class SoOutlineFontCache : public SoCache
 
     // Return a convnient little class representing a UCS character's
     // outline.
-    const SoFontOutline       *getOutline(const char* c);
+    const SoFontOutline       *getOutline(unsigned int c);
 
     // Some helper routines for generateSide:
     void figureSegmentNorms(SbVec2f *result, int nPoints,
@@ -422,13 +422,13 @@ SoText3::getCharacterBounds(SoState *state, int stringIndex, int
 
     float height = myFont->getHeight();
 
-    const char *chars = myFont->getUCSString(stringIndex);
-    float width = (myFont->getCharOffset(chars+2*charIndex))[0];
+    const unsigned short *chars = myFont->getUCSString(stringIndex);
+    float width = (myFont->getCharOffset(chars[charIndex]))[0];
 
     // Figure out where origin of character is:
     SbVec2f charPosition = getStringOffset(stringIndex);
     for (int i = 0; i < charIndex; i++) {
-        charPosition += myFont->getCharOffset(chars+2*charIndex);
+        charPosition += myFont->getCharOffset(chars[charIndex]);
     }
 
     // Ok, have width, height, depth and starting position of text,
@@ -943,11 +943,11 @@ SoText3::getFrontBBox(SbBox2f &result)
         // Starting position of string, based on justification:
         SbVec2f charPosition = getStringOffset(line);
 
-        const char *chars = myFont->getUCSString(line);
+        const unsigned short *chars = myFont->getUCSString(line);
 
         for (character = 0; character < myFont->getNumUCSChars(line);
                 character++) {
-            myFont->getCharBBox(chars+2*character, charBBox);
+            myFont->getCharBBox(chars[character], charBBox);
             if (!charBBox.isEmpty()) {
                 SbVec2f min = charBBox.getMin() + charPosition;
                 SbVec2f max = charBBox.getMax() + charPosition;
@@ -956,7 +956,7 @@ SoText3::getFrontBBox(SbBox2f &result)
             }
 
             // And advance...
-            charPosition += myFont->getCharOffset(chars+2*character);
+            charPosition += myFont->getCharOffset(chars[character]);
         }
     }
 }
@@ -1005,11 +1005,11 @@ SoText3::getCharacterOffset(int line, int whichChar)
 {
     SbVec2f result = getStringOffset(line);
 
-    const char *chars = myFont->getUCSString(line);
+    const unsigned short *chars = myFont->getUCSString(line);
 
     // Now add on all of the character advances up to char:
     for (int i = 0; i < whichChar; i++) {
-        result += myFont->getCharOffset(chars+2*i);
+        result += myFont->getCharOffset(chars[i]);
     }
     return result;
 }
@@ -1029,7 +1029,7 @@ SoText3::renderFront(SoGLRenderAction *, int line,
 //
 ////////////////////////////////////////////////////////////////////////
 {
-    const char *chars = myFont->getUCSString(line);
+    const unsigned short *chars = myFont->getUCSString(line);
 
     // First, try to figure out if we can use glCallLists:
     bool useCallLists = TRUE;
@@ -1037,7 +1037,7 @@ SoText3::renderFront(SoGLRenderAction *, int line,
     for (int i = 0; i < myFont->getNumUCSChars(line); i++) {
         // See if the font cache already has (or can build) a display
         // list for this character:
-        if (!myFont->hasFrontDisplayList(chars+2*i, tobj)) {
+        if (!myFont->hasFrontDisplayList(chars[i], tobj)) {
             useCallLists = FALSE;
             break;
         }
@@ -1068,7 +1068,7 @@ SoText3::renderSide(SoGLRenderAction *, int line)
 //
 ////////////////////////////////////////////////////////////////////////
 {
-    const char *chars = myFont->getUCSString(line);
+    const unsigned short *chars = myFont->getUCSString(line);
 
     // First, try to figure out if we can use glCallLists:
     bool useCallLists = TRUE;
@@ -1076,7 +1076,7 @@ SoText3::renderSide(SoGLRenderAction *, int line)
     for (int i = 0; i < myFont->getNumUCSChars(line); i++) {
         // See if the font cache already has (or can build) a display
         // list for this character:
-        if (!myFont->hasSideDisplayList(chars+2*i, renderSideTris)) {
+        if (!myFont->hasSideDisplayList(chars[i], renderSideTris)) {
             useCallLists = FALSE;
             break;
         }
@@ -1136,7 +1136,7 @@ SoText3::generateFront(int line)
 {
     static gluTESSELATOR *tobj = nullptr;
 
-    const char *chars = myFont->getUCSString(line);
+    const unsigned short *chars = myFont->getUCSString(line);
 
     if (tobj == nullptr) {
         tobj = gluNewTess();
@@ -1154,9 +1154,9 @@ SoText3::generateFront(int line)
     for (int i = 0; i < myFont->getNumUCSChars(line); i++) {
         d->setCharacterIndex(i);
 
-        myFont->generateFrontChar(chars+2*i, tobj);
+        myFont->generateFrontChar(chars[i], tobj);
 
-        SbVec2f p = myFont->getCharOffset(chars+2*i);
+        SbVec2f p = myFont->getCharOffset(chars[i]);
         genTranslate[0] += p[0];
         genTranslate[1] += p[1];
     }
@@ -1174,16 +1174,16 @@ SoText3::generateSide(int line)
 //
 ////////////////////////////////////////////////////////////////////////
 {
-    const char *chars = myFont->getUCSString(line);
+    const unsigned short *chars = myFont->getUCSString(line);
 
     SoTextDetail *d = (SoTextDetail *)genPrimVerts[0]->getDetail();
 
     for (int i = 0; i < myFont->getNumUCSChars(line); i++) {
         d->setCharacterIndex(i);
 
-        myFont->generateSideChar(chars+2*i, generateSideTris);
+        myFont->generateSideChar(chars[i], generateSideTris);
 
-        SbVec2f p = myFont->getCharOffset(chars+2*i);
+        SbVec2f p = myFont->getCharOffset(chars[i]);
         genTranslate[0] += p[0];
         genTranslate[1] += p[1];
     }
@@ -1826,10 +1826,10 @@ SoOutlineFontCache::getWidth(int line)
 ////////////////////////////////////////////////////////////////////////
 {
     float total = 0.0;
-    const char *chars = getUCSString(line);
+    const unsigned short *chars = getUCSString(line);
 
     for (int i = 0; i < getNumUCSChars(line); i++) {
-        auto* outline = getOutline(chars+2*i);
+        auto* outline = getOutline(chars[i]);
         total += outline->getCharAdvance()[0];
     }
 
@@ -1844,7 +1844,7 @@ SoOutlineFontCache::getWidth(int line)
 // Use: private
 
 void
-SoOutlineFontCache::getCharBBox(const char* c, SbBox2f &result)
+SoOutlineFontCache::getCharBBox(unsigned int c, SbBox2f &result)
 //
 ////////////////////////////////////////////////////////////////////////
 {
@@ -1872,7 +1872,7 @@ SoOutlineFontCache::getCharBBox(const char* c, SbBox2f &result)
 //
 ////////////////////////////////////////////////////////////////////////
 
-const SoFontOutline *SoOutlineFontCache::getOutline(const char *uc)
+const SoFontOutline *SoOutlineFontCache::getOutline(unsigned int c)
 {
   const SoFontOutline *result{};
   if (fontNumList.empty())
@@ -1880,19 +1880,18 @@ const SoFontOutline *SoOutlineFontCache::getOutline(const char *uc)
     result = SoFontOutline::nullptrOutline();
     return result;
   }
-  const auto key = static_cast<std::size_t>((uc[0] << 8) | uc[1]);
 
-  if (auto itFind = outlineDict.find(key); itFind == outlineDict.end())
+  if (auto itFind = outlineDict.find(c); itFind == outlineDict.end())
   {
 
-    auto newOutline = FL::Context::uniOutline(fontNumList, reinterpret_cast<const GLubyte *>(uc));
+    auto newOutline = FL::Context::uniOutline(fontNumList, c);
     if (newOutline == nullptr)
     {
       result = SoFontOutline::nullptrOutline();
     }
     else
     {
-      auto itInsert = outlineDict.insert(std::make_pair(key, SoFontOutline(newOutline, fontSize)));
+      auto itInsert = outlineDict.insert(std::make_pair(c, SoFontOutline(newOutline, fontSize)));
       result = &itInsert.first->second;
     }
   }
@@ -1913,7 +1912,7 @@ const SoFontOutline *SoOutlineFontCache::getOutline(const char *uc)
 // Use: private
 
 SbVec2f
-SoOutlineFontCache::getCharOffset(const char* c)
+SoOutlineFontCache::getCharOffset(unsigned int c)
 //
 ////////////////////////////////////////////////////////////////////////
 {
@@ -1932,7 +1931,7 @@ SoOutlineFontCache::getCharOffset(const char* c)
 // Use: public, internal
 
 void
-SoOutlineFontCache::generateFrontChar(const char* c,
+SoOutlineFontCache::generateFrontChar(unsigned int c,
                                       gluTESSELATOR *tobj)
 //
 ////////////////////////////////////////////////////////////////////////
@@ -2077,28 +2076,26 @@ SoOutlineFontCache::setupToRenderSide(SoState *state, bool willTexture)
 // Use: internal
 
 bool
-SoOutlineFontCache::hasFrontDisplayList(const char* c,
+SoOutlineFontCache::hasFrontDisplayList(unsigned int c,
                                         gluTESSELATOR *tobj)
 //
 ////////////////////////////////////////////////////////////////////////
 {
     // If we have one, return TRUE
-    unsigned char *uc = (unsigned char*)c;
-    unsigned long key = (uc[0]<<8) | uc[1];
     void *value;
-    if (frontDict->find((size_t)key, value)) return TRUE;
+    if (frontDict->find((size_t)c, value)) return TRUE;
 
     // If we don't and we can't build one, return FALSE.
     if (otherOpen) return FALSE;
 
     // Build one:
-    glNewList(frontList->getFirstIndex()+key, GL_COMPILE);
+    glNewList(frontList->getFirstIndex()+c, GL_COMPILE);
     generateFrontChar(c, tobj);
     SbVec2f t = getOutline(c)->getCharAdvance();
     glTranslatef(t[0], t[1], 0.0);
     glEndList();
 
-    frontDict->enter(key, value);
+    frontDict->enter(c, value);
 
     return TRUE;
 }
@@ -2111,22 +2108,20 @@ SoOutlineFontCache::hasFrontDisplayList(const char* c,
 // Use: internal
 
 bool
-SoOutlineFontCache::hasSideDisplayList(const char* c,
+SoOutlineFontCache::hasSideDisplayList(unsigned int c,
                                        SideCB *callbackFunc)
 //
 ////////////////////////////////////////////////////////////////////////
 {
-    unsigned char *uc = (unsigned char*)c;
-    unsigned long key = (uc[0]<<8) | uc[1];
     void *value;
     // If we have one, return TRUE
-    if (sideDict->find((size_t)key, value)) return TRUE;
+    if (sideDict->find((size_t)c, value)) return TRUE;
 
     // If we don't and we can't build one, return FALSE.
     if (otherOpen) return FALSE;
 
     // Build one:
-    glNewList(sideList->getFirstIndex()+key, GL_COMPILE);
+    glNewList(sideList->getFirstIndex()+c, GL_COMPILE);
 
     glBegin(GL_QUADS);    // Render as independent quads:
     generateSideChar(c, callbackFunc);
@@ -2135,7 +2130,7 @@ SoOutlineFontCache::hasSideDisplayList(const char* c,
     SbVec2f t = getOutline(c)->getCharAdvance();
     glTranslatef(t[0], t[1], 0.0);
     glEndList();
-    sideDict->enter(key, value);
+    sideDict->enter(c, value);
 
     return TRUE;
 }
@@ -2154,9 +2149,9 @@ SoOutlineFontCache::callFrontLists(int line)
 //
 ////////////////////////////////////////////////////////////////////////
 {
-    const char *str = getUCSString(line);
+    const unsigned short *str = getUCSString(line);
 
-    glCallLists(getNumUCSChars(line), GL_2_BYTES, (unsigned char*)str);
+    glCallLists(getNumUCSChars(line), GL_UNSIGNED_SHORT, str);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -2173,9 +2168,9 @@ SoOutlineFontCache::callSideLists(int line)
 //
 ////////////////////////////////////////////////////////////////////////
 {
-    const char *str = getUCSString(line);
+    const unsigned short* str = getUCSString(line);
 
-    glCallLists(getNumUCSChars(line), GL_2_BYTES, (unsigned char*)str);
+    glCallLists(getNumUCSChars(line), GL_UNSIGNED_SHORT, str);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -2192,18 +2187,17 @@ SoOutlineFontCache::renderFront(int line,
 //
 ////////////////////////////////////////////////////////////////////////
 {
-    const char *str = getUCSString(line);
-    unsigned char *ustr = (unsigned char*)str;
+    const unsigned short *str = getUCSString(line);
 
     void *value;
     for (int i = 0; i < getNumUCSChars(line); i++) {
-        unsigned long key = ustr[2*i]<<8 | ustr[2*i+1];
+        unsigned int key = str[i];
         if (frontDict->find((size_t)key, value)) {
             glCallList(frontList->getFirstIndex()+key);
         }
         else {
-            generateFrontChar(str+2*i, tobj);
-            SbVec2f t = getOutline(str+2*i)->getCharAdvance();
+            generateFrontChar(key, tobj);
+            SbVec2f t = getOutline(key)->getCharAdvance();
             glTranslatef(t[0], t[1], 0.0);
         }
     }
@@ -2223,20 +2217,20 @@ SoOutlineFontCache::renderSide(int line,
 //
 ////////////////////////////////////////////////////////////////////////
 {
-    const char *str = getUCSString(line);
+    const unsigned short *str = getUCSString(line);
     unsigned char *ustr = (unsigned char*)str;
     void* value;
     for (int i = 0; i < getNumUCSChars(line); i++) {
-        unsigned long key = (ustr[2*i]<<8)|ustr[2*i+1];
+      unsigned int key = str[i];
         if (sideDict->find((size_t)key, value)) {
             glCallList(sideList->getFirstIndex()+key);
         }
         else {
             glBegin(GL_QUADS);
-            generateSideChar(str+2*i, callbackFunc);
+            generateSideChar(key, callbackFunc);
             glEnd();
 
-            SbVec2f t = getOutline(str+2*i)->getCharAdvance();
+            SbVec2f t = getOutline(key)->getCharAdvance();
             glTranslatef(t[0], t[1], 0.0);
         }
     }
@@ -2281,7 +2275,7 @@ SoOutlineFontCache::convertToUCS(SbNodeIdType nodeid,
     //for each line of text, allocate a sufficiently large buffer
     //An extra two bytes are allocated.
     for (i = 0; i< strings.getNum(); i++){
-        UCSStrings[i] = new char[2*strings[i].getLength()+2];
+        UCSStrings[i] = new unsigned short[strings[i].getLength()];
 
         char* input = (char *)strings[i].getString();
         size_t inbytes = strings[i].getLength();
@@ -2307,8 +2301,8 @@ SoOutlineFontCache::convertToUCS(SbNodeIdType nodeid,
 
         int j;
         for (j = 0; j < getNumUCSChars(i); j++) {
-            char* c = (char*)UCSStrings[i]+j*2;
-            DGL_HTON_SHORT(SHORT(c), SHORT(c));
+            unsigned short* c = static_cast<unsigned short*>(UCSStrings[i]) + j;
+            DGL_HTON_SHORT(*c, *c);
         }
     }
 
@@ -2470,7 +2464,7 @@ SoOutlineFontCache::getProfileBBox(SbBox2f &profileBox)
 // Use: private
 
 void
-SoOutlineFontCache::generateSideChar(const char* c, SideCB *callbackFunc)
+SoOutlineFontCache::generateSideChar(unsigned int c, SideCB *callbackFunc)
 //
 ////////////////////////////////////////////////////////////////////////
 {

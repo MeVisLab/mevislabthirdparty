@@ -1,0 +1,12 @@
+type: cpp
+name: kiwisolver
+version: "1.4.1"
+homepage: https://github.com/nucleic/kiwi
+description: "A fast implementation of the Cassowary constraint solver"
+license: BSD-3-Clause
+
+sources:
+  "1.4.1":
+    sha256: 91bfcd2a14bea6f93c86876c4abccb53dc3f0bcad55e3a0af0b3e57ced6eef11
+    url: pypi://kiwisolver/kiwisolver-${version}.tar.gz
+    base_path: kiwisolver-${version}

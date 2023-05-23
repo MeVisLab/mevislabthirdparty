@@ -1,0 +1,31 @@
+diff --git i/sphinxcontrib/htmlhelp/__init__.py w/sphinxcontrib/htmlhelp/__init__.py
+index 43de42b..fa6fe28 100644
+--- i/sphinxcontrib/htmlhelp/__init__.py
++++ w/sphinxcontrib/htmlhelp/__init__.py
+@@ -16,6 +16,7 @@
+ from docutils import nodes
+ from docutils.nodes import Element, Node, document
+ 
++import sphinx
+ from sphinx import addnodes
+ from sphinx.application import Sphinx
+ from sphinx.builders.html import StandaloneHTMLBuilder
+@@ -23,13 +24,17 @@
+ from sphinx.environment.adapters.indexentries import IndexEntries
+ from sphinx.locale import get_translation
+ from sphinx.util import logging
+-from sphinx.util import progress_message
+ from sphinx.util.fileutil import copy_asset_file
+ from sphinx.util.nodes import NodeMatcher
+ from sphinx.util.osutil import make_filename_from_project, relpath
+ from sphinx.util.template import SphinxRenderer
+ from sphinx.writers.html import HTMLTranslator
+ 
++if sphinx.version_info[:2] >= (6, 1):
++    from sphinx.util.display import progress_message
++else:
++    from sphinx.util import progress_message  # type: ignore[attr-defined,no-redef]
++
+ from sphinxcontrib.htmlhelp.version import __version__
+ 
+ 

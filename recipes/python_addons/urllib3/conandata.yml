@@ -1,12 +1,12 @@
 type: pure_c
 name: urllib3
-version: "1.26.12"
+version: "1.26.15"
 homepage: https://urllib3.readthedocs.io
 description: urllib3 is a powerful, user-friendly HTTP client for Python
 license: MIT
 
 sources:
-  "1.26.12":
-    sha256: 3fa96cf423e6987997fc326ae8df396db2a8b7c667747d47ddd8ecba91f4a74e
+  "1.26.15":
+    sha256: 8a388717b9476f934a21484e8c8e61875ab60644d29b9b39e11e4b9dc1c6b305
     url: https://github.com/urllib3/urllib3/releases/download/${version}/urllib3-${version}.tar.gz
     base_path: urllib3-${version}

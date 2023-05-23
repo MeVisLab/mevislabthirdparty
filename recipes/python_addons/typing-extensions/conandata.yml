@@ -1,0 +1,12 @@
+type: pure_c
+name: "typing-extensions"
+version: "4.5.0"
+homepage: "https://github.com/python/typing_extensions"
+description: "Backported and experimental type hints for Python"
+license: "Python-2.0"
+
+sources:
+  "4.5.0":
+    sha256: "d4519a76e9d03e20763eeb837dc5bc1e189adde7100473236d9374f370f82cef"
+    url: "https://github.com/python/typing_extensions/archive/refs/tags/${version}.zip"
+    base_path: "typing_extensions-${version}"

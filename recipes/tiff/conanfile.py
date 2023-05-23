@@ -26,13 +26,16 @@ class ConanRecipe(ConanFile):
             self.create_cmake_wrapper()
             self._cmake = CMake(self)
             self._cmake.definitions["CMAKE_DEBUG_POSTFIX"] = "d"
-            self._cmake.definitions["BUILD_SHARED_LIBS"] = True
+            self._cmake.definitions["BUILD_SHARED_LIBS"] = "ON"
             self._cmake.definitions['CMAKE_INSTALL_LIBDIR'] = 'lib'
             self._cmake.definitions['CMAKE_INSTALL_BINDIR'] = 'bin'
             self._cmake.definitions['CMAKE_INSTALL_INCLUDEDIR'] = 'include'
 
             self._cmake.definitions['CMAKE_DISABLE_FIND_PACKAGE_OpenGL'] = True
             self._cmake.definitions['CMAKE_DISABLE_FIND_PACKAGE_GLUT'] = True
+
+            self._cmake.definitions['tiff-install'] = True
+            self._cmake.definitions['tiff-docs'] = False
 
             self._cmake.definitions["lzma"] = "xz-utils" in self.deps_cpp_info.deps
             self._cmake.definitions["jpeg"] = "libjpeg" in self.deps_cpp_info.deps

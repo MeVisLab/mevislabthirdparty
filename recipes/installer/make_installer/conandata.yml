@@ -1,13 +1,13 @@
 type: pure_c
 name: make_installer
 display_name: GNU Make
-version: "4.4.0"
+version: "4.4.1"
 homepage: https://www.gnu.org/software/make/make.html
 description: Standard tool to compile source trees
 license: GPL-3.0-or-later
 
 sources:
-  "4.4.0":
+  "4.4.1":
     sha256: 581f4d4e872da74b3941c874215898a7d35802f03732bdccee1d4a7979105d18
-    url: http://mirror.clientvps.com/gnu/make/make-${version_major}.${version_minor}.tar.gz
+    url: http://ftp.gnu.org/gnu/make/make-${version_major}.${version_minor}.tar.gz
     base_path: make-${version_major}.${version_minor}

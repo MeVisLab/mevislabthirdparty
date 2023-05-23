@@ -1,0 +1,12 @@
+type: pure_c
+name: sphinxcontrib-jsmath
+version: "1.0.1"
+homepage: https://github.com/sphinx-doc/sphinxcontrib-jsmath
+description:  Sphinx extension which renders display math in HTML via JavaScript
+license: BSD-2-Clause
+
+sources:
+  "1.0.1":
+    sha256: 1a20febedb885c78f2e2c29b6f4c1e4e6fe0ac4699378b624b805914491df064
+    url: https://github.com/sphinx-doc/sphinxcontrib-jsmath/archive/refs/tags/${version}.tar.gz
+    base_path: sphinxcontrib-jsmath-${version}

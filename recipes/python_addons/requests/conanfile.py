@@ -13,3 +13,6 @@ class ConanRecipe(ConanFile):
         self.requires(f"certifi/[>=2022.06.15]@{self.user}/{self.channel}")
         self.requires(f"chardet/[>=4.0.0]@{self.user}/{self.channel}")
         self.requires(f"urllib3/[>=1.26.7]@{self.user}/{self.channel}")
+
+    def build_requirements(self):
+        self.build_requires(f"wheel/[>=0.37.0]@{self.user}/{self.channel}")

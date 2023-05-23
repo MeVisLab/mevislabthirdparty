@@ -2,18 +2,18 @@ type: cpp
 name: hunspell
 cmake_name: Hunspell
 display_name: Hunspell
-version: "1.7.1"
+version: "1.7.2"
 homepage: http://hunspell.github.io
 description: Hunspell spell checker - an improved replacement for myspell
 license: LGPL-2.1-or-later
 
 sources:
-  "1.7.1":
+  "1.7.2":
     windows:
-      sha256: 6bcdc8297fbdd47dc35bdcb2a1703ae3962f044c0c8f6742c4aa37f598f28dcb
+      sha256: 1d6b3ea1ab9ad4603335f0a663f260e88814d5f35b0ab69f0f24f6c19c02a3e1
       url: https://github.com/hunspell/hunspell/archive/refs/tags/v${version}.zip
       base_path: hunspell-${version}
     unix:
-      sha256: b2d9c5369c2cc7f321cb5983fda2dbf007dce3d9e17519746840a6f0c4bf7444
+      sha256: 11ddfa39afe28c28539fe65fc4f1592d410c1e9b6dd7d8a91ca25d85e9ec65b8
       url: https://github.com/hunspell/hunspell/releases/download/v${version}/hunspell-${version}.tar.gz
       base_path: hunspell-${version}

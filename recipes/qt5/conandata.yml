@@ -3,7 +3,7 @@ name: qt5
 cmake_name: Qt5Dummy
 display_name: Qt5
 mli_name: None
-version: 5.12.12
+version: 5.15.8
 homepage: https://www.qt.io
 description: Qt is a leading cross-platform application and UI development framework for desktop, embedded and mobile operating systems
 license: LGPL-3.0-only
@@ -11,49 +11,28 @@ license: LGPL-3.0-only
 restricted_builds: ['windows','linux','mac']
 
 sources:
-  5.12.12:
-    sha256: 1979a3233f689cb8b3e2783917f8f98f6a2e1821a70815fb737f020cd4b6ab06
-    url: http://download.qt.io/archive/qt/5.12/${version}/single/qt-everywhere-src-${version}.tar.xz
+  5.15.8:
+    sha256: 776a9302c336671f9406a53bd30b8e36f825742b2ec44a57c08217bff0fa86b9
+    url: https://download.qt.io/archive/qt/5.15/${version}/single/qt-everywhere-opensource-src-${version}.tar.xz
     base_path: qt-everywhere-src-${version}
+    qtwebengine: v5.15.12-lts
 
 patches:
-  5.12.12:
+  5.15.8:
     - patch_file: patches/${version}-CVE-2022-25255.patch
     - patch_file: patches/${version}-CVE-2022-25643.patch
-    - patch_file: patches/${version}-qtbase_backport_qt_relocatable_feature.patch
     - patch_file: patches/${version}-qtbase_enable_debug_plugin_check.patch
-    - patch_file: patches/${version}-qtbase_gcc11_include_limits.patch
     - patch_file: patches/${version}-qtbase_libpng_disable_incorrect_profile_warning.patch
     - patch_file: patches/${version}-qtbase_linux_debug_suffix.patch
     - patch_file: patches/${version}-qtbase_linux_debug_suffix_cmake.patch
-    - patch_file: patches/${version}-qtbase_mac_cgcolorspace.patch
-    - patch_file: patches/${version}-qtbase_mevis_qobject_clone_evento_hack.patch
     - patch_file: patches/${version}-qtbase_optimize_qglshaderprogram.patch
     - patch_file: patches/${version}-qtbase_qabstractitemview.patch
     - patch_file: patches/${version}-qtbase_qgl_workarround_broken_alpha.patch
-    - patch_file: patches/${version}-qtbase_qgraphicsview_setCursorForItemOnly.patch
     - patch_file: patches/${version}-qtbase_qopenglvertexarrayobject.patch
     - patch_file: patches/${version}-qtbase_qopenglwidget.patch
-    - patch_file: patches/${version}-qtwebengine_abseil.patch
-    - patch_file: patches/${version}-qtwebengine_backport_move_re2_test_to_configure.patch
-    - patch_file: patches/${version}-qtwebengine_breakpad.patch
-    - patch_file: patches/${version}-qtwebengine_detect-ninja-1.10.patch
-    - patch_file: patches/${version}-qtwebengine_disable_debug_symbols.patch
-    - patch_file: patches/${version}-qtwebengine_fix_expat.patch
-    - patch_file: patches/${version}-qtwebengine_fix_linux_build_limit_rspfile_length.patch
-    - patch_file: patches/${version}-qtwebengine_fix_win_vs16_16_8_0_build.patch
-    - patch_file: patches/${version}-qtwebengine_icu-68.patch
-    - patch_file: patches/${version}-qtwebengine_mevis_escape_rpath_variable.patch
-    - patch_file: patches/${version}-qtwebengine_mevis_import_vision.patch
-    - patch_file: patches/${version}-qtwebengine_qtbug_101607.patch
-    # NOTE: already unused in MeVisLab 3.5.0
-    #- patch_file: patches/${version}-qtbase_mkspecs_moc.patch
-    #- patch_file: patches/${version}-qtbase_mkspecs_uic.patch
-    #- patch_file: patches/${version}-qtbase_qicon.patch
-    #- patch_file: patches/${version}-qtbase_qmacstyle.patch
-    #- patch_file: patches/${version}-qtbase_qtabbar.patch
-    #- patch_file: patches/${version}-qtbase_qtabwidget.patch
-    #- patch_file: patches/${version}-qtbase_qwidget.patch
-    #- patch_file: patches/${version}-qtbase_widgets_styles_qfusionstyle_cpp.patch
-    #- patch_file: patches/${version}-qtbase_widgets_styles_qstyle_qrc.patch
-
+    - patch_file: patches/${version}-qtbase_qgraphicsview_setCursorForItemOnly.patch
+    - patch_file: patches/${version}-qtwebengine_ignore_invalid_events.patch
+    - patch_file: patches/${version}-qtbase_mevis_qmetacallevent_clone.patch
+    - patch_file: patches/${version}-qtwebengine_process_debug_name.patch
+      patch_description: use debug suffix for QtWebEngineProcess on all platforms, fixes MLAB-3462
+      patch_type: bugfix

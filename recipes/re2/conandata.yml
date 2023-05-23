@@ -1,12 +1,12 @@
 type: pure_c
 name: re2
-version: "2022.04.01"
+version: "2023.02.01"
 homepage: https://github.com/google/re2
 description: Fast, safe, thread-friendly regular expression library
 license: BSD-3-Clause
 
 sources:
-  "2022.04.01":
-    sha256: 1ae8ccfdb1066a731bba6ee0881baad5efd2cd661acd9569b689f2586e1a50e9
+  "2023.02.01":
+    sha256: cbce8b7803e856827201a132862e41af386e7afd9cc6d9a9bc7a4fa4d8ddbdde
     url: https://github.com/google/re2/archive/${version_major}-0${version_minor}-0${version_patch}.tar.gz
     base_path: "re2-${version_major}-0${version_minor}-0${version_patch}"

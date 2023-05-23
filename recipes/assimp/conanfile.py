@@ -34,6 +34,10 @@ class ConanRecipe(ConanFile):
             self._cmake.definitions["ZLIB_INC_SEARCH_PATH"] = self.deps_cpp_info['zlib'].include_paths
             self._cmake.definitions["ZLIB_LIB_SEARCH_PATH"] = self.deps_cpp_info['zlib'].lib_paths
 
+            # disable Collada module, see CVE-2022-45748 / https://github.com/assimp/assimp/issues/4286
+            self._cmake.definitions["ASSIMP_BUILD_COLLADA_IMPORTER"] = False
+            self._cmake.definitions["ASSIMP_BUILD_COLLADA_EXPORTER"] = False
+
             self._cmake.configure()
         return self._cmake
 

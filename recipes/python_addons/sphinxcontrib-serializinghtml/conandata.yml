@@ -1,0 +1,12 @@
+type: pure_c
+name: sphinxcontrib-serializinghtml
+version: "1.1.5"
+homepage: https://github.com/sphinx-doc/sphinxcontrib-serializinghtml
+description: Sphinx extension which outputs serialized HTML files (json and pickle)
+license: BSD-2-Clause
+
+sources:
+  "1.1.5":
+    sha256: 787a346f2593bf324c2e8096f23d3d5d0727cb990dc697222acff3daaa42ba1e
+    url: https://github.com/sphinx-doc/sphinxcontrib-serializinghtml/archive/refs/tags/${version}.tar.gz
+    base_path: sphinxcontrib-serializinghtml-${version}

@@ -1,13 +1,13 @@
 type: header_only
 name: opencl-headers
 cmake_name: OpenCL
-version: "2022.09.30"
+version: "2023.04.17"
 homepage: https://github.com/KhronosGroup/OpenCL-Headers
 description: C language headers for the OpenCL API
 license: Apache-2.0
 
 sources:
-  "2022.09.30":
-    sha256: 0ae857ecb28af95a420c800b21ed2d0f437503e104f841ab8db249df5f4fbe5c
+  "2023.04.17":
+    sha256: 0ce992f4167f958f68a37918dec6325be18f848dee29a4521c633aae3304915d
     url: https://github.com/KhronosGroup/OpenCL-Headers/archive/refs/tags/v${version}.tar.gz
     base_path: OpenCL-Headers-${version}

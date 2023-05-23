@@ -1,0 +1,14 @@
+diff --git i/boost/multiprecision/cpp_bin_float.hpp w/boost/multiprecision/cpp_bin_float.hpp
+index 8bb7294b7..43408fa1d 100644
+--- i/boost/multiprecision/cpp_bin_float.hpp
++++ w/boost/multiprecision/cpp_bin_float.hpp
+@@ -2146,9 +2146,6 @@ class numeric_limits<boost::multiprecision::number<boost::multiprecision::cpp_bi
+       static number_type value = get_max();
+       return value;
+    }
+-#ifdef BOOST_MSVC
+-#pragma warning(pop)
+-#endif
+    static constexpr number_type lowest()
+    {
+       return -(max)();

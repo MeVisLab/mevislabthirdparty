@@ -8,6 +8,7 @@ from conans.errors import ConanException
 import subprocess
 import shutil
 import os
+import glob
 
 
 class ConanRecipe(ConanFile):
@@ -28,7 +29,7 @@ class ConanRecipe(ConanFile):
         self.requires("bzip2/[>=1.0.8]" + channel)
         self.requires("xz-utils/[>=5.2.5]" + channel)
         self.requires("libffi/[>=3.3]" + channel)
-        self.requires("openssl/1.1.1s" + channel)
+        self.requires("openssl/1.1.1t" + channel)
 
 
     def _unix_build(self):
@@ -187,6 +188,20 @@ class ConanRecipe(ConanFile):
         self.patch_binaries()
         self.default_package()
 
+
+        # Hack for a shortcoming of building pyproject.toml projects through pip install:
+        # It is not possible to pass on a flag to build in debug mode, which let's the linker fail on Windows in Debug mode
+        # (and man, I almost despaired when trying to work out how the compiler is called)
+        # We take a shortcut and set the flag where it is needed through an environment variable.
+        build_exts = glob.glob(self.package_folder + "/**/*distutils/command/build_ext.py",
+                              recursive=True)
+        if build_exts:
+            for build_ext in build_exts:
+                tools.replace_in_file(build_ext,
+                                      "self.debug = None",
+                                      "self.debug = bool(int(os.environ.get('SETUPTOOLS_BUILD_DEBUG'))) if 'SETUPTOOLS_BUILD_DEBUG' in os.environ else None   # MeVis hack")
+        else:
+            print("Did not find 'command/build_ext.py'")
 
     def package_info(self):
         self.default_package_info()

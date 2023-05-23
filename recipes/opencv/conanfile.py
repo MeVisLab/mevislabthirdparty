@@ -4,6 +4,7 @@ from conans import CMake
 from conans import tools
 import glob
 import os
+import re
 
 
 class ConanRecipe(ConanFile):
@@ -45,7 +46,7 @@ class ConanRecipe(ConanFile):
         tools.rmdir(os.path.join("sources", '3rdparty'))
 
         tools.replace_in_file(os.path.join('sources', 'CMakeLists.txt'), 'if(" ${CMAKE_SOURCE_DIR}" STREQUAL " ${CMAKE_BINARY_DIR}")', 'if(false)')
-        tools.replace_in_file(os.path.join('sources', 'cmake', 'OpenCVFindWebP.cmake'), 'FIND_LIBRARY(WEBP_LIBRARY NAMES webp)', 'FIND_LIBRARY(WEBP_LIBRARY NAMES webp webpd)')
+        tools.replace_in_file(os.path.join('sources', 'cmake', 'OpenCVFindWebP.cmake'), 'FIND_LIBRARY(WEBP_LIBRARY NAMES webp)', 'FIND_LIBRARY(WEBP_LIBRARY NAMES webp webpd libwebp libwebpd)')
         tools.replace_in_file(os.path.join('sources', 'cmake', 'OpenCVDetectOpenCL.cmake'), 'ocv_install_3rdparty_licenses(opencl-headers "${OpenCV_SOURCE_DIR}/3rdparty/include/opencl/LICENSE.txt")', '')
         tools.replace_in_file(os.path.join('sources', 'cmake', 'OpenCVInstallLayout.cmake'), 'ocv_update(OPENCV_INSTALL_BINARIES_PREFIX "${OpenCV_ARCH}/${OpenCV_RUNTIME}/")', 'ocv_update(OPENCV_INSTALL_BINARIES_PREFIX "")')
 
@@ -177,6 +178,11 @@ class ConanRecipe(ConanFile):
             self._cmake.definitions["PROTOBUF_UPDATE_FILES"]    = True
             self._cmake.definitions["Protobuf_USE_STATIC_LIBS"] = True
 
+            # Avoid link dependency on gstreamer:
+            self._cmake.definitions["VIDEOIO_PLUGIN_LIST"]      = "ffmpeg;gstreamer"  # could also be "all"
+            self._cmake.definitions["OPENCV_GAPI_GSTREAMER"]    = False               # because this is currently not a plugin
+
+
             python_package = self.deps_cpp_info['python']
             version = python_package.version.split('.')
             major, minor = version[0], version[1]
@@ -206,6 +212,14 @@ class ConanRecipe(ConanFile):
         # Without the following lines the release build of OpenCV will work,
         # but not the debug build. That's how it works, but I have no idea
         # where the cause of the problem lies.
+
+        if tools.os_info.linux_distro in ["ubuntu", "debian"]:
+            installer = tools.SystemPackageTool()
+            packages = [
+                'libgstreamer1.0-dev',
+                'libgstreamer-plugins-base1.0-dev',
+                ]
+            installer.install_packages(packages)
 
         find_libs_grfmt = os.path.join("sources", 'cmake', 'OpenCVFindLibsGrfmt.cmake')
         tools.replace_in_file(find_libs_grfmt, 'if(NOT ZLIB_FOUND)', '''
@@ -265,16 +279,74 @@ class ConanRecipe(ConanFile):
 
 
     def package_info(self):
-        self.default_package_info()
+        self.cpp_info.name = "OpenCV"
+        self.cpp_info.names["cmake_find_package"] = "OpenCV"
+        self.cpp_info.names["cmake_find_package_multi"] = "OpenCV"
+        
+        # list dependencies of the components
+        comp_dependencies = {
+            "core":       [],
+            "flann":      [],
+            "imgproc":    [],
+            "ml":         [],
+            "photo":      ["imgproc"],
+            "dnn":        ["imgproc", "protobuf::protobuf"],
+            "features2d": ["flann", "imgproc"],
+            "imgcodecs":  ["imgproc", "libpng::libpng", "libjpeg::libjpeg", "tiff::tiff", "webp::webp"],
+            "videoio":    ["imgproc", "imgcodecs"],
+            "calib3d":    ["flann", "imgproc", "features2d"],
+            "objdetect":  ["flann", "imgproc", "features2d", "calib3d"],
+            "highgui":    ["imgproc", "imgcodecs", "videoio", "qt5::qt5"],
+            "stitching":  ["flann", "imgproc", "features2d", "calib3d"],
+            "video":      ["flann", "imgproc", "features2d", "calib3d"],
+            "gapi":       ["imgproc", "calib3d", "video"],
+        }
+        
+        prefix = "opencv_"
+        full_core = prefix + "core"
+        version = "".join(self.version.split(".")) if self.settings.os == "Windows" else ""
+        debug_suffix = "d" if self.settings.build_type == "Debug" else ""
+        # keep track of existing libs that don't belong to an explicit component:
+        unassigned_libs = tools.collect_libs(self)
+        # filter out (potential) plugins:
+        plugin_re = re.compile(".*(ffmpeg|gstreamer).*")
+        unassigned_libs = [name for name in unassigned_libs if not plugin_re.match(name)]
+        for comp in comp_dependencies:
+            full_comp = prefix + comp
+            # prefix local components with "opencv_":
+            requirements = [r if "::" in r else prefix + r for r in comp_dependencies[comp]]
+            if comp != "core":
+                # everything depends on opencv_core (except opencv_core itself):
+                requirements += [full_core]
+            # everything depends on eigen:
+            requirements += ["eigen::eigen"]
+            self.cpp_info.components[full_comp].requires = requirements
+            # set library name of this component
+            lib_name = f"{full_comp}{version}{debug_suffix}"
+            self.cpp_info.components[full_comp].libs = [lib_name]
+            try:
+                unassigned_libs.remove(lib_name)
+            except ValueError:
+                self.output.warn(f"{lib_name} not found in list of unassigned libs: {unassigned_libs}")
+            
+            if tools.os_info.is_linux:
+                self.cpp_info.components[full_comp].system_libs.extend(["pthread", "m", "dl"])
+            if not tools.os_info.is_windows:
+                self.cpp_info.components[full_comp].includedirs = ['include', 'include/opencv4']
 
-        if tools.os_info.is_linux:
-            self.cpp_info.includedirs = ['include', 'include/opencv4']
-            self.cpp_info.system_libs.extend(["pthread", "m", "dl"])
-        elif tools.os_info.is_macos:
-            self.cpp_info.includedirs = ['include', 'include/opencv4']
-            frameworks = ['OpenCL', 'Accelerate', 'CoreMedia', 'CoreVideo', 'CoreGraphics', 'AVFoundation', 'QuartzCore', 'Cocoa']
-            for framework in frameworks:
-                self.cpp_info.exelinkflags.append('-framework %s' % framework)
-            self.cpp_info.sharedlinkflags = self.cpp_info.exelinkflags
+        # self.cpp_info.components[full_core].libs += tools.collect_libs(self)
+        if tools.os_info.is_macos:
+            self.cpp_info.components["opencv_highgui"].frameworks = ["Cocoa"]
+            self.cpp_info.components["opencv_videoio"].frameworks = ["Cocoa", "Accelerate", "AVFoundation", "CoreGraphics", "CoreMedia", "CoreVideo", "QuartzCore"]
         elif tools.os_info.is_windows:
-            self.cpp_info.system_libs.append('Vfw32')
+            self.cpp_info.components["opencv_highgui"].system_libs = ["Vfw32"]
+        
+        # create a dummy component for compatibility with our old one-component CMake file:
+        self.cpp_info.components["OpenCV"].requires = [prefix + comp for comp in comp_dependencies]
+        # Conan demands that all project requirements are used:
+        self.cpp_info.components["OpenCV"].requires += ["python::python", "numpy::numpy"]
+        # Put all unused libs in this dummy component:
+        if unassigned_libs:
+            self.output.warn(f'Adding the following libs to the dummy "OpenCV" component: {unassigned_libs}')
+            self.cpp_info.components["OpenCV"].libs += unassigned_libs
+        

@@ -17,3 +17,6 @@ patches:
     - patch_file: patches/16042019-mevis_pythonqt_support.patch
     - patch_file: patches/16042019-support_socket_in_place_of_fd.patch
     - patch_file: patches/16042019-recursive_run_forever.patch
+    - patch_file: patches/16042019-fix_qsocketnotifier_signal.patch
+      patch_description: Qt5.15 added an override for the QSocketNotifier::activated signal with different arguments
+      patch_type: bugfix

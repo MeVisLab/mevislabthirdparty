@@ -1,0 +1,35 @@
+diff --git i/dcmqrdb/libsrc/dcmqrsrv.cc w/dcmqrdb/libsrc/dcmqrsrv.cc
+index 157e6c0..aec2905 100644
+--- i/dcmqrdb/libsrc/dcmqrsrv.cc
++++ w/dcmqrdb/libsrc/dcmqrsrv.cc
+@@ -1126,21 +1126,17 @@ OFCondition DcmQueryRetrieveSCP::waitForAssociation(T_ASC_Network * theNet)
+ #endif
+     }
+ 
+-    // cleanup code
++    // clean-up association
+     OFCondition oldcond = cond;    /* store condition flag for later use */
+-    if (!options_.singleProcess_ && (cond != ASC_SHUTDOWNAPPLICATION))
++    cond = ASC_dropAssociation(assoc);
++    if (cond.bad())
+     {
+-        /* the child will handle the association, we can drop it */
+-        cond = ASC_dropAssociation(assoc);
+-        if (cond.bad())
+-        {
+-            DCMQRDB_ERROR("Cannot Drop Association: " << DimseCondition::dump(temp_str, cond));
+-        }
+-        cond = ASC_destroyAssociation(&assoc);
+-        if (cond.bad())
+-        {
+-            DCMQRDB_ERROR("Cannot Destroy Association: " << DimseCondition::dump(temp_str, cond));
+-        }
++        DCMQRDB_ERROR("Cannot Drop Association: " << DimseCondition::dump(temp_str, cond));
++    }
++    cond = ASC_destroyAssociation(&assoc);
++    if (cond.bad())
++    {
++        DCMQRDB_ERROR("Cannot Destroy Association: " << DimseCondition::dump(temp_str, cond));
+     }
+ 
+     if (oldcond == ASC_SHUTDOWNAPPLICATION) cond = oldcond; /* abort flag is reported to top-level wait loop */

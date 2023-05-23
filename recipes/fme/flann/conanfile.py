@@ -37,9 +37,6 @@ class ConanRecipe(ConanFile):
             self._cmake.definitions["BUILD_MATLAB_BINDINGS"] = False
             self._cmake.definitions["BUILD_PYTHON_BINDINGS"] = False
 
-            self._cmake.definitions["CMAKE_DISABLE_FIND_PACKAGE_GTest"] = True
-            self._cmake.definitions["CMAKE_DISABLE_FIND_PACKAGE_PythonInterp"] = True
-
             self._cmake.configure()
 
         return self._cmake
@@ -56,6 +53,7 @@ class ConanRecipe(ConanFile):
 
         self.copy("*.pdb", src="bin", dst="bin")
 
+        tools.rmdir(os.path.join(self.package_folder, "lib", "cmake"))
         tools.rmdir(os.path.join(self.package_folder, "lib", "pkgconfig"))
 
         # Remove MS runtime files

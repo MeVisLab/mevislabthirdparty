@@ -15,6 +15,7 @@
 #include <optional>
 #include <string>
 #include <vector>
+#include <map>
 
 #ifdef WIN32
 #include <Windows.h>
@@ -134,8 +135,7 @@ namespace FL
 
     Point2DF _bound;                     /* max char size */
     std::vector<FreeTypeOutline> _char8; /* 8 bit char array */
-    std::vector<std::pair<Char, FreeTypeOutline>>
-        _char16; /* 16 bit chars, pair of codepoint and Outline. They are sorted by Char */
+    std::map<Char, FreeTypeOutline> _char16; /* 16 bit chars, pair of codepoint and Outline. They are sorted by Char */
 
     FT_Face _face{};    /* the font face */
     bool _hint{};       /* is glyph hinting active? */

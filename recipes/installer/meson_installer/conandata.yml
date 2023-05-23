@@ -1,12 +1,12 @@
 type: installer
 name: meson_installer
-version: "0.64.0"
+version: "1.1.0"
 homepage: https://mesonbuild.com
 description: Meson is a project to create the best possible next-generation build system
 license: Apache-2.0
 
 sources:
-  "0.64.0":
-    sha256: c5e27e091c2a35b9049e152a6535045ebbd057253aeb67856de6ecbb7b917bab
+  "1.1.0":
+    sha256: d9616c44cd6c53689ff8f05fc6958a693f2e17c3472a8daf83cee55dabff829f
     url: https://github.com/mesonbuild/meson/releases/download/${version}/meson-${version}.tar.gz
     base_path: meson-${version}

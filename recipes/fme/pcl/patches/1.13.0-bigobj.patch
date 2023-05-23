@@ -1,0 +1,13 @@
+diff --git i/CMakeLists.txt w/CMakeLists.txt
+index 17020e1..f9eb0b2 100644
+--- i/CMakeLists.txt
++++ w/CMakeLists.txt
+@@ -203,6 +203,8 @@ if(CMAKE_COMPILER_IS_MSVC)
+     string(APPEND CMAKE_C_FLAGS " /FS")
+     string(APPEND CMAKE_CXX_FLAGS " /FS")
+   endif()
++
++  string(APPEND CMAKE_CXX_FLAGS " /bigobj")
+ endif()
+
+ if(CMAKE_COMPILER_IS_PATHSCALE)

@@ -1,17 +1,17 @@
 type: cpp
 name: mesa
 display_name: Mesa
-version: "22.2.4"
+version: "22.3.7"
 homepage: https://mesa3d.org
 description: an open source software implementation of OpenGL, Vulkan, and other graphics API specifications
 license: MIT
 
 sources:
-  "22.2.4":
-    sha256: 65d76b53ca5c7b46019e0e8e5b414de45d2fecd3fcd71707f6c3bc7691c9f7ab
+  "22.3.7":
+    sha256: 894ce2f4a1c2e76177cdd2284620192d0da3066b243eec2fbb1d7cf37f13042c
     url: https://mesa.freedesktop.org/archive/mesa-${version}.tar.xz
     base_path: mesa-${version}
 
 patches:
-  "22.2.4":
+  "22.3.7":
     - patch_file: patches/${version}-meson_no_fallback.patch

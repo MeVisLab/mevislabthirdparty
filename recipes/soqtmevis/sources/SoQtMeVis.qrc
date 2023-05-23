@@ -18,5 +18,26 @@
     <file>images/persp@2x.png</file>
     <file>images/help.png</file>
     <file>images/help@2x.png</file>
+
+    <file>cursors/curved_hand_cursor.png</file>
+    <file>cursors/curved_hand_cursor@2x.png</file>
+    <file>cursors/flat_hand_cursor.png</file>
+    <file>cursors/flat_hand_cursor@2x.png</file>
+    <file>cursors/normal_vec_cursor.png</file>
+    <file>cursors/normal_vec_cursor@2x.png</file>
+    <file>cursors/pan_cursor.png</file>
+    <file>cursors/pan_cursor@2x.png</file>
+    <file>cursors/pointing_hand_cursor.png</file>
+    <file>cursors/pointing_hand_cursor@2x.png</file>
+    <file>cursors/roll_cursor.png</file>
+    <file>cursors/roll_cursor@2x.png</file>
+    <file>cursors/target_cursor.png</file>
+    <file>cursors/target_cursor@2x.png</file>
+    <file>cursors/tilt_cursor.png</file>
+    <file>cursors/tilt_cursor@2x.png</file>
+    <file>cursors/viewing_cursor.png</file>
+    <file>cursors/viewing_cursor@2x.png</file>
+    <file>cursors/walk_cursor.png</file>
+    <file>cursors/walk_cursor@2x.png</file>
 </qresource>
 </RCC>

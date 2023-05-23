@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from conans import ConanFile
 from conans import tools
+from conan.tools.scm import Git
 import itertools
 import shutil
 import glob
+import re
 import os
 
 
@@ -28,6 +30,8 @@ class ConanRecipe(ConanFile):
             packages.append('libxrandr-dev')
             packages.append('libxkbcommon-x11-dev')
             packages.append('libxkbcommon-dev')
+            packages.append('libxshmfence-dev')
+            packages.append('libxkbfile-dev')
             packages.append('libxi-dev')
             packages.append('libxfixes-dev')
             packages.append('libxext-dev')
@@ -57,10 +61,11 @@ class ConanRecipe(ConanFile):
     def build_requirements(self):
         channel = "@{0}/{1}".format(self.user, self.channel)
         if tools.os_info.is_windows:
-            self.build_requires("jom_installer/[>=1.1.3]" + channel)
-            self.build_requires("winflexbison_installer/[>=2.5.18]" + channel)
-            self.build_requires("gperf_installer/[>=3.1]" + channel)
-            self.build_requires("python2_installer/[>=2.7.17]" + channel)
+            self.tool_requires("gperf_installer/[>=3.1]" + channel)
+            self.tool_requires("jom_installer/[>=1.1.3]" + channel)
+            self.tool_requires("python2_installer/[>=2.7.17]" + channel)
+            self.tool_requires("strawberryperl_installer/[>=5.30]" + channel)
+            self.tool_requires("winflexbison_installer/[>=2.5.18]" + channel)
 
 
     def requirements(self):
@@ -88,7 +93,7 @@ class ConanRecipe(ConanFile):
         _add_dependency("libalsa/[>=1.1.9]", "ALSA", supported_os="Linux")
 
         # on macOS we want to use SecureTransport instead of OpenSSL
-        _add_dependency("openssl/1.1.1s", "OPENSSL", supported_os=["Linux", "Windows"])
+        _add_dependency("openssl/1.1.1t", "OPENSSL", supported_os=["Linux", "Windows"])
 
         # AAT is supported only with -qt-harfbuzz on macOS
         #_add_dependency("harfbuzz/[>=2.6.5]", "HARFBUZZ", supported_os=["Linux", "Windows"])
@@ -109,7 +114,7 @@ class ConanRecipe(ConanFile):
 
 
     def source(self):
-        self.default_source()
+        self.default_source(apply_patches=False)
 
         # copy the relevant license file
         shutil.copy2("sources/LICENSE.LGPLv3", "sources/LICENSE")
@@ -131,8 +136,6 @@ class ConanRecipe(ConanFile):
         # remove deprecated modules
         shutil.rmtree("sources/qtquickcontrols")
         shutil.rmtree("sources/qtscript")
-        if int(self.version.split('.')[1]) <= 12:
-            shutil.rmtree("sources/qtcanvas3d")
 
         # remove some other modules we do not need/want
         shutil.rmtree("sources/qtpurchasing")      # only for iOS, Android and macOS
@@ -140,17 +143,14 @@ class ConanRecipe(ConanFile):
         shutil.rmtree("sources/qtwayland")         # we do not support wayland yet
         shutil.rmtree("sources/qtandroidextras")   # we do not support Android yet
 
-        # # patch to add macos highres icons
-        # NOTE: already unused in MeVisLab 3.5.0
-        #shutil.copy2(os.path.join("patches", "files", "closedock-down-macstyle-16@2x.png"), os.path.join("sources", "qtbase", "src", "widgets", "styles", "images"))
-        #shutil.copy2(os.path.join("patches", "files", "closedock-macstyle-16@2x.png"), os.path.join("sources", "qtbase", "src", "widgets", "styles", "images"))
-        #shutil.copy2(os.path.join("patches", "files", "closedock-macstyle.ai"), os.path.join("sources", "qtbase", "src", "widgets", "styles", "images"))
-        #shutil.copy2(os.path.join("patches", "files", "dockdock-down-macstyle-16@2x.png"), os.path.join("sources", "qtbase", "src", "widgets", "styles", "images"))
-        #shutil.copy2(os.path.join("patches", "files", "dockdock-macstyle-16@2x.png"), os.path.join("sources", "qtbase", "src", "widgets", "styles", "images"))
-        #shutil.copy2(os.path.join("patches", "files", "dockdock-macstyle.ai"), os.path.join("sources", "qtbase", "src", "widgets", "styles", "images"))
+        # replace qtwebengine
+        shutil.rmtree("sources/qtwebengine")
+        git = Git(self, self.source_folder)
+        clone_args = ['--recurse-submodules', '--depth', '1', '--branch', self.conan_data.get('sources').get(self.version)['qtwebengine']]
+        git.clone("https://code.qt.io/qt/qtwebengine.git", "sources/qtwebengine", clone_args)
 
-        # see https://chromium.googlesource.com/chromium/deps/libsrtp/+/376772a4103db3ccd3ffbdce604a6b60ce926dd0
-        shutil.move("sources/qtwebengine/src/3rdparty/chromium/third_party/libsrtp/VERSION", "sources/qtwebengine/src/3rdparty/chromium/third_party/libsrtp/LIBSRTP_VERSION")
+        # finally, apply all patches
+        self.apply_patches()
 
 
     def build(self):
@@ -234,6 +234,13 @@ class ConanRecipe(ConanFile):
         shutil.rmtree(os.path.join(self.package_folder, "doc"), ignore_errors=True)
         shutil.rmtree(os.path.join(self.package_folder, "lib", "pkgconfig"), ignore_errors=True)
 
+        # QtWebEngine's CMake files search dependencies (QtCore etc.) in the same version as QtWebEngine itself.
+        qtwebengine_hdr = tools.load(os.path.join(self.package_folder, "include", "QtWebEngineCore", "qtwebenginecoreversion.h"))
+        qtwebengine_version = re.search('#define QTWEBENGINECORE_VERSION_STR "([0-9]\.[0-9]+\.[0-9]+)', qtwebengine_hdr).group(1)
+        for module in ['Qt5WebEngineCore', 'Qt5WebEngineWidgets', 'Qt5WebEngine']:
+            module_file = os.path.join(self.package_folder, "lib", "cmake", module, f"{module}Config.cmake")
+            tools.replace_in_file(module_file, f"{qtwebengine_version} ${{_{module}_FIND_VERSION_EXACT}}", f"{self.version} ${{_{module}_FIND_VERSION_EXACT}}")
+
         # remove pkg-config la files
         laFileList = glob.glob(os.path.join(self.package_folder, "lib", "*.la"))
         for laFile in laFileList:
@@ -315,9 +322,7 @@ class ConanRecipe(ConanFile):
         if self.settings.build_type == "Debug":
             args.append("-debug")
             args.append("-separate-debug-info")
-        elif self.settings.build_type == "Release":
-            args.append("-release")
-        elif self.settings.build_type == "RelWithDebInfo":
+        elif self.settings.build_type == "Release" or self.settings.build_type == "RelWithDebInfo":
             args.append("-release")
             args.append("-force-debug-info")
             args.append("-separate-debug-info")
@@ -402,7 +407,7 @@ class ConanRecipe(ConanFile):
         # enable wanted SQL drivers
         args.append('-sql-odbc' if ("odbc" in self.deps_cpp_info.deps) or tools.os_info.is_windows else '-no-sql-odbc')
         args.append('-sql-psql' if "libpq" in self.deps_cpp_info.deps else '-no-sql-psql')
-        args.append('-sql-sqlite' if "sqlite3" in self.deps_cpp_info.deps else '-no-sql-psql')
+        args.append('-sql-sqlite' if "sqlite3" in self.deps_cpp_info.deps else '-no-sql-sqlite')
 
         # qtquickcontrols2 styles
         args.append('-style-fusion')
@@ -420,8 +425,8 @@ class ConanRecipe(ConanFile):
             args.append('-feature-webengine-system-libvpx' if 'libvpx' in self.deps_cpp_info.deps else '-no-feature-webengine-system-libvpx')
             args.append('-feature-webengine-system-snappy' if 'snappy' in self.deps_cpp_info.deps else '-no-feature-webengine-system-snappy')
             args.append('-feature-webengine-system-libevent' if 'libevent' in self.deps_cpp_info.deps else '-no-feature-webengine-system-libevent')
-            args.append('-feature-webengine-system-jsoncpp' if 'jsoncpp' in self.deps_cpp_info.deps else '-no-feature-webengine-system-jsoncpp')
-            args.append('-feature-webengine-system-protobuf' if 'protobuf' in self.deps_cpp_info.deps else '-no-feature-webengine-system-protobuf')
+            #args.append('-feature-webengine-system-jsoncpp' if 'jsoncpp' in self.deps_cpp_info.deps else '-no-feature-webengine-system-jsoncpp')
+            #args.append('-feature-webengine-system-protobuf' if 'protobuf' in self.deps_cpp_info.deps else '-no-feature-webengine-system-protobuf')
             args.append('-feature-webengine-system-libxml2' if 'libxml2' in self.deps_cpp_info.deps else '-no-feature-webengine-system-libxml2')
             args.append('-feature-webengine-system-lcms2' if 'lcms2' in self.deps_cpp_info.deps else '-no-feature-webengine-system-lcms2')
             args.append('-feature-webengine-system-png' if 'libpng' in self.deps_cpp_info.deps else '-no-feature-webengine-system-png')
@@ -439,7 +444,6 @@ class ConanRecipe(ConanFile):
         #args.append('-feature-webengine-system-minizip' if 'minizip' in self.deps_cpp_info.deps else '-no-feature-webengine-system-minizip')
         args.append('-no-feature-webengine-system-minizip')
         args.append('-no-feature-webengine-system-zlib')
-
 
         if self.settings.os == 'Linux':
             # always enable session management support. It doesn't need extra
@@ -476,8 +480,6 @@ class ConanRecipe(ConanFile):
         # skip deprecated modules
         args.append("-skip qtquickcontrols")
         args.append("-skip qtscript")
-        if int(self.version.split('.')[1]) <= 12:
-            args.append("-skip qtcanvas3d")
 
         # skip GPL only modules
         args.append("-skip qtcharts")
@@ -485,6 +487,7 @@ class ConanRecipe(ConanFile):
         args.append("-skip qtnetworkauth")
         args.append("-skip qtvirtualkeyboard")
         args.append("-skip qtwebglplugin")
+        args.append("-no-build-qtpdf")      # QtPDF is part of the QtWebEngine module but not LGPL
 
         # skip some other modules we do not need/want
         args.append("-skip qtdoc")           # do not build the Qt Reference Documentation
@@ -493,8 +496,6 @@ class ConanRecipe(ConanFile):
         args.append("-skip qtwayland")       # we do not support wayland yet
         args.append("-skip qtandroidextras") # we do not support Android yet
 
-        # FIXME mapbox-gl-native (a third-party library of Qt) doesn't build with GCC >= 9
-        args.append("-skip qtlocation")
 
         return args
 
@@ -563,6 +564,9 @@ class ConanRecipe(ConanFile):
             # the recommended minimum limit of 1024. Some (older) linux
             # distributions have smaller limits than that by default.
             args += ['QMAKE_CXXFLAGS+="-ftemplate-depth=1024"']
+
+        if tools.os_info.is_macos and self.settings.arch == "armv8":
+            args.append('QMAKE_APPLE_DEVICE_ARCHS="arm64"')
 
         return args
 

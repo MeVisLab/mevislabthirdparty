@@ -1382,7 +1382,7 @@ const MyFontOutline *MyOutlineFontCache::getOutline(unsigned char c)
 
   if (outlines[c].getNumOutlines() == 0)
   {
-    if (const auto *newOutline = FL::Context::outline({fontId}, VALIDATE_CHAR((GLuint)c));
+    if (const auto *newOutline = FL::Context::outline(std::vector<FL::FontNumber>{fontId}, VALIDATE_CHAR((GLuint)c));
         newOutline)
     {
       outlines[c] = MyFontOutline(newOutline, fontSize);

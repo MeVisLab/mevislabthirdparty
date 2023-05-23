@@ -1,0 +1,45 @@
+diff --git i/configure w/configure
+index b797f03..c573638 100755
+--- i/configure
++++ w/configure
+@@ -15248,12 +15248,18 @@ cygwin* | mingw* | pw32* | cegcc*)
+   ;;
+ 
+ darwin* | rhapsody*)
++  if test "x$enable_debug" = xyes
++  then
++    library_names_spec='${libname}d$release$major$shared_ext ${libname}d$shared_ext'
++    soname_spec='${libname}d$release$major$shared_ext'
++  else
++    library_names_spec='$libname$release$major$shared_ext $libname$shared_ext'
++    soname_spec='$libname$release$major$shared_ext'
++  fi
+   dynamic_linker="$host_os dyld"
+   version_type=darwin
+   need_lib_prefix=no
+   need_version=no
+-  library_names_spec='$libname$release$major$shared_ext $libname$shared_ext'
+-  soname_spec='$libname$release$major$shared_ext'
+   shlibpath_overrides_runpath=yes
+   shlibpath_var=DYLD_LIBRARY_PATH
+   shrext_cmds='`test .$module = .yes && echo .so || echo .dylib`'
+@@ -15454,11 +15460,17 @@ linux*android*)
+ 
+ # This must be glibc/ELF.
+ linux* | k*bsd*-gnu | kopensolaris*-gnu | gnu*)
++  if test "x$enable_debug" = xyes
++  then
++    library_names_spec='${libname}d$release$shared_ext$versuffix ${libname}d$release$shared_ext$major ${libname}d$shared_ext'
++    soname_spec='${libname}d$release$shared_ext$major'
++  else
++    library_names_spec='$libname$release$shared_ext$versuffix $libname$release$shared_ext$major $libname$shared_ext'
++    soname_spec='$libname$release$shared_ext$major'
++  fi
+   version_type=linux # correct to gnu/linux during the next big refactor
+   need_lib_prefix=no
+   need_version=no
+-  library_names_spec='$libname$release$shared_ext$versuffix $libname$release$shared_ext$major $libname$shared_ext'
+-  soname_spec='$libname$release$shared_ext$major'
+   finish_cmds='PATH="\$PATH:/sbin" ldconfig -n $libdir'
+   shlibpath_var=LD_LIBRARY_PATH
+   shlibpath_overrides_runpath=no

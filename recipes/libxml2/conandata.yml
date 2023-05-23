@@ -2,17 +2,17 @@ type: pure_c
 name: libxml2
 pkg_config_name: libxml-2.0
 cmake_name: LibXml2
-version: "2.10.3"
+version: "2.10.4"
 homepage: http://xmlsoft.org
 description: XML C parser and toolkit
 license: MIT
 
 sources:
-  "2.10.3":
-    sha256: 5d2cc3d78bec3dbe212a9d7fa629ada25a7da928af432c93060ff5c17ee28a9c
+  "2.10.4":
+    sha256: ed0c91c5845008f1936739e4eee2035531c1c94742c6541f44ee66d885948d45
     url: https://download.gnome.org/sources/libxml2/${version_major}.${version_minor}/libxml2-${version}.tar.xz
     base_path: libxml2-${version}
 
 patches:
-  "2.10.3":
+  "2.10.4":
     - patch_file: "patches/${version}-disable_memory_debugging.patch"

@@ -2,22 +2,19 @@ type: cpp
 name: flann
 cmake_name: FLANN
 display_name: FLANN
-version: "1.9.1"
+version: "1.9.2"
 homepage: https://github.com/flann-lib/flann
 description: FLANN - Fast Library for Approximate Nearest Neighbors
 license: BSD-3-Clause
 
 sources:
-  "1.9.1":
-    sha256: b23b5f4e71139faa3bcb39e6bbcc76967fbaf308c4ee9d4f5bfbeceaa76cc5d3
+  "1.9.2":
+    sha256: e26829bb0017f317d9cc45ab83ddcb8b16d75ada1ae07157006c1e7d601c8824
     url: https://github.com/flann-lib/flann/archive/refs/tags/${version}.tar.gz
     base_path: flann-${version}
 
 patches:
-  "1.9.1":
-    - patch_file: patches/${version}-dist.h.patch
-    - patch_file: patches/${version}-empty_source.patch
-    - patch_file: patches/${version}-external_lz4.patch
+  "1.9.2":
     - patch_file: patches/${version}-export_symbols.patch
-    - patch_file: patches/${version}-cpp17.patch
     - patch_file: patches/${version}-arm_neon_include.patch
+    - patch_file: patches/${version}-conan_lz4.patch

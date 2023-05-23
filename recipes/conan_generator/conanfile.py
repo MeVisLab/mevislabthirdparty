@@ -128,9 +128,7 @@ class mlabdocbook(CMakeFindPackageGenerator):
                 'picojson',
                 'pyyaml',
                 'pyzmq',
-                'requests',
                 'spline',
-                'urllib3',
                 'vigra',
                 'xylib',
             ]

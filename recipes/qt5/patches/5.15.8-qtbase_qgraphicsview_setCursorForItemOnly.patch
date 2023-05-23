@@ -1,0 +1,62 @@
+diff --git a/qtbase/src/widgets/graphicsview/qgraphicsitem.cpp b/qtbase/src/widgets/graphicsview/qgraphicsitem.cpp
+index 944bd95c82..3273b8aea1 100644
+--- a/qtbase/src/widgets/graphicsview/qgraphicsitem.cpp
++++ b/qtbase/src/widgets/graphicsview/qgraphicsitem.cpp
+@@ -2351,6 +2351,24 @@ void QGraphicsItem::setCursor(const QCursor &cursor)
+     itemChange(ItemCursorHasChanged, cursorVariant);
+ }
+ 
++/*!
++    Sets the current cursor shape for the item to \a cursor, but only the item.
++    Subitems or items below the cursor are not checked! The mouse cursor
++    will assume this shape when it's over this item. See the \link
++    Qt::CursorShape list of predefined cursor objects\endlink for a range of
++    useful shapes.
++
++    \sa setCursor(), cursor(), hasCursor(), unsetCursor(), QWidget::cursor,
++    QApplication::overrideCursor()
++*/
++void QGraphicsItem::setCursorForItemOnly(const QCursor &cursor)
++{
++    const QVariant cursorVariant(itemChange(ItemCursorChange, QVariant::fromValue<QCursor>(cursor)));
++    d_ptr->setExtra(QGraphicsItemPrivate::ExtraCursor, qvariant_cast<QCursor>(cursorVariant));
++    d_ptr->hasCursor = 1;
++    itemChange(ItemCursorHasChanged, cursorVariant);
++}
++
+ /*!
+     Returns \c true if this item has a cursor set; otherwise, false is returned.
+ 
+diff --git a/qtbase/src/widgets/graphicsview/qgraphicsitem.h b/qtbase/src/widgets/graphicsview/qgraphicsitem.h
+index d66a4917e5..a144ad7a47 100644
+--- a/qtbase/src/widgets/graphicsview/qgraphicsitem.h
++++ b/qtbase/src/widgets/graphicsview/qgraphicsitem.h
+@@ -206,6 +206,7 @@ public:
+ #ifndef QT_NO_CURSOR
+     QCursor cursor() const;
+     void setCursor(const QCursor &cursor);
++    void setCursorForItemOnly(const QCursor &cursor);
+     bool hasCursor() const;
+     void unsetCursor();
+ #endif
+diff --git a/qtbase/src/widgets/graphicsview/qgraphicsproxywidget.cpp b/qtbase/src/widgets/graphicsview/qgraphicsproxywidget.cpp
+index e4253e9282..d12225434e 100644
+--- a/qtbase/src/widgets/graphicsview/qgraphicsproxywidget.cpp
++++ b/qtbase/src/widgets/graphicsview/qgraphicsproxywidget.cpp
+@@ -995,6 +995,16 @@ bool QGraphicsProxyWidget::eventFilter(QObject *object, QEvent *event)
+             }
+             break;
+ #endif
++// Begin MeVis patch:
++#ifndef QT_NO_CURSOR
++        case QEvent::CursorChange:
++            // Propagate cursor change to the proxy.
++            if (d->lastWidgetUnderMouse) {
++                setCursor(d->lastWidgetUnderMouse->cursor());
++            }
++            break;
++#endif
++// End MeVis patch
+         default:
+             break;
+         }

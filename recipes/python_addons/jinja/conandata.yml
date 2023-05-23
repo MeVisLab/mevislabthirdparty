@@ -1,12 +1,12 @@
 type: pure_c
 name: jinja
-version: "2.11.3"
+version: "3.1.2"
 homepage: http://jinja.pocoo.org
 description: A small but fast and easy to use stand-alone template engine written in pure Python
 license: BSD-3-Clause
 
 sources:
-  "2.11.3":
-    sha256: 4be44a9e55fb069347b217d2d66d51d8b0a97f2f76985b90630bb4f317eb042a
+  "3.1.2":
+    sha256: ecae76cd1a064d40eb46c5375f07953d747f4d65b68cd3fa5f02c91714b799fc
     url: https://github.com/pallets/jinja/archive/${version}.tar.gz
     base_path: jinja-${version}

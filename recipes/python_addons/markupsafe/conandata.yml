@@ -1,13 +1,13 @@
 type: pure_c
 name: markupsafe
 display_name: MarkupSafe
-version: "2.0.1"
+version: "2.1.2"
 homepage: https://palletsprojects.com/p/markupsafe
 description: Implements a text object that escapes characters so it is safe to use in HTML and XML
 license: BSD-3-Clause
 
 sources:
-  "2.0.1":
-    sha256: 7a8714996819a2d685bf0b1fcb585456b70970094efb4437d779d5ba387c1cc0
+  "2.1.2":
+    sha256: 55c8c98abbcb3f1c16d0814a00b760d07e8c7a9aa4fae7b2e137ff8490426b76
     url: https://github.com/pallets/markupsafe/archive/${version}.zip
     base_path: markupsafe-${version}

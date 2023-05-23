@@ -89,7 +89,7 @@ private:
 
 // THIS CLASS SHOULD BE CONSIDERED PRIVATE
 // this class ties Inventor sensors into Xt events
-class SoQtEventHandler : public QObject
+class SOQT_MEVIS_EXPORT SoQtEventHandler : public QObject
 {
     Q_OBJECT
 

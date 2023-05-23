@@ -47,11 +47,11 @@ namespace FL
 
     static const Outline *outline(const std::vector<FontNumber> &numbers, GLuint c);
 
-    static const Outline *outline(const std::vector<FreeTypeFont *> &fonts, const GLubyte *ucs2);
+    static const Outline *outline(const std::vector<FreeTypeFont *> &fonts, GLuint c);
 
-    static const Outline *uniOutline(const std::vector<FontNumber> &numbers, const GLubyte *ucs2);
+    static const Outline *uniOutline(const std::vector<FontNumber> &numbers, GLuint c);
 
-    static const Bitmap *uniBitmap(const std::vector<FontNumber> &numbers, const GLubyte *ucs2);
+    static const Bitmap *uniBitmap(const std::vector<FontNumber> &numbers, GLuint c);
 
     FontNumber currentFont() const;
     void setCurrentFont(FontNumber number);

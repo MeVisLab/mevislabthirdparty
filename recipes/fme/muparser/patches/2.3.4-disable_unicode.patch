@@ -1,0 +1,137 @@
+diff --git c/include/muParserDLL.h i/include/muParserDLL.h
+index f15ee62..50ad587 100644
+--- c/include/muParserDLL.h
++++ i/include/muParserDLL.h
+@@ -43,7 +43,7 @@ extern "C"
+ 	// Basic types
+ 	typedef void* muParserHandle_t;    // parser handle
+ 
+-#ifndef _UNICODE
++#if 1
+ 	typedef char   muChar_t;            // character type
+ #else
+ 	typedef wchar_t   muChar_t;            // character type
+diff --git c/include/muParserDef.h i/include/muParserDef.h
+index 9d2cdb9..22ca78b 100644
+--- c/include/muParserDef.h
++++ i/include/muParserDef.h
+@@ -57,7 +57,7 @@
+ */
+ //#define MUP_USE_OPENMP
+ 
+-#if defined(_UNICODE)
++#if 0
+ 	/** \brief Definition of the basic parser string type. */
+ 	#define MUP_STRING_TYPE std::wstring
+ 
+@@ -92,7 +92,7 @@
+ 
+ namespace mu
+ {
+-#if defined(_UNICODE)
++#if 0
+ 
+ 	/** \brief Encapsulate wcout. */
+ 	inline std::wostream& console()
+diff --git c/src/muParserBase.cpp i/src/muParserBase.cpp
+index a28a7fc..b4ca15e 100644
+--- c/src/muParserBase.cpp
++++ i/src/muParserBase.cpp
+@@ -298,10 +298,10 @@ namespace mu
+ 			ss << _T("; RELEASE");
+ #endif
+ 
+-#ifdef _UNICODE
++#if 0
+ 			ss << _T("; UNICODE");
+ #else
+-#ifdef _MBCS
++#if 0
+ 			ss << _T("; MBCS");
+ #else
+ 			ss << _T("; ASCII");
+diff --git c/src/muParserDLL.cpp i/src/muParserDLL.cpp
+index db92d2e..b92b467 100644
+--- c/src/muParserDLL.cpp
++++ i/src/muParserDLL.cpp
+@@ -26,7 +26,7 @@
+ 	OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+ 
+-#if defined(MUPARSER_DLL) 
++#if defined(MUPARSER_DLL)
+ 
+ #if defined(_WIN32)
+ 	#define WIN32_LEAN_AND_MEAN
+@@ -43,7 +43,7 @@
+ #include "muParserInt.h"
+ #include "muParserError.h"
+ 
+-#if _UNICODE
++#if 0
+ 	#include <wchar.h>
+ #endif
+ 
+@@ -207,7 +207,7 @@ API_EXPORT(const muChar_t*) mupGetVersion(muParserHandle_t a_hParser)
+ 	MU_TRY
+ 		muParser_t* const p(AsParser(a_hParser));
+ 
+-#ifndef _UNICODE
++#if 1
+ 		snprintf(s_tmpOutBuf, count_of(s_tmpOutBuf), "%s", p->GetVersion().c_str());
+ #else
+ 		swprintf(s_tmpOutBuf, count_of(s_tmpOutBuf), _T("%s"), p->GetVersion().c_str());
+@@ -874,7 +874,7 @@ API_EXPORT(const muChar_t*) mupGetExpr(muParserHandle_t a_hParser)
+ 
+ 		// C# explodes when pMsg is returned directly. For some reason it can't access
+ 		// the memory where the message lies directly.
+-#ifndef _UNICODE
++#if 1
+ 		snprintf(s_tmpOutBuf, count_of(s_tmpOutBuf), "%s", p->GetExpr().c_str());
+ #else
+ 		swprintf(s_tmpOutBuf, count_of(s_tmpOutBuf), _T("%s"), p->GetExpr().c_str());
+@@ -980,7 +980,7 @@ API_EXPORT(void) mupGetVar(muParserHandle_t a_hParser, unsigned a_iVar, const mu
+ 		for (unsigned i = 0; i < a_iVar; ++i)
+ 			++item;
+ 
+-#ifndef _UNICODE
++#if 1
+ 		strncpy(szName, item->first.c_str(), count_of(szName));
+ #else
+ 		wcsncpy(szName, item->first.c_str(), count_of(szName));
+@@ -1053,7 +1053,7 @@ API_EXPORT(void) mupGetExprVar(muParserHandle_t a_hParser, unsigned a_iVar, cons
+ 		for (unsigned i = 0; i < a_iVar; ++i)
+ 			++item;
+ 
+-#ifndef _UNICODE
++#if 1
+ 		strncpy(szName, item->first.c_str(), count_of(szName));
+ #else
+ 		wcsncpy(szName, item->first.c_str(), count_of(szName));
+@@ -1148,7 +1148,7 @@ API_EXPORT(void) mupGetConst(muParserHandle_t a_hParser, unsigned a_iVar, const
+ 		for (unsigned i = 0; i < a_iVar; ++i)
+ 			++item;
+ 
+-#ifndef _UNICODE
++#if 1
+ 		strncpy(szName, item->first.c_str(), count_of(szName));
+ #else
+ 		wcsncpy(szName, item->first.c_str(), count_of(szName));
+@@ -1211,7 +1211,7 @@ API_EXPORT(const muChar_t*) mupGetErrorMsg(muParserHandle_t a_hParser)
+ 
+ 	// C# explodes when pMsg is returned directly. For some reason it can't access
+ 	// the memory where the message lies directly.
+-#ifndef _UNICODE
++#if 1
+ 	snprintf(s_tmpOutBuf, count_of(s_tmpOutBuf), "%s", pMsg);
+ #else
+ 	swprintf(s_tmpOutBuf, count_of(s_tmpOutBuf), _T("%s"), pMsg);
+@@ -1229,7 +1229,7 @@ API_EXPORT(const muChar_t*) mupGetErrorToken(muParserHandle_t a_hParser)
+ 
+ 	// C# explodes when pMsg is returned directly. For some reason it can't access
+ 	// the memory where the message lies directly.
+-#ifndef _UNICODE
++#if 1
+ 	snprintf(s_tmpOutBuf, count_of(s_tmpOutBuf), "%s", pToken);
+ #else
+ 	swprintf(s_tmpOutBuf, count_of(s_tmpOutBuf), _T("%s"), pToken);

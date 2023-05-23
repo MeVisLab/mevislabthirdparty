@@ -1,13 +1,13 @@
 type: pure_c
 name: cython
 display_name: Cython
-version: "0.29.32"
+version: "0.29.34"
 homepage: https://cython.org
 description: The most widely used Python to C compiler
 license: Apache-2.0
 
 sources:
-  "0.29.32":
-    sha256: 8733cf4758b79304f2a4e39ebfac5e92341bce47bcceb26c1254398b2f8c1af7
+  "0.29.34":
+    sha256: 1909688f5d7b521a60c396d20bba9e47a1b2d2784bfb085401e1e1e7d29a29a8
     url: https://github.com/cython/cython/releases/download/${version}/Cython-${version}.tar.gz
     base_path: Cython-${version}

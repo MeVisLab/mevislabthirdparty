@@ -1,13 +1,18 @@
 type: pure_c
 name: xz-utils
 display_name: XZ Utils
-version: "5.2.8"
+version: "5.4.2"
 homepage: https://tukaani.org/xz/
 description: XZ Utils is free general-purpose data compression software with a high compression ratio
 license: PublicDomain
 
 sources:
-  "5.2.8":
-    sha256: ec5cda9f0b91336ab1b881d3d144e8203fcca604e607caca8ae678ddbc29207d
-    url: https://tukaani.org/xz/xz-${version}.tar.gz
+  "5.4.2":
+    sha256: 3ee13d0f40148625306b90f9622f8c9660b8082884051b0cfe46f18492f88955
+    url: https://github.com/tukaani-project/xz/releases/download/v${version}/xz-${version}.tar.xz
     base_path: xz-${version}
+
+patches:
+  "5.4.2":
+    - patch_file: patches/${version}-add_debug_suffix.patch
+

@@ -2,22 +2,17 @@ type: cpp
 name: openvdb
 cmake_name: OpenVDB
 display_name: OpenVDB
-version: "9.1.0"
+version: "10.0.1"
 homepage: https://www.openvdb.org
 description: A suite of tools for the efficient storage and manipulation of sparse volumetric data discretized on three-dimensional grids
 license: MPL-2.0
 
 sources:
-  "9.1.0":
-    sha256: 914ee417b4607c75c95b53bc73a0599de4157c7d6a32e849e80f24e40fb64181
-    url: https://github.com/AcademySoftwareFoundation/openvdb/archive/v${version}.tar.gz
-    base_path: openvdb-${version}
-
-  "10.0.0": # builds, but MeVisLab modules like OpenVDBLoad crash with this version
-    sha256: 6d4f6b5ccd0f9d35a4886d9a51a98c97fa314f75bf9737c5121e91b706e2db70
+  "10.0.1":
+    sha256: 887a3391fbd96b20c77914f4fb3ab4b33d26e5fc479aa036d395def5523c622f
     url: https://github.com/AcademySoftwareFoundation/openvdb/archive/v${version}.tar.gz
     base_path: openvdb-${version}
 
 patches:
-  "9.1.0":
+  "10.0.1":
     - patch_file: patches/${version}-fix_call_once_bug.patch

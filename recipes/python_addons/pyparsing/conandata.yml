@@ -1,18 +1,12 @@
 type: pure_c
 name: pyparsing
-version: "3.0.7"
+version: "3.0.9"
 homepage: https://github.com/pyparsing/pyparsing
 description: Library of classes for constructing grammars directly in Python code
 license: MIT
 
 sources:
-  "3.0.8":
-    # doesn't use setuptools (setup.py) anymore but requires a PEP-517 compliant build system like flit or pyproject-build
-    sha256: 9a2dff108972363312e9af006a5cdd9c895bfa40df81c34103bb591d5100af35
-    url: https://github.com/pyparsing/pyparsing/archive/pyparsing_${version}.tar.gz
-    base_path: pyparsing-pyparsing_${version}
-
-  "3.0.7":
-    sha256: 9303df2c7998485cc71a246c6cc0489c48ad571adc9d250c2d1314c47768ba59
+  "3.0.9":
+    sha256: 7e8ce1684c517f57f945698fd3bbf86b36a2e60cd223f74886d3af04deb06306
     url: https://github.com/pyparsing/pyparsing/archive/pyparsing_${version}.tar.gz
     base_path: pyparsing-pyparsing_${version}

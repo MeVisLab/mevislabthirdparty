@@ -1,0 +1,12 @@
+type: pure_c
+name: sphinxcontrib-devhelp
+version: "1.0.2"
+homepage: https://github.com/sphinx-doc/sphinxcontrib-devhelp
+description:  Sphinx extension which outputs a Devhelp document
+license: BSD-2-Clause
+
+sources:
+  "1.0.2":
+    sha256: 00f9fbe1d6362764fec95f38ab105f7fea784af79d6ecf2582c4174c83131511
+    url: https://github.com/sphinx-doc/sphinxcontrib-devhelp/archive/refs/tags/${version}.tar.gz
+    base_path: sphinxcontrib-devhelp-${version}

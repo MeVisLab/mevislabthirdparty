@@ -1,12 +1,12 @@
 type: pure_c
 name: wheel
-version: "0.38.4"
+version: "0.40.0"
 homepage: https://wheel.readthedocs.io
 description: A built-package format for Python
 license: MIT
 
 sources:
-  "0.38.4":
-    sha256: 965f5259b566725405b05e7cf774052044b1ed30119b5d586b2703aafe8719ac
+  "0.40.0":
+    sha256: cd1196f3faee2b31968d626e1731c94f99cbdb67cf5a46e4f5656cbee7738873
     url: pypi://wheel/wheel-${version}.tar.gz
     base_path: wheel-${version}

@@ -1,13 +1,13 @@
 type: pure_c
 name: zstd
 display_name: ZStandard
-version: "1.5.2"
+version: "1.5.5"
 homepage: https://facebook.github.io/zstd
 description: Zstandard - Fast real-time compression algorithm
 license: BSD-3-Clause
 
 sources:
-  "1.5.2":
-    sha256: 53f4696f3cec8703f12d3402707a6aaf7eb92d43c90d61e1d32454bda5da7b9c
+  "1.5.5":
+    sha256: c5c8daa1d40dabc51790c62a5b86af2b36dfc4e1a738ff10dc4a46ea4e68ee51
     url: https://github.com/facebook/zstd/archive/v${version}.zip
     base_path: "zstd-${version}"

@@ -1,12 +1,12 @@
 type: pure_c
 name: packaging
-version: "21.3"
+version: "23.1"
 homepage: https://packaging.pypa.io
 description: Core utilities for Python packages
 license: BSD-2-Clause
 
 sources:
-  "21.3":
-    sha256: dd47c42927d89ab911e606518907cc2d3a1f38bbd026385970643f9c5b8ecfeb
-    url: https://github.com/pypa/packaging/releases/download/${version}/packaging-${version}.tar.gz
+  "23.1":
+    sha256: 384116e3dc159909bf3b547b98244d6190c61fdd7279ddd4daa0f3548e7cc9bc
+    url: https://github.com/pypa/packaging/archive/refs/tags/${version}.tar.gz
     base_path: packaging-${version}

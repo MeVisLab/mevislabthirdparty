@@ -36,6 +36,7 @@ class ConanRecipe(ConanFile):
         self.copy("*.pdb", src="bin", dst="bin")
 
         tools.rmdir(os.path.join(self.package_folder, "lib", "cmake"))
+        tools.rmdir(os.path.join(self.package_folder, "lib", "pkgconfig"))
 
         self.patch_binaries()
         self.default_package()

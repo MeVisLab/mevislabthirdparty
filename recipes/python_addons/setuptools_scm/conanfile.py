@@ -8,6 +8,9 @@ class ConanRecipe(ConanFile):
     def requirements(self):
         self.default_requirements()
 
-        #self.requires(f"typing-extensions/[>=4.3.0]@{self.user}/{self.channel}")
+        self.requires(f"typing-extensions/[>=3.10.0]@{self.user}/{self.channel}")
         self.requires(f"tomli/[>=2.0.0]@{self.user}/{self.channel}")
         self.requires(f"packaging/[>=20.0.0]@{self.user}/{self.channel}")
+
+    def build_requirements(self):
+        self.build_requires(f"wheel/[>=0.38.4]@{self.user}/{self.channel}")
