@@ -1,16 +1,16 @@
 type: pure_c
 name: pyzmq
-version: "25.0.2"
+version: "25.1.0"
 homepage: http://zguide.zeromq.org/py:all
 description: Lightweight and super-fast messaging library built on top of the ZeroMQ library
 license: BSD-3-Clause
 
 sources:
-  "25.0.2":
-    sha256: d65c3f08137542bcc476a96433417bc8215862e05bad6efb7dcec36d9fd4f64f
+  "25.1.0":
+    sha256: 8a5a2136156d672830b9e6be5462da1f3e65efc5dc774d5ff0b2363eb59d5665
     url: https://github.com/zeromq/pyzmq/archive/refs/tags/v${version}.tar.gz
     base_path: pyzmq-${version}
 
 patches:
-  "25.0.2":
+  "25.1.0":
     - patch_file: patches/${version}-windows_libzmq_library_path.patch

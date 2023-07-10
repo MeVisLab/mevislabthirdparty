@@ -1,16 +1,16 @@
 type: pure_c
 name: libxslt
-version: "1.1.37"
+version: "1.1.38"
 homepage: http://xmlsoft.org
 description: libxslt is a software library implementing XSLT processor, based on libxml2
 license: MIT
 
 sources:
-  "1.1.37":
-    sha256: 3a4b27dc8027ccd6146725950336f1ec520928f320f144eb5fa7990ae6123ab4
+  "1.1.38":
+    sha256: 1f32450425819a09acaff2ab7a5a7f8a2ec7956e505d7beeb45e843d0e1ecab1
     url: https://download.gnome.org/sources/libxslt/${version_major}.${version_minor}/libxslt-${version}.tar.xz
     base_path: libxslt-${version}
 
 patches:
-  "1.1.37":
+  "1.1.38":
     - patch_file: patches/${version}-find_libxml2.patch

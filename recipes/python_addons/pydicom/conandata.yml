@@ -1,12 +1,12 @@
 type: pure_c
 name: pydicom
-version: 2.3.1
+version: 2.4.1
 homepage: https://pydicom.github.io
 description: pydicom is a pure python package for working with DICOM files
 license: MIT
 
 sources:
-  2.3.1:
-    sha256: 655db29c21cb333a4f9dfffdeaa80995b1d3b89e98b66a16f5cc886e5b338028
+  2.4.1:
+    sha256: 6cb210dbe5586841036e8eeb2d4feb4df22a48f39161ba7ee0bf3c89faaba946
     url: pypi://pydicom/pydicom-${version}.tar.gz
     base_path: pydicom-${version}

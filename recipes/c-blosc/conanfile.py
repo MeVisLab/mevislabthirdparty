@@ -18,12 +18,9 @@ class ConanRecipe(ConanFile):
         self.requires("zlib/[>=1.2.11]" + channel)
         self.requires("zstd/[>=1.4.9]" + channel)
 
-
     def source(self):
         self.default_source()
-        shutil.copy2(os.path.join("sources", "LICENSES", "BLOSC.txt"), os.path.join("sources", "LICENSE"))
         tools.rmdir(os.path.join("sources", "internal-complibs"))
-
 
     def _configure_cmake(self):
         if not self._cmake:
@@ -52,11 +49,9 @@ class ConanRecipe(ConanFile):
             self._cmake.configure()
         return self._cmake
 
-
     def build(self):
         cmake = self._configure_cmake()
         cmake.build()
-
 
     def package(self):
         cmake = self._configure_cmake()
@@ -68,7 +63,6 @@ class ConanRecipe(ConanFile):
 
         self.patch_binaries()
         self.default_package()
-
 
     def package_info(self):
         self.default_package_info()

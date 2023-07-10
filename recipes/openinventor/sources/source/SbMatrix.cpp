@@ -798,7 +798,7 @@ SbMatrix::affine_inverse(const SbMatrix &in, SbMatrix &out) const
 bool
 SbMatrix::LUDecomposition(int index[4], float &d)
 {
-    int         imax;
+    int         imax = 0;
     float       big, dum, sum, temp;
     float       vv[4];
 #ifdef DEBUGGING

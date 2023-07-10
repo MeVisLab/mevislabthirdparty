@@ -1,13 +1,13 @@
 type: header_only
 name: kf5-extra-cmake-modules
 display_name: KDE Extra CMake Modules
-version: "5.105.0"
+version: "5.107.0"
 homepage: https://api.kde.org/frameworks/extra-cmake-modules/html/index.html
 description: KDE's extra modules and scripts for CMake
 license: BSD-3-Clause
 
 sources:
-  "5.105.0":
-    sha256: 59bbf7ae5f8f2a3addb821c6d9962d3d0f0085f3ccd55f18128763d88e31365b
+  "5.107.0":
+    sha256: 3969aad56d1e6a5901e926aaf7a73510d98c4b363564ed3f1222d4135da633ed
     url: https://download.kde.org/stable/frameworks/${version_major}.${version_minor}/extra-cmake-modules-${version}.tar.xz
     base_path: extra-cmake-modules-${version}

@@ -3,7 +3,7 @@ name: qt5
 cmake_name: Qt5Dummy
 display_name: Qt5
 mli_name: None
-version: 5.15.8
+version: 5.15.10
 homepage: https://www.qt.io
 description: Qt is a leading cross-platform application and UI development framework for desktop, embedded and mobile operating systems
 license: LGPL-3.0-only
@@ -11,16 +11,14 @@ license: LGPL-3.0-only
 restricted_builds: ['windows','linux','mac']
 
 sources:
-  5.15.8:
-    sha256: 776a9302c336671f9406a53bd30b8e36f825742b2ec44a57c08217bff0fa86b9
+  5.15.10:
+    sha256: b545cb83c60934adc9a6bbd27e2af79e5013de77d46f5b9f5bb2a3c762bf55ca
     url: https://download.qt.io/archive/qt/5.15/${version}/single/qt-everywhere-opensource-src-${version}.tar.xz
     base_path: qt-everywhere-src-${version}
-    qtwebengine: v5.15.12-lts
+    qtwebengine: v5.15.14-lts
 
 patches:
-  5.15.8:
-    - patch_file: patches/${version}-CVE-2022-25255.patch
-    - patch_file: patches/${version}-CVE-2022-25643.patch
+  5.15.10:
     - patch_file: patches/${version}-qtbase_enable_debug_plugin_check.patch
     - patch_file: patches/${version}-qtbase_libpng_disable_incorrect_profile_warning.patch
     - patch_file: patches/${version}-qtbase_linux_debug_suffix.patch
@@ -33,6 +31,16 @@ patches:
     - patch_file: patches/${version}-qtbase_qgraphicsview_setCursorForItemOnly.patch
     - patch_file: patches/${version}-qtwebengine_ignore_invalid_events.patch
     - patch_file: patches/${version}-qtbase_mevis_qmetacallevent_clone.patch
+    - patch_file: patches/${version}-qtbase_use_maximize_in_restore_geometry.patch
     - patch_file: patches/${version}-qtwebengine_process_debug_name.patch
       patch_description: use debug suffix for QtWebEngineProcess on all platforms, fixes MLAB-3462
+      patch_type: bugfix
+    - patch_file: patches/${version}-qtsvg_fix_font_initialization.patch
+      patch_description: fixes CVE-2023-32573, see https://codereview.qt-project.org/c/qt/qtsvg/+/474093
+      patch_type: bugfix
+    - patch_file: patches/${version}-qtbase_odbc_handle_sqltchar_sizes.patch
+      patch_description: fixes CVE-2023-24607, see https://codereview.qt-project.org/c/qt/qtbase/+/456216/2/src/plugins/sqldrivers/odbc/qsql_odbc.cpp
+      patch_type: bugfix
+    - patch_file: patches/${version}-qtbase_dragstart_pixmap_scaled.patch
+      patch_description: fixes MLAB-3582
       patch_type: bugfix

@@ -15,7 +15,7 @@ class ConanRecipe(ConanFile):
     def requirements(self):
         channel = f"@{self.user}/{self.channel}"
         self.requires("lz4/[>=1.9.3]" + channel)
-        self.requires("hdf5/[>=1.12.0]" + channel)
+        self.requires("hdf5/1.14.1-2" + channel)
 
 
     def source(self):

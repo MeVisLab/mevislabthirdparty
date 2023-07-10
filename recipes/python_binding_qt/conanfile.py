@@ -16,7 +16,7 @@ class ConanRecipe(ConanFile):
         channel = "@mevislab/stable"
         self.requires("qt5/[>=5.12.7]" + channel)
         self.requires("python/[>=3.9.7]" + channel)
-        self.requires("pythonqt/[>=2022.02.11]" + channel)
+        self.requires("pythonqt/[>=3.4.1]" + channel)
 
         if "arm" not in self.settings.arch:
             self.requires("qtwebkit/[>=5.212.0-alpha4]" + channel)

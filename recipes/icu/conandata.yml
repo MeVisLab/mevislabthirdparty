@@ -1,21 +1,17 @@
 type: cpp
 name: icu
 display_name: ICU
-version: "73.1"
+version: "73.2"
 homepage: http://site.icu-project.org
 description: Unicode support, software internationalization, and software globalization
 license: ICU
 
 sha256:
-  "73.1":
-    src: a457431de164b4aa7eca00ed134d00dfbf88a77c6986a10ae7774fc076bb8c45
-    data: 07d7557efb30fc2e9b74652f1525603b3209a4539d2d345d704e3df3bf9b957e
+  "73.2":
+    src: 818a80712ed3caacd9b652305e01afc7fa167e6f2e94996da44b90c2ab604ce1
+    data: ca1ee076163b438461e484421a7679fc33a64cd0a54f9d4b401893fa1eb42701
 
 patches:
-  "73.1":
+  "73.2":
     - patch_file: patches/${version}-disable_renaming_by_default.patch
       patch_description: disable renaming by default
-    - patch_file: patches/${version}-fix_uchar_api.patch
-      patch_description: |
-        Fix compile error when using `-DUCHAR_TYPE=`.
-        Changing the type was deprecated ages ago, but of course is still used today.

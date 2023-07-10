@@ -1,0 +1,74 @@
+diff --git i/qtbase/src/opengl/gl2paintengineex/qtextureglyphcache_gl.cpp w/qtbase/src/opengl/gl2paintengineex/qtextureglyphcache_gl.cpp
+index d5ce4efd1..ffeb42c83 100644
+--- i/qtbase/src/opengl/gl2paintengineex/qtextureglyphcache_gl.cpp
++++ w/qtbase/src/opengl/gl2paintengineex/qtextureglyphcache_gl.cpp
+@@ -352,23 +352,25 @@ void QGLTextureGlyphCache::fillTexture(const Coord &c, glyph_t glyph, QFixed sub
+         // and nVidia GeForce 8500GT. GL_UNPACK_ALIGNMENT is set to four bytes, 'mask' has a
+         // multiple of four bytes per line, and most of the glyph shows up correctly in the
+         // texture, which makes me think that this is a driver bug.
+-        // One workaround is to make sure the mask width is a multiple of four bytes, for instance
+-        // by converting it to a format with four bytes per pixel. Another is to copy one line at a
+-        // time.
+-
+-        if (!ctx->d_ptr->workaround_brokenAlphaTexSubImage_init) {
+-            // don't know which driver versions exhibit this bug, so be conservative for now
+-            const QByteArray vendorString(reinterpret_cast<const char*>(funcs->glGetString(GL_VENDOR)));
+-            ctx->d_ptr->workaround_brokenAlphaTexSubImage = vendorString.indexOf("NVIDIA") >= 0;
+-            ctx->d_ptr->workaround_brokenAlphaTexSubImage_init = true;
+-        }
+-
+-        if (ctx->d_ptr->workaround_brokenAlphaTexSubImage) {
+-            for (int i = 0; i < maskHeight; ++i)
+-                funcs->glTexSubImage2D(GL_TEXTURE_2D, 0, c.x, c.y + i, maskWidth, 1, GL_ALPHA, GL_UNSIGNED_BYTE, mask.scanLine(i));
+-        } else {
+-            funcs->glTexSubImage2D(GL_TEXTURE_2D, 0, c.x, c.y, maskWidth, maskHeight, GL_ALPHA, GL_UNSIGNED_BYTE, mask.bits());
++        // The solution to this is to upload larger glyphs with a glyph width of a multiple of 4,
++        // since QImage contains the padding bytes anyways. We need to fill the padding bytes with 0
++        // and afterwards we can upload the glyph mask with a multiple of 4 width.
++
++        // fill the padding bytes with 0 (QImage seems to have 0xff as default padding value)
++        quint8* data = mask.bits();
++        int modulo = maskWidth%4;
++        int paddingBytes = 0;
++        if (modulo>0) {
++          paddingBytes = 4-modulo;
++          for (int i = 0; i < maskHeight; ++i) {
++            data += maskWidth;
++            for (int j = 0;j<paddingBytes;j++) {
++              *data++ = 0x00;
++            }
++          }
+         }
++        // upload the mask with a glyph width that is the next multiple of 4
++        glTexSubImage2D(GL_TEXTURE_2D, 0, c.x, c.y, maskWidth + paddingBytes, maskHeight, GL_ALPHA, GL_UNSIGNED_BYTE, mask.bits());
+     }
+ }
+ 
+diff --git i/qtbase/src/opengl/qgl.cpp w/qtbase/src/opengl/qgl.cpp
+index 0d4e9fc1b..30e96952c 100644
+--- i/qtbase/src/opengl/qgl.cpp
++++ w/qtbase/src/opengl/qgl.cpp
+@@ -1762,9 +1762,6 @@ void QGLContextPrivate::init(QPaintDevice *dev, const QGLFormat &format)
+     workaround_brokenTextureFromPixmap = false;
+     workaround_brokenTextureFromPixmap_init = false;
+ 
+-    workaround_brokenAlphaTexSubImage = false;
+-    workaround_brokenAlphaTexSubImage_init = false;
+-
+     for (int i = 0; i < QT_GL_VERTEX_ARRAY_TRACKED_COUNT; ++i)
+         vertexAttributeArraysEnabledState[i] = false;
+ }
+diff --git i/qtbase/src/opengl/qgl_p.h w/qtbase/src/opengl/qgl_p.h
+index f7a6df9c7..269007b8a 100644
+--- i/qtbase/src/opengl/qgl_p.h
++++ w/qtbase/src/opengl/qgl_p.h
+@@ -269,9 +269,6 @@ public:
+     uint workaround_brokenTextureFromPixmap : 1;
+     uint workaround_brokenTextureFromPixmap_init : 1;
+ 
+-    uint workaround_brokenAlphaTexSubImage : 1;
+-    uint workaround_brokenAlphaTexSubImage_init : 1;
+-
+     QPaintDevice *paintDevice;
+     QSize readback_target_size;
+     QColor transpColor;

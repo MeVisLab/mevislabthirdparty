@@ -22,7 +22,7 @@ class ConanRecipe(ConanFile):
         self.requires("libjpeg/9e" + channel)
 
         if self.version.split('.')[0] != "4":
-            self.requires("hdf5/[>=1.12.0]" + channel)
+            self.requires("hdf5/1.14.1-2" + channel)
             self.requires("double-conversion/[>=3.1.5]" + channel)
 
 

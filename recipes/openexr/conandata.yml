@@ -1,13 +1,13 @@
 type: cpp
 name: openexr
 display_name: OpenEXR
-version: "3.1.7"
+version: "3.1.8"
 homepage: http://www.openexr.com
 description: OpenEXR is a high dynamic-range (HDR) image file format developed by Industrial Light & Magic for use in computer imaging applications
 license: BSD-3-Clause
 
 sources:
-  "3.1.7":
-    sha256: 78dbca39115a1c526e6728588753955ee75fa7f5bb1a6e238bed5b6d66f91fd7
+  "3.1.8":
+    sha256: 3ff47111ef7e5da6f69330e66e1e90ae620b79df1cedf2512bb9bffe86c2c617
     url: https://github.com/AcademySoftwareFoundation/openexr/archive/v${version}.tar.gz
     base_path: openexr-${version}

@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import shutil
+
 from conans import ConanFile
 from conans import CMake
 from conans import tools
@@ -9,6 +11,7 @@ import os
 class ConanRecipe(ConanFile):
     python_requires = 'common/1.0.0@mevislab/stable'
     python_requires_extend = 'common.CommonRecipe'
+    exports_sources = ["src/*", "patches/*"]
 
     _cmake = None
 
@@ -16,7 +19,6 @@ class ConanRecipe(ConanFile):
         channel = "@mevislab/stable"
         self.requires("qt5/[>=5.12.7]" + channel)
         self.requires("python/[>=3.9.7]" + channel)
-
 
     def _configure_cmake(self):
         if not self._cmake:
@@ -33,14 +35,17 @@ class ConanRecipe(ConanFile):
             self._cmake.configure(source_folder="sources")
         return self._cmake
 
+    def source(self):
+        self.default_source()
+        shutil.copytree("src",
+                        os.path.join(self.source_folder, "sources"), dirs_exist_ok=True)
 
     def build(self):
         cmake = self._configure_cmake()
         cmake.build()
 
-
     def package(self):
         cmake = self._configure_cmake()
         cmake.install()
-        self.patch_binaries()        
+        self.patch_binaries()
         self.default_package()

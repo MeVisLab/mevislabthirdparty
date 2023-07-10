@@ -1,0 +1,28 @@
+diff --git i/hdf5-1.14.1-2/CMakeFilters.cmake w/hdf5-1.14.1-2/CMakeFilters.cmake
+index a55d7ae..ee7a36d 100644
+--- i/hdf5-1.14.1-2/CMakeFilters.cmake
++++ w/hdf5-1.14.1-2/CMakeFilters.cmake
+@@ -146,7 +146,7 @@ if (HDF5_ENABLE_SZIP_SUPPORT)
+       if (NOT SZIP_FOUND)
+         find_package (SZIP) # Legacy find
+       endif ()
+-      if (SZIP_FOUND)
++      if (TRUE)
+         set (H5_HAVE_FILTER_SZIP 1)
+         set (H5_HAVE_SZLIB_H 1)
+         set (H5_HAVE_LIBSZ 1)
+@@ -172,12 +172,12 @@ if (HDF5_ENABLE_SZIP_SUPPORT)
+       set (H5_HAVE_LIBSZ 1)
+       message (VERBOSE "Filter SZIP is built")
+       message (VERBOSE "... with library AEC")
+-      set (LINK_COMP_LIBS ${LINK_COMP_LIBS} ${SZIP_STATIC_LIBRARY})
+     else ()
+       message (FATAL_ERROR "SZIP is Required for SZIP support in HDF5")
+     endif ()
+   endif ()
+-  INCLUDE_DIRECTORIES (${SZIP_INCLUDE_DIRS})
++  set (LINK_COMP_LIBS ${LINK_COMP_LIBS} ${CONAN_LIBS_LIBAEC})
++  INCLUDE_DIRECTORIES (${SZIP_INCLUDE_DIRS} ${CONAN_INCLUDE_DIRS_LIBAEC})
+   message (VERBOSE "Filter SZIP is ON")
+   if (H5_HAVE_FILTER_SZIP)
+     set (EXTERNAL_FILTERS "${EXTERNAL_FILTERS} DECODE")

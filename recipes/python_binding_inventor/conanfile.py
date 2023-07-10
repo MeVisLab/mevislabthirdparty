@@ -19,7 +19,7 @@ class ConanRecipe(ConanFile):
         self.requires("openinventor/[>=2.5.1]" + channel)
         self.requires("qt5/[>=5.12.7]" + channel)
         self.requires("python/[>=3.9.7]" + channel)
-        self.requires("pythonqt/[>=2022.02.11]" + channel)
+        self.requires("pythonqt/[>=3.4.1]" + channel)
 
 
     def _configure_cmake(self):

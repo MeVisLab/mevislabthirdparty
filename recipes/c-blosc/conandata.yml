@@ -1,16 +1,16 @@
 type: pure_c
 name: c-blosc
-version: "1.21.3"
+version: "1.21.4"
 homepage: https://www.blosc.org
 description: An extremely fast, multi-threaded, meta-compressor library
 license: BSD-3-Clause
 
 sources:
-  "1.21.3":
-    sha256: 941016c4564bca662080bb01aea74f06630bd665e598c6f6967fd91b2e2e0bb6
+  "1.21.4":
+    sha256: e72bd03827b8564bbb3dc3ea0d0e689b4863871ce3861d946f2efd7a186ecf3e
     url: https://github.com/Blosc/c-blosc/archive/refs/tags/v${version}.tar.gz
     base_path: c-blosc-${version}
 
 patches:
-  "1.21.3":
+  "1.21.4":
     - patch_file: patches/${version}-fix_cmake_find_package.cmake
