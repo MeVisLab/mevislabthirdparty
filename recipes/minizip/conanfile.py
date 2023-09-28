@@ -14,7 +14,7 @@ class ConanRecipe(ConanFile):
 
     def requirements(self):
         channel = "@{0}/{1}".format(self.user, self.channel)
-        self.requires("zlib/[>=1.2.11]" + channel)
+        self.requires("zlib/[>=1.3]" + channel)
 
 
     def _configure_cmake(self):

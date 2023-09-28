@@ -1,8 +1,8 @@
-diff --git i/zconf.h w/zconf.h
-index bf977d3..75bf167 100644
+diff --git a/zconf.h b/zconf.h
+index fb76ffe..f6f5e73 100644
 --- i/zconf.h
 +++ w/zconf.h
-@@ -437,11 +437,11 @@ typedef uLong FAR uLongf;
+@@ -441,11 +441,11 @@ typedef uLong FAR uLongf;
     typedef unsigned long z_crc_t;
  #endif
  
@@ -17,10 +17,10 @@ index bf977d3..75bf167 100644
  #endif
  
 diff --git i/zconf.h.cmakein w/zconf.h.cmakein
-index 247ba24..c1c7261 100644
+index 310c439..82e38b2 100644
 --- i/zconf.h.cmakein
 +++ w/zconf.h.cmakein
-@@ -439,11 +439,11 @@ typedef uLong FAR uLongf;
+@@ -443,11 +443,11 @@ typedef uLong FAR uLongf;
     typedef unsigned long z_crc_t;
  #endif
  
@@ -35,10 +35,10 @@ index 247ba24..c1c7261 100644
  #endif
  
 diff --git i/zconf.h.in w/zconf.h.in
-index bf977d3..75bf167 100644
+index fb76ffe..f6f5e73 100644
 --- i/zconf.h.in
 +++ w/zconf.h.in
-@@ -437,11 +437,11 @@ typedef uLong FAR uLongf;
+@@ -441,11 +441,11 @@ typedef uLong FAR uLongf;
     typedef unsigned long z_crc_t;
  #endif
  
@@ -51,4 +51,4 @@ index bf977d3..75bf167 100644
 +#if defined(HAVE_STDARG_H) && (1-HAVE_STDARG_H-1 != 0)
  #  define Z_HAVE_STDARG_H
  #endif
- 
+

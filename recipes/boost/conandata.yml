@@ -2,18 +2,13 @@ type: cpp
 name: boost
 display_name: Boost
 mli_name: "None"
-version: "1.81.0"
+version: "1.83.0"
 homepage: http://www.boost.org
 description: Boost provides free peer-reviewed portable C++ source libraries
 license: BSL-1.0
 
 sources:
-  "1.81.0":
-    sha256: 71feeed900fbccca04a3b4f2f84a7c217186f28a940ed8b7ed4725986baf99fa
+  "1.83.0":
+    sha256: 6478edfe2f3305127cffe8caf73ea0176c53769f4bf1585be237eb30798c3b8e
     url: https://boostorg.jfrog.io/artifactory/main/release/${version}/source/boost_${version_major}_${version_minor}_${version_patch}.tar.bz2
     base_path: boost_${version_major}_${version_minor}_${version_patch}
-
-patches:
-  "1.81.0":
-    # commit 3f42566a7d5ab4d7d9ed81613fa61609e2084e07 on boostorg/multiprecision:
-    - patch_file: "patches/${version}-redundant_warning_pop.patch"

@@ -44,3 +44,14 @@ patches:
     - patch_file: patches/${version}-qtbase_dragstart_pixmap_scaled.patch
       patch_description: fixes MLAB-3582
       patch_type: bugfix
+    - patch_file: patches/${version}-qtbase_qtextlayout.patch
+      patch_description: fixes CVE-2023-32763, see https://codereview.qt-project.org/c/qt/qtbase/+/476125
+      patch_type: bugfix
+    - patch_file: patches/${version}-qtbase_qdnslookup-unix.patch
+      patch_description: fixes CVE-2023-33285, see https://codereview.qt-project.org/c/qt/qtbase/+/477644
+      patch_type: bugfix
+    - patch_file: patches/${version}-qtbase_openssl3.patch
+      patch_description: adds support for OpenSSL3, see https://bugreports.qt.io/browse/QTBUG-103820
+    - patch_file: patches/${version}-qtbase_check_xml_tokens.patch
+      patch_description: fixes CVE-2023-38197, see https://codereview.qt-project.org/c/qt/qtbase/+/488960
+      patch_type: bugfix

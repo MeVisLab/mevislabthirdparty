@@ -44,14 +44,12 @@ void SHA3_hash(const EVP_MD *type, const unsigned char *message, size_t message_
 int main()
 {
 	unsigned int digest_len;
-	unsigned char md5_digest[MD5_DIGEST_LENGTH],
-		sha1_digest[SHA_DIGEST_LENGTH],
+	unsigned char sha1_digest[SHA_DIGEST_LENGTH],
 		sha256_digest[SHA256_DIGEST_LENGTH],
 		sha512_digest[SHA512_DIGEST_LENGTH],
 		sha3_256_digest[SHA256_DIGEST_LENGTH],
 		sha3_512_digest[SHA512_DIGEST_LENGTH];
-	char md5_string[MD5_DIGEST_LENGTH*2+1] = {0},
-		sha1_string[SHA_DIGEST_LENGTH*2+1] = {0},
+	char sha1_string[SHA_DIGEST_LENGTH*2+1] = {0},
 		sha256_string[SHA256_DIGEST_LENGTH*2+1] = {0},
 		sha512_string[SHA512_DIGEST_LENGTH*2+1] = {0},
 		sha3_256_string[SHA256_DIGEST_LENGTH*2+1] = {0},
@@ -60,7 +58,6 @@ int main()
 
 	SSL_library_init();
 
-	MD5((unsigned char*)&string, strlen(string), (unsigned char*)&md5_digest);
 	SHA1((unsigned char*)&string, strlen(string), (unsigned char*)&sha1_digest);
 	SHA256((unsigned char*)&string, strlen(string), (unsigned char*)&sha256_digest);
 	SHA512((unsigned char*)&string, strlen(string), (unsigned char*)&sha512_digest);
@@ -69,9 +66,6 @@ int main()
 	SHA3_hash(EVP_sha3_256(), (unsigned char*)&string, strlen(string), (unsigned char*)&sha3_256_digest, &digest_len);
 	SHA3_hash(EVP_sha3_512(), (unsigned char*)&string, strlen(string), (unsigned char*)&sha3_512_digest, &digest_len);
 #endif
-
-	for(int i = 0; i < MD5_DIGEST_LENGTH; i++)
-		 snprintf(&md5_string[i*2], sizeof(md5_string)-i*2, "%02x", (unsigned int)md5_digest[i]);
 
 	for(int i = 0; i < SHA_DIGEST_LENGTH; i++)
 		 snprintf(&sha1_string[i*2], sizeof(sha1_string)-i*2, "%02x", (unsigned int)sha1_digest[i]);
@@ -86,7 +80,6 @@ int main()
 		 snprintf(&sha3_512_string[i*2], sizeof(sha3_512_string)-i*2, "%02x", (unsigned int)sha3_512_digest[i]);
 	}
 
-	printf("md5 digest: %s\n", md5_string);
 	printf("sha1 digest: %s\n", sha1_string);
 	printf("sha256 digest: %s\n", sha256_string);
 	printf("sha512 digest: %s\n", sha512_string);

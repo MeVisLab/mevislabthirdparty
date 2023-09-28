@@ -1,12 +1,12 @@
 type: pure_c
 name: sphinxcontrib-applehelp
-version: "1.0.3"
+version: "1.0.7"
 homepage: https://github.com/sphinx-doc/sphinxcontrib-applehelp
 description:  Sphinx extension which outputs Apple help books
 license: BSD-2-Clause
 
 sources:
-  "1.0.3":
-    sha256: 169a43536e5ff6794755932e409e9ac9fe66df8d8175805c58b79ec877f80a42
+  "1.0.7":
+    sha256: c12d4a4b0344e44f65945c90fe08b97fc9adb3b2e6940a26aa5b2aecea4a1d68
     url: https://github.com/sphinx-doc/sphinxcontrib-applehelp/archive/refs/tags/${version}.tar.gz
     base_path: sphinxcontrib-applehelp-${version}

@@ -23,7 +23,7 @@ class ConanRecipe(ConanFile):
     def build_requirements(self):
         channel = "@{0}/{1}".format(self.user, self.channel)
         if self.settings.os == "Windows":
-            self.build_requires("7z_installer/[>=19.0]" + channel)
+            self.build_requires("7z_installer/23.01" + channel)
 
 
     def source(self):

@@ -2,6 +2,7 @@
 
 import io
 import os
+import re
 import glob
 import textwrap
 from typing import List, Dict, Optional
@@ -12,6 +13,7 @@ from conans.client.output import ScopedOutput
 
 MLI_DIRECTORY: str = 'MeVis/ThirdParty/Configuration/Installers/Libraries'
 
+PYTHON_UNIX_DIR_RE: re.Pattern = re.compile(r"python\d\.\d+")
 
 def _is_optional(entry):
     # make pdb/debug files optional, so we don't get an error if they can't be copied
@@ -143,7 +145,8 @@ ENDIF
         def _binExcludes(entry):
             # do not add .lib files for Windows,
             # and do also not add the whole site-packages path
-            return (tools.os_info.is_windows and (entry.endswith('.lib') or entry.endswith('.exp'))) or entry in ['python', 'site-packages']
+            return (tools.os_info.is_windows and (entry.endswith('.lib') or entry.endswith('.exp'))) or \
+                entry in ['python', 'site-packages'] or PYTHON_UNIX_DIR_RE.fullmatch(entry)
 
         # DLLs can have executable rights on Linux, better to check the suffix, too:
         def _hasDllSuffix(name):

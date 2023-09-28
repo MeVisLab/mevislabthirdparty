@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
+import os
+
+from conans import AutoToolsBuildEnvironment
 from conans import ConanFile
 from conans import tools
-from conans import AutoToolsBuildEnvironment
-import os
 
 
 class ConanRecipe(ConanFile):
     python_requires = 'common/1.0.0@mevislab/stable'
     python_requires_extend = 'common.CommonRecipe'
-
 
     def build_requirements(self):
         channel = "@{0}/{1}".format(self.user, self.channel)
@@ -25,11 +25,9 @@ class ConanRecipe(ConanFile):
             installer = tools.SystemPackageTool()
             installer.install(" ".join(packages))
 
-
     def requirements(self):
         channel = "@{0}/{1}".format(self.user, self.channel)
         self.requires("zlib/[>=1.2.11]" + channel, private=False)
-
 
     def build(self):
         def _get_flags():
@@ -49,9 +47,11 @@ class ConanRecipe(ConanFile):
 
             extra_flags += " shared"
             extra_flags += " threads"
-            extra_flags  += ' --with-zlib-include="%s"' % self.deps_cpp_info["zlib"].include_paths[0]
+            extra_flags += ' --with-zlib-include="%s"' % self.deps_cpp_info["zlib"].include_paths[0]
             if self.settings.os == "Windows":
-                extra_flags += '--with-zlib-lib="%s/%s.lib"' % (self.deps_cpp_info["zlib"].lib_paths[0], self.deps_cpp_info["zlib"].libs[0])
+                extra_flags += '--with-zlib-lib="%s/%s.lib"' % (
+                    self.deps_cpp_info["zlib"].lib_paths[0], self.deps_cpp_info["zlib"].libs[0]
+                )
             else:
                 extra_flags += '--with-zlib-lib="%s"' % self.deps_cpp_info["zlib"].lib_paths[0]
 
@@ -96,46 +96,29 @@ class ConanRecipe(ConanFile):
                 self.run("make depend", output=True)
 
             if self.settings.os == "Macos":
-                tools.replace_in_file("sources/Makefile", '-install_name $(INSTALLTOP)/$(LIBDIR)/', '-install_name ', strict=self.in_local_cache)
+                tools.replace_in_file("sources/Makefile", '-install_name $(libdir)/', '-install_name ', strict=self.in_local_cache)
 
             with tools.chdir("sources"):
                 self.run("make", output=True)
-                self.run("make install DESTDIR=%s" % self.package_folder, output=True)
+                # 'make install' would also create the documentation, which takes quite a long time
+                # and we don't want to ship it anyway. Therefore, 'make install_sw' should be enough.
+                self.run("make install_sw DESTDIR=%s" % self.package_folder, output=True)
         elif self.settings.compiler == "Visual Studio":
+            for e in ("MDd", "MTd", "MD", "MT"):
+                tools.replace_in_file(os.path.join("sources", "Configurations", "10-main.conf"), f"/{e} ",
+                                      f"/{self.settings.compiler.runtime} ", strict=False)
+                tools.replace_in_file(os.path.join("sources", "Configurations", "10-main.conf"), f"/{e}\"",
+                                      f"/{self.settings.compiler.runtime}\"", strict=False)
+
             with tools.vcvars(self.settings, filter_known_paths=False):
                 with tools.environment_append({"LC_ALL": "C", "LANG": "C"}):
                     with tools.chdir("sources"):
-                        self.run("perl Configure %s --prefix=%s/binaries %s" % (_get_target(), self.source_folder, _get_flags()), output=True)
-
-                        # Replace runtime in ntdll.mak and nt.mak
-                        def replace_runtime_in_file(filename):
-                            replaced = False
-                            runtimes = ["MDd", "MTd", "MD", "MT"]
-                            for e in runtimes:
-                                if e != self.settings.compiler.runtime:
-                                    try:
-                                        tools.replace_in_file(filename, "/%s" % e, "/%s" % self.settings.compiler.runtime, strict=False)
-                                        replaced = True
-                                    except:
-                                        pass
-                            tools.replace_in_file(filename, "MDdd", "MDd", strict=False)
-                            tools.replace_in_file(filename, "MTdd", "MTd", strict=False)
-                            if not replaced:
-                                raise Exception("Could not find any vs runtime in file")
-
-                        replace_runtime_in_file("Makefile")
-                        if self.settings.build_type == 'Debug':
-                            tools.replace_in_file('makefile', "libcrypto-1_1-x64.dll", "libcrypto-1_1-x64d.dll", strict=True)
-                            tools.replace_in_file('makefile', "libcrypto.lib", "libcryptod.lib", strict=True)
-                            tools.replace_in_file('configdata.pm', '\"libcrypto\" => \"libcrypto-1_1-x64\"', '\"libcrypto\" => \"libcrypto-1_1-x64d\"', strict=True)
-
-                            tools.replace_in_file('makefile', "libssl-1_1-x64.dll", "libssl-1_1-x64d.dll", strict=False)
-                            tools.replace_in_file('makefile', "libssl.lib", "libssld.lib", strict=False)
-                            tools.replace_in_file('configdata.pm', '\"libssl\" => \"libssl-1_1-x64\"', '\"libssl\" => \"libssl-1_1-x64d\"', strict=True)
+                        self.run(
+                            f"perl Configure {_get_target()} --prefix={self.source_folder}/binaries {_get_flags()}",
+                            output=True)
                         self.run("nmake", output=True)
         else:
-            raise Exception("Unsupported operating system: %s" % self.settings.os)
-
+            raise Exception(f"Unsupported operating system: {self.settings.os}")
 
     def package(self):
         self.copy(src="sources", pattern="*LICENSE", dst="licenses", keep_path=False)
@@ -154,7 +137,7 @@ class ConanRecipe(ConanFile):
             os.remove(os.path.join(self.package_folder, "lib", "libssl.a"))
             os.remove(os.path.join(self.package_folder, "lib", "libcrypto.a"))
 
-        tools.rmdir(os.path.join(self.package_folder, "lib", "engines-1.1"))
+        tools.rmdir(os.path.join(self.package_folder, "lib", "engines-3.0"))
         tools.rmdir(os.path.join(self.package_folder, "lib", "pkgconfig"))
         tools.rmdir(os.path.join(self.package_folder, "share"))
         tools.rmdir(os.path.join(self.package_folder, "private"))
@@ -164,10 +147,9 @@ class ConanRecipe(ConanFile):
         self.patch_binaries(executables=['openssl'])
         self.default_package()
 
-
     def package_info(self):
         if self.settings.compiler == "Visual Studio":
-            self.cpp_info.libs = ['libssld', 'libcryptod'] if self.settings.build_type == 'Debug' else ['libssl', 'libcrypto']
+            self.cpp_info.libs = ["libssl", "libcrypto"]
             self.cpp_info.system_libs.extend(["crypt32", "msi", "ws2_32"])
         else:
             self.cpp_info.libs = ["ssl", "crypto"]

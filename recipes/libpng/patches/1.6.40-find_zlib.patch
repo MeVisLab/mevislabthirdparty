@@ -1,10 +1,10 @@
 diff --git i/CMakeLists.txt w/CMakeLists.txt
-index 86e0aff..a2389dd 100644
+index e355e4d..2ee0217 100644
 --- i/CMakeLists.txt
 +++ w/CMakeLists.txt
-@@ -48,7 +48,12 @@ include(GNUInstallDirs)
- option(PNG_BUILD_ZLIB "Custom zlib Location, else find_package is used" OFF)
- 
+@@ -78,7 +78,12 @@ option(PNG_HARDWARE_OPTIMIZATIONS "Enable hardware optimizations" ON)
+ # Useful if zlib is being built alongside this as a sub-project.
+ option(PNG_BUILD_ZLIB "Custom zlib location, else find_package is used" OFF)
  if(NOT PNG_BUILD_ZLIB)
 -  find_package(ZLIB REQUIRED)
 +  set(ZLIB_FOUND 1)

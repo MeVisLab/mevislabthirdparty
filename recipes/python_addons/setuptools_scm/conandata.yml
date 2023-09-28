@@ -1,12 +1,12 @@
 type: pure_c
 name: setuptools_scm
-version: "7.0.5"
+version: "7.1.0"
 homepage: https://github.com/pypa/setuptools_scm
 description: Manage versions by scm tags via setuptools
 license: MIT
 
 sources:
-  "7.0.5":
-    sha256: 0d2bdfce0831165d61e735c33006af521e32eeb2d5c303103f647398971b46e5
+  "7.1.0":
+    sha256: 782a4deff8f9f52557f3fd8f23db2e360cc9331a8335db3a42d5540f2b9691e9
     url: https://github.com/pypa/setuptools_scm/archive/refs/tags/v${version}.tar.gz
     base_path: setuptools_scm-${version}

@@ -1,10 +1,10 @@
 diff --git i/Configurations/50-masm.conf w/Configurations/50-masm.conf
-index 2c55ddd..a738511 100644
+index 587a1e7..9cb767c 100644
 --- i/Configurations/50-masm.conf
 +++ w/Configurations/50-masm.conf
-@@ -19,5 +19,6 @@ my %targets = (
-         bn_asm_src      => sub { return undef unless @_;
-                                  my $r=join(" ",@_); $r=~s|asm/x86_64-gcc|bn_asm|; $r; },
+@@ -18,5 +18,6 @@ my %targets = (
+         uplink_arch      => 'x86_64',
+         asm_arch         => 'x86_64',
          perlasm_scheme   => "masm",
 +        multilib         => "-x64",
      },

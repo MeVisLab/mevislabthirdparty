@@ -17,6 +17,11 @@ class ConanRecipe(ConanFile):
         self.default_requirements()
         self.requires(f"cython/[>=0.29.24]@{self.user}/{self.channel}", private=True)
 
+    def build(self):
+        # disable SVML under Linux which is not packaged
+        with tools.environment_append({"NPY_DISABLE_SVML": "1"}):
+            self.default_build()
+
     def package(self):
         self.default_package()
 

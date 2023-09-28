@@ -93,7 +93,7 @@ class ConanRecipe(ConanFile):
         _add_dependency("libalsa/[>=1.1.9]", "ALSA", supported_os="Linux")
 
         # on macOS we want to use SecureTransport instead of OpenSSL
-        _add_dependency("openssl/1.1.1t", "OPENSSL", supported_os=["Linux", "Windows"])
+        _add_dependency("openssl/[>=3.0]", "OPENSSL", supported_os=["Linux", "Windows"])
 
         # AAT is supported only with -qt-harfbuzz on macOS
         #_add_dependency("harfbuzz/[>=2.6.5]", "HARFBUZZ", supported_os=["Linux", "Windows"])

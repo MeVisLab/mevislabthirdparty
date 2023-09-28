@@ -1,5 +1,5 @@
 diff --git i/png.c w/png.c
-index 4f3e8bb..43ea858 100644
+index d6471b0..4719d80 100644
 --- i/png.c
 +++ w/png.c
 @@ -2388,8 +2388,10 @@ png_compare_ICC_profile_with_sRGB(png_const_structrp png_ptr,

@@ -43,7 +43,8 @@ class ConanRecipe(ConanFile):
     def source(self):
         self.default_source()
 
-        tools.rmdir(os.path.join("sources", '3rdparty'))
+        [tools.rmdir(d) for d in (self.source_path / "sources" / "3rdparty").iterdir()
+         if d.is_dir() and d.name != "flatbuffers"]
 
         tools.replace_in_file(os.path.join('sources', 'CMakeLists.txt'), 'if(" ${CMAKE_SOURCE_DIR}" STREQUAL " ${CMAKE_BINARY_DIR}")', 'if(false)')
         tools.replace_in_file(os.path.join('sources', 'cmake', 'OpenCVFindWebP.cmake'), 'FIND_LIBRARY(WEBP_LIBRARY NAMES webp)', 'FIND_LIBRARY(WEBP_LIBRARY NAMES webp webpd libwebp libwebpd)')
@@ -282,7 +283,7 @@ class ConanRecipe(ConanFile):
         self.cpp_info.name = "OpenCV"
         self.cpp_info.names["cmake_find_package"] = "OpenCV"
         self.cpp_info.names["cmake_find_package_multi"] = "OpenCV"
-        
+
         # list dependencies of the components
         comp_dependencies = {
             "core":       [],
@@ -301,7 +302,7 @@ class ConanRecipe(ConanFile):
             "video":      ["flann", "imgproc", "features2d", "calib3d"],
             "gapi":       ["imgproc", "calib3d", "video"],
         }
-        
+
         prefix = "opencv_"
         full_core = prefix + "core"
         version = "".join(self.version.split(".")) if self.settings.os == "Windows" else ""
@@ -328,7 +329,7 @@ class ConanRecipe(ConanFile):
                 unassigned_libs.remove(lib_name)
             except ValueError:
                 self.output.warn(f"{lib_name} not found in list of unassigned libs: {unassigned_libs}")
-            
+
             if tools.os_info.is_linux:
                 self.cpp_info.components[full_comp].system_libs.extend(["pthread", "m", "dl"])
             if not tools.os_info.is_windows:
@@ -340,7 +341,7 @@ class ConanRecipe(ConanFile):
             self.cpp_info.components["opencv_videoio"].frameworks = ["Cocoa", "Accelerate", "AVFoundation", "CoreGraphics", "CoreMedia", "CoreVideo", "QuartzCore"]
         elif tools.os_info.is_windows:
             self.cpp_info.components["opencv_highgui"].system_libs = ["Vfw32"]
-        
+
         # create a dummy component for compatibility with our old one-component CMake file:
         self.cpp_info.components["OpenCV"].requires = [prefix + comp for comp in comp_dependencies]
         # Conan demands that all project requirements are used:
@@ -349,4 +350,4 @@ class ConanRecipe(ConanFile):
         if unassigned_libs:
             self.output.warn(f'Adding the following libs to the dummy "OpenCV" component: {unassigned_libs}')
             self.cpp_info.components["OpenCV"].libs += unassigned_libs
-        
+

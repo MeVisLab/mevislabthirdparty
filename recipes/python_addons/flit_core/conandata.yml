@@ -1,12 +1,12 @@
 type: pure_c
 name: flit_core
-version: "3.8.0"
+version: "3.9.0"
 homepage: https://flit.pypa.io/en/stable/
 description: A PEP 517 build backend for packages using Flit.
 license: BSD-3-Clause
 
 sources:
-  "3.8.0":
-    sha256: b305b30c99526df5e63d6022dd2310a0a941a187bd3884f4c8ef0418df6c39f3
+  "3.9.0":
+    sha256: 72ad266176c4a3fcfab5f2930d76896059851240570ce9a98733b658cb786eba
     url: pypi://flit_core/flit_core-${version}.tar.gz
     base_path: flit_core-${version}

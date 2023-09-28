@@ -1,13 +1,13 @@
 type: pure_c
 name: sqlalchemy
 display_name: SQLAlchemy
-version: "1.4.47"
+version: "1.4.49"
 homepage: https://www.sqlalchemy.org
 description: SQLAlchemy is the Python SQL toolkit and Object Relational Mapper that gives application developers the full power and flexibility of SQL
 license: MIT
 
 sources:
-  "1.4.47":
-    sha256: 95fc02f7fc1f3199aaa47a8a757437134cf618e9d994c84effd53f530c38586f
+  "1.4.49":
+    sha256: 06ff25cbae30c396c4b7737464f2a7fc37a67b7da409993b182b024cec80aed9
     url: pypi://SQLAlchemy/SQLAlchemy-${version}.tar.gz
     base_path: SQLAlchemy-${version}

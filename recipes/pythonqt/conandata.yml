@@ -2,17 +2,13 @@ type: cpp
 name: pythonqt
 cmake_name: PythonQt
 display_name: PythonQt
-version: "3.4.1"
+version: "3.4.2"
 homepage: https://mevislab.github.io/pythonqt
 description: PythonQt is a dynamic Python binding for Qt
 license: LGPL-2.1-only
 
 sources:
-  "3.4.1":
-    sha256: c5cabd231e88fbc508b54d01a2275150c3f442fea36c14e29bfcfe26db75ed05
+  "3.4.2":
+    sha256: 4d2c6407a74b3b48b09bd3cbaa3b0e1b157bdd4728ac64e4b8c7f616d630e2fe
     url: https://github.com/MeVisLab/pythonqt/archive/refs/tags/v${version}.tar.gz
     base_path: pythonqt-${version}
-
-patches:
-  "3.4.1":
-    - patch_file: "patches/${version}-remove_undefs.patch"

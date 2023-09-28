@@ -50,9 +50,6 @@ class ConanRecipe(ConanFile):
         self.default_source()
         os.rename(os.path.join("sources", "LICENSE_1_0.txt"), os.path.join("sources", "LICENSE"))
 
-        # change rpath on macOS
-        tools.replace_in_file('sources/tools/build/src/tools/clang-darwin.jam', '-install_name "@rpath/$(<[1]:D=)" "$(>)"', '-install_name "$(<[1]:D=)" "$(>)"')
-
 
     def build(self):
         self._bootstrap()
@@ -86,7 +83,6 @@ class ConanRecipe(ConanFile):
         self.copy(pattern="*.dll",      dst="bin", src=out_lib_dir, keep_path=False)
         self.copy(pattern="boost*.pdb", dst="bin", src=out_lib_dir, keep_path=False)
 
-        self.patch_binaries()
         self.default_package()
 
 
@@ -233,7 +229,7 @@ class ConanRecipe(ConanFile):
         flags.append("-sNO_BZIP2=1")
         flags.append("-sNO_LZMA=1")
         flags.append("-sNO_ZSTD=1")
-        
+
         if self.settings.compiler == "Visual Studio":
             # Avoid WINAPI mismatch in boost::log:
             flags.append("define=BOOST_USE_WINAPI_VERSION=0x600")

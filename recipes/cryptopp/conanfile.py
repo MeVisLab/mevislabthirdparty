@@ -3,6 +3,7 @@ from conans import ConanFile
 from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
 from conan.tools.files import export_conandata_patches, get
+from conans import tools
 import shutil
 import os
 
@@ -20,6 +21,8 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(self, **self.conan_data["sources"]["source"], strip_root=True)
         get(self, **self.conan_data["sources"]["cmake"], destination=os.path.join(self.source_folder, "cryptopp-cmake"), strip_root=True)
+        with tools.chdir(self.source_folder):
+            tools.patch(base_path=".", patch_file=f"../patches/{self.version}-CMakeLists.patch", strip=1)
 
     def generate(self):
         tc = CMakeToolchain(self)

@@ -9,6 +9,8 @@ class ConanRecipe(ConanFile):
 
     sanitizer = { 'cmake': False }
 
+    def build_requirements(self):
+        self.build_requires(f"setuptools_scm/[>=7.0.5]@{self.user}/{self.channel}")
 
     def requirements(self):
         self.default_requirements()

@@ -15,7 +15,7 @@ class ConanRecipe(ConanFile):
     def requirements(self):
         channel = f"@{self.user}/{self.channel}"
         self.requires("boost/[>=1.75.0]" + channel)
-        self.requires("hdf5/1.14.1-2" + channel)
+        self.requires("hdf5/[>=1.14.2]" + channel)
         self.requires("libpng/[>=1.6.37]" + channel)
         self.requires("tiff/[>=4.1.0]" + channel)
         self.requires("zlib/[>=1.2.11]" + channel)

@@ -1,7 +1,7 @@
 type: pure_c
 name: docutils
 display_name: Docutils
-version: "0.19"
+version: "0.20.1"
 homepage: http://docutils.sourceforge.net
 description: RST helper library
 
@@ -9,7 +9,7 @@ description: RST helper library
 license: "BSD-2-Clause"
 
 sources:
-  "0.19":
-    sha256: 33995a6753c30b7f577febfc2c50411fec6aac7f7ffeb7c4cfe5991072dcf9e6
+  "0.20.1":
+    sha256: f08a4e276c3a1583a86dce3e34aba3fe04d02bba2dd51ed16106244e8a923e3b
     url: https://sourceforge.net/projects/docutils/files/docutils/${version}/docutils-${version}.tar.gz/download
     base_path: docutils-${version}
