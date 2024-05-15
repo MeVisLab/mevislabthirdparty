@@ -16,8 +16,6 @@ static PyMethodDef NoMethods[] = {
 
 #include <iostream>
 
-#if PY_MAJOR_VERSION >= 3
-
 static PyModuleDef QtNetworkModuleDef = {
   PyModuleDef_HEAD_INIT,
   "QtNetwork",
@@ -30,34 +28,27 @@ static PyModuleDef QtNetworkModuleDef = {
   nullptr
 };
 
-  #define Py_2_3_InitModFunc(name) PyInit_##name(void)
-  #define Py_2_3_ModuleInit(name) PyModule_Create(&QtNetworkModuleDef)
-
-#else
-  #define Py_2_3_InitModFunc(name) init##name(void)
-  #define Py_2_3_ModuleInit(name) Py_InitModule(name, NoMethods)
-#endif
+#define PyInitModFunc(name) PyInit_##name(void)
+  #define PyModuleInit(name) PyModule_Create(&QtNetworkModuleDef)
 
 
 #ifdef UNIX
 PyMODINIT_FUNC
-Py_2_3_InitModFunc(QtNetwork) ML_LIBRARY_EXPORT_ATTRIBUTE ;
+PyInitModFunc(QtNetwork) ML_LIBRARY_EXPORT_ATTRIBUTE ;
 #endif
 
 PyMODINIT_FUNC
-Py_2_3_InitModFunc(QtNetwork)
+PyInitModFunc(QtNetwork)
 {
   PyObject* qtcore = PyImport_ImportModule("PythonQt.QtCore");
-  PyObject* module = Py_2_3_ModuleInit("QtNetwork");
+  PyObject* module = PyModuleInit("QtNetwork");
   PythonQt_init_QtNetwork(module);
 
   Py_XDECREF(qtcore);
 
   PythonQt::self()->clearNotFoundCachedMembers();
 
-#if PY_MAJOR_VERSION >= 3
   return module;
-#endif
 }
 
 

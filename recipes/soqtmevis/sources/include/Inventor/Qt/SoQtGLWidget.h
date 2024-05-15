@@ -46,12 +46,10 @@
 #include <Inventor/Qt/SoQtDLLInit.h>
 #include <Inventor/SoType.h>
 #include <QStackedWidget>
-#include <QGLWidget>
-#include <QGLFormat>
+#include <QSurfaceFormat>
 #include <QImage>
 #include <QPixmap>
 
-class SoQtRealQGLWidget;
 class SoQtRealQOpenGLWidget;
 class SoQtOffscreenGLWidget;
 class QBoxLayout;
@@ -74,17 +72,17 @@ public:
 public:
     //! Default constructor, copied from QGLWidget. The real QGLWidget is created later
     //! when buildWidget is called.
-    SoQtGLWidget (QWidget* parent = nullptr, Qt::WindowFlags f = nullptr);
+    SoQtGLWidget (QWidget* parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags{});
 
     //! Set the GL format. Same restrictions apply as above. This will replace the real
     //! QGLWidget since QGLWidget doesn't allow this change outside the constructor.
-    virtual void setFormat (const QGLFormat& format);
+    virtual void setFormat (const QSurfaceFormat& format);
 
     //! Call this to create the real QGLWidget (and all surrounding widgets) after you
     //! have set the GL format/context. This also calls createBorderWidgets().
     void buildWidget();
 
-    //! Returns the rendering widget, either the QGLwidget, QOpenGLWidget, or the offscreen widget;
+    //! Returns the rendering widget, either the QOpenGLWidget or the offscreen widget;
     //! automatically calls buildWidget
     QWidget* getRenderingWidget();
     //! As above, but returns NULL if buildWidget has not been called before.
@@ -99,14 +97,12 @@ public:
     //@}
 
     //@{ a set of public pass-through functions to the real GL widget:
-    QGLFormat format() const;
+    QSurfaceFormat format() const;
 
     void makeCurrent();
     void doneCurrent();
     bool doubleBuffer() const;
     bool isValid() const;
-    QImage grabFrameBuffer (bool withAlpha = false);
-    QPixmap renderPixmap (int w=0, int h=0, bool useContext=false);
     //@}
 
     //! typedef for event callback
@@ -152,21 +148,12 @@ protected:
     // destructor
     ~SoQtGLWidget() override;
 
-    //@{ a set of protected pass-through functions to the real GL widget:
-    bool autoBufferSwap() const;
-    void setAutoBufferSwap (bool on);
-    //@}
-
     //@{ A set of virtual functions with the same meaning as in QGLWidget, calls are
     //! redirected from the real QGLWidget
     virtual void initializeGL();
     virtual void paintGL() {}
     virtual void resizeGL (int /*width*/, int /*height*/) {}
     //@}
-
-    //! This method gets overridden when the real QGLWidget gets changed due to
-    //! format/context changed. Override to your liking.
-    virtual void widgetChanged (QGLWidget* /*newWidget*/) {}
 
     // to be implemented by subclasses
     virtual void visibilityChanged (bool /*flag*/) {}
@@ -216,14 +203,11 @@ private:
     //! the real GL widget
     QWidget*  mainWidget;
     //! the GL format to use
-    QGLFormat   glFormat;
+    QSurfaceFormat glFormat;
 
     //! currently set cursor for the GL widget
     QCursor     _glCursor;
     bool        _glCursorIsSet;
-
-    //! stores setting of autoBufferSwap
-    bool        _autoBufferSwapOn;
 
     //@{ data for external event handling
     void*        eventCBData;
@@ -237,7 +221,6 @@ private:
     //! indicates whether the real qglwidget or the offscreen gl widget should be used.
     bool _useOffscreenGLWidget;
 
-    friend class SoQtRealQGLWidget;
     friend class SoQtRealQOpenGLWidget;
     friend class SoQtOffscreenGLWidget;
 };

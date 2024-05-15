@@ -1,0 +1,54 @@
+diff --git a/src/meson.build b/src/meson.build
+index 77c7e75..8f2baa1 100644
+--- a/src/meson.build
++++ b/src/meson.build
+@@ -581,7 +581,12 @@ endif
+ 
+ darwin_versions = [hb_version_int, '@0@.0.0'.format(hb_version_int)]
+ 
+-libharfbuzz = library('harfbuzz', hb_sources,
++if get_option('buildtype') == 'debug'
++    suffix = '_d'
++else
++    suffix = ''
++endif
++libharfbuzz = library('harfbuzz' + suffix, hb_sources,
+   include_directories: incconfig,
+   dependencies: harfbuzz_deps,
+   cpp_args: cpp_args + extra_hb_cpp_args,
+@@ -605,7 +610,7 @@ harfbuzz_subset_def = custom_target('harfbuzz-subset.def',
+     output: 'harfbuzz-subset.def')
+ defs_list += [harfbuzz_subset_def]
+ 
+-libharfbuzz_subset = library('harfbuzz-subset', hb_subset_sources,
++libharfbuzz_subset = library('harfbuzz-subset' + suffix, hb_subset_sources,
+   include_directories: incconfig,
+   dependencies: [m_dep],
+   link_with: [libharfbuzz],
+@@ -645,7 +650,7 @@ if conf.get('HAVE_CAIRO', 0) == 1
+ 
+   cairo_dep = dependency('cairo')
+ 
+-  libharfbuzz_cairo = library('harfbuzz-cairo', hb_cairo_sources,
++  libharfbuzz_cairo = library('harfbuzz-cairo' + suffix, hb_cairo_sources,
+     include_directories: incconfig,
+     dependencies: [m_dep, cairo_dep],
+     link_with: [libharfbuzz],
+@@ -761,7 +766,7 @@ if have_icu and not have_icu_builtin
+     output: 'harfbuzz-icu.def')
+   defs_list += [harfbuzz_icu_def]
+ 
+-  libharfbuzz_icu = library('harfbuzz-icu', [hb_icu_sources, hb_icu_headers],
++  libharfbuzz_icu = library('harfbuzz-icu' + suffix, [hb_icu_sources, hb_icu_headers],
+     include_directories: incconfig,
+     dependencies: icu_dep,
+     link_with: [libharfbuzz],
+@@ -929,7 +934,7 @@ if have_gobject
+     output: 'harfbuzz-gobject.def')
+   defs_list += [harfbuzz_gobject_def]
+ 
+-  libharfbuzz_gobject = library('harfbuzz-gobject', [hb_gobject_sources, gobject_enums_c, gobject_enums_h],
++  libharfbuzz_gobject = library('harfbuzz-gobject' + suffix, [hb_gobject_sources, gobject_enums_c, gobject_enums_h],
+     include_directories: incconfig,
+     dependencies: [glib_dep, gobject_dep],
+     link_with: [libharfbuzz],

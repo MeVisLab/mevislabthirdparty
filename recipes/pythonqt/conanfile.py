@@ -1,51 +1,82 @@
-# -*- coding: utf-8 -*-
-import shutil
-
-from conans import ConanFile
-from conans import CMake
-from conans import tools
-from conans.errors import ConanException
 import os
+
+from conan import ConanFile
+from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
+from conan.tools.env import VirtualRunEnv
+from conan.tools.files import collect_libs, copy, get, chdir
+
+required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
-    exports_sources = ["src/*", "patches/*"]
+    name = "pythonqt"
+    version = "3.5.2"
+    homepage = "https://mevislab.github.io/pythonqt"
+    description = "PythonQt is a dynamic Python binding for Qt"
+    license = "LGPL-2.1-only"
+    package_type = "shared-library"
+    settings = "os", "arch", "compiler", "build_type"
+    exports_sources = "patches/*.patch", "sources/**", "LICENSE"
 
-    _cmake = None
+    def layout(self):
+        cmake_layout(self, src_folder="src")
 
     def requirements(self):
-        channel = "@mevislab/stable"
-        self.requires("qt5/[>=5.12.7]" + channel)
-        self.requires("python/[>=3.9.7]" + channel)
-
-    def _configure_cmake(self):
-        if not self._cmake:
-            self._cmake = CMake(self)
-
-            python_package = self.deps_cpp_info['python']
-            version = python_package.version.split('.')
-            major, minor = version[0], version[1]
-
-            self._cmake.definitions["CMAKE_DEBUG_POSTFIX"] = "_d"
-            self._cmake.definitions["BUILD_SHARED_LIBS"] = True
-            self._cmake.definitions["python_VERSION_MAJOR"] = major
-            self._cmake.definitions["python_VERSION_MINOR"] = minor
-            self._cmake.configure(source_folder="sources")
-        return self._cmake
+        self.requires("qtbase/[>=6.5]")
+        self.requires("python/[>=3.11]", transitive_headers=True)
+        self.build_requires("pythonqt_generator/[>=3.5.1]")
 
     def source(self):
-        self.default_source()
-        shutil.copytree("src",
-                        os.path.join(self.source_folder, "sources"), dirs_exist_ok=True)
+        get(
+            self,
+            sha256="ae08146c30242a28d9c94762ee9c00abe7da83daf57720b9d3202e8c2e1a7d51",
+            url=f"https://github.com/MeVisLab/pythonqt/archive/refs/tags/v{self.version}.zip",
+            strip_root=True
+        )
+        copy(self, "**", src=self.export_sources_path / "sources", dst=self.source_path)
+
+    def generate(self):
+        env = VirtualRunEnv(self)
+        env.generate(scope="build")
+        deps = CMakeDeps(self)
+        deps.generate()
+        tc = CMakeToolchain(self)
+        tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
+        tc.variables["BUILD_SHARED_LIBS"] = True
+        tc.variables["CMAKE_INSTALL_RPATH"] = "$ORIGIN;$ORIGIN/../lib"
+        python_version = self.dependencies['python'].ref.version
+        tc.variables["python_VERSION_MAJOR"] = python_version.major
+        tc.variables["python_VERSION_MINOR"] = python_version.minor
+        tc.variables["OpenGL_GL_PREFERENCE"] = "LEGACY"
+        tc.generate()
 
     def build(self):
-        cmake = self._configure_cmake()
+        self.generate_sources()
+        cmake = CMake(self)
+        cmake.configure()
         cmake.build()
 
+    def generate_sources(self):
+        generator_path = self.dependencies.build["pythonqt_generator"].cpp_info.bindirs[0]
+        with chdir(self, generator_path):
+            qtbase_includes = os.pathsep.join(self.dependencies["qtbase"].cpp_info.includedirs)
+            qtversion = self.dependencies["qtbase"].ref.version
+            cmd_line = (
+                f"PythonQtGenerator "
+                f"--include-paths={qtbase_includes} "
+                f"--output-directory={self.source_path} "
+                f"--qt-version={qtversion} "
+                "qtscript_masterinclude.h build_all.txt"
+            )
+            self.run(cmd_line)
+
     def package(self):
-        cmake = self._configure_cmake()
+        copy(self, "LICENSE", src=self.export_sources_path, dst=self.package_path / "licenses")
+        cmake = CMake(self)
         cmake.install()
-        self.patch_binaries()
-        self.default_package()
+
+    def package_info(self):
+        self.cpp_info.set_property("cmake_file_name", "PythonQt")
+        self.cpp_info.set_property("cmake_target_name", "PythonQt::PythonQt")
+        self.cpp_info.set_property("pkg_config_name", "PythonQt")
+        self.cpp_info.libs = collect_libs(self)

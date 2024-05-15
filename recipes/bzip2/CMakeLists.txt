@@ -1,40 +1,30 @@
-cmake_minimum_required(VERSION 3.14)
-project(bzip2 C)
+cmake_minimum_required(VERSION 3.27)
+project(bzip2 LANGUAGES C)
 
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()
+include(GNUInstallDirs)
 
-# prevent CMake from complaining about this external unused variable.
-set(_UNUSED
-  ${CMAKE_DEBUG_POSTFIX}
-  ${CMAKE_EXPORT_NO_PACKAGE_REGISTRY}
-  ${CMAKE_INSTALL_BINDIR}
-  ${CMAKE_INSTALL_DATAROOTDIR}
-  ${CMAKE_INSTALL_INCLUDEDIR}
-  ${CMAKE_INSTALL_LIBDIR}
-  ${CMAKE_INSTALL_LIBEXECDIR}
-  ${CMAKE_INSTALL_OLDINCLUDEDIR}
-  ${CMAKE_INSTALL_SBINDIR}
+add_library(bz2
+    ${BZ2_SRC_DIR}/blocksort.c
+    ${BZ2_SRC_DIR}/bzlib.c
+    ${BZ2_SRC_DIR}/compress.c
+    ${BZ2_SRC_DIR}/crctable.c
+    ${BZ2_SRC_DIR}/decompress.c
+    ${BZ2_SRC_DIR}/huffman.c
+    ${BZ2_SRC_DIR}/randtable.c
 )
 
-if(MSVC OR MSVC90 OR MSVC10)
-    set(MSVC ON)
-    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
-endif()
+target_include_directories(bz2 PUBLIC ${BZ2_SRC_DIR})
 
-add_library(bz2 STATIC "")
-target_sources(bz2 PRIVATE
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/blocksort.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/bzlib.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/compress.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/crctable.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/decompress.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/huffman.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/randtable.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/bzlib.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/bzlib_private.h
+set_target_properties(bz2 PROPERTIES
+    PUBLIC_HEADER "${BZ2_SRC_DIR}/bzlib.h"
+    SOVERSION ${BZ2_VERSION_MAJOR}
+    VERSION ${BZ2_VERSION_STRING}
+    WINDOWS_EXPORT_ALL_SYMBOLS ON
 )
-target_include_directories(bz2 PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/sources)
 
-install(TARGETS bz2 RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/sources/bzlib.h DESTINATION include)
+install(TARGETS bz2
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)

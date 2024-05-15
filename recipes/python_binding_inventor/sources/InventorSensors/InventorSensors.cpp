@@ -17,8 +17,6 @@ static PyMethodDef NoMethods[] = {
 void PythonQt_init_InventorSensors(PyObject*);
 
 
-#if PY_MAJOR_VERSION >= 3
-
 static PyModuleDef sensorsModuleDef = {
   PyModuleDef_HEAD_INIT,
   "sensors",
@@ -31,33 +29,26 @@ static PyModuleDef sensorsModuleDef = {
   nullptr
 };
 
-  #define Py_2_3_InitModFunc(name) PyInit_##name(void)
-  #define Py_2_3_ModuleInit(name) PyModule_Create(&sensorsModuleDef)
-
-#else
-  #define Py_2_3_InitModFunc(name) init##name(void)
-  #define Py_2_3_ModuleInit(name) Py_InitModule(name, NoMethods)
-#endif
+#define PyInitModFunc(name) PyInit_##name(void)
+  #define PyModuleInit(name) PyModule_Create(&sensorsModuleDef)
 
 #ifdef UNIX
 PyMODINIT_FUNC
-Py_2_3_InitModFunc(sensors) ML_LIBRARY_EXPORT_ATTRIBUTE ;
+PyInitModFunc(sensors) ML_LIBRARY_EXPORT_ATTRIBUTE ;
 #endif
 
 PyMODINIT_FUNC
-Py_2_3_InitModFunc(sensors)
+PyInitModFunc(sensors)
 {
   PyObject* nodes = PyImport_ImportModule("Inventor.nodes");
   Py_XDECREF(nodes);
 
-  PyObject* module = Py_2_3_ModuleInit("sensors");
+  PyObject* module = PyModuleInit("sensors");
   PythonQt_init_InventorSensors(module);
 
   PythonQt::self()->addDecorators(new InventorSensorsDecorator());
 
-#if PY_MAJOR_VERSION >= 3
   return module;
-#endif
 }
 
 

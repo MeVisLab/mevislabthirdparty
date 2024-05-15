@@ -234,13 +234,13 @@ void
 SoQtExaminerViewer::restoreInteractions()
 {
     resetInteractions();
-    setInteraction (int(Qt::LeftButton | Qt::MidButton), 0, DOLLY_MODE_ACTIVE);
+    setInteraction (int(Qt::LeftButton | Qt::MiddleButton), 0, DOLLY_MODE_ACTIVE);
     setInteraction (int(Qt::LeftButton) | int(Qt::SHIFT), 0, PAN_MODE_ACTIVE);
     setInteraction (int(Qt::LeftButton) | int(Qt::CTRL), 0, PAN_MODE_ACTIVE);
     setInteraction (int(Qt::LeftButton) | int(Qt::SHIFT | Qt::CTRL), 0, DOLLY_MODE_ACTIVE);
     setInteraction (int(Qt::LeftButton), 0, SPIN_MODE_ACTIVE);
-    setInteraction (int(Qt::MidButton) | int(Qt::CTRL), 0, DOLLY_MODE_ACTIVE);
-    setInteraction (int(Qt::MidButton), 0, PAN_MODE_ACTIVE);
+    setInteraction (int(Qt::MiddleButton) | int(Qt::CTRL), 0, DOLLY_MODE_ACTIVE);
+    setInteraction (int(Qt::MiddleButton), 0, PAN_MODE_ACTIVE);
     setInteraction (int(Qt::SHIFT | Qt::CTRL), 0, DOLLY_MODE);
     setInteraction (int(Qt::SHIFT), 0, PAN_MODE);
     setInteraction (int(Qt::CTRL), 0, PAN_MODE);
@@ -275,7 +275,7 @@ SoQtExaminerViewer::getModeIndex (int inputState)
 {
     return ((inputState & Qt::LeftButton)      ? 1  : 0) |
            ((inputState & Qt::RightButton)     ? 2  : 0) |
-           ((inputState & Qt::MidButton)       ? 4  : 0) |
+           ((inputState & Qt::MiddleButton)    ? 4  : 0) |
            ((inputState & Qt::ShiftModifier)   ? 8  : 0) |
            ((inputState & Qt::ControlModifier) ? 16 : 0) |
            ((inputState & Qt::AltModifier)     ? 32 : 0);
@@ -517,7 +517,7 @@ SoQtExaminerViewer::processEvent (QEvent *anyEvent)
         // remember start position of mouse drag
         locator = SbVec2s(me->x() * raViewScale, raSize[1] - (me->y() * raViewScale));
 
-        if ((me->button() == Qt::LeftButton || me->button() == Qt::MidButton) &&
+        if ((me->button() == Qt::LeftButton || me->button() == Qt::MiddleButton) &&
             mode == SEEK_MODE)
         {
             // handle temporary seek mode
@@ -604,7 +604,7 @@ SoQtExaminerViewer::processEvent (QEvent *anyEvent)
         updateViewerMode (ke->modifiers());
     } else if (anyEvent->type() == QEvent::MouseButtonRelease) {
         QMouseEvent* me = (QMouseEvent*) anyEvent;
-        if ((me->button() == Qt::LeftButton || me->button() == Qt::MidButton) &&
+        if ((me->button() == Qt::LeftButton || me->button() == Qt::MiddleButton) &&
             mode == SEEK_MODE)
         {
             me->accept();
@@ -677,7 +677,7 @@ SoQtExaminerViewer::switchMode(int newMode)
                     // in SEEK_MODE the interactive count isn't increased
                     // by a mouse press!
                     if (buttons & Qt::LeftButton) { interactiveCountDec(); }
-                    if (buttons & Qt::MidButton)  { interactiveCountDec(); }
+                    if (buttons & Qt::MiddleButton)  { interactiveCountDec(); }
                 }
                 if (buttons & Qt::RightButton) { interactiveCountDec(); }
             }

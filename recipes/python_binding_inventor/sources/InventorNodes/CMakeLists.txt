@@ -22,10 +22,7 @@ target_sources(InventorNodes PRIVATE
 
 target_link_libraries(InventorNodes
   PRIVATE
-    Qt5::Core
-    Python3::Python
-    Threads::Threads
-    ${CONAN_LIBS}
+    ${REQUIRED_LIBS}
 )
 
 install(TARGETS InventorNodes

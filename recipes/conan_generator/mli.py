@@ -1,19 +1,16 @@
-# -*- coding: utf-8 -*-
-
-import io
 import os
 import re
 import glob
 import textwrap
-from typing import List, Dict, Optional
-from conans import tools
-from conans.model.build_info import CppInfo
-from conans.client.output import ScopedOutput
+from conan.tools.files import chdir
+from conans.model.conanfile_interface import ConanFileInterface
+from conans.model.conan_file import ConanFile
 
 
 MLI_DIRECTORY: str = 'MeVis/ThirdParty/Configuration/Installers/Libraries'
 
 PYTHON_UNIX_DIR_RE: re.Pattern = re.compile(r"python\d\.\d+")
+
 
 def _is_optional(entry):
     # make pdb/debug files optional, so we don't get an error if they can't be copied
@@ -24,16 +21,22 @@ def _create_add_statements(itemList):
     return "".join([(("+? " if _is_optional(entry) else "+ ") + entry + "\n") for entry in sorted(itemList)])
 
 
-class MLIBaseGenerator(object):
-    def __init__(self, cpp_info:CppInfo, output:ScopedOutput):
-        self.name: str = cpp_info.name
-        self.output = output
-        self.package_folder: str = cpp_info.rootpath
-        self.dependencies: List[str] = cpp_info.public_deps
-        self.mli_files: Dict[str,str] = {}
+class MLIBaseGenerator:
+    def __init__(self, conanfile: ConanFile, library: ConanFileInterface, package_id: str):
+        self.conanfile = conanfile
+        self.library: ConanFileInterface = library
+        self.dependencies = library.dependencies.direct_host
+        self.package_id = package_id
+        self.mli_directory = package_id + '/Configuration/Installers/Libraries'
+        self.name: str = library.ref.name
+        self.is_linux: bool = self.conanfile.settings.os == "Linux"
+        self.is_macos: bool = self.conanfile.settings.os == "Macos"
+        self.is_windows: bool = self.conanfile.settings.os == "Windows"
+        self.mli_files: dict[str, str] = {}
+        self.external_mli_files: dict[str, str] = {}  # mapping from dependency name to package_id
 
-    def _get_package_content(self, subdir, excludeFunc=None, prependPath=""):
-        path = os.path.join(self.package_folder, subdir)
+    def _get_package_dir_content(self, subdir, excludeFunc=None, prependPath=""):
+        path = os.path.join(self.library.package_folder, subdir)
         prependPath = (prependPath + "/") if prependPath and not prependPath.endswith('/') else prependPath
         subdir = (subdir + "/") if subdir else ""
         if os.path.isdir(path):
@@ -43,16 +46,29 @@ class MLIBaseGenerator(object):
         else:
             return []
 
-    def _get_glob_package_content(self, subdir, excludeFunc=None, prependPath=""):
+    def _get_glob_package_dir_content(self, subdir, excludeFunc=None, prependPath=""):
         result = []
-        with tools.chdir(self.package_folder):
+        with chdir(self.conanfile, self.library.package_folder):
             for candidate in glob.iglob(subdir):
-                result += self._get_package_content(candidate, excludeFunc=excludeFunc, prependPath=prependPath)
+                result += self._get_package_dir_content(candidate, excludeFunc=excludeFunc, prependPath=prependPath)
         return result
 
+    def set_external_mli_files(self, mli_files: dict[str, str]):
+        """
+        Sets a dict that maps dependency names to package names in which they are defined.
+        This is used to include .mli for libraries in other packages correctly.
+        """
+        self.external_mli_files = mli_files
+
     def _create_includes(self, dependencies, optional=True, indent=0):
-        includes = [f"INCLUDE_IF_EXISTING {dep}.mli" if optional else f"INCLUDE {dep}.mli" \
-            for dep in dependencies]
+        includes = []
+        cmd = "INCLUDE_IF_EXISTING" if optional else "INCLUDE"
+        for dep in dependencies:
+            path = f"{dep}.mli"
+            if dep in self.external_mli_files:
+                # include from other package
+                path = f"$(MLAB_{self.external_mli_files[dep].replace('/','_')})/Configuration/Installers/Libraries/{path}"
+            includes.append(f"{cmd} {path}")
         includes = ('\n' + ' '*indent).join(includes)
         return includes
 
@@ -64,37 +80,97 @@ class MLIBaseGenerator(object):
 ENDIF
 """
 
+    def _create_library_mli_files(self):
+        """Override this in derived classes."""
+        pass
+
     def get_content(self):
+        self._create_library_mli_files()
         # prepend target directory:
-        return {os.path.join(MLI_DIRECTORY, k): v for k, v in self.mli_files.items()}
-        
+        return {os.path.join(self.mli_directory, k): v for k, v in self.mli_files.items()}
+
 
 class MLI(MLIBaseGenerator):
-    def __init__(self, cpp_info:CppInfo, output:ScopedOutput, cmake_prefix:str, components:List[str], build_type:str):
-        super().__init__(cpp_info, output)
-        self.mli_name: Optional[str] = cpp_info.get_property('mli_name')
-        self.build_type: str = build_type
-        self.components: List[str] = components
-        self.cmake_prefix: str = cmake_prefix
-        self._create_library_mli_files()
-        
+    def __init__(self, conanfile: ConanFile, library: ConanFileInterface, package_id: str):
+        super().__init__(conanfile, library, package_id)
+        self.build_type: str = conanfile.settings.get_safe("build_type")
+        self.otherStuff: list[str] = []
+
+    def get_cmake_target_names(self) -> list[str]:
+        """
+        Get list of all usable CMake target names, to create mli redirects
+        (as these are used by the mldepends mechanism).
+        """
+
+        def _get_component_target_names(name, cpp_info):
+            if self.library.cpp_info.get_property("cmake_find_mode") == "none":
+                return []
+            primary_name = cpp_info.get_property("cmake_target_name")
+            if primary_name is None:
+                primary_name = self.name + "::" + name
+            name_list = [primary_name]
+            aliases_list = cpp_info.get_property("cmake_target_aliases")
+            if aliases_list:
+                name_list.extend(aliases_list)
+            return name_list
+
+        cmake_target_names = _get_component_target_names(self.name, self.library.cpp_info)
+        for name, comp in self.library.cpp_info.components.items():
+            # also create redirects for the components of this package
+            # (for now at least; we would rather only package the DLLs for this component)
+            cmake_target_names += _get_component_target_names(name, comp)
+        return cmake_target_names
+
+    def get_dependencies(self) -> list[str]:
+        """Get list of dependencies to include in the mli file."""
+        return [dep.ref.name for dep in self.dependencies.values()]
+
+    def is_tool(self, full_path):
+        """
+        Check if a file should be treated as an (optional) tool.
+        Usually all executables are tools, but this method can be overridden for fine-tuning.
+        """
+
+        # DLLs can have executable rights on Linux, better to check the suffix, too:
+        def _hasDllSuffix(name):
+            if self.is_linux:
+                return name.endswith('.so') or '.so.' in name
+            elif self.is_macos:
+                name = name.lower()
+                return name.endswith('.dylib') or '.dylib.' in name
+            elif self.is_windows:
+                name = name.lower()
+                return name.endswith('.dll')
+
+        if (full_path.endswith(('.exe', '.bat', '.sh')) or
+            (not self.is_windows and os.access(os.path.join(self.library.package_folder, full_path), os.X_OK) and
+             not _hasDllSuffix(full_path))):
+            return True
+        if self.is_windows and full_path.endswith('.pdb'):
+            # PDBs should have the same state as the executable (if any) to which they belong:
+            exeName = os.path.splitext(full_path)[0] + '.exe'
+            if os.path.exists(exeName) and self.is_tool(exeName):
+                return True
+        elif self.is_linux and full_path.endswith('.debug'):
+            # same as above, for Linux:
+            exeName = os.path.splitext(full_path)[0]
+            if os.path.exists(exeName) and self.is_tool(exeName):
+                return True
+        return False
 
     def _create_library_mli_files(self):
-        if self.mli_name == 'None':
-            self.mli_name = None   # always create a .mli file now
-    
-        existingMliDirectory = os.path.join(self.package_folder, MLI_DIRECTORY)
-        if os.path.exists(existingMliDirectory): 
-            return {}
+        existingMliDirectory = self.library.package_path / self.mli_directory
+        if existingMliDirectory.exists():
+            return
 
         # generate .mli files
-        dependencyIncludes = self._create_includes(self.dependencies)
+        dependencyIncludes = self._create_includes(self.get_dependencies())
 
         mainFile = f"""
 # Include possible dependencies
 {dependencyIncludes}
 
-SWITCH_PACKAGE MeVis/ThirdParty
+SWITCH_PACKAGE {self.package_id}
 + ThirdPartyInformation/{self.name.lower()}
 
 IFDEF RELEASE
@@ -113,62 +189,54 @@ ENDIF
             # no different builds for Release and Debug, but we still create different files,
             # because the paths to be copied might be different in the installed SDK
             self.create_mli_content("Release")
-            pythonImportNames = self.create_mli_content("Debug") # pythonImportNames should be the same, only get once
-
+            pythonImportNames = self.create_mli_content("Debug")  # pythonImportNames should be the same, only get once
 
         def _normalized(name):
             # only Linux differentiates between upper and lower case in file names
-            return name if tools.os_info.is_linux else name.upper()
+            return name if self.is_linux else name.upper()
 
-        created_mli_names = set([_normalized(self.name)])
+        created_mli_names = {_normalized(self.name)}
 
         def _create_redirect(name):
             if not _normalized(name) in created_mli_names:
                 self.mli_files[f"{name}.mli"] = f"INCLUDE {self.name}.mli"
                 created_mli_names.add(_normalized(name))
 
-        if self.mli_name:
-            _create_redirect(self.mli_name)
-        elif self.cmake_prefix and not self.components:
-            _create_redirect(f"{self.cmake_prefix}__{self.cmake_prefix}")
-        for comp in self.components:
-            # also create redirects for the components of this package
-            # (for now at least; we would rather only package the DLLs for this component)
-            _create_redirect(self.cmake_prefix + "__" + comp)
-        for name in pythonImportNames:
-            # ModuleDependencyAnalyzer was modified to prefer the "python_" prefix for Python imports,
-            # this fixes some name clashes
-            _create_redirect("python_" + name)
+        redirect_list = []
+        mli_name = self.library.cpp_info.get_property('mli_name')
+        if mli_name:
+            redirect_list.append(mli_name)
+        redirect_list += self.get_cmake_target_names()
+        # ModuleDependencyAnalyzer was modified to prefer the "python_" prefix for Python imports,
+        # this fixes some name clashes
+        redirect_list += ["python_" + name for name in pythonImportNames]
+        for redirect in redirect_list:
+            _create_redirect(redirect.replace(":", "_"))
 
-    def create_mli_content(self, variant):
+    def create_mli_content(self, build_type):
+        """
+        Create .mli sub-file for the given build_type. Also returns a list of
+        python import names found in the process, to create suitable redirects.
+        """
 
         def _binExcludes(entry):
             # do not add .lib files for Windows,
             # and do also not add the whole site-packages path
-            return (tools.os_info.is_windows and (entry.endswith('.lib') or entry.endswith('.exp'))) or \
-                entry in ['python', 'site-packages'] or PYTHON_UNIX_DIR_RE.fullmatch(entry)
+            return ((self.is_windows and (entry.endswith('.lib') or entry.endswith('.exp') or entry.endswith('.prl')))
+                    or entry.endswith('.cmake')
+                    or entry in ['python', 'site-packages', 'cmake']
+                    or PYTHON_UNIX_DIR_RE.fullmatch(entry))
 
-        # DLLs can have executable rights on Linux, better to check the suffix, too:
-        def _hasDllSuffix(name):
-            if tools.os_info.is_linux:
-                return name.endswith('.so') or '.so.' in name
-            elif tools.os_info.is_macos:
-                name = name.lower()
-                return name.endswith('.dylib') or '.dylib.' in name
-            elif tools.os_info.is_windows:
-                name = name.lower()
-                return name.endswith('.dll')
-
-        def _isExecutable(entry):
-            return entry.endswith('.exe') or \
-                (not tools.os_info.is_windows and os.access(os.path.join(self.package_folder, entry), os.X_OK) and
-                 not _hasDllSuffix(entry))
-
-        def _addRedirectableContent(subdir):
+        def _redirectableBinContent(subdir):
+            """
+            Create content to copy content of bin or lib dir.
+            The output can be redirected to the directory in the REDIRECT_BIN_OUTPUT variable.
+            Some file types are automatically suppressed.
+            """
             subContent = ''
-            subContentList = self._get_package_content(subdir, excludeFunc=_binExcludes)
+            subContentList = self._get_package_dir_content(subdir, excludeFunc=_binExcludes)
             if subContentList:
-                subContent += f"""SWITCH_PACKAGE MeVis/ThirdParty
+                subContent += f"""SWITCH_PACKAGE {self.package_id}
 
 $INPUT $(INPUT)/{subdir}
 IFDEF REDIRECT_BIN_OUTPUT
@@ -178,41 +246,68 @@ ELSE
 ENDIF
 
 """
-                subContentLibList = [entry for entry in subContentList if not _isExecutable(entry)]
-                subContentExeList = [entry for entry in subContentList if _isExecutable(entry)]
-                subContentLibList = [entry[len(subdir)+1:] for entry in subContentLibList]  # remove f'{subdir}/' from entries
-                subContentExeList = [entry[len(subdir)+1:] for entry in subContentExeList]  # remove f'{subdir}/' from entries
+                subContentLibList = [entry for entry in subContentList if not self.is_tool(entry)]
+                subContentToolList = [entry for entry in subContentList if self.is_tool(entry)]
+                # remove f'{subdir}/' from entries:
+                subContentLibList = [entry[len(subdir)+1:] for entry in subContentLibList]
+                subContentToolList = [entry[len(subdir)+1:] for entry in subContentToolList]
                 subContent += _create_add_statements(subContentLibList)
                 subContent += '\n'
-                if subContentExeList:
+                if subContentToolList:
                     subContent += f'IFDEF {self.name.upper()}_TOOLS\n'
-                    subContent += textwrap.indent(_create_add_statements(subContentExeList), '  ')
+                    subContent += textwrap.indent(_create_add_statements(subContentToolList), '  ')
                     subContent += 'ENDIF\n'
                     subContent += '\n'
             return subContent
 
-        # First add redirectable content:
-        content = _addRedirectableContent('lib') + _addRedirectableContent('bin')
+        def _otherRedirectableContent(subdir):
+            """
+            This method copies the given subdir into the given output directory, unlike
+            _redirectableBinContent, which copies the content.
+            """
+            subContent = ''
+            subContentList = self._get_package_dir_content(subdir)
+            if subContentList:
+                subContent += _create_add_statements(subContentList)
+                subContent += '\n'
+            return subContent
 
-        # Now the stuff that goes directly to MeVis/ThirdParty:
-        contentList = self._get_package_content('web', prependPath="Sources")
+        # First add binary redirectable content:
+        content = _redirectableBinContent('lib') + _redirectableBinContent('bin')
+
+        # Then add other redirectable content, which stays in its sub-directory (this is used for Qt):
+        hasSwitched = False
+        for d in self.otherStuff:
+            otherContent = _otherRedirectableContent(d)
+            if otherContent and not hasSwitched:
+                content += f"""SWITCH_PACKAGE {self.package_id}
+
+IFDEF REDIRECT_BIN_OUTPUT
+  $OUTPUT $(REDIRECT_BIN_OUTPUT)
+ENDIF
+
+"""                
+                hasSwitched = True
+            content += otherContent
+
+        # Now the stuff that goes directly to MeVis/ThirdParty (or whatever the target package is):
+        contentList = self._get_package_dir_content('web', prependPath="Sources")
 
         # Python content:
-        sitePackagesContentList, pythonImportNames, _ = self._scan_site_packages(variant)
+        sitePackagesContentList, pythonImportNames, _ = self._scan_site_packages(build_type)
         contentList += sitePackagesContentList
 
         if contentList:
-            content += "SWITCH_PACKAGE MeVis/ThirdParty\n"
+            content += f"SWITCH_PACKAGE {self.package_id}\n"
             content += _create_add_statements(contentList)
 
         if content:
             # only create if not empty
-            self.mli_files[f"{self.name}_{variant}.mli"] = content
+            self.mli_files[f"{self.name}_{build_type}.mli"] = content
 
         return pythonImportNames
 
-
-    def _scan_site_packages(self, variant:str):
+    def _scan_site_packages(self, build_type: str):
         """
         This method returns the content of an optional site-packages directory,
         the top-level import names derived from this, and the path prefix where these
@@ -224,17 +319,17 @@ ENDIF
 
         # Python content:
         pythonImportNames = []
-        if tools.os_info.is_windows:
-            sitePackagesContentList = self._get_package_content('Lib/site-packages', excludeFunc=_pythonExcludes)
+        if self.is_windows:
+            sitePackagesContentList = self._get_package_dir_content('Lib/site-packages', excludeFunc=_pythonExcludes)
             pythonPrefix = 'Python/'
         else:
-            sitePackagesContentList = self._get_glob_package_content('lib/python*/site-packages/', excludeFunc=_pythonExcludes)
-            pythonPrefix = f'Python/{variant}/'
+            sitePackagesContentList = self._get_glob_package_dir_content('lib/python*/site-packages/', excludeFunc=_pythonExcludes)
+            pythonPrefix = f'Python/{build_type}/'
 
         # extract import names:
         for entry in sitePackagesContentList:
-            if not entry.endswith('-info'):
-                fullName = self.package_folder + '/' + entry
+            if not entry.endswith('-info'):  # egg-info or dist-info
+                fullName = self.library.package_folder + '/' + entry
                 importName = entry.split('/')[-1]
                 if importName.endswith('.py'):
                     importName = importName[:-3]
@@ -243,29 +338,27 @@ ENDIF
                     # which also excludes e.g. .pyd files. pyodbc is such a project, but luckily there the
                     # project name matches the import name anyway .
                     continue
-                pythonImportNames += [importName]
+                pythonImportNames.append(importName)
 
         # Python has its own sub-directory in the installed SDK:
         sitePackagesContentList = [pythonPrefix + entry for entry in sitePackagesContentList]
-        
+
         return sitePackagesContentList, pythonImportNames, pythonPrefix
 
 
 class MLI_Python(MLI):
-    def __init__(self, cpp_info:CppInfo, output:ScopedOutput, build_type:str):
-        super().__init__(cpp_info, output, 'Python3', ['Python'], build_type)
 
-    def create_mli_content(self, variant):
-        sitePackagesContentList, pythonImportNames, pythonPrefix = self._scan_site_packages(variant)
-        
-        content="SWITCH_PACKAGE MeVis/ThirdParty\n"
-        if tools.os_info.is_windows:
+    def create_mli_content(self, build_type):
+        sitePackagesContentList, pythonImportNames, pythonPrefix = self._scan_site_packages(build_type)
+
+        content=f"SWITCH_PACKAGE {self.package_id}\n"
+        if self.is_windows:
             def notDllOrExe(name):
                 name = name.lower()
-                return not name.endswith(".exe") and not name.endswith(".dll") and not name.endswith(".pdb")
-            
-            # Add Python interpreter executable and DLLs explicitly
-            exeContent = self._get_package_content("", prependPath=pythonPrefix, excludeFunc=notDllOrExe)
+                return not name.endswith((".exe", ".dll", ".pdb"))
+
+            # Add Python interpreter executable and DLLs explicitly, because we should not add "*"
+            exeContent = self._get_package_dir_content("", prependPath=pythonPrefix, excludeFunc=notDllOrExe)
             content += _create_add_statements(exeContent)
             content += """
 + Python/DLLs
@@ -276,10 +369,37 @@ class MLI_Python(MLI):
         else:
             # Unix
             content += f"""
-+ Python/{variant}/bin
-+ Python/{variant}/lib
-- Python/{variant}/lib/python*/site-packages
++ Python/{build_type}/bin
++ Python/{build_type}/lib
+- Python/{build_type}/lib/python*/site-packages
 """
         content += _create_add_statements(sitePackagesContentList)
-        self.mli_files[f"{self.name}_{variant}.mli"] = content
+        self.mli_files[f"{self.name}_{build_type}.mli"] = content
         return pythonImportNames
+
+class MLI_Qt(MLI):
+
+    def __init__(self, conanfile: ConanFile, library: ConanFileInterface, package_id: str):
+        super().__init__(conanfile, library, package_id)
+        self.qt_name: str = 'Qt6'
+        self.otherStuff: list[str] = ["plugins", "resources", "translations", "qml", "libexec"]
+
+    def get_cmake_target_names(self):
+        """Must look into the CMake files generated by Qt itself."""
+        targets: list[str] = []
+        cmakePath = self.library.package_path / "lib" / "cmake"
+        anyFound = False
+        name_len = len(self.qt_name)
+        for fullPath in cmakePath.iterdir():
+            fileName = fullPath.name
+            # CMake link targets each have their own sub-directory, but we
+            # require certain files to exist to accept this as a target name
+            if fullPath.is_dir() and fileName.startswith(self.qt_name) and len(fileName) > name_len and \
+               (fullPath / f"{fileName}Dependencies.cmake").exists() and \
+               (fullPath / f"{fileName}Targets.cmake").exists():
+                targets.append(self.qt_name + "::" + fileName[name_len:])
+        return targets
+
+    def is_tool(self, full_path):
+        # Do not treat QtWebEngineProcess as an optional tool
+        return super().is_tool(full_path) and not os.path.basename(full_path).startswith("QtWebEngineProcess")

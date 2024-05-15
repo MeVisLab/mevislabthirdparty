@@ -9,7 +9,7 @@ endif()
 
 
 target_sources(Qt PRIVATE Qt.cpp)
-target_link_libraries(Qt PRIVATE Python3::Python Threads::Threads ${CONAN_LIBS})
+target_link_libraries(Qt PRIVATE ${REQUIRED_LIBS})
 
 install(TARGETS Qt
     RUNTIME DESTINATION "${TARGET_RUNTIME_OUTPUT_DIRECTORY}"

@@ -16,10 +16,7 @@ target_sources(InventorProjectors PRIVATE
 
 target_link_libraries(InventorProjectors
   PRIVATE
-    Qt5::Core
-    Python3::Python
-    Threads::Threads
-    ${CONAN_LIBS}
+    ${REQUIRED_LIBS}
 )
 
 install(TARGETS InventorProjectors

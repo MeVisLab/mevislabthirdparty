@@ -1,69 +1,104 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans import CMake
-from conans import tools
 import os
+import textwrap
+from conan import ConanFile
+from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
+from conan.tools.files import collect_libs
+from conan.tools.files import get, copy, rmdir, patch, save
+from conan.tools.scm import Version
+
+required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
-    generators = "cmake", "cmake_find_package"
+    name = "libxml2"
+    version = "2.12.6"
+    homepage = "http://xmlsoft.org"
+    description = "XML C parser and toolkit"
+    license = "MIT"
+    package_type = "shared-library"
+    settings = "os", "arch", "compiler", "build_type"
+    exports_sources = "patches/*.patch"
 
-    _cmake = None
+    def configure(self):
+        self.settings.rm_safe("compiler.libcxx")
+        self.settings.rm_safe("compiler.cppstd")
 
+    def layout(self):
+        cmake_layout(self, src_folder="src")
 
     def requirements(self):
-        channel = "@{0}/{1}".format(self.user, self.channel)
-        self.requires("zlib/[>=1.2.11]" + channel)
-        self.requires("icu/[>=68.2]" + channel)
+        self.requires("zlib/[>=1.2.11]")
+        self.requires("icu/[>=68.2]")
 
+    def source(self):
+        v = Version(self.version)
+        get(
+            self,
+            sha256="889c593a881a3db5fdd96cc9318c87df34eb648edfc458272ad46fd607353fbb",
+            url=f"https://download.gnome.org/sources/libxml2/{v.major}.{v.minor}/libxml2-{self.version}.tar.xz",
+            strip_root=True,
+        )
+        patch(self, patch_file="patches/001-debug_postfix.patch")
 
-    def _configure_cmake(self):
-        if not self._cmake:
-            self.create_cmake_wrapper()
-            self._cmake = CMake(self)
-
-            self._cmake.definitions["CMAKE_DEBUG_POSTFIX"] = "d"
-            self._cmake.definitions["BUILD_SHARED_LIBS"] = True
-
-            self._cmake.definitions["LIBXML2_WITH_ICONV"] = False
-            self._cmake.definitions["LIBXML2_WITH_ICU"] = True
-            self._cmake.definitions["LIBXML2_WITH_LZMA"] = False
-            self._cmake.definitions["LIBXML2_WITH_ZLIB"] = True
-
-            self._cmake.definitions["LIBXML2_WITH_PYTHON"] = False
-            self._cmake.definitions["LIBXML2_WITH_TESTS"] = False
-
-            self._cmake.configure()
-        return self._cmake
-
+    def generate(self):
+        tc = CMakeToolchain(self)
+        tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
+        tc.variables["BUILD_SHARED_LIBS"] = True
+        tc.variables["CMAKE_INSTALL_RPATH"] = "$ORIGIN;$ORIGIN/../lib"
+        tc.variables["LIBXML2_WITH_ICONV"] = False
+        tc.variables["LIBXML2_WITH_ICU"] = True
+        tc.variables["LIBXML2_WITH_LZMA"] = False
+        tc.variables["LIBXML2_WITH_ZLIB"] = True
+        tc.variables["LIBXML2_WITH_PROGRAMS"] = False
+        tc.variables["LIBXML2_WITH_PYTHON"] = False
+        tc.variables["LIBXML2_WITH_TESTS"] = False
+        tc.generate()
+        tc = CMakeDeps(self)
+        tc.generate()
 
     def build(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
+        cmake.configure()
         cmake.build()
 
-
     def package(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
         cmake.install()
-
-        tools.rmdir(os.path.join(self.package_folder, "lib", "cmake"))
-        tools.rmdir(os.path.join(self.package_folder, "lib", "pkgconfig"))
-        tools.rmdir(os.path.join(self.package_folder, "share"))
-
-        self.patch_binaries(executables=['xmlcatalog', 'xmllint'])
-        self.default_package()
-
+        copy(self, "Copyright", src=self.source_path, dst=self.package_path / "licenses")
+        rmdir(self, self.package_path / "lib" / "cmake")
+        rmdir(self, self.package_path / "lib" / "pkgconfig")
+        rmdir(self, self.package_path / "share")
+        self._cmake_module_file_write()
 
     def package_info(self):
-        self.default_package_info()
+        self.cpp_info.set_property("cmake_find_mode", "both")
+        self.cpp_info.set_property("cmake_file_name", "LibXml2")
+        self.cpp_info.set_property("cmake_target_name", "LibXml2::LibXml2")
+        self.cpp_info.set_property("pkg_config_name", "libxml-2.0")
+        self.cpp_info.libs = collect_libs(self)
+        self.cpp_info.includedirs.append("include/libxml2")
 
-        self.cpp_info.includedirs.append(os.path.join("include", "libxml2"))
+        self.cpp_info.set_property("cmake_build_modules", [self._cmake_module_file])
+        self.cpp_info.set_property("cmake_find_package", [self._cmake_module_file])
 
-        if tools.os_info.is_macos:
-            self.cpp_info.system_libs.append('m')
-        elif tools.os_info.is_linux:
+        if self.settings.os == "Linux":
             self.cpp_info.system_libs.extend(["m", "pthread"])
-        elif tools.os_info.is_windows:
+        elif self.settings.os == "Windows":
             self.cpp_info.system_libs.extend(["ws2_32", "wsock32"])
+
+    @property
+    def _cmake_module_file(self):
+        return os.path.join("lib", "cmake", f"{self.name}-variables.cmake")
+
+    def _cmake_module_file_write(self):
+        file = self.package_path / self._cmake_module_file
+        content = textwrap.dedent(
+            f"""\
+            set(LIBXML2_FOUND TRUE)
+            set(LIBXML2_INCLUDE_DIR ${{LibXml2_INCLUDE_DIR}})
+            set(LIBXML2_INCLUDE_DIRS ${{LibXml2_INCLUDE_DIRS}})
+            set(LIBXML2_LIBRARIES ${{LibXml2_LIBRARIES}})
+            set(LIBXML2_VERSION_STRING ${{LibXml2_VERSION_STRING}})
+            """
+        )
+        save(self, file, content)

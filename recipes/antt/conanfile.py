@@ -1,25 +1,31 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans.errors import ConanInvalidConfiguration
-import os
+from conan import ConanFile
+from conan.tools.files import copy
 
+required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
+    name = "antt"
+    version = "2.08"
+    homepage = "http://www.gust.org.pl"
+    description = "antt - Antykwa Toruńska: a Type 1 family of a Polish traditional type"
+    license = "LPPL-1.3a"
+    package_type = "build-scripts"
+    exports_sources = "sources/*"
+    no_copy_source = True
 
-    settings = "os"
-
-    def validate(self):
-        if self.settings.os != "Linux":
-            raise ConanInvalidConfiguration(f"{self.name} is only supported on Linux")
-
+    mlab_hooks = {
+        "test_package.skip": True,
+        "folders.exclude": ["MeVis"]
+    }
 
     def package(self):
-        self.copy("*", dst="MeVis/ThirdParty/Resources/Linux", src="sources", keep_path=True)
-        self.default_package()
-
+        copy(self, "LICENSE", src=self.source_path / "sources", dst=self.package_path / "licenses" )
+        copy(self,
+             pattern="*",
+             src=self.source_path / "sources",
+             dst=self.package_path / "MeVis" / "ThirdParty" / "Resources" / "Linux",
+             keep_path=True
+        )
 
     def package_info(self):
-        self.cpp_info.libdirs = []
         self.cpp_info.includedirs = []

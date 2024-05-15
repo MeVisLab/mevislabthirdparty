@@ -1,7 +1,0 @@
-type: header_only
-name: requirejs
-display_name: RequireJS
-version: "2.3.6"
-homepage: https://requirejs.org
-description: RequireJS is a JavaScript file and module loader
-license: MIT

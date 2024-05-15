@@ -14,8 +14,6 @@ static PyMethodDef NoMethods[] = {
     {nullptr, nullptr, 0, nullptr}        /* Sentinel */
 };
 
-#if PY_MAJOR_VERSION >= 3
-
 static PyModuleDef QtXmlModuleDef = {
   PyModuleDef_HEAD_INIT,
   "QtXml",
@@ -28,34 +26,27 @@ static PyModuleDef QtXmlModuleDef = {
   nullptr
 };
 
-  #define Py_2_3_InitModFunc(name) PyInit_##name(void)
-  #define Py_2_3_ModuleInit(name) PyModule_Create(&QtXmlModuleDef)
-
-#else
-  #define Py_2_3_InitModFunc(name) init##name(void)
-  #define Py_2_3_ModuleInit(name) Py_InitModule(name, NoMethods)
-#endif
+#define PyInitModFunc(name) PyInit_##name(void)
+  #define PyModuleInit(name) PyModule_Create(&QtXmlModuleDef)
 
 
 #ifdef UNIX
 PyMODINIT_FUNC
-Py_2_3_InitModFunc(QtXml) ML_LIBRARY_EXPORT_ATTRIBUTE ;
+PyInitModFunc(QtXml) ML_LIBRARY_EXPORT_ATTRIBUTE ;
 #endif
 
 PyMODINIT_FUNC
-Py_2_3_InitModFunc(QtXml)
+PyInitModFunc(QtXml)
 {
   PyObject* qtcore = PyImport_ImportModule("PythonQt.QtCore");
-  PyObject* module = Py_2_3_ModuleInit("QtXml");
+  PyObject* module = PyModuleInit("QtXml");
   PythonQt_init_QtXml(module);
 
   Py_XDECREF(qtcore);
 
   PythonQt::self()->clearNotFoundCachedMembers();
 
-#if PY_MAJOR_VERSION >= 3
   return module;
-#endif
 }
 
 

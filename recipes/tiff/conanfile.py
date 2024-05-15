@@ -1,78 +1,96 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans import tools
-from conans import CMake
-import os
+from conan import ConanFile
+from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps, cmake_layout
+from conan.tools.files import get, copy, patch, rmdir, collect_libs, replace_in_file
+from conan.tools.scm import Version
+
+required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
+    name = "tiff"
+    version = "4.6.0"
+    homepage = "http://simplesystems.org/libtiff"
+    description = "Tag Image File Format (TIFF) library"
+    license = "libtiff"
+    package_type = "shared-library"
+    settings = "os", "arch", "compiler", "build_type"
+    exports_sources = "patches/*.patch"
 
-    _cmake = None
+    def configure(self):
+        self.settings.rm_safe("compiler.libcxx")
+        self.settings.rm_safe("compiler.cppstd")
+
+    def layout(self):
+        cmake_layout(self, src_folder="src")
 
     def requirements(self):
-        channel = f"@{self.user}/{self.channel}"
-        self.requires("xz-utils/[>=5.2.5]" + channel)
-        self.requires("zlib/[>=1.2.11]" + channel)
-        self.requires("zstd/[>=1.5.0]" + channel)
-        #self.requires("webp/[>=1.2.0]" + channel)
-        #self.requires("jbigkit/[>2.1]" + channel)
-        self.requires("libjpeg/9e" + channel)
+        self.requires("libjpeg-turbo/[>=2.1]")
+        self.requires("libwebp/[>=1.3]")
+        self.requires("xz-utils/[>=5.2]")
+        self.requires("zlib/[>=1.3]")
+        self.requires("zstd/[>=1.5]")
 
+    def source(self):
+        get(self,
+            sha256="88b3979e6d5c7e32b50d7ec72fb15af724f6ab2cbf7e10880c360a77e4b5d99a",
+            url=f"https://download.osgeo.org/libtiff/tiff-{self.version}.tar.gz",
+            strip_root=True)
+        # work-around for https://github.com/conan-io/conan/issues/12180:
+        patch(self, patch_file="patches/cmake-dependencies.patch")
+        replace_in_file(self, self.source_path / "cmake" / "WindowsSupport.cmake", 'set(CMAKE_DEBUG_POSTFIX "d")', '#set(CMAKE_DEBUG_POSTFIX "d")')
+        replace_in_file(self, self.source_path / "cmake" / "Findliblzma.cmake", 'find_library(LIBLZMA_LIBRARY_DEBUG NAMES lzmad liblzmad', 'find_library(LIBLZMA_LIBRARY_DEBUG NAMES lzmad lzma_d liblzmad liblzma_d')
 
-    def _configure_cmake(self):
-        if not self._cmake:
-            self.create_cmake_wrapper()
-            self._cmake = CMake(self)
-            self._cmake.definitions["CMAKE_DEBUG_POSTFIX"] = "d"
-            self._cmake.definitions["BUILD_SHARED_LIBS"] = "ON"
-            self._cmake.definitions['CMAKE_INSTALL_LIBDIR'] = 'lib'
-            self._cmake.definitions['CMAKE_INSTALL_BINDIR'] = 'bin'
-            self._cmake.definitions['CMAKE_INSTALL_INCLUDEDIR'] = 'include'
+    def generate(self):
+        deps = CMakeDeps(self)
+        deps.generate()
+        tc = CMakeToolchain(self)
+        tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
+        tc.variables["BUILD_SHARED_LIBS"] = "ON"
+        tc.variables["CMAKE_INSTALL_RPATH"] = "$ORIGIN;$ORIGIN/../lib"
+        tc.variables['CMAKE_INSTALL_LIBDIR'] = 'lib'
+        tc.variables['CMAKE_INSTALL_BINDIR'] = 'bin'
+        tc.variables['CMAKE_INSTALL_INCLUDEDIR'] = 'include'
 
-            self._cmake.definitions['CMAKE_DISABLE_FIND_PACKAGE_OpenGL'] = True
-            self._cmake.definitions['CMAKE_DISABLE_FIND_PACKAGE_GLUT'] = True
+        tc.variables['CMAKE_DISABLE_FIND_PACKAGE_OpenGL'] = True
+        tc.variables['CMAKE_DISABLE_FIND_PACKAGE_GLUT'] = True
 
-            self._cmake.definitions['tiff-install'] = True
-            self._cmake.definitions['tiff-docs'] = False
+        tc.variables['tiff-install'] = True
+        tc.variables['tiff-docs'] = False
 
-            self._cmake.definitions["lzma"] = "xz-utils" in self.deps_cpp_info.deps
-            self._cmake.definitions["jpeg"] = "libjpeg" in self.deps_cpp_info.deps
-            self._cmake.definitions["zlib"] = "zlib" in self.deps_cpp_info.deps
-            self._cmake.definitions["webp"] = "webp" in self.deps_cpp_info.deps
-            self._cmake.definitions["zstd"] = "zstd" in self.deps_cpp_info.deps
-            self._cmake.definitions["jbig"] = "jbigkit" in self.deps_cpp_info.deps
-            self._cmake.definitions["jpeg12"] = False
-            self._cmake.definitions["cxx"] = False
-            self._cmake.configure()
-        return self._cmake
+        tc.variables["cxx"] = False
+        tc.variables["jbig"] = False
+        tc.variables["jpeg"] = True
+        tc.variables["jpeg12"] = False
+        tc.variables["lzma"] = True
+        tc.variables["webp"] = True
+        tc.variables["zlib"] = True
+        tc.variables["zstd"] = True
+        tc.generate()
 
 
     def build(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
+        cmake.configure()
         cmake.build()
 
-
     def package(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
         cmake.install()
-
-        self.copy("tiffd.pdb", src="bin", dst="bin")
-
-        if not tools.os_info.is_windows:
-            tools.rmdir(os.path.join(self.package_folder, 'bin'))
-
-        tools.rmdir(os.path.join(self.package_folder, 'share'))
-        tools.rmdir(os.path.join(self.package_folder, 'lib', 'cmake'))
-        tools.rmdir(os.path.join(self.package_folder, 'lib', 'pkgconfig'))
-
-        self.patch_binaries()
-        self.default_package()
-
+        copy(self, "LICENSE.md", src=self.source_path, dst=self.package_path / "licenses")
+        copy(self, "*.pdb", src=self.build_path / "libtiff", dst=self.package_path / "bin",
+             keep_path=False, excludes="*vc???.pdb")
+        if self.settings.os != "Windows":
+            rmdir(self, self.package_path / "bin")
+        rmdir(self, self.package_path / "share")
+        rmdir(self, self.package_path / "lib" / "cmake")
+        rmdir(self, self.package_path / "lib" / "pkgconfig")
 
     def package_info(self):
-        self.default_package_info()
+        self.cpp_info.set_property("cmake_find_mode", "both")
+        self.cpp_info.set_property("cmake_file_name", "TIFF")
+        self.cpp_info.set_property("cmake_target_name", "TIFF::TIFF")
+        self.cpp_info.set_property("pkg_config_name", f"libtiff-{Version(self.version).major}")
+        self.cpp_info.libs = collect_libs(self)
 
         if self.settings.os == "Linux":
-            self.cpp_info.system_libs.extend(["m"])
+            self.cpp_info.system_libs.append("m")

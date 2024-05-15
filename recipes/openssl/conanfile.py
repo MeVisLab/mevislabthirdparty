@@ -1,159 +1,306 @@
-# -*- coding: utf-8 -*-
+"""
+Parts of the recipe are taken from the Conan Center Index (https://github.com/conan-io/conan-center-index),
+licensed under the MIT License.
+"""
+
+import fnmatch
 import os
+import textwrap
 
-from conans import AutoToolsBuildEnvironment
-from conans import ConanFile
-from conans import tools
+from conan import ConanFile
+from conan.errors import ConanInvalidConfiguration
+from conan.tools.apple import fix_apple_shared_install_name, is_apple_os
+from conan.tools.build import build_jobs
+from conan.tools.files import chdir, copy, get, patch, replace_in_file, rmdir, save
+from conan.tools.gnu import AutotoolsToolchain
+from conan.tools.layout import basic_layout
+from conan.tools.microsoft import is_msvc, msvc_runtime_flag, unix_path
+
+required_conan_version = ">=2.2.2"
 
 
-class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
+class OpenSSLConan(ConanFile):
+    name = "openssl"
+    version = "3.2.1"
+    homepage = "https://www.openssl.org"
+    license = "Apache-2.0"
+    description = "full-strength general purpose cryptography library (including SSL and TLS)"
+    settings = "os", "arch", "compiler", "build_type"
+    package_type = "shared-library"
+    exports_sources = "patches/*.patch"
 
-    def build_requirements(self):
-        channel = "@{0}/{1}".format(self.user, self.channel)
-        packages = None
+    mlab_hooks = {"debug_suffix.skip": True}
 
-        if self.settings.compiler == "Visual Studio":
-            self.build_requires("strawberryperl_installer/[>=5.30]" + channel)
-            self.build_requires("nasm_installer/[>=2.14]" + channel)
-        elif self.settings.os == "Linux":
-            if tools.os_info.with_apt:
-                packages = ['libfindbin-libs-perl']
+    @property
+    def _settings_build(self):
+        return getattr(self, "settings_build", self.settings)
 
-        if packages:
-            installer = tools.SystemPackageTool()
-            installer.install(" ".join(packages))
+    def configure(self):
+        self.settings.rm_safe("compiler.libcxx")
+        self.settings.rm_safe("compiler.cppstd")
 
     def requirements(self):
-        channel = "@{0}/{1}".format(self.user, self.channel)
-        self.requires("zlib/[>=1.2.11]" + channel, private=False)
+        self.requires("zlib/[>=1.2.13]")
+
+    def layout(self):
+        basic_layout(self, src_folder="src")
+
+    def source(self):
+        get(
+            self,
+            sha256="83c7329fe52c850677d75e5d0b0ca245309b97e8ecbcfdc1dfdc4ab9fac35b39",
+            url=f"https://www.openssl.org/source/openssl-{self.version}.tar.gz",
+            destination=self.source_folder,
+            strip_root=True,
+        )
+        patch(self, patch_file="patches/001-masm_multilib_suffix.patch")
+
+    @property
+    def _target(self):
+        target = f"conan-{self.settings.build_type}-{self.settings.os}-{self.settings.arch}-{self.settings.compiler}-{self.settings.compiler.version}"
+        if is_msvc(self):
+            target = f"VC-{target}"  # VC- prefix is important as it's checked by Configure
+        return target
+
+    @property
+    def _ancestor_target(self):
+        if self.settings.os == "Windows":
+            return "VC-WIN64A-masm"
+        elif self.settings.os == "Linux":
+            return "linux-x86_64"
+        else:
+            raise ConanInvalidConfiguration(f"Unsupported platform ({self.settings.os}).\n")
+
+    def _get_default_openssl_dir(self):
+        if self.settings.os == "Linux":
+            return "/etc/ssl"
+        return self.package_path / "res"
+
+    @property
+    def _configure_args(self):
+        openssldir = unix_path(self, self._get_default_openssl_dir())
+        args = [
+            f'"{self._target}"',
+            "shared",
+            "threads",
+            "no-unit-test",
+            "no-tests",
+            "PERL=perl",
+            "--debug" if self.settings.build_type == "Debug" else "--release",
+            '--prefix="/"',
+            '--libdir="lib"',
+            f'--openssldir="{openssldir}"',
+        ]
+
+        zlib_info = self.dependencies["zlib"].cpp_info.aggregated_components()
+        include_path = zlib_info.includedirs[0]
+        if self.settings.os == "Windows":
+            lib_path = f"{zlib_info.libdirs[0]}/{zlib_info.libs[0]}.lib"
+        else:
+            # Just path, linux will find the right file
+            lib_path = zlib_info.libdirs[0]
+
+        args.extend(["zlib", f'--with-zlib-include="{include_path}"', f'--with-zlib-lib="{lib_path}"'])
+        return args
+
+    def generate(self):
+        tc = AutotoolsToolchain(self)
+        env = tc.environment()
+        env.define_path("PERL", "perl")
+        self._create_targets(tc.cflags, tc.cxxflags, tc.defines, tc.ldflags)
+        tc.generate(env)
+
+    def _create_targets(self, cflags, cxxflags, defines, ldflags):
+        cflags = " ".join(cflags)
+        cxxflags = " ".join(cxxflags)
+        defines = " ".join(defines)
+        defines = f'defines => add("{defines}"),' if defines else ""
+        lflags = " ".join(ldflags)
+        targets = "my %targets"
+        config = textwrap.dedent(
+            f"""\
+            {targets} = (
+                "{self._target}" => {{
+                    inherit_from => [ "{self._ancestor_target}" ],
+                    cflags => add("{cflags}"),
+                    cxxflags => add("{cxxflags}"),
+                    {defines}
+                    lflags => add("{lflags}"),
+                }},
+            );
+        """
+        )
+
+        self.output.info(f"using target: {self._target} -> {self._ancestor_target}")
+        self.output.info(config)
+
+        save(self, os.path.join(self.source_folder, "Configurations", "20-conan.conf"), config)
+
+    @property
+    def _make_program(self):
+        return "nmake" if is_msvc(self) else "make"
+
+    def _run_make(self, targets=None, parallel=True, install=False):
+        command = [self._make_program]
+        if install:
+            command.append(f"DESTDIR={self.package_folder}")
+        if targets:
+            command.extend(targets)
+        if not is_msvc(self):
+            command.append(("-j%s" % build_jobs(self)) if parallel else "-j1")
+        self.run(" ".join(command), env="conanbuild")
+
+    def _make(self):
+        with chdir(self, self.source_folder):
+            args = " ".join(self._configure_args)
+
+            if is_msvc(self):
+                self._replace_runtime_in_file("Configurations/10-main.conf")
+            if self.settings.build_type == "Debug":
+                replace_in_file(self, "Configurations/00-base-templates.conf", '"-lz"', '"-lz_d"')
+
+            self.run(f"perl ./Configure {args}", env="conanbuild")
+            if self.settings.os == "Windows":
+                # When `--prefix=/`, the scripts derive `\` without escaping, which
+                # causes issues on Windows
+                replace_in_file(self, "Makefile", "INSTALLTOP_dir=\\", "INSTALLTOP_dir=\\\\")
+            self._run_make()
+
+    def _replace_runtime_in_file(self, filename):
+        runtime = msvc_runtime_flag(self)
+        for e in ["MDd", "MTd", "MD", "MT"]:
+            replace_in_file(self, filename, f"/{e} ", f"/{runtime} ", strict=False)
+            replace_in_file(self, filename, f'/{e}"', f'/{runtime}"', strict=False)
+
+    def _make_install(self):
+        with chdir(self, self.source_folder):
+            self._run_make(targets=["install_sw"], parallel=False, install=True)
 
     def build(self):
-        def _get_flags():
-            if self.settings.os != "Windows":
-                env_build = AutoToolsBuildEnvironment(self)
-                extra_flags = ' '.join(env_build.flags)
-                extra_flags += ' --prefix="/" --openssldir="/" --libdir="/lib"'
-
-                if self.settings.build_type == "Debug":
-                    extra_flags += " -O0"
-                    if self.settings.compiler in ["apple-clang", "clang", "gcc"]:
-                        extra_flags += " -g3 -fno-omit-frame-pointer -fno-inline-functions"
-                    if self.settings.os in ["Linux"]:
-                        extra_flags += " no-asm"
-            else:
-                extra_flags = "--debug" if self.settings.build_type == "Debug" else "--release"
-
-            extra_flags += " shared"
-            extra_flags += " threads"
-            extra_flags += ' --with-zlib-include="%s"' % self.deps_cpp_info["zlib"].include_paths[0]
-            if self.settings.os == "Windows":
-                extra_flags += '--with-zlib-lib="%s/%s.lib"' % (
-                    self.deps_cpp_info["zlib"].lib_paths[0], self.deps_cpp_info["zlib"].libs[0]
-                )
-            else:
-                extra_flags += '--with-zlib-lib="%s"' % self.deps_cpp_info["zlib"].lib_paths[0]
-
-            return extra_flags
-
-        def _get_target():
-            target = ""
-            if self.settings.os == "Windows" and self.settings.compiler == "Visual Studio":
-                if self.settings.arch == "x86":
-                    target = "VC-WIN32"
-                elif self.settings.arch == "x86_64":
-                    target = "VC-WIN64A-masm"
-            elif self.settings.os == "Linux":
-                if self.settings.arch == "x86":
-                    target = "linux-x86"
-                elif self.settings.arch == "x86_64":
-                    target = "linux-x86_64"
-
-                if not target:
-                    raise Exception("Unsupported arch '%s' for Linux" % self.settings.arch)
-
-                if self.settings.compiler == "clang":
-                    target += "-clang"
-            elif self.settings.os == "Macos":
-                if self.settings.arch == "x86":
-                    target = "darwin-i386-cc"
-                elif self.settings.arch == "x86_64":
-                    target = "darwin64-x86_64-cc"
-                elif self.settings.arch == "armv8":
-                    target = "darwin64-arm64-cc"
-            else:
-                raise Exception("Unsupported operating system: %s" % self.settings.os)
-
-            if not target:
-                raise Exception("Unsupported arch '%s' for %s" % (self.settings.arch, self.settings.os))
-
-            return target
-
-        if self.settings.os in ["Linux", "Macos"]:
-            with tools.chdir("sources"):
-                self.run("./Configure %s %s" % (_get_target(), _get_flags()), output=True)
-                self.run("make depend", output=True)
-
-            if self.settings.os == "Macos":
-                tools.replace_in_file("sources/Makefile", '-install_name $(libdir)/', '-install_name ', strict=self.in_local_cache)
-
-            with tools.chdir("sources"):
-                self.run("make", output=True)
-                # 'make install' would also create the documentation, which takes quite a long time
-                # and we don't want to ship it anyway. Therefore, 'make install_sw' should be enough.
-                self.run("make install_sw DESTDIR=%s" % self.package_folder, output=True)
-        elif self.settings.compiler == "Visual Studio":
-            for e in ("MDd", "MTd", "MD", "MT"):
-                tools.replace_in_file(os.path.join("sources", "Configurations", "10-main.conf"), f"/{e} ",
-                                      f"/{self.settings.compiler.runtime} ", strict=False)
-                tools.replace_in_file(os.path.join("sources", "Configurations", "10-main.conf"), f"/{e}\"",
-                                      f"/{self.settings.compiler.runtime}\"", strict=False)
-
-            with tools.vcvars(self.settings, filter_known_paths=False):
-                with tools.environment_append({"LC_ALL": "C", "LANG": "C"}):
-                    with tools.chdir("sources"):
-                        self.run(
-                            f"perl Configure {_get_target()} --prefix={self.source_folder}/binaries {_get_flags()}",
-                            output=True)
-                        self.run("nmake", output=True)
-        else:
-            raise Exception(f"Unsupported operating system: {self.settings.os}")
+        self._make()
+        self.run(f"perl {self.source_folder}/configdata.pm --dump")
 
     def package(self):
-        self.copy(src="sources", pattern="*LICENSE", dst="licenses", keep_path=False)
-        if self.settings.os == "Windows" and self.settings.compiler == "Visual Studio":
-            self.copy(pattern="*/libcrypto*.lib", dst="lib", keep_path=False, excludes="*_static*.lib")
-            self.copy(pattern="*/libssl*.lib", dst="lib", keep_path=False, excludes="*_static*.lib")
-            self.copy(pattern="*/libcrypto*.dll", dst="bin", keep_path=False)
-            self.copy(pattern="*/libcrypto*.pdb", dst="bin", keep_path=False)
-            self.copy(pattern="*/libssl*.dll", dst="bin", keep_path=False)
-            self.copy(pattern="*/libssl*.pdb", dst="bin", keep_path=False)
-            self.copy(pattern="*/openssl.exe", dst="bin", keep_path=False)
-            self.copy(pattern="*.h", dst="include/openssl/", src="sources/include/", keep_path=False)
+        copy(self, "*LICENSE*", src=self.source_path, dst=self.package_path / "licenses")
+        self._make_install()
+        if is_apple_os(self):
+            fix_apple_shared_install_name(self)
 
-        if not tools.os_info.is_windows:
-            os.remove(os.path.join(self.package_folder, "bin", "c_rehash"))
-            os.remove(os.path.join(self.package_folder, "lib", "libssl.a"))
-            os.remove(os.path.join(self.package_folder, "lib", "libcrypto.a"))
+        for root, _, files in os.walk(self.package_folder):
+            for filename in files:
+                if fnmatch.fnmatch(filename, "*.pdb"):
+                    os.unlink(os.path.join(self.package_folder, root, filename))
+        # if is_msvc(self):
+        #    if self.settings.build_type == "Debug":
+        #        with chdir(self, os.path.join(self.package_folder, "lib")):
+        #            rename(self, "libssl.lib", "libssld.lib")
+        #            rename(self, "libcrypto.lib", "libcryptod.lib")
 
-        tools.rmdir(os.path.join(self.package_folder, "lib", "engines-3.0"))
-        tools.rmdir(os.path.join(self.package_folder, "lib", "pkgconfig"))
-        tools.rmdir(os.path.join(self.package_folder, "share"))
-        tools.rmdir(os.path.join(self.package_folder, "private"))
-        tools.rmdir(os.path.join(self.package_folder, "misc"))
-        tools.rmdir(os.path.join(self.package_folder, "certs"))
+        libdir = os.path.join(self.package_folder, "lib")
+        for file in os.listdir(libdir):
+            if file.endswith(".a"):
+                os.unlink(os.path.join(libdir, file))
 
-        self.patch_binaries(executables=['openssl'])
-        self.default_package()
+        if self.settings.os == "Linux":
+            self.run("patchelf --set-rpath '$ORIGIN/../lib' " + os.path.join(self.package_folder, "lib", "libssl.so.3"))
+
+        if True:  # fips support?
+            provdir = self.source_path / "providers"
+            modules_dir = self.package_path / "lib" / "ossl-modules"
+            if self.settings.os == "Macos":
+                copy(self, "fips.dylib", src=provdir, dst=modules_dir)
+            elif self.settings.os == "Windows":
+                copy(self, "fips.dll", src=provdir, dst=modules_dir)
+            else:
+                copy(self, "fips.so", src=provdir, dst=modules_dir)
+
+        rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
+
+        self._create_cmake_module_variables(self.package_path / self._module_file_rel_path)
+
+    def _create_cmake_module_variables(self, module_file):
+        content = textwrap.dedent(
+            """\
+            set(OPENSSL_FOUND TRUE)
+            if(DEFINED OpenSSL_INCLUDE_DIR)
+                set(OPENSSL_INCLUDE_DIR ${OpenSSL_INCLUDE_DIR})
+            endif()
+            if(DEFINED OpenSSL_Crypto_LIBS)
+                set(OPENSSL_CRYPTO_LIBRARY ${OpenSSL_Crypto_LIBS})
+                set(OPENSSL_CRYPTO_LIBRARIES ${OpenSSL_Crypto_LIBS}
+                                             ${OpenSSL_Crypto_DEPENDENCIES}
+                                             ${OpenSSL_Crypto_FRAMEWORKS}
+                                             ${OpenSSL_Crypto_SYSTEM_LIBS})
+            elseif(DEFINED openssl_OpenSSL_Crypto_LIBS_%(config)s)
+                set(OPENSSL_CRYPTO_LIBRARY ${openssl_OpenSSL_Crypto_LIBS_%(config)s})
+                set(OPENSSL_CRYPTO_LIBRARIES ${openssl_OpenSSL_Crypto_LIBS_%(config)s}
+                                             ${openssl_OpenSSL_Crypto_DEPENDENCIES_%(config)s}
+                                             ${openssl_OpenSSL_Crypto_FRAMEWORKS_%(config)s}
+                                             ${openssl_OpenSSL_Crypto_SYSTEM_LIBS_%(config)s})
+            endif()
+            if(DEFINED OpenSSL_SSL_LIBS)
+                set(OPENSSL_SSL_LIBRARY ${OpenSSL_SSL_LIBS})
+                set(OPENSSL_SSL_LIBRARIES ${OpenSSL_SSL_LIBS}
+                                          ${OpenSSL_SSL_DEPENDENCIES}
+                                          ${OpenSSL_SSL_FRAMEWORKS}
+                                          ${OpenSSL_SSL_SYSTEM_LIBS})
+            elseif(DEFINED openssl_OpenSSL_SSL_LIBS_%(config)s)
+                set(OPENSSL_SSL_LIBRARY ${openssl_OpenSSL_SSL_LIBS_%(config)s})
+                set(OPENSSL_SSL_LIBRARIES ${openssl_OpenSSL_SSL_LIBS_%(config)s}
+                                          ${openssl_OpenSSL_SSL_DEPENDENCIES_%(config)s}
+                                          ${openssl_OpenSSL_SSL_FRAMEWORKS_%(config)s}
+                                          ${openssl_OpenSSL_SSL_SYSTEM_LIBS_%(config)s})
+            endif()
+            if(DEFINED OpenSSL_LIBRARIES)
+                set(OPENSSL_LIBRARIES ${OpenSSL_LIBRARIES})
+            endif()
+            if(DEFINED OpenSSL_VERSION)
+                set(OPENSSL_VERSION ${OpenSSL_VERSION})
+            endif()
+        """
+            % {"config": str(self.settings.build_type).upper()}
+        )
+        save(self, module_file, content)
+
+    @property
+    def _module_subfolder(self):
+        return os.path.join("lib", "cmake")
+
+    @property
+    def _module_file_rel_path(self):
+        return os.path.join(self._module_subfolder, "openssl-variables.cmake")
 
     def package_info(self):
-        if self.settings.compiler == "Visual Studio":
-            self.cpp_info.libs = ["libssl", "libcrypto"]
-            self.cpp_info.system_libs.extend(["crypt32", "msi", "ws2_32"])
-        else:
-            self.cpp_info.libs = ["ssl", "crypto"]
-            if self.settings.os == "Linux":
-                self.cpp_info.system_libs = ["dl", "pthread"]
+        self.cpp_info.set_property("cmake_find_mode", "both")
+        self.cpp_info.set_property("cmake_file_name", "OpenSSL")
+        # backwards compatibility with our old Conan 1 build:
+        self.cpp_info.set_property("cmake_module_file_name", "openssl")
+        self.cpp_info.set_property("pkg_config_name", "openssl")
+        self.cpp_info.set_property("cmake_build_modules", [self._module_file_rel_path])
+        self.cpp_info.builddirs.append(self._module_subfolder)
 
-        self.env_info.path.append(os.path.join(self.package_folder, "bin"))
+        if is_msvc(self):
+            # libsuffix = "d" if self.settings.build_type == "Debug" else ""
+            libsuffix = ""
+            self.cpp_info.components["ssl"].libs = ["libssl" + libsuffix]
+            self.cpp_info.components["crypto"].libs = ["libcrypto" + libsuffix]
+        else:
+            self.cpp_info.components["ssl"].libs = ["ssl"]
+            self.cpp_info.components["crypto"].libs = ["crypto"]
+
+        self.cpp_info.components["ssl"].requires = ["crypto"]
+        self.cpp_info.components["crypto"].requires.append("zlib::zlib")
+
+        if self.settings.os == "Windows":
+            self.cpp_info.components["crypto"].system_libs.extend(["crypt32", "ws2_32", "advapi32", "user32", "bcrypt"])
+        elif self.settings.os == "Linux":
+            self.cpp_info.components["crypto"].system_libs.extend(["dl", "rt", "pthread"])
+            self.cpp_info.components["ssl"].system_libs.extend(["dl", "pthread"])
+
+        self.cpp_info.components["crypto"].set_property("cmake_target_name", "OpenSSL::Crypto")
+        self.cpp_info.components["crypto"].set_property("pkg_config_name", "libcrypto")
+        self.cpp_info.components["ssl"].set_property("cmake_target_name", "OpenSSL::SSL")
+        self.cpp_info.components["ssl"].set_property("pkg_config_name", "libssl")
+
+        openssl_modules_dir = os.path.join(self.package_folder, "lib", "ossl-modules")
+        self.runenv_info.define_path("OPENSSL_MODULES", openssl_modules_dir)

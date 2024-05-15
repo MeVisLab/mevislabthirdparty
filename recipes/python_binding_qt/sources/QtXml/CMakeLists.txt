@@ -1,5 +1,3 @@
-find_package(Qt5 COMPONENTS Core Gui Xml REQUIRED)
-
 add_library(QtXml "")
 set_target_properties(QtXml PROPERTIES OUTPUT_NAME QtXml)
 
@@ -13,19 +11,15 @@ target_sources(QtXml PRIVATE QtXml.cpp)
 target_sources(QtXml PRIVATE
   ../generated_cpp/com_trolltech_qt_xml/com_trolltech_qt_xml0.h
   ../generated_cpp/com_trolltech_qt_xml/com_trolltech_qt_xml0.cpp
-  ../generated_cpp/com_trolltech_qt_xml/com_trolltech_qt_xml1.h
-  ../generated_cpp/com_trolltech_qt_xml/com_trolltech_qt_xml1.cpp
+#   ../generated_cpp/com_trolltech_qt_xml/com_trolltech_qt_xml1.h
+#   ../generated_cpp/com_trolltech_qt_xml/com_trolltech_qt_xml1.cpp
   ../generated_cpp/com_trolltech_qt_xml/com_trolltech_qt_xml_init.cpp
 )
 
 target_link_libraries(QtXml
   PRIVATE
-    Qt5::Core
-    Qt5::Gui
-    Qt5::Xml
-    Python3::Python
-    Threads::Threads
-    ${CONAN_LIBS}
+    ${REQUIRED_LIBS}
+    Qt6::Xml
 )
 
 install(TARGETS QtXml

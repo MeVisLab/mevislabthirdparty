@@ -1,0 +1,13 @@
+diff --git a/CMake/FindLIBCHARSET.cmake b/CMake/FindLIBCHARSET.cmake
+index f779d17..1edb5ec 100644
+--- a/CMake/FindLIBCHARSET.cmake
++++ b/CMake/FindLIBCHARSET.cmake
+@@ -10,7 +10,7 @@ include(FindPackageHandleStandardArgs)
+ find_path(LIBCHARSET_INCLUDE_DIR NAMES localcharset.h)
+ mark_as_advanced(LIBCHARSET_INCLUDE_DIR)
+ 
+-set(LIBCHARSET_LIBS charset)
++set(LIBCHARSET_LIBS charset charset_d charset_debug charsetd)
+ find_library(LIBCHARSET_LIBRARY NAMES ${LIBCHARSET_LIBS})
+ mark_as_advanced(LIBCHARSET_LIBRARY)
+ 

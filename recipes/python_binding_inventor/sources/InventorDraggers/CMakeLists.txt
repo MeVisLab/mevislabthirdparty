@@ -17,10 +17,7 @@ target_sources(InventorDraggers PRIVATE
 
 target_link_libraries(InventorDraggers
   PRIVATE
-    Qt5::Core
-    Python3::Python
-    Threads::Threads
-    ${CONAN_LIBS}
+    ${REQUIRED_LIBS}
 )
 
 install(TARGETS InventorDraggers

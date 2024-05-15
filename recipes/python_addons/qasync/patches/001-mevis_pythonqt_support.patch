@@ -1,0 +1,201 @@
+diff --git a/qasync/__init__.py b/qasync/__init__.py
+index 3363e97..00d80cd 100644
+--- a/qasync/__init__.py
++++ b/qasync/__init__.py
+@@ -1,6 +1,7 @@
+ """
+ Implementation of the PEP 3156 Event-Loop with Qt.
+ 
++Copyright (c) 2019 Florian Link <florian.link@mevis.fraunhofer.de>
+ Copyright (c) 2018 Gerard Marull-Paretas <gerard@teslabs.com>
+ Copyright (c) 2014 Mark Harviston <mark.harviston@gmail.com>
+ Copyright (c) 2014 Arve Knudsen <arve.knudsen@gmail.com>
+@@ -44,6 +45,7 @@ if qtapi_env:
+         "pyside6": "PySide6",
+         "pyside2": "PySide2",
+         "pyside": "PySide",
++        "pythonqt": "PythonQt",
+     }
+     if qtapi_env in env_to_mod_map:
+         QtModuleName = env_to_mod_map[qtapi_env]
+@@ -59,14 +61,14 @@ if qtapi_env:
+ 
+ # If a Qt lib is already imported, use that
+ if not QtModule:
+-    for QtModuleName in ("PyQt5", "PyQt6", "PySide2", "PySide6"):
++    for QtModuleName in ("PyQt5", "PyQt6", "PySide2", "PySide6", "PythonQt"):
+         if QtModuleName in sys.modules:
+             QtModule = sys.modules[QtModuleName]
+             break
+ 
+ # Try importing qt libs
+ if not QtModule:
+-    for QtModuleName in ("PyQt5", "PyQt6", "PySide2", "PySide6"):
++    for QtModuleName in ("PyQt5", "PyQt6", "PySide2", "PySide6", "PythonQt"):
+         try:
+             QtModule = importlib.import_module(QtModuleName)
+         except ImportError:
+@@ -104,6 +106,10 @@ elif QtModuleName == "PySide6":
+ 
+     QApplication = QtWidgets.QApplication
+ 
++elif QtModuleName == "PythonQt":
++    from PythonQt.QtCore import Slot
++    QApplication = QtCore.QCoreApplication
++
+ from ._common import with_logger  # noqa
+ 
+ 
+@@ -119,7 +125,7 @@ class _QThreadWorker(QtCore.QThread):
+         self.__queue = queue
+         self.__stop = False
+         self.__num = num
+-        super().__init__()
++        QtCore.QThread.__init__(self)
+         if stackSize is not None:
+             self.setStackSize(stackSize)
+ 
+@@ -156,7 +162,7 @@ class _QThreadWorker(QtCore.QThread):
+ 
+     def wait(self):
+         self._logger.debug("Waiting for thread #%s to stop...", self.__num)
+-        super().wait()
++        QtCore.QThread.wait(self)
+ 
+ 
+ @with_logger
+@@ -261,26 +267,23 @@ class _SimpleTimer(QtCore.QObject):
+     def timerEvent(self, event):  # noqa: N802
+         timerid = event.timerId()
+         self.__log_debug("Timer event on id %s", timerid)
+-        if self._stopped:
+-            self.__log_debug("Timer stopped, killing %s", timerid)
++
++        # only kill if we have a registered callback for the timerId
++        # sometimes we get a timer event two times due to the global event filter...
++        # if we don't have a callback entry for it, we don't kill it since it is a wrong event...
++        handle = self.__callbacks.get(timerid)
++        if handle:
+             self.killTimer(timerid)
+             del self.__callbacks[timerid]
++        if self._stopped:
++            self.__log_debug("Timer stopped, killing %s", timerid)
+         else:
+-            try:
+-                handle = self.__callbacks[timerid]
+-            except KeyError as e:
+-                self.__log_debug(e)
+-                pass
+-            else:
++            if handle:
+                 if handle._cancelled:
+                     self.__log_debug("Handle %s cancelled", handle)
+                 else:
+                     self.__log_debug("Calling handle %s", handle)
+                     handle._run()
+-            finally:
+-                del self.__callbacks[timerid]
+-                handle = None
+-            self.killTimer(timerid)
+ 
+     def stop(self):
+         self.__log_debug("Stopping timers")
+@@ -360,15 +363,28 @@ class _QEventLoop:
+             # for asyncio to recognize the already running loop
+             asyncio.events._set_running_loop(self)
+ 
+-    def run_forever(self):
++    def run_forever_start(self):
+         """Run eventloop forever."""
+-
+-        if self.__is_running:
+-            raise RuntimeError("Event loop already running")
+-
+         self.__is_running = True
++        asyncio.events._set_running_loop(self)
+         self._before_run_forever()
+ 
++    def run_forever_stop(self):
++        self._after_run_forever()
++        asyncio.events._set_running_loop(None)
++        self.__is_running = False
++
++
++    def run_forever(self):
++        """Run eventloop forever."""
++        was_running = self.__is_running
++        if was_running:
++            # since exec() can't be called recursively on an event loop, we need to create a new local QEventLoop
++            old_qt_loop = self.__app
++            self.__app = QtCore.QEventLoop()
++        else:
++            self.run_forever_start()
++
+         try:
+             self.__log_debug("Starting Qt event loop")
+             asyncio.events._set_running_loop(self)
+@@ -380,15 +396,19 @@ class _QEventLoop:
+             self.__log_debug("Qt event loop ended with result %s", rslt)
+             return rslt
+         finally:
+-            asyncio.events._set_running_loop(None)
+-            self._after_run_forever()
+-            self.__is_running = False
++            if was_running:
++                self.__app = old_qt_loop
++            else:
++                self.run_forever_stop()
+ 
+     def run_until_complete(self, future):
+         """Run until Future is complete."""
+-
+-        if self.__is_running:
+-            raise RuntimeError("Event loop already running")
++        was_running = self.__is_running
++        if was_running:
++            old_qt_loop = self.__app
++            self.__app = QtCore.QEventLoop()
++        else:
++            self.run_forever_start()
+ 
+         self.__log_debug("Running %s until complete", future)
+         future = asyncio.ensure_future(future, loop=self)
+@@ -400,7 +420,14 @@ class _QEventLoop:
+         try:
+             self.run_forever()
+         finally:
++            if was_running:
++                self.__app = old_qt_loop
++            else:
++                self._after_run_forever()
++                asyncio.events._set_running_loop(None)
++                self.run_forever_stop()
+             future.remove_done_callback(stop)
++
+         self.__app.processEvents()  # run loop one last time to process all the events
+         if not future.done():
+             raise RuntimeError("Event loop stopped before Future completed.")
+@@ -410,14 +437,8 @@ class _QEventLoop:
+ 
+     def stop(self):
+         """Stop event loop."""
+-        if not self.__is_running:
+-            self.__log_debug("Already stopped")
+-            return
+-
+         self.__log_debug("Stopping event loop...")
+-        self.__is_running = False
+         self.__app.exit()
+-        self.__log_debug("Stopped event loop")
+ 
+     def is_running(self):
+         """Return True if the event loop is running, False otherwise."""
+@@ -742,7 +763,7 @@ from ._unix import _SelectorEventLoop  # noqa
+ 
+ QSelectorEventLoop = type("QSelectorEventLoop", (_QEventLoop, _SelectorEventLoop), {})
+ 
+-if os.name == "nt":
++if os.name == "nt" and QtModuleName != "PythonQt":
+     from ._windows import _ProactorEventLoop
+ 
+     QIOCPEventLoop = type("QIOCPEventLoop", (_QEventLoop, _ProactorEventLoop), {})

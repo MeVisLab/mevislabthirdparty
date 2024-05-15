@@ -60,7 +60,6 @@
 
 class SoQtEventHandler;
 class QTimer;
-class QGLWidget;
 
 class SOQT_MEVIS_EXPORT SoQt
 {
@@ -71,15 +70,6 @@ public:
 
     static SoQtEventHandler* eventHandler() { return _eventHandler; }
     static bool loopDetected();
-
-    //! Return if the new QOpenGLWidget should be used instead of the old,
-    //! deprecated QGLWidget. The default is false for Windows and Linux,
-    //! true for OS X (where it works better). This can be overridden by setting
-    //! the environment variable MLAB_QT_OPENGL_WIDGET to either "new" or "old".
-    static bool useNewOpenGLWidget();
-
-    //! forward from SoQtContextShareManager:
-    static QGLWidget* getContextSharingWidget();
 
 private:
     static bool _initialized;

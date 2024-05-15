@@ -1,62 +1,94 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans import CMake
-from conans import tools
-import os
+from conan import ConanFile
+from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
+from conan.tools.files import copy, get, rmdir, replace_in_file
+
+required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
+    name = "pcre2"
+    version = "10.43"
+    homepage = "https://www.pcre.org"
+    description = "Perl-compatible regular expression library"
+    license = "BSD-3-Clause"
+    package_type = "shared-library"
+    settings = "os", "arch", "compiler", "build_type"
 
-    _cmake = None
+    def configure(self):
+        self.settings.rm_safe("compiler.cppstd")
+        self.settings.rm_safe("compiler.libcxx")
 
+    def layout(self):
+        cmake_layout(self, src_folder="src")
 
-    def _configure_cmake(self):
-        if not self._cmake:
-            self._cmake = CMake(self)
+    def source(self):
+        get(
+            self,
+            sha256="e2a53984ff0b07dfdb5ae4486bbb9b21cca8e7df2434096cc9bf1b728c350bcb",
+            url=f"https://github.com/PhilipHazel/pcre2/releases/download/pcre2-{self.version}/pcre2-{self.version}.tar.bz2",
+            strip_root=True,
+        )
+        replace_in_file(self, self.source_path / "CMakeLists.txt", 'SET(CMAKE_DEBUG_POSTFIX "d")', '#SET(CMAKE_DEBUG_POSTFIX "d")')
 
-            # fix GCC on Ubuntu (20.04)
-            self._cmake.definitions["WITH_MSHSTK"] = tools.os_info.linux_distro == "ubuntu" and self.settings.compiler == "gcc"
+    def generate(self):
+        tc = CMakeToolchain(self)
+        tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
+        tc.variables["BUILD_SHARED_LIBS"] = True
+        tc.variables["BUILD_STATIC_LIBS"] = False
+        tc.variables["PCRE2_BUILD_TESTS"] = False
+        tc.variables["PCRE2_BUILD_PCRE2GREP"] = False
+        tc.variables["PCRE2_DEBUG"] = self.settings.build_type == "Debug"
 
-            self._cmake.definitions["CMAKE_DEBUG_POSTFIX"] = "d"
-            self._cmake.definitions["BUILD_SHARED_LIBS"] = True
-            self._cmake.definitions["BUILD_STATIC_LIBS"] = False
+        tc.variables["PCRE2_BUILD_PCRE2_8"] = True
+        tc.variables["PCRE2_BUILD_PCRE2_16"] = True
+        tc.variables["PCRE2_BUILD_PCRE2_32"] = True
 
-            self._cmake.definitions["PCRE2_BUILD_PCRE2_8"] = True
-            self._cmake.definitions["PCRE2_BUILD_PCRE2_16"] = True
-            self._cmake.definitions["PCRE2_BUILD_PCRE2_32"] = True
+        tc.variables["PCRE2_SUPPORT_LIBZ"] = False
+        tc.variables["PCRE2_SUPPORT_LIBBZ2"] = False
+        tc.variables["PCRE2_SUPPORT_LIBEDIT"] = False
+        tc.variables["PCRE2_SUPPORT_LIBREADLINE"] = False
+        tc.variables["PCRE2_SUPPORT_JIT"] = True
+        tc.variables["PCRE2_SUPPORT_UNICODE"] = True
+        tc.generate()
 
-            self._cmake.definitions["PCRE2_DEBUG"] = self.settings.build_type == "Debug"
-
-            self._cmake.definitions["PCRE2_SUPPORT_LIBZ"] = False
-            self._cmake.definitions["PCRE2_SUPPORT_LIBBZ2"] = False
-            self._cmake.definitions["PCRE2_SUPPORT_LIBEDIT"] = False
-            self._cmake.definitions["PCRE2_SUPPORT_LIBREADLINE"] = False
-            self._cmake.definitions["PCRE2_BUILD_TESTS"] = False
-            self._cmake.definitions["PCRE2_BUILD_PCRE2GREP"] = False
-            self._cmake.definitions["PCRE2_SUPPORT_JIT"] = True
-            self._cmake.definitions["PCRE2_SUPPORT_UNICODE"] = True
-
-            self._cmake.configure()
-        return self._cmake
-
+        cd = CMakeDeps(self)
+        cd.generate()
 
     def build(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
+        cmake.configure()
         cmake.build()
 
-
     def package(self):
-        cmake = self._configure_cmake()
+        copy(self, "LICENCE", src=self.source_path, dst=self.package_path / "licenses")
+        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False, excludes="*vc???.pdb")
+        cmake = CMake(self)
         cmake.install()
+        rmdir(self, self.package_path / "cmake")
+        rmdir(self, self.package_path / "man")
+        rmdir(self, self.package_path / "share")
+        rmdir(self, self.package_path / "lib" / "pkgconfig")
 
-        self.copy("*.pdb", src="bin", dst="bin")
+    def package_info(self):
+        def lib_name(name):
+            return f"{name}_d" if self.settings.build_type == "Debug" else name
 
-        tools.rmdir(os.path.join(self.package_folder, "man"))
-        tools.rmdir(os.path.join(self.package_folder, "cmake"))
-        tools.rmdir(os.path.join(self.package_folder, "share"))
-        tools.rmdir(os.path.join(self.package_folder, "lib", "pkgconfig"))
+        self.cpp_info.set_property("cmake_file_name", "PCRE2")
+        self.cpp_info.set_property("pkg_config_name", "libpcre2")
 
-        self.patch_binaries()
-        self.default_package()
+        self.cpp_info.components["pcre2-8"].set_property("cmake_target_name", "PCRE2::8BIT")
+        self.cpp_info.components["pcre2-8"].set_property("pkg_config_name", "libpcre2-8")
+        self.cpp_info.components["pcre2-8"].libs = [lib_name("pcre2-8")]
+
+        self.cpp_info.components["pcre2-posix"].set_property("cmake_target_name", "PCRE2::POSIX")
+        self.cpp_info.components["pcre2-posix"].set_property("pkg_config_name", "libpcre2-posix")
+        self.cpp_info.components["pcre2-posix"].libs = [lib_name("pcre2-posix")]
+        self.cpp_info.components["pcre2-posix"].requires = ["pcre2-8"]
+
+        self.cpp_info.components["pcre2-16"].set_property("cmake_target_name", "PCRE2::16BIT")
+        self.cpp_info.components["pcre2-16"].set_property("pkg_config_name", "libpcre2-16")
+        self.cpp_info.components["pcre2-16"].libs = [lib_name("pcre2-16")]
+
+        self.cpp_info.components["pcre2-32"].set_property("cmake_target_name", "PCRE2::32BIT")
+        self.cpp_info.components["pcre2-32"].set_property("pkg_config_name", "libpcre2-32")
+        self.cpp_info.components["pcre2-32"].libs = [lib_name("pcre2-32")]

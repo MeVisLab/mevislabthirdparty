@@ -1,171 +1,193 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans import tools
-from conans import MSBuild
-from conans import AutoToolsBuildEnvironment
-import glob
 import os
+import shutil
+
+from conan import ConanFile
+from conan.tools.apple import is_apple_os
+from conan.tools.env import VirtualBuildEnv
+from conan.tools.files import copy, chdir, get, patch, rmdir
+from conan.tools.gnu import Autotools, AutotoolsToolchain
+from conan.tools.layout import basic_layout
+from conan.tools.microsoft import is_msvc, MSBuild, MSBuildToolchain
+
+required_conan_version = ">=2.2.2"
+
+
+class MeVisMSBuild(MSBuild):
+    # We need a helper class, so that we can set extra properties.
+    # This might become obsolete when the issue is fixed, that the
+    # output of MSBuildToolchain is ignored without patching:
+    # https://github.com/conan-io/conan/pull/12817
+
+    def __init__(self, conanfile):
+        super().__init__(conanfile)
+        self.properties = {}
+
+    def command(self, sln, targets=None):
+        cmd = super().command(sln, targets)
+        for k, v in self.properties.items():
+            cmd += f' /p:{k}="{v}"'
+        return cmd
 
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
+    name = "icu"
+    version = "74.1"
+    homepage = "https://icu.unicode.org/"
+    description = "Unicode support, software internationalization, and software globalization"
+    license = "Unicode-3.0"
+    package_type = "shared-library"
+    settings = "os", "arch", "compiler", "build_type"
+    exports_sources = "patches/*.patch"
 
+    mlab_hooks = {
+        "debug_suffix.exclude": ['icu*.dll', 'icu*.lib', 'libicu*.so*', 'testplugd.dll'],  # TODO testplug needed?
+        "split_debug.exclude": ["lib/libicudata*.so.*"]                                    # libicudata can't be stripped
+    }
+
+    def layout(self):
+        basic_layout(self, src_folder="src")
 
     def source(self):
-        fileName = "icu4c-%s-src.tgz" % self.version.replace('.', '_')
-        url = "https://github.com/unicode-org/icu/releases/download/release-%s/%s" % (self.version.replace('.', '-'), fileName)
-        sha256 = self.conan_data['sha256'][self.version]['src']
-        self.download_distfile(url=url, sha256=sha256, fileName=fileName)
-        os.rename("icu", "sources")
+        get(self,
+            sha256="86ce8e60681972e60e4dcb2490c697463fcec60dd400a5f9bffba26d0b52b8d0",
+            url=f"https://github.com/unicode-org/icu/releases/download/release-{self.version.replace('.', '-')}/icu4c-{self.version.replace('.', '_')}-src.tgz",
+            strip_root=True)
+        patch(self, patch_file="patches/001-disable_renaming_by_default.patch")
 
-        fileName = "icu4c-%s-data.zip" % self.version.replace('.', '_')
-        url = "https://github.com/unicode-org/icu/releases/download/release-%s/%s" % (self.version.replace('.', '-'), fileName)
-        sha256 = self.conan_data['sha256'][self.version]['data']
-        self.download_distfile(url=url, sha256=sha256, fileName=fileName, baseFolder="sources/source")
+    def generate(self):
+        env = VirtualBuildEnv(self)
+        env.generate()
 
-        self.apply_patches()
-
-    def build(self):
-        if tools.os_info.is_windows:
-            with tools.chdir(os.path.join('sources', 'source', 'allinone')):
-                msbuild = MSBuild(self)
-                msbuild.build('allinone.sln', upgrade_project=False, build_type="Debug" if self.settings.build_type == "Debug" else "Release", platforms={"x86_64":"x64"}, properties={'SkipUWP':'true'})
+        if is_msvc(self):
+            tc = MSBuildToolchain(self)
+            tc.configuration = "Debug" if self.settings.build_type == "Debug" else "Release"
+            # Note: The .props output of MSBuildToolchain is currently ignored
+            tc.properties['SkipUWP'] = "true"
+            tc.generate()
         else:
-            build_env = AutoToolsBuildEnvironment(self)
-            if tools.os_info.is_macos:
-                build_env.defines.append("_DARWIN_C_SOURCE")
-                if self.settings.get_safe("os.version"):
-                    build_env.flags.append(tools.apple_deployment_target_flag(self.settings.os, self.settings.os.version))
+            tc = AutotoolsToolchain(self)
+            tc.extra_cflags.append("-FS")
+            tc.extra_cxxflags.append("-FS")
 
-            build_dir = os.path.join(self.build_folder, 'sources', 'build')
-            os.mkdir(build_dir)
+            if is_apple_os(self):
+                tc.extra_defines.append("_DARWIN_C_SOURCE")
 
-            platform = {
-                ("Linux", "gcc"): "Linux/gcc",
-                ("Linux", "clang"): "Linux",
-                ("Macos", "gcc"): "MacOSX",
-                ("Macos", "clang"): "MacOSX",
-                ("Macos", "apple-clang"): "MacOSX"
-            }.get((str(self.settings.os),  str(self.settings.compiler)))
-
-            args = [platform,
-                    f"--prefix={self.package_folder}",
-                    "--with-library-bits=64",
-                    "--disable-samples",
-                    "--disable-tests",
-                    "--disable-renaming",
-                    "--disable-layout",
-                    "--disable-layoutex",
-                    "--disable-extras",
-                    "--with-data-packaging=library"]
+            tc.configure_args.extend([
+                "--with-data-packaging=library",
+                "--with-library-bits=64",
+                # "--enable-dyload",
+                # "--enable-icuio",
+                "--disable-samples",
+                "--disable-tests",
+                "--disable-renaming",
+                "--disable-layout",
+                "--disable-layoutex",
+                "--disable-extras",
+                "--with-library-bits=64"
+            ])
 
             if self.settings.build_type == "Debug":
-                args.extend(["--disable-release", "--enable-debug", "--with-library-suffix=d"])
+                tc.configure_args.extend(["--disable-release", "--enable-debug", "--with-library-suffix=d"])
 
-            args.extend(["--disable-static", "--enable-shared"])
+            tc.configure_args.extend(["--disable-static", "--enable-shared"])
+            tc.generate()
 
-            with tools.environment_append(build_env.vars):
-                with tools.chdir(build_dir):
-                    # workaround for https://unicode-org.atlassian.net/browse/ICU-20531
-                    os.makedirs(os.path.join("data", "out", "tmp"))
-                    self.run("../source/runConfigureICU %s" % " ".join(args))
-                    self.run("make VERBOSE=1 -j {cpu_count}".format(cpu_count=tools.cpu_count()))
-                    self.run("make VERBOSE=1 install")
-
+    def build(self):
+        if is_msvc(self):
+            proj_dir = self.source_path / 'source' / 'allinone'
+            msbuild = MeVisMSBuild(self)
+            msbuild.build_type = "Debug" if self.settings.build_type == "Debug" else "Release"
+            msbuild.properties['SkipUWP'] = 'true'
+            msbuild.build(proj_dir / "allinone.sln")
+        else:
+            autotools = Autotools(self)
+            autotools.configure(build_script_folder=os.path.join(self.source_folder, "source"))
+            autotools.make()
 
     def package(self):
-        if tools.os_info.is_windows:
-            self.copy(pattern="*", dst="include", src="sources/include")
-            self.copy(pattern="*.lib", dst="lib/", src="sources/lib64")
-            self.copy(pattern="*.exe", dst="bin/", src="sources/bin64")
-            self.copy(pattern="*.dll", dst="bin/", src="sources/bin64")
-            self.copy(pattern="*.pdb", dst="bin/", src="sources/lib64")
+        copy(self, "LICENSE", src=self.source_path, dst=self.package_path / "licenses")
+        if is_msvc(self):
+            # Note: build results are located in the source folder
+            copy(self, pattern="*",
+                 src=self.source_path / "include",
+                 dst=self.package_path / "include")
+            copy(self, pattern="*.lib",
+                 src=self.source_path / "lib64",
+                 dst=self.package_path / "lib")
+            copy(self, pattern="*.pdb",
+                 src=self.source_path / "lib64",
+                 dst=self.package_path / "bin")
+            copy(self, pattern="*.exe",
+                 src=self.source_path / "bin64",
+                 dst=self.package_path / "bin")
+            copy(self, pattern="*.dll",
+                 src=self.source_path / "bin64",
+                 dst=self.package_path / "bin")
         else:
-            tools.rmdir(os.path.join(self.package_folder, "lib", "pkgconfig"))
-            tools.rmdir(os.path.join(self.package_folder, "lib", "icud"))
-            tools.rmdir(os.path.join(self.package_folder, "lib", "icu"))
-            tools.rmdir(os.path.join(self.package_folder, "share"))
-            tools.rmdir(os.path.join(self.package_folder, "sbin"))
+            autotools = Autotools(self)
+            autotools.install()
 
-        # change rpath of binaries
-        if tools.os_info.is_linux:
-            patchelf = tools.which("patchelf")
-            with tools.chdir(os.path.join(self.package_folder, "bin")):
+        # Copy some files required for cross-compiling
+        config_dir = self.package_path / "config"
+        copy(self, "icucross.mk", src=self.build_path / "config", dst=config_dir)
+        copy(self, "icucross.inc", src=self.build_path / "config", dst=config_dir)
+
+        suffix = "d" if self.settings.build_type == "Debug" else ""
+        rmdir(self, self.package_path / "lib" / f"icu{suffix}")
+        rmdir(self, self.package_path / "lib" / "man")
+        rmdir(self, self.package_path / "lib" / "pkgconfig")
+        rmdir(self, self.package_path / "share")
+
+        if self.settings.os == "Linux":
+            # change rpath of binaries
+            patchelf = shutil.which("patchelf")
+            with chdir(self, self.package_path / "bin"):
                 for binary in ['derb', 'genbrk', 'gencfu', 'gencnval', 'gendict', 'genrb', 'icuinfo', 'makeconv', 'pkgdata']:
                     self.run(f"{patchelf} --set-rpath '$ORIGIN/../lib' {binary}")
-            for lib in glob.glob(os.path.join(self.package_folder, "lib", "*.so")):
+            for lib in (self.package_path / "lib").glob("*.so"):
                 self.run(f"{patchelf} --set-rpath '$ORIGIN/../lib' {lib}")
 
-        self.patch_binaries()
-        self.default_package(split_debug=False) # split_debug=True would corrupt libicudata.so
-
-
     def package_info(self):
-        libname = lambda name: name + "d" if self.settings.build_type == 'Debug' else name
+        self.cpp_info.set_property("cmake_find_mode", "both")
+        self.cpp_info.set_property("cmake_file_name", "ICU")
+        self.cpp_info.set_property("cmake_target_name", "ICU::ICU")
 
-        self.cpp_info.names["cmake_find_package"] = "ICU"
-        self.cpp_info.names["cmake_find_package_multi"] = "ICU"
+        suffix = "d" if self.settings.build_type == "Debug" else ""
 
         # icudata
-        self.cpp_info.components["icu-data"].names["cmake_find_package"] = "data"
-        self.cpp_info.components["icu-data"].names["cmake_find_package_multi"] = "data"
-        self.cpp_info.components["icu-data"].names["pkg_config"] = "icu-data"
-        self.cpp_info.components["icu-data"].libs = ['icudt' if tools.os_info.is_windows else libname('icudata')]
+        self.cpp_info.components["icu-data"].set_property("cmake_target_name", "ICU::data")
+        icudata_libname = "icudt" if self.settings.os == "Windows" else f"icudata{suffix}"
+        self.cpp_info.components["icu-data"].libs = [icudata_libname]
 
-        self.cpp_info.components["icu-data-alias"].names["cmake_find_package"] = "dt"
-        self.cpp_info.components["icu-data-alias"].names["cmake_find_package_multi"] = "dt"
+        # Alias of data CMake component
+        self.cpp_info.components["icu-data-alias"].set_property("cmake_target_name", "ICU::dt")
         self.cpp_info.components["icu-data-alias"].requires = ["icu-data"]
 
         # icuuc
-        self.cpp_info.components["icu-uc"].names["cmake_find_package"] = "uc"
-        self.cpp_info.components["icu-uc"].names["cmake_find_package_multi"] = "uc"
-        self.cpp_info.components["icu-uc"].names["pkg_config"] = "icu-uc"
-        self.cpp_info.components["icu-uc"].libs = [libname("icuuc")]
+        self.cpp_info.components["icu-uc"].set_property("cmake_target_name", "ICU::uc")
+        self.cpp_info.components["icu-uc"].set_property("pkg_config_name", "icu-uc")
+        self.cpp_info.components["icu-uc"].libs = [f"icuuc{suffix}"]
         self.cpp_info.components["icu-uc"].requires = ["icu-data"]
-
-        if tools.os_info.is_linux:
+        if self.settings.os in ["Linux"]:
             self.cpp_info.components["icu-uc"].system_libs = ["m", "pthread", "dl"]
-        elif tools.os_info.is_windows:
+        elif self.settings.os == "Windows":
             self.cpp_info.components["icu-uc"].system_libs = ["advapi32"]
 
         # icui18n
-        self.cpp_info.components["icu-i18n"].names["cmake_find_package"] = "i18n"
-        self.cpp_info.components["icu-i18n"].names["cmake_find_package_multi"] = "i18n"
-        self.cpp_info.components["icu-i18n"].names["pkg_config"] = "icu-i18n"
-        self.cpp_info.components["icu-i18n"].libs = [libname("icuin" if tools.os_info.is_windows else "icui18n")]
+        self.cpp_info.components["icu-i18n"].set_property("cmake_target_name", "ICU::i18n")
+        self.cpp_info.components["icu-i18n"].set_property("pkg_config_name", "icu-i18n")
+        icui18n_libname = "icuin" if self.settings.os == "Windows" else "icui18n"
+        self.cpp_info.components["icu-i18n"].libs = [f"{icui18n_libname}{suffix}"]
         self.cpp_info.components["icu-i18n"].requires = ["icu-uc"]
-        if tools.os_info.is_linux:
+        if self.settings.os in ["Linux"]:
             self.cpp_info.components["icu-i18n"].system_libs = ["m"]
 
-        self.cpp_info.components["icu-i18n-alias"].names["cmake_find_package"] = "in"
-        self.cpp_info.components["icu-i18n-alias"].names["cmake_find_package_multi"] = "in"
+        # Alias of i18n CMake component
+        self.cpp_info.components["icu-i18n-alias"].set_property("cmake_target_name", "ICU::in")
         self.cpp_info.components["icu-i18n-alias"].requires = ["icu-i18n"]
 
         # icuio
-        self.cpp_info.components["icu-io"].names["cmake_find_package"] = "io"
-        self.cpp_info.components["icu-io"].names["cmake_find_package_multi"] = "io"
-        self.cpp_info.components["icu-io"].names["pkg_config"] = "icu-io"
-        self.cpp_info.components["icu-io"].libs = [libname("icuio")]
+        self.cpp_info.components["icu-io"].set_property("cmake_target_name", "ICU::io")
+        self.cpp_info.components["icu-io"].set_property("pkg_config_name", "icu-io")
+        self.cpp_info.components["icu-io"].libs = [f"icuio{suffix}"]
         self.cpp_info.components["icu-io"].requires = ["icu-i18n", "icu-uc"]
-
-        # icutu
-        self.cpp_info.components["icu-tu"].names["cmake_find_package"] = "tu"
-        self.cpp_info.components["icu-tu"].names["cmake_find_package_multi"] = "tu"
-        self.cpp_info.components["icu-tu"].names["pkg_config"] = "icu-tu"
-        self.cpp_info.components["icu-tu"].libs = [libname("icutu")]
-        self.cpp_info.components["icu-tu"].requires = ["icu-i18n", "icu-uc"]
-        if tools.os_info.is_linux:
-            self.cpp_info.components["icu-tu"].system_libs = ["pthread"]
-
-        # icutest
-        self.cpp_info.components["icu-test"].names["cmake_find_package"] = "test"
-        self.cpp_info.components["icu-test"].names["cmake_find_package_multi"] = "test"
-        self.cpp_info.components["icu-tu"].names["pkg_config"] = "icu-test"
-        self.cpp_info.components["icu-test"].libs = [libname("icutest")]
-        self.cpp_info.components["icu-test"].requires = ["icu-tu", "icu-uc"]
-
-        # extend PATH
-        bin_path = os.path.join(self.package_folder, "bin")
-        self.output.info("Appending PATH environment variable: {}".format(bin_path))
-        self.env_info.PATH.append(bin_path)

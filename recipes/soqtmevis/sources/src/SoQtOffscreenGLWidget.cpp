@@ -41,11 +41,12 @@
  */
 
 #include "SoQtOffscreenGLWidget.h"
-#include "SoQtRealQGLWidget.h"
+#include "SoQtRealQOpenGLWidget.h"
 
 #include <QOpenGLFramebufferObject>
 #include <QResizeEvent>
 #include <QOpenGLContext>
+#include <QPainter>
 
 
 void* SoQtOffscreenGLWidget::_makeCurrentCBData;
@@ -53,7 +54,7 @@ SoQtGLWidget::MakeCurrentCB SoQtOffscreenGLWidget::_makeCurrentCB;
 SoQtGLWidget::DoneCurrentCB SoQtOffscreenGLWidget::_doneCurrentCB;
 
 
-SoQtOffscreenGLWidget::SoQtOffscreenGLWidget(SoQtGLWidget* parent, const QGLFormat& format)
+SoQtOffscreenGLWidget::SoQtOffscreenGLWidget(SoQtGLWidget* parent, const QSurfaceFormat& format)
   : QWidget(parent->managerWidget), _w(parent), _fbo(nullptr), _isGLInitialized(false)
 {
   setFormat(format);
@@ -66,13 +67,13 @@ SoQtOffscreenGLWidget::~SoQtOffscreenGLWidget()
   delete _fbo;
 }
 
-void SoQtOffscreenGLWidget::setFormat(const QGLFormat& format)
+void SoQtOffscreenGLWidget::setFormat(const QSurfaceFormat& format)
 {
   _format = format;
   // depth and stencil is always enabled
   // QUESTION: should an error be printed, if the given format hasn't enabled them?
-  _format.setDepth(true);
-  _format.setStencil(true);
+  _format.setDepthBufferSize(8);
+  _format.setStencilBufferSize(1);
   createFBO(size());
 }
 
@@ -100,7 +101,7 @@ bool SoQtOffscreenGLWidget::event(QEvent* e)
       // we have a separate resizeGL callback for this!
       return QWidget::event(e);
   }
-  bool ignoreEvent = !SoQtRealQGLWidget::handleEvent(this, _w, e);
+  bool ignoreEvent = !SoQtRealQOpenGLWidget::handleEvent(this, _w, e);
   if (ignoreEvent) { return false; }
   bool result = e->isAccepted() || QWidget::event(e);
   if (e->type() == QEvent::MouseButtonPress) {
@@ -121,7 +122,7 @@ void SoQtOffscreenGLWidget::setDoneCurrentCB(SoQtGLWidget::MakeCurrentCB cb)
   _doneCurrentCB = cb;
 }
 
-void SoQtOffscreenGLWidget::enterEvent (QEvent*)
+void SoQtOffscreenGLWidget::enterEvent (QEnterEvent*)
 {
   if (_w->autoFocus) {
     setFocus (Qt::OtherFocusReason);
@@ -173,7 +174,7 @@ void SoQtOffscreenGLWidget::createFBO(const QSize& size)
     delete _fbo;
     (*_makeCurrentCB)(_makeCurrentCBData);
     _w->resizeGL(size.width(), size.height());
-    if (_format.sampleBuffers()) {
+    if (_format.samples() > 1) {
       QOpenGLFramebufferObjectFormat format;
       format.setAttachment(QOpenGLFramebufferObject::CombinedDepthStencil);
       format.setInternalTextureFormat(GL_RGB8);

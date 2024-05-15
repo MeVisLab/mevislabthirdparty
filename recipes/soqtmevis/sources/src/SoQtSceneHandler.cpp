@@ -47,6 +47,7 @@
 #include <QMouseEvent>
 #include <QDate>
 #include <QTime>
+#include <QRegularExpression>
 #include <QDebug>
 
 #include <Inventor/Qt/devices/SoQtDevice.h>
@@ -296,11 +297,11 @@ SoQtSceneHandler::synthesizeCurrentButtonState (QMouseEvent* me)
     if (buttonState != storedButtonState) {
         // first generate button release events for every button that is different:
         synthesizeButtonState (buttonState, Qt::LeftButton,  me, false);
-        synthesizeButtonState (buttonState, Qt::MidButton,   me, false);
+        synthesizeButtonState (buttonState, Qt::MiddleButton,   me, false);
         synthesizeButtonState (buttonState, Qt::RightButton, me, false);
         // then generate button press events for every button that is different:
         synthesizeButtonState (buttonState, Qt::LeftButton,  me, true);
-        synthesizeButtonState (buttonState, Qt::MidButton,   me, true);
+        synthesizeButtonState (buttonState, Qt::MiddleButton,   me, true);
         synthesizeButtonState (buttonState, Qt::RightButton, me, true);
     }
 }
@@ -452,7 +453,7 @@ void SoQtSceneHandler::registerNamedDevices(const SbString &d)
     registeredDeviceTypes.append(dev->getTypeId());
   }
 
-  QStringList devices = QString(QLatin1String(d.getString())).split(QRegExp("\\s+"), QString::SkipEmptyParts);
+  QStringList devices = QString(QLatin1String(d.getString())).split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
   foreach (QString dev, devices) {
     SoType devType = SoType::fromName(dev.toLatin1().constData());
     if (devType == SoType::badType()) {

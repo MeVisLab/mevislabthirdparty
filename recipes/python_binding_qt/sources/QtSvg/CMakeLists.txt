@@ -1,5 +1,3 @@
-find_package(Qt5 COMPONENTS Core Svg REQUIRED)
-
 add_library(QtSvg "")
 set_target_properties(QtSvg PROPERTIES OUTPUT_NAME QtSvg)
 
@@ -18,11 +16,8 @@ target_sources(QtSvg PRIVATE
 
 target_link_libraries(QtSvg
   PRIVATE
-    Qt5::Core
-    Qt5::Svg
-    Python3::Python
-    Threads::Threads
-    ${CONAN_LIBS}
+    ${REQUIRED_LIBS}
+    Qt6::Svg
 )
 
 install(TARGETS QtSvg

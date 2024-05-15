@@ -44,7 +44,7 @@
 
 #include <Inventor/Qt/SoQtGLWidget.h>
 
-#include <QGLFormat>
+#include <QSurfaceFormat>
 
 
 class QOpenGLFramebufferObject;
@@ -55,11 +55,11 @@ class SoQtOffscreenGLWidget : public QWidget
 {
   Q_OBJECT
 public:
-  SoQtOffscreenGLWidget(SoQtGLWidget* parent, const QGLFormat& format);
+  SoQtOffscreenGLWidget(SoQtGLWidget* parent, const QSurfaceFormat& format);
   ~SoQtOffscreenGLWidget() override;
 
-  void setFormat(const QGLFormat& format);
-  QGLFormat format() const { return _format; }
+  void setFormat(const QSurfaceFormat& format);
+  QSurfaceFormat format() const { return _format; }
 
   void makeCurrent();
   void doneCurrent();
@@ -72,7 +72,7 @@ public:
   static void setDoneCurrentCB(SoQtGLWidget::MakeCurrentCB cb);
 
 protected:
-  void enterEvent(QEvent* event) override;
+  void enterEvent(QEnterEvent* event) override;
   void leaveEvent(QEvent* event) override;
   void paintEvent(QPaintEvent*) override;
   void resizeEvent(QResizeEvent* event) override;
@@ -83,7 +83,7 @@ private:
   SoQtGLWidget* _w;
   QOpenGLFramebufferObject* _fbo;
   bool _isGLInitialized;
-  QGLFormat _format;
+  QSurfaceFormat _format;
 
   static void* _makeCurrentCBData;
   static SoQtGLWidget::MakeCurrentCB _makeCurrentCB;

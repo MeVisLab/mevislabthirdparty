@@ -1,8 +1,0 @@
-type: cpp
-name: soqtmevis
-cmake_name: SoQtMeVis
-display_name: SoQtMeVis
-version: "1.1.1"
-homepage: https://mevislab.de
-description: Qt Inventor Binding
-license: LGPL-2.1-only

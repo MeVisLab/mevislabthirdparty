@@ -15,8 +15,6 @@ static PyMethodDef NoMethods[] = {
     {nullptr, nullptr, 0, nullptr}        /* Sentinel */
 };
 
-#if PY_MAJOR_VERSION >= 3
-
 static PyModuleDef nodesModuleDef = {
   PyModuleDef_HEAD_INIT,
   "nodes",
@@ -29,33 +27,26 @@ static PyModuleDef nodesModuleDef = {
   nullptr
 };
 
-  #define Py_2_3_InitModFunc(name) PyInit_##name(void)
-  #define Py_2_3_ModuleInit(name) PyModule_Create(&nodesModuleDef)
-
-#else
-  #define Py_2_3_InitModFunc(name) init##name(void)
-  #define Py_2_3_ModuleInit(name) Py_InitModule(name, NoMethods)
-#endif
+#define PyInitModFunc(name) PyInit_##name(void)
+  #define PyModuleInit(name) PyModule_Create(&nodesModuleDef)
 
 #ifdef UNIX
 PyMODINIT_FUNC
-Py_2_3_InitModFunc(nodes) ML_LIBRARY_EXPORT_ATTRIBUTE ;
+PyInitModFunc(nodes) ML_LIBRARY_EXPORT_ATTRIBUTE ;
 #endif
 
 PyMODINIT_FUNC
-Py_2_3_InitModFunc(nodes)
+PyInitModFunc(nodes)
 {
   PyObject* base = PyImport_ImportModule("Inventor.base");
   Py_XDECREF(base);
   PyObject* fields = PyImport_ImportModule("Inventor.fields");
   Py_XDECREF(fields);
 
-  PyObject* module = Py_2_3_ModuleInit("nodes");
+  PyObject* module = PyModuleInit("nodes");
   PythonQt_init_InventorNodes(module);
 
-#if PY_MAJOR_VERSION >= 3
   return module;
-#endif
 }
 
 

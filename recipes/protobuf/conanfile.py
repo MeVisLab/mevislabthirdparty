@@ -1,62 +1,95 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans import tools
-from conans import CMake
-import shutil
 import os
+
+from conan import ConanFile
+from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
+from conan.tools.files import replace_in_file, copy, get, rmdir
+
+required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
+    name = "protobuf"
+    version = "26.1"
+    homepage = "https://developers.google.com/protocol-buffers"
+    description = "Google's Protocol Buffers are a language-neutral, platform-neutral extensible mechanism for serializing structured data"
+    license = "BSD-3-Clause"
+    package_type = "static-library"
+    settings = "os", "arch", "compiler", "build_type"
 
-    _cmake = None
+    mlab_hooks = {
+        "cmake_files.exclude": [
+            "lib/cmake/protobuf/protobuf*.cmake",
+            "lib/cmake/protobuf/FindProtobuf.cmake",
+            "lib/cmake/utf8_range/utf8_range-*.cmake",
+        ]
+    }
 
+    def layout(self):
+        cmake_layout(self, src_folder="src")
 
     def requirements(self):
-        channel = f"@{self.user}/{self.channel}"
-        self.requires("zlib/[>=1.2.11]" + channel)
+        self.requires("zlib/[>=1.2.11]")
+        self.requires("abseil/[>=20230802.1]")
 
+    def source(self):
+        get(
+            self,
+            sha256="4fc5ff1b2c339fb86cd3a25f0b5311478ab081e65ad258c6789359cd84d421f8",
+            url=f"https://github.com/protocolbuffers/protobuf/releases/download/v{self.version}/protobuf-{self.version}.tar.gz",
+            strip_root=True,
+        )
+        replace_in_file(self, self.source_path / "CMakeLists.txt", 'set(protobuf_DEBUG_POSTFIX "d"', 'set(protobuf_DEBUG_POSTFIX "_d"')
 
-    def _configure_cmake(self):
-        if not self._cmake:
-            self._cmake = CMake(self)
-            #self._cmake.definitions["CMAKE_DEBUG_POSTFIX"] = "d"
-            self._cmake.definitions["BUILD_SHARED_LIBS"] = False
-            self._cmake.definitions['CMAKE_POSITION_INDEPENDENT_CODE'] = True
+    def generate(self):
+        cd = CMakeDeps(self)
+        cd.generate()
 
-            self._cmake.definitions["protobuf_BUILD_TESTS"] = False
-            self._cmake.definitions["protobuf_WITH_ZLIB"] = True
-            self._cmake.definitions["protobuf_BUILD_PROTOC_BINARIES"] = True
-
-            if self.settings.compiler.get_safe("runtime"):
-                self._cmake.definitions["protobuf_MSVC_STATIC_RUNTIME"] = str(self.settings.compiler.runtime) in ["MT", "MTd", "static"]
-
-            self._cmake.configure()
-        return self._cmake
-
+        tc = CMakeToolchain(self)
+        tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
+        tc.variables["BUILD_SHARED_LIBS"] = False
+        tc.variables["CMAKE_POSITION_INDEPENDENT_CODE"] = True
+        tc.variables["protobuf_BUILD_TESTS"] = False
+        tc.variables["protobuf_WITH_ZLIB"] = True
+        tc.variables["protobuf_BUILD_PROTOC_BINARIES"] = True
+        tc.variables["protobuf_ABSL_PROVIDER"] = "package"
+        if self.settings.compiler.get_safe("runtime"):
+            tc.variables["protobuf_MSVC_STATIC_RUNTIME"] = str(self.settings.compiler.runtime) in ["MT", "MTd", "static"]
+        tc.cache_variables["CMAKE_INSTALL_CMAKEDIR"] = "lib/cmake/protobuf"
+        tc.generate()
 
     def build(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
+        cmake.configure()
         cmake.build()
 
-
     def package(self):
-        cmake = self._configure_cmake()
+        copy(self, "LICENSE", src=self.source_path, dst=self.package_path / "licenses")
+        cmake = CMake(self)
         cmake.install()
+        rmdir(self, self.package_path / "lib" / "pkgconfig")
 
-        if self.settings.build_type == "Debug":
-            bin_path = os.path.join(self.package_folder, "bin")
-            if tools.os_info.is_windows:
-                shutil.copy2(os.path.join(bin_path, "protocd.exe"), os.path.join(bin_path, "protoc.exe"))
-            else:
-                shutil.copy2(os.path.join(bin_path, "protocd"), os.path.join(bin_path, "protoc"), follow_symlinks=False)
+    def package_info(self):
+        # https://github.com/protocolbuffers/protobuf/issues/14576
+        #
+        # Newer Protobuf versions ship their own find_package config files
+        # (CONFIG mode, ie. protobuf-config.cmake). At the same time, CMake has been
+        # delivering find_package module files (MODULE mode, ie. FindProtobuf.cmake)
+        # since forever.
+        #
+        # And now there are problems:
+        #   - currently (12/2023) the files delivered by CMake do not work with current
+        #     Protobuf versions
+        #   - For the older and now broken CMake version you use find_package(Protobuf),
+        #     for the newer Protobuf implementation find_package(protobuf).
+        #     So no problem? Yes... except for Windows.
+        #   - The CMake implementation contains helper functions... the Protobuf version also.
+        #     But different ones!
+        #
+        # The only currently known solution is to use 'find_package(protobuf CONFIG REQUIRED)'.
 
-        tools.rmdir(os.path.join(self.package_folder, "cmake"))
-        tools.rmdir(os.path.join(self.package_folder, "lib", "cmake"))
-        tools.rmdir(os.path.join(self.package_folder, "lib", "pkgconfig"))
-
-        #self.copy("*.pdb", src="bin", dst="bin")
-
-        #self.patch_binaries()
-        self.default_package()
+        self.cpp_info.builddirs.append(os.path.join("lib", "cmake"))
+        self.cpp_info.set_property("cmake_find_mode", "none")  # do NOT generate cmake files, they are generated by protobuf
+        self.cpp_info.set_property("cmake_file_name", "protobuf")  # let CMake search for protobuf
+        self.cpp_info.set_property(
+            "cmake_target_name", "protobuf::libprotobuf"
+        )  # let CMake link to protobuf::libprotobuf, not protobuf::protobuf (derived from the package name)

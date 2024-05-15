@@ -1,54 +1,65 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans import CMake
-from conans import tools
-import glob
-import os
+from conan import ConanFile
+from conan.tools.cmake import CMakeToolchain, CMakeDeps, CMake
+from conan.tools.files import copy, collect_libs, replace_in_file, get
+
+required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
-
-    _cmake = None
+    name = "xylib"
+    version = "1.6.0"
+    homepage = "https://github.com/wojdyr/xylib"
+    description = ("library for reading files with x-y data from powder diffraction, "
+                   "spectroscopy, or other experimental methods")
+    license = "LGPL-2.1-or-later"
+    package_type = "shared-library"
+    settings = "os", "arch", "compiler", "build_type"
 
     def requirements(self):
-        channel = f"@{self.user}/{self.channel}"
-        self.requires("boost/[>=1.75.0]" + channel)
-        self.requires("bzip2/[>=1.0.8]" + channel)
-        self.requires("zlib/[>=1.2.11]" + channel)
+        self.requires("boost/[>=1.75.0]")
+        self.requires("bzip2/[>=1.0.8]")
+        self.requires("zlib/[>=1.2.11]")
 
+    def source(self):
+        major, minor = self.version.split(".")[:2]
+        get(self,
+            sha256="b641cb33fa01732b8203356e0978384f9551bf415cfbae5989b3a233b3cb0ec7",
+            url=f"https://github.com/wojdyr/xylib/releases/download/v{major}.{minor}/xylib-{major}.{minor}.tar.bz2",
+            strip_root=True
+            )
+        replace_in_file(self, self.source_path / "xylib" / "util.h", "#if __cplusplus-0 < 201103L", "#if 0")
 
-    def _configure_cmake(self):
-        if not self._cmake:
-            self.create_cmake_wrapper()
-            self._cmake = CMake(self)
-            self._cmake.definitions["CMAKE_DEBUG_POSTFIX"] = "d"
-            self._cmake.definitions["BUILD_SHARED_LIBS"] = True
+    def generate(self):
+        tc = CMakeToolchain(self)
+        tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
+        tc.variables["BUILD_SHARED_LIBS"] = True
 
-            self._cmake.definitions["USE_ZLIB"] = True
-            self._cmake.definitions["DOWNLOAD_ZLIB"] = False
-            self._cmake.definitions["USE_BZIP2"] = True
-            self._cmake.definitions["GUI"] = False
+        tc.variables["USE_ZLIB"] = True
+        tc.variables["DOWNLOAD_ZLIB"] = False
+        tc.variables["USE_BZIP2"] = True
+        tc.variables["GUI"] = False
 
-            self._cmake.definitions["Boost_NO_SYSTEM_PATHS"] = True
-            self._cmake.definitions["BOOST_INCLUDEDIR"] = ";".join(self.deps_cpp_info["boost"].include_paths)
-            self._cmake.definitions["BOOST_LIBRARYDIR"] = ";".join(self.deps_cpp_info["boost"].lib_paths)
+        tc.variables["Boost_NO_SYSTEM_PATHS"] = True
+        boost_info = self.dependencies["boost"].cpp_info
+        tc.variables["BOOST_INCLUDEDIR"] = ";".join([d.replace("\\", "/") for d in boost_info.includedirs])
+        tc.variables["BOOST_LIBRARYDIR"] = ";".join([d.replace("\\", "/") for d in boost_info.libdirs])
+        tc.generate()
 
-            self._cmake.configure()
-
-        return self._cmake
-
+        cd = CMakeDeps(self)
+        cd.generate()
 
     def build(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
+        cmake.configure()
         cmake.build()
 
-
     def package(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
         cmake.install()
+        copy(self, "*.pdb", src=self.source_path, dst=self.package_path / "bin", keep_path=False, excludes="*vc???.pdb")
+        copy(self, "COPYING", src=self.source_path, dst=self.package_path / "licenses")
 
-        self.copy("*.pdb", src="bin", dst="bin")
-
-        self.patch_binaries()
-        self.default_package()
+    def package_info(self):
+        self.cpp_info.set_property("cmake_file_name", "xylib")
+        self.cpp_info.set_property("cmake_target_name", "xylib::xylib")
+        self.cpp_info.set_property("mevislab_prosdk_exclude", True)
+        self.cpp_info.libs = collect_libs(self)

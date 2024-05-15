@@ -1,120 +1,226 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans import tools
-from conans import CMake
-from pathlib import Path
-import glob
-import os
+from textwrap import dedent
+from conan import ConanFile
+from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
+from conan.tools.files import copy, get, rmdir, patch
+from conan.tools.scm import Version
+
+required_conan_version = ">=2.2.2"
+
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
-    generators = "cmake", "cmake_find_package"
-
-    _modules = [
-        "ofstd",     "oflog",        "dcmdata",     "dcmimgle",
-        "dcmimage",  "dcmjpeg",      "dcmjpls",     "dcmtls",
-        "dcmnet",    "dcmsr",        "dcmsign",     "dcmwlm",
-        "dcmqrdb",   "dcmpstat",     "dcmrt",       "dcmiod",
-        "dcmfg",     "dcmseg",       "dcmtract",    "dcmpmap"
-    ]
-
-    _cmake = None
+    name = "dcmtk"
+    version = "3.6.8"
+    description = "The DICOM Toolkit"
+    license = "BSD-3-Clause"
+    homepage = "https://dicom.offis.de/dcmtk.php.en"
+    package_type = "shared-library"
+    settings = "os", "arch", "compiler", "build_type"
+    exports_sources = "patches/*.patch"
 
     def requirements(self):
-        channel = f"@{self.user}/{self.channel}"
+        self.requires("zlib/[>=1.2]")
+        self.requires("libpng/[>=1.6]")
+        self.requires("libxml2/[>=2.9]")
+        self.requires("tiff/[>=4.1]")
+        # self.requires("openssl/[>=3.2]")
+        self.requires("libjpeg-turbo/[>=2.1]")
+        self.requires("libiconv/[>=1.16]")
 
-        self.requires("zlib/[>=1.2.11]" + channel, private=True)
-        self.requires("libpng/[>=1.6.37]" + channel)
-        self.requires("libxml2/[>=2.9.12]" + channel)
-        self.requires("libpng/[>=1.6.37]" + channel)
-        self.requires("tiff/[>=4.1.0]" + channel)
-        # self.requires("openssl/1.1.1t" + channel)
-        self.requires("libjpeg/9e" + channel)
+    def layout(self):
+        cmake_layout(self, src_folder="src")
 
-        if not tools.os_info.is_macos:
-            self.requires("libiconv/[>=1.16]" + channel)
+    def source(self):
+        v = Version(self.version)
+        get(
+            self,
+            sha256="232076655503138debf2f624109f1799e539354f186ce4e04b27cf82a9d8720f",
+            url=f"https://dicom.offis.de/download/dcmtk/dcmtk{v.major}{v.minor}{v.patch}/dcmtk-{self.version}.tar.gz",
+            strip_root=True,
+        )
+        patch(
+            self,
+            patch_file="patches/002-dcdictbi.cc.patch",
+            patch_type="compatibility",
+            patch_description="replaces retired tags with ACR NEMA tags",
+        )
+        patch(
+            self,
+            patch_file="patches/003-dcpixel.cc.patch",
+            patch_type="feature",
+            patch_description=dedent(
+                """
+                        handles specific case of invalid multi-frame padding (padding byte for each frame)
+                        note that the detection of this case is not completely certain:
+                    """
+            ),
+        )
+        patch(
+            self,
+            patch_file="patches/004-dcuid.cc.patch",
+            patch_type="feature",
+            patch_description="handling of machines without network adapter (e.g. VM)",
+        )
+        patch(
+            self,
+            patch_file="patches/005-find_package_required.patch",
+            patch_type="bugfix",
+            patch_description="makes configured packages mandatory, e.g. an error instead of a warning is issued if they are missing",
+        )
+        patch(
+            self,
+            patch_file="patches/006-on_the_fly_compression.patch",
+            patch_type="feature",
+            patch_description="enables on the fly compression in storescu",
+        )
+        patch(
+            self,
+            patch_file="patches/007-storescp.cc.patch",
+            patch_type="feature",
+            patch_description=dedent(
+                """
+                        option 'short-info': decreased verbosity, creates standardized one-line descriptions per association
+                        option 'flat-study-path': incoming files will be saved top-level regardless of the study
+                        option 'tempfile-while-saving': write incoming file into temp file and renames it after completion
+                    """
+            ),
+        )
+        patch(
+            self,
+            patch_file="patches/008-storescu.cc.patch",
+            patch_type="feature",
+            patch_description=dedent(
+                """
+                        option 'from-file': read file list to send from file
+                        option 'accept-dicom-only': skip files without preamble to avoid long processing times
+                    """
+            ),
+        )
+        patch(self, patch_file="patches/010-find_3rdparty.patch", patch_description="find and use our conan dependencies")
+        patch(
+            self,
+            patch_file="patches/012-cmake_module_path.patch",
+            patch_description="do not prefer CMake modules, Conan generated modules should come first",
+        )
+        patch(self, patch_file="patches/013-find_libcharset.patch", patch_description="find libcharset debug library")
+        patch(self, patch_file="patches/014-libiconv.patch", patch_description="disable libiconv configure test")
+        patch(self, patch_file="patches/015-disable_nsl_test.patch", patch_description="disable test for nsl socket")
+        patch(
+            self,
+            patch_file="patches/015-jpeg_symbols_conflicts.patch",
+            patch_type="bugfix",
+            patch_description="see https://support.dcmtk.org/redmine/issues/1103",
+        )
 
-
-    def _configure_cmake(self):
-        if not self._cmake:
-            self.create_cmake_wrapper()
-            self._cmake = CMake(self)
-            self._cmake.definitions["CMAKE_DEBUG_POSTFIX"] = "d"
-            self._cmake.definitions["CMAKE_INSTALL_RPATH_USE_LINK_PATH"] = False
-            self._cmake.definitions["BUILD_SHARED_LIBS"] = True
-            self._cmake.definitions["BUILD_APPS"] = True
-            self._cmake.definitions["DCMTK_WITH_DOXYGEN"] = False
-            self._cmake.definitions["DCMTK_USE_FIND_PACKAGE"] = True
-            self._cmake.definitions["DCMTK_WITH_THREADS"] = True
-            self._cmake.definitions["DCMTK_ENABLE_PRIVATE_TAGS"] = True
-            self._cmake.definitions["DCMTK_ENABLE_CXX11"] = True
-
-            self._cmake.definitions["DCMTK_DEFAULT_DICT"] = "builtin"
-            self._cmake.definitions["DCMTK_USE_DCMDICTPATH"] = False
-
-            self._cmake.definitions["DCMTK_WIDE_CHAR_FILE_IO_FUNCTIONS"] = True
-            self._cmake.definitions["DCMTK_WIDE_CHAR_MAIN_FUNCTION"] = True
-
-            self._cmake.definitions["DCMTK_WITH_XML"] = True
-            self._cmake.definitions["DCMTK_WITH_PNG"] = True
-            self._cmake.definitions["DCMTK_WITH_TIFF"] = True
-            self._cmake.definitions["DCMTK_WITH_ZLIB"] = True
-            self._cmake.definitions["DCMTK_WITH_ICU"] = False
-            self._cmake.definitions["DCMTK_WITH_OPENSSL"] = False    # FIXME DCMTK has it's own logic to detect openssl, but for some reason it fails to detect openssl 1.1
-            self._cmake.definitions["DCMTK_WITH_OPENJPEG"] = False
-            self._cmake.definitions["DCMTK_WITH_SNDFILE"] = False
-            self._cmake.definitions["DCMTK_WITH_WRAP"] = False
-            self._cmake.definitions["DCMTK_WITH_ICONV"] = True
-
-            self._cmake.definitions["DCMTK_MODULES"] = ';'.join(self._modules)
-
-            if not tools.os_info.is_macos:
-                lib_postfix = "d" if self.settings.build_type == "Debug" else ""
-                iconv_lib_path = self.deps_cpp_info["libiconv"].lib_paths[0]
-                iconv_include_path = self.deps_cpp_info["libiconv"].include_paths[0]
-
-                if tools.os_info.is_windows:
-                    iconv_lib = iconv_lib_path + f"/libiconv{lib_postfix}.lib"
-                    charset_lib = iconv_lib_path + f"/libcharset{lib_postfix}.lib"
-                else:
-                    iconv_lib = iconv_lib_path + f"/libiconv{lib_postfix}.so"
-                    charset_lib = iconv_lib_path + f"/libcharset{lib_postfix}.so"
-
-                self._cmake.definitions["Iconv_LIBRARY"] = iconv_lib
-                self._cmake.definitions["Iconv_INCLUDE_DIR"] = iconv_include_path
-                self._cmake.definitions["LIBICONV_LIBDIR"] = iconv_include_path
-
-                self._cmake.definitions["LIBCHARSET_LIBRARY"] = charset_lib
-                self._cmake.definitions["LIBCHARSET_INCLUDE_DIR"] = iconv_include_path
-
-            self._cmake.configure()
-
-        return self._cmake
-
+    def generate(self):
+        cd = CMakeDeps(self)
+        cd.generate()
+        tc = CMakeToolchain(self, generator="Ninja")
+        tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
+        tc.variables["CMAKE_INSTALL_RPATH_USE_LINK_PATH"] = False
+        tc.variables["CMAKE_INSTALL_RPATH"] = "$ORIGIN;$ORIGIN/../lib"
+        tc.variables["BUILD_SHARED_LIBS"] = True
+        tc.variables["BUILD_APPS"] = True
+        tc.variables["DCMTK_USE_FIND_PACKAGE"] = True
+        tc.variables["DCMTK_ENABLE_PRIVATE_TAGS"] = True
+        tc.variables["DCMTK_ENABLE_CXX11"] = True
+        tc.variables["DCMTK_DEFAULT_DICT"] = "builtin"
+        tc.variables["DCMTK_USE_DCMDICTPATH"] = False
+        tc.variables["DCMTK_WIDE_CHAR_FILE_IO_FUNCTIONS"] = True
+        tc.variables["DCMTK_WIDE_CHAR_MAIN_FUNCTION"] = True
+        tc.variables["DCMTK_WITH_DOXYGEN"] = False
+        tc.variables["DCMTK_WITH_THREADS"] = True
+        tc.variables["DCMTK_WITH_STDLIBC_ICONV"] = False
+        tc.variables["DCMTK_WITH_XML"] = True if "libxml2" in self.dependencies else False
+        tc.variables["DCMTK_WITH_PNG"] = True if "libpng" in self.dependencies else False
+        tc.variables["DCMTK_WITH_TIFF"] = True if "tiff" in self.dependencies else False
+        tc.variables["DCMTK_WITH_ZLIB"] = True if "zlib" in self.dependencies else False
+        tc.variables["DCMTK_WITH_ICU"] = True if "icu" in self.dependencies else False
+        tc.variables["DCMTK_WITH_OPENSSL"] = True if "openssl" in self.dependencies else False
+        tc.variables["DCMTK_WITH_OPENJPEG"] = True if "openjpeg" in self.dependencies else False
+        tc.variables["DCMTK_WITH_SNDFILE"] = True if "sndfile" in self.dependencies else False
+        tc.variables["DCMTK_WITH_WRAP"] = False
+        tc.variables["DCMTK_WITH_ICONV"] = True if "libiconv" in self.dependencies else False
+        tc.generate()
 
     def build(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
+        cmake.configure()
         cmake.build()
 
-
     def package(self):
-        cmake = self._configure_cmake()
+        copy(self, "COPYRIGHT", src=self.source_path, dst=self.package_path / "licenses")
+        cmake = CMake(self)
         cmake.install()
+        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False, excludes="*vc???.pdb")
+        rmdir(self, self.package_path / "cmake")
+        rmdir(self, self.package_path / "share")
+        rmdir(self, self.package_path / "etc")
+        rmdir(self, self.package_path / "lib" / "pkgconfig")
+        rmdir(self, self.package_path / "lib" / "cmake")
 
-        for dll in glob.glob(self.package_folder + "/bin/*.dll"):
-            self.copy(Path(dll).stem + ".pdb", src="bin", dst="bin")
+    @property
+    def _dcmtk_components(self):
+        zlib = ["zlib::zlib"] if "zlib" in self.dependencies else []
+        openssl = ["openssl::openssl"] if "openssl" in self.dependencies else []
+        libiconv = ["libiconv::libiconv"] if "libiconv" in self.dependencies else []
+        tiff = ["tiff::tiff"] if "tiff" in self.dependencies else []
+        libxml2 = ["libxml2::libxml2"] if "libxml2" in self.dependencies else []
+        libpng = ["libpng::libpng"] if "libpng" in self.dependencies else []
+        jpeg = ["libjpeg-turbo::libjpeg-turbo"] if "libjpeg-turbo" in self.dependencies else []
 
-        tools.rmdir(os.path.join(self.package_folder, 'lib', 'cmake'))
-        tools.rmdir(os.path.join(self.package_folder, 'lib', 'pkgconfig'))
-        tools.rmdir(os.path.join(self.package_folder, 'cmake'))
-        tools.rmdir(os.path.join(self.package_folder, 'share'))
-        tools.rmdir(os.path.join(self.package_folder, 'etc'))
-
-        self.patch_binaries()
-        self.default_package()
+        return {
+            "ofstd": ["oficonv"] + libiconv,
+            "oficonv": [],
+            "oflog": ["ofstd"],
+            "dcmdata": ["ofstd", "oflog"] + zlib,
+            "i2d": ["dcmdata", "dcmxml"],
+            "dcmxml": [
+                "dcmdata",
+                "ofstd",
+                "oflog",
+            ]
+            + zlib
+            + libxml2,
+            "dcmimgle": ["ofstd", "oflog", "dcmdata"],
+            "dcmimage": ["oflog", "dcmdata", "dcmimgle"] + libpng + tiff,
+            "dcmjpeg": ["ofstd", "oflog", "dcmdata", "dcmimgle", "dcmimage", "ijg8", "ijg12", "ijg16"] + jpeg,
+            "ijg8": [],
+            "ijg12": [],
+            "ijg16": [],
+            "dcmjpls": ["ofstd", "oflog", "dcmdata", "dcmimgle", "dcmimage", "dcmtkcharls"],
+            "dcmtkcharls": ["ofstd", "oflog"],
+            "dcmtls": ["ofstd", "dcmdata", "dcmnet"] + openssl,
+            "dcmnet": ["ofstd", "oflog", "dcmdata"],
+            "dcmsr": ["ofstd", "oflog", "dcmdata", "dcmimgle", "dcmimage", "libxml2::libxml2"],
+            "cmr": ["dcmsr"],
+            "dcmdsig": ["ofstd", "dcmdata"] + openssl,
+            "dcmwlm": ["ofstd", "dcmdata", "dcmnet"],
+            "dcmqrdb": ["ofstd", "dcmdata", "dcmnet"],
+            "dcmpstat": ["ofstd", "oflog", "dcmdata", "dcmimgle", "dcmimage", "dcmnet", "dcmiod", "dcmdsig", "dcmtls", "dcmsr", "dcmqrdb"]
+            + openssl,
+            "dcmrt": ["ofstd", "oflog", "dcmdata", "dcmimgle"],
+            "dcmiod": ["dcmdata", "ofstd", "oflog"],
+            "dcmfg": ["dcmiod", "dcmdata", "ofstd", "oflog"],
+            "dcmseg": ["dcmfg", "dcmiod", "dcmdata", "ofstd", "oflog"],
+            "dcmtract": ["dcmiod", "dcmdata", "ofstd", "oflog"],
+            "dcmpmap": ["dcmfg", "dcmiod", "dcmdata", "ofstd", "oflog"],
+        }
 
     def package_info(self):
-        self.default_package_info()
-        if tools.os_info.is_linux:
-            self.cpp_info.system_libs = ['dl']
+        self.cpp_info.set_property("cmake_find_mode", "both")
+        self.cpp_info.set_property("cmake_file_name", "DCMTK")
+        self.cpp_info.set_property("cmake_target_name", "DCMTK::DCMTK")
+        lib_postfix = "_d" if self.settings.build_type == "Debug" else ""
+
+        def register_components(components):
+            for target_lib, requires in components.items():
+                self.cpp_info.components[target_lib].set_property("cmake_target_name", "DCMTK::" + target_lib)
+                self.cpp_info.components[target_lib].libs = [target_lib + lib_postfix]
+                self.cpp_info.components[target_lib].includedirs.append("include/dcmtk")
+                self.cpp_info.components[target_lib].requires = requires
+
+        register_components(self._dcmtk_components)
+        if self.settings.os == "Windows":
+            self.cpp_info.components["ofstd"].system_libs.extend(["iphlpapi", "ws2_32", "netapi32", "wsock32"])
+        elif self.settings.os == "Linux":
+            self.cpp_info.components["ofstd"].system_libs.extend(["m", "pthread"])

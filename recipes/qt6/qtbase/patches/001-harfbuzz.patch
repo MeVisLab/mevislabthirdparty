@@ -1,0 +1,13 @@
+diff --git a/cmake/FindWrapSystemHarfbuzz.cmake b/cmake/FindWrapSystemHarfbuzz.cmake
+index 07b3405b..5350c5e6 100644
+--- a/cmake/FindWrapSystemHarfbuzz.cmake
++++ b/cmake/FindWrapSystemHarfbuzz.cmake
+@@ -19,7 +19,7 @@ if(harfbuzz_FOUND AND TARGET "${__harfbuzz_target_name}")
+     foreach(__harfbuzz_include_dir ${__harfbuzz_include_paths})
+         if(NOT EXISTS "${__harfbuzz_include_dir}")
+             # Must be the broken Gentoo harfbuzzConfig.cmake file. Try to use pkg-config instead.
+-            set(__harfbuzz_broken_config_file TRUE)
++            # set(__harfbuzz_broken_config_file TRUE)
+             break()
+         endif()
+     endforeach()

@@ -1,8 +1,11 @@
+import os
 import sys
-if sys.platform != 'win32':
-    # This test does not work on Windows, because the new revised library loading
-    # mechanism of Python (since 3.7) ignores the PATH variable. The import will
-    # work in MeVisLab, because we use AddDllDirectory to add the required paths.
-    import zmq
 
-    print(zmq.pyzmq_version())
+if sys.platform == 'win32':
+    for p in os.getenv("PATH").split(os.pathsep):
+        if os.path.exists(p):
+            os.add_dll_directory(p)
+
+import zmq
+
+print(zmq.pyzmq_version())

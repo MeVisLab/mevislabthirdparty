@@ -1,44 +1,76 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans import tools
-from conans import CMake
-import os
+from conan import ConanFile
+from conan.tools.env import VirtualBuildEnv
+from conan.tools.files import collect_libs, copy, get, rmdir, patch
+from conan.tools.layout import basic_layout
+from conan.tools.meson import Meson, MesonToolchain
+from conan.tools.microsoft import is_msvc
+
+required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
+    name = "harfbuzz"
+    version = "8.3.0"
+    homepage = "http://harfbuzz.org"
+    description = "An OpenType text shaping engine"
+    license = "MIT"
+    package_type = "shared-library"
+    settings = "os", "arch", "compiler", "build_type"
+    exports_sources = ["patches/*.patch"]
 
-    _cmake = None
+    def layout(self):
+        basic_layout(self, src_folder="src")
 
+    def source(self):
+        get(self,
+            sha256="109501eaeb8bde3eadb25fab4164e993fbace29c3d775bcaa1c1e58e2f15f847",
+            url=f"https://github.com/harfbuzz/harfbuzz/releases/download/{self.version}/harfbuzz-{self.version}.tar.xz",
+            strip_root=True
+            )
+        patch(self, patch_file="patches/001-debug_suffix.patch")
 
-    def _configure_cmake(self):
-        if not self._cmake:
-            self._cmake = CMake(self)
-            self._cmake.definitions["BUILD_SHARED_LIBS"] = True
-            self._cmake.configure()
-        return self._cmake
+    def generate(self):
+        VirtualBuildEnv(self).generate()
+        tc = MesonToolchain(self)
+        tc.project_options.update({
+            "glib": "disabled",
+            "icu": "disabled",
+            "freetype": "disabled",
+            "gdi": "enabled",
+            "directwrite": "disabled",
+            "gobject": "disabled",
+            "introspection": "disabled",
+            "cairo": "disabled",
+            "tests": "disabled",
+            "docs": "disabled",
+            "benchmark": "disabled",
+            "icu_builtin": "false",
+            "utilities": "disabled"
+        })
 
+        if is_msvc(self):
+            tc.cpp_args.append("/bigobj")
+
+        tc.generate()
 
     def build(self):
-        # allow in-source builds
-        tools.replace_in_file(os.path.join("sources", "CMakeLists.txt"), 'if (NOT MSVC AND "${PROJECT_BINARY_DIR}"', 'if (FALSE AND NOT MSVC AND "${PROJECT_BINARY_DIR}"')
-
-        cmake = self._configure_cmake()
-        cmake.build()
-
+        meson = Meson(self)
+        meson.configure()
+        meson.build()
 
     def package(self):
-        cmake = self._configure_cmake()
-        cmake.install()
+        copy(self, "COPYING", self.source_path, self.package_path / "licenses")
+        meson = Meson(self)
+        meson.install()
+        rmdir(self, self.package_path / "lib" / "cmake")
+        rmdir(self, self.package_path / "lib" / "pkgconfig")
 
-        tools.rmdir(os.path.join(self.package_folder, "lib", "cmake"))
-        tools.rmdir(os.path.join(self.package_folder, "lib", "pkgconfig"))
-
-        self.copy("*.pdb", src="bin", dst="bin")
-
-        # some projects also include this file:
-        self.copy('hb-ft.h', dst=os.path.join('include', 'harfbuzz'), src=os.path.join('sources', 'src'), keep_path=False)
-
-        self.patch_binaries()
-        self.default_package()
+    def package_info(self):
+        self.cpp_info.set_property("cmake_file_name", "harfbuzz")
+        self.cpp_info.set_property("cmake_target_name", "harfbuzz::harfbuzz")
+        self.cpp_info.set_property("cmake_target_aliases", ["Harfbuzz::Harfbuzz"])
+        self.cpp_info.set_property("pkg_config_name", "harfbuzz")
+        self.cpp_info.libs = collect_libs(self)
+        self.cpp_info.includedirs.append("include/harfbuzz")
+        if self.settings.os == "Linux":
+            self.cpp_info.system_libs.append("m")

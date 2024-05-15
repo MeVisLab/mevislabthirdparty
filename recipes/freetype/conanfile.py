@@ -1,86 +1,120 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans import CMake
-from conans import tools
-from conans.errors import ConanInvalidConfiguration
-import os
+"""
+Parts of the recipe are taken from the Conan Center Index (https://github.com/conan-io/conan-center-index),
+licensed under the MIT License.
+"""
+
+import re
+
+from conan import ConanFile
+from conan.errors import ConanInvalidConfiguration
+from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
+from conan.tools.files import collect_libs, get, copy, save, load, rmdir, replace_in_file
+
+required_conan_version = ">=2.2.2"
+
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
+    name = "freetype"
+    version = "2.13.2"
+    homepage = "http://www.freetype.org"
+    description = "A high-quality and portable font engine"
+    license = "FTL"
+    package_type = "shared-library"
+    settings = "os", "arch", "compiler", "build_type"
 
-    _cmake = None
-
+    def configure(self):
+        self.settings.rm_safe("compiler.libcxx")
+        self.settings.rm_safe("compiler.cppstd")
 
     def validate(self):
-        if tools.os_info.is_linux:
-            raise ConanInvalidConfiguration(f"{self.name} is not supported on Linux. Please use the one provided by the system.")
+        if self.settings.os == "Linux":
+            raise ConanInvalidConfiguration(
+                f"{self.name} is not supported on Linux. Please use the one provided by the system.")
 
+    def layout(self):
+        cmake_layout(self, src_folder="src")
 
     def requirements(self):
-        channel = "@{0}/{1}".format(self.user, self.channel)
-        self.requires("zlib/[>=1.2.11]" + channel)
-        self.requires("bzip2/[>=1.0.8]" + channel)
-        self.requires("libpng/[>=1.6.36]" + channel)
-
+        self.requires("zlib/[>=1.2.11]")
+        self.requires("bzip2/[>=1.0.8]")
+        self.requires("libpng/[>=1.6.36]")
+        self.requires("brotli/[>=1.0.9]")
 
     def source(self):
-        self.default_source()
-        tools.replace_in_file(os.path.join("sources", "CMakeLists.txt"), 'if ("${CMAKE_BINARY_DIR}" STREQUAL "${CMAKE_SOURCE_DIR}")', 'if (0)')
-        os.rename(os.path.join("sources", "docs", "FTL.TXT"), os.path.join("sources", "LICENSE"))
+        get(self,
+            sha256="1ac27e16c134a7f2ccea177faba19801131116fd682efc1f5737037c5db224b5",
+            url=f"https://download.savannah.gnu.org/releases/freetype/freetype-{self.version}.tar.gz",
+            strip_root=True
+        )
+        replace_in_file(self, self.source_path / "CMakeLists.txt",
+                        'if ("${CMAKE_BINARY_DIR}" STREQUAL "${CMAKE_SOURCE_DIR}")', 'if (0)')
+        replace_in_file(self, self.source_path / "CMakeLists.txt", "find_package(BrotliDec REQUIRED)",
+                                  "find_package(Brotli REQUIRED)\n"
+                                  "set(BROTLIDEC_FOUND 1)\n"
+                                  "set(BROTLIDEC_LIBRARIES \"brotli::brotli\")")
 
+    def generate(self):
+        tc = CMakeToolchain(self)
+        tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
+        tc.variables["DISABLE_FORCE_DEBUG_POSTFIX"] = True
+        tc.variables["BUILD_SHARED_LIBS"] = True
+        tc.variables["CMAKE_INSTALL_RPATH"] = "$ORIGIN;$ORIGIN/../lib"
 
-    def _configure_cmake(self):
-        if not self._cmake:
-            self._cmake = CMake(self)
-            self._cmake.definitions["CMAKE_DEBUG_POSTFIX"] = "d"
-            self._cmake.definitions["BUILD_SHARED_LIBS"] = True
+        tc.variables["PROJECT_VERSION"] = self._extract_libtool_version()
 
-            self._cmake.definitions["PROJECT_VERSION"] = self.conan_data["sources"][self.version]['libtool_version']
+        tc.variables["FT_REQUIRE_ZLIB"] = True
+        tc.variables["FT_DISABLE_ZLIB"] = not tc.variables["FT_REQUIRE_ZLIB"]
 
-            self._cmake.definitions["FT_REQUIRE_ZLIB"] = True if 'zlib' in self.deps_cpp_info.deps else False
-            self._cmake.definitions["FT_DISABLE_ZLIB"] = False if 'zlib' in self.deps_cpp_info.deps else True
+        tc.variables["FT_REQUIRE_PNG"] = True
+        tc.variables["FT_DISABLE_PNG"] = not tc.variables["FT_REQUIRE_PNG"]
 
-            self._cmake.definitions["FT_REQUIRE_PNG"] = True if 'libpng' in self.deps_cpp_info.deps else False
-            self._cmake.definitions["FT_DISABLE_PNG"] = False if 'libpng' in self.deps_cpp_info.deps else True
+        tc.variables["FT_REQUIRE_BZIP2"] = True
+        tc.variables["FT_DISABLE_BZIP2"] = not tc.variables["FT_REQUIRE_BZIP2"]
 
-            self._cmake.definitions["FT_REQUIRE_BZIP2"] = True if 'bzip2' in self.deps_cpp_info.deps else False
-            self._cmake.definitions["FT_DISABLE_BZIP2"] = False if 'bzip2' in self.deps_cpp_info.deps else True
+        tc.variables["FT_REQUIRE_BROTLI"] = True
+        tc.variables["FT_DISABLE_BROTLI"] = not tc.variables["FT_REQUIRE_BROTLI"]
 
-            # TODO: Harfbuzz can be added as an option as soon as it is available.
-            self._cmake.definitions["FT_REQUIRE_HARFBUZZ"] = True if 'harfbuzz' in self.deps_cpp_info.deps else False
-            self._cmake.definitions["FT_DISABLE_HARFBUZZ"] = False if 'harfbuzz' in self.deps_cpp_info.deps else True
+        # TODO: Harfbuzz can be added as an option as soon as it is available.
+        tc.variables["FT_REQUIRE_HARFBUZZ"] = False
+        tc.variables["FT_DISABLE_HARFBUZZ"] = not tc.variables["FT_REQUIRE_HARFBUZZ"]
 
-            # TODO: Brotli (WOFF2 format) can be added as an option as soon as it is available.
-            self._cmake.definitions["FT_REQUIRE_BROTLI"] = True if 'brotli' in self.deps_cpp_info.deps else False
-            self._cmake.definitions["FT_DISABLE_BROTLI"] = False if 'brotli' in self.deps_cpp_info.deps else True
-
-            self._cmake.configure()
-        return self._cmake
-
+        tc.generate()
+        tc = CMakeDeps(self)
+        tc.generate()
 
     def build(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
+        cmake.configure()
         cmake.build()
 
+    def _extract_libtool_version(self):
+        conf_raw = load(self, self.source_path / "builds" / "unix" / "configure.raw")
+        return next(re.finditer(r"^version_info='([0-9:]+)'", conf_raw, flags=re.M)).group(1).replace(":", ".")
+
+    @property
+    def _libtool_version_txt(self):
+        return self.package_path / "config" / "freetype-libtool-version.txt"
 
     def package(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
         cmake.install()
-
-        self.copy("*.pdb", src="bin", dst="bin")
-
-        tools.rmdir(os.path.join(self.package_folder, "lib", "cmake"))
-        tools.rmdir(os.path.join(self.package_folder, "lib", "pkgconfig"))
-
-        self.patch_binaries()
-        self.default_package()
-
+        libtool_version = self._extract_libtool_version()
+        save(self, self._libtool_version_txt, libtool_version)
+        copy(self, "FTL.TXT", src=self.source_path / "docs", dst=self.package_path / "licenses")
+        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False, excludes="*vc???.pdb")
+        rmdir(self, self.package_path / "lib" / "cmake")
+        rmdir(self, self.package_path / "lib" / "pkgconfig")
 
     def package_info(self):
-        self.default_package_info()
-        self.cpp_info.names["pkg_config"] = "freetype2"
+        self.cpp_info.set_property("cmake_find_mode", "both")
+        self.cpp_info.set_property("cmake_file_name", "Freetype")
+        self.cpp_info.set_property("cmake_target_name", "Freetype::Freetype")
+        self.cpp_info.set_property("pkg_config_name", "freetype2")
+        libtool_version = load(self, self._libtool_version_txt).strip()
+        # In theory this should set the version of the generated pkg-config file:
+        self.cpp_info.set_property("component_version", libtool_version)
+        self.cpp_info.libs = collect_libs(self)
+        self.cpp_info.includedirs.append("include/freetype2")
 
-        self.cpp_info.includedirs.append(os.path.join("include", "freetype2"))
         if self.settings.os == "Linux":
             self.cpp_info.system_libs.append("m")

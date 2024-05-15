@@ -1,0 +1,24 @@
+diff --git a/stlab/concurrency/await.hpp b/stlab/concurrency/await.hpp
+index 5b95fc3..62f91ea 100644
+--- a/stlab/concurrency/await.hpp
++++ b/stlab/concurrency/await.hpp
+@@ -15,6 +15,7 @@
+ #include <mutex>
+ #include <type_traits>
+ #include <utility>
++#include <stdexcept>
+ 
+ #include <stlab/concurrency/default_executor.hpp>
+ #include <stlab/concurrency/future.hpp>
+diff --git a/stlab/concurrency/future.hpp b/stlab/concurrency/future.hpp
+index 90723a5..d3a84c0 100755
+--- a/stlab/concurrency/future.hpp
++++ b/stlab/concurrency/future.hpp
+@@ -16,6 +16,7 @@
+ #include <memory>
+ #include <mutex>
+ #include <vector>
++#include <stdexcept>
+ 
+ #include <stlab/concurrency/executor_base.hpp>
+ #include <stlab/concurrency/optional.hpp>

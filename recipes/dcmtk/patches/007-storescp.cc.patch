@@ -1,0 +1,376 @@
+diff --git a/dcmnet/apps/storescp.cc b/dcmnet/apps/storescp.cc
+index 5dae4f1..744d5b0 100644
+--- a/dcmnet/apps/storescp.cc
++++ b/dcmnet/apps/storescp.cc
+@@ -116,6 +116,8 @@ enum E_SortStudyMode
+ 
+ OFBool             opt_showPresentationContexts = OFFalse;
+ OFBool             opt_uniqueFilenames = OFFalse;
++OFBool             opt_flatStudyPath = OFFalse;
++OFBool             opt_tempfileWhileSaving = OFFalse;
+ OFString           opt_fileNameExtension;
+ OFBool             opt_timeNames = OFFalse;
+ int                timeNameCounter = -1;   // "serial number" to differentiate between files with same timestamp
+@@ -172,6 +174,7 @@ OFBool             opt_forkMode = OFFalse;
+ 
+ OFBool             opt_forkedChild = OFFalse;
+ OFBool             opt_execSync = OFFalse;            // default: execute in background
++OFBool             opt_shortInfo = OFFalse;           // default: use standard logging options
+ 
+ 
+ #ifdef HAVE_WAITPID
+@@ -201,6 +204,100 @@ extern "C" void sigChildHandler(int)
+ #define SHORTCOL 4
+ #define LONGCOL 21
+ 
++class ShortInfo
++{
++public:
++  /* default constructor */
++  ShortInfo();
++  /* add a string to the current short info */
++  void add(const OFString& s);
++  /* print the accumulated short info and clear it */
++  void print();
++  /* add association info to short info */
++  void addAssociationInfo(T_ASC_Association *assoc, int success);
++  /* sets the port used for the association */
++  void setPort(int port);
++
++private:
++  /* the accumulated info that shall be output on next call to print() */
++  OFString _shortInfo;
++  /* the port used for the association */
++  int _port;
++};
++
++ShortInfo short_info;
++
++ShortInfo::ShortInfo()
++: _port(0)
++{
++}
++
++void ShortInfo::setPort(int port)
++{
++  _port = port;
++}
++
++void ShortInfo::add(const OFString& s)
++{
++  _shortInfo += s;
++}
++
++void ShortInfo::print()
++{
++  // we use forcedLog to be independent from the log level
++  storescpLogger.forcedLog( OFLogger::INFO_LOG_LEVEL, _shortInfo );
++  _shortInfo.clear();
++}
++
++void ShortInfo::addAssociationInfo(T_ASC_Association *assoc, int success)
++{
++  // get current time
++#ifdef HAVE_WINDOWS_H
++  SYSTEMTIME timebuf;
++  GetLocalTime(&timebuf);
++  int year = timebuf.wYear;
++  int month = timebuf.wMonth;
++  int day = timebuf.wDay;
++  int hour = timebuf.wHour;
++  int min = timebuf.wMinute;
++  int sec = timebuf.wSecond;
++  int centisec = (int)timebuf.wMilliseconds / 10;
++#define snprintf _snprintf
++#else
++  struct timeval tv;
++  gettimeofday(&tv, NULL);
++  time_t tt = time(NULL);
++  tm *tVal = localtime( &tt );
++  int year = tVal->tm_year + 1900;
++  int month = tVal->tm_mon + 1;
++  int day = tVal->tm_mday;
++  int hour = tVal->tm_hour;
++  int min = tVal->tm_min;
++  int sec = tVal->tm_sec;
++  int centisec = (int)(tv.tv_usec / 100);
++#endif
++
++  if (success)
++  {
++    add("ACC ");
++  }
++  else
++  {
++    add("REJ ");
++  }
++
++  char info[100];
++  snprintf(info, 100, "(%s %s) (%s,%d) %4d%02d%02d %02d%02d%02d.%02d ",
++    assoc->params->DULparams.callingAPTitle,
++    assoc->params->DULparams.callingPresentationAddress,
++    assoc->params->DULparams.calledAPTitle,
++    _port,
++    year, month, day, hour, min, sec, centisec);
++
++  add(info);
++}
++
++
+ int main(int argc, char *argv[])
+ {
+   T_ASC_Network *net;
+@@ -227,6 +324,7 @@ int main(int argc, char *argv[])
+     cmd.addOption("--version",                             "print version information and exit", OFCommandLine::AF_Exclusive);
+     OFLog::addOptions(cmd);
+     cmd.addOption("--verbose-pc",               "+v",      "show presentation contexts in verbose mode");
++    cmd.addOption("--short-info",               "-si",     "print short info for each association request");
+ 
+ #if defined(HAVE_FORK) || defined(_WIN32)
+   cmd.addGroup("multi-process options:", LONGCOL, SHORTCOL + 2);
+@@ -356,6 +454,8 @@ int main(int argc, char *argv[])
+       cmd.addOption("--timenames",              "-tn",     "generate filename from creation time");
+       cmd.addOption("--filename-extension",     "-fe",  1, "[e]xtension: string",
+                                                            "append e to all filenames");
++      cmd.addOption("--flat-study-path",        "-fp",     "do not create sub directories for studies ");
++      cmd.addOption("--tempfile-while-saving",  "-st",     "save to temp file and rename afterwards");
+ 
+   cmd.addGroup("event options:", LONGCOL, SHORTCOL + 2);
+     cmd.addOption("--exec-on-reception",        "-xcr", 1, "[c]ommand: string",
+@@ -474,6 +574,10 @@ int main(int argc, char *argv[])
+       app.checkDependence("--verbose-pc", "verbose mode", storescpLogger.isEnabledFor(OFLogger::INFO_LOG_LEVEL));
+       opt_showPresentationContexts = OFTrue;
+     }
++    if (cmd.findOption("--short-info"))
++    {
++      opt_shortInfo = OFTrue;
++    }
+ 
+     cmd.beginOptionBlock();
+     if (cmd.findOption("--prefer-uncompr"))
+@@ -824,6 +928,8 @@ int main(int argc, char *argv[])
+     if (cmd.findOption("--default-filenames")) opt_uniqueFilenames = OFFalse;
+     if (cmd.findOption("--unique-filenames")) opt_uniqueFilenames = OFTrue;
+     cmd.endOptionBlock();
++    if (cmd.findOption("--flat-study-path")) opt_flatStudyPath = OFTrue;
++    if (cmd.findOption("--tempfile-while-saving")) opt_tempfileWhileSaving = OFTrue;
+ 
+     if (cmd.findOption("--timenames")) opt_timeNames = OFTrue;
+     if (cmd.findOption("--filename-extension"))
+@@ -1073,6 +1179,8 @@ static OFCondition acceptAssociation(T_ASC_Network *net, DcmAssociationConfigura
+     goto cleanup;
+   }
+ 
++  short_info.setPort(net->acceptorPort);
++
+ #if defined(HAVE_FORK) || defined(_WIN32)
+   if (opt_forkMode)
+     OFLOG_INFO(storescpLogger, "Association Received in " << (DUL_processIsForkedChild() ? "child" : "parent")
+@@ -1097,6 +1205,11 @@ static OFCondition acceptAssociation(T_ASC_Network *net, DcmAssociationConfigura
+     };
+ 
+     OFLOG_INFO(storescpLogger, "Refusing Association (forced via command line)");
++    if (opt_shortInfo)
++    {
++      short_info.addAssociationInfo(assoc, OFFalse);
++      short_info.print();
++    }
+     cond = ASC_rejectAssociation(assoc, &rej);
+     if (cond.bad())
+     {
+@@ -1399,6 +1512,11 @@ static OFCondition acceptAssociation(T_ASC_Network *net, DcmAssociationConfigura
+     };
+ 
+     OFLOG_INFO(storescpLogger, "Association Rejected: Bad Application Context Name: " << buf);
++    if (opt_shortInfo)
++    {
++      short_info.addAssociationInfo(assoc, OFFalse);
++      short_info.print();
++    }
+     cond = ASC_rejectAssociation(assoc, &rej);
+     if (cond.bad())
+     {
+@@ -1418,6 +1536,11 @@ static OFCondition acceptAssociation(T_ASC_Network *net, DcmAssociationConfigura
+     };
+ 
+     OFLOG_INFO(storescpLogger, "Association Rejected: No Implementation Class UID provided");
++    if (opt_shortInfo)
++    {
++      short_info.addAssociationInfo(assoc, OFFalse);
++      short_info.print();
++    }
+     cond = ASC_rejectAssociation(assoc, &rej);
+     if (cond.bad())
+     {
+@@ -1436,6 +1559,10 @@ static OFCondition acceptAssociation(T_ASC_Network *net, DcmAssociationConfigura
+       OFLOG_ERROR(storescpLogger, DimseCondition::dump(temp_str, cond));
+       goto cleanup;
+     }
++    if (opt_shortInfo)
++    {
++      short_info.addAssociationInfo(assoc, OFTrue);
++    }
+     OFLOG_INFO(storescpLogger, "Association Acknowledged (Max Send PDV: " << assoc->sendPDVLength << ")");
+     if (ASC_countAcceptedPresentationContexts(assoc->params) == 0)
+       OFLOG_INFO(storescpLogger, "    (but no valid presentation contexts)");
+@@ -1540,6 +1667,7 @@ processCommands(T_ASC_Association * assoc)
+   T_DIMSE_Message msg;
+   T_ASC_PresentationContextID presID = 0;
+   DcmDataset *statusDetail = NULL;
++  bool loggedAssocType = false;
+ 
+   // start a loop to be able to receive more than one DIMSE command
+   while( cond == EC_Normal || cond == DIMSE_NODATAAVAILABLE || cond == DIMSE_OUTOFRESOURCES )
+@@ -1602,15 +1730,27 @@ processCommands(T_ASC_Association * assoc)
+       {
+         case DIMSE_C_ECHO_RQ:
+           // process C-ECHO-Request
++          if (opt_shortInfo && !loggedAssocType)
++          {
++            short_info.add("C-ECHO");
++          }
+           cond = echoSCP(assoc, &msg, presID);
+           break;
+         case DIMSE_C_STORE_RQ:
+           // process C-STORE-Request
++          if (opt_shortInfo && !loggedAssocType)
++          {
++            short_info.add("C-STORE");
++          }
+           cond = storeSCP(assoc, &msg, presID);
+           break;
+         default:
+           OFString tempStr;
+           // we cannot handle this kind of message
++          if (opt_shortInfo && !loggedAssocType)
++          {
++            short_info.add("UNSUPPORTED");
++          }
+           cond = DIMSE_BADCOMMANDTYPE;
+           OFLOG_ERROR(storescpLogger, "Expected C-ECHO or C-STORE request but received DIMSE command 0x"
+                << STD_NAMESPACE hex << STD_NAMESPACE setfill('0') << STD_NAMESPACE setw(4)
+@@ -1771,7 +1911,7 @@ storeSCPCallback(
+     // is present and the options opt_bitPreserving and opt_ignore are not set.
+     if ((imageDataSet != NULL) && (*imageDataSet != NULL) && !opt_bitPreserving && !opt_ignore)
+     {
+-      OFString fileName;
++      OFString fileName, newFileName;
+ 
+       // in case one of the --sort-xxx options is set, we need to perform some particular steps to
+       // determine the actual name of the output file
+@@ -1820,7 +1960,8 @@ storeSCPCallback(
+         // if this is the first DICOM object that was received or if the study instance UID in the
+         // current DICOM object does not equal the last object's study instance UID we need to create
+         // a new subdirectory in which the current DICOM object will be stored
+-        if (lastStudyInstanceUID.empty() || (lastStudyInstanceUID != currentStudyInstanceUID))
++        if (opt_flatStudyPath == OFFalse &&
++            (lastStudyInstanceUID.empty() || (lastStudyInstanceUID != currentStudyInstanceUID)))
+         {
+           // if lastStudyInstanceUID is non-empty, we have just completed receiving all objects for one
+           // study. In such a case, we need to set a certain indicator variable (lastStudySubdirectoryPathAndName),
+@@ -1889,18 +2030,18 @@ storeSCPCallback(
+             {
+               // If the subdirectory already exists, then re-use it. It might have been created by another
+               // process receiving images in parallel.
+-              OFLOG_INFO(storescpLogger, "using existing subdirectory for study: " << subdirectoryPathAndName);
++              OFLOG_INFO(storescpLogger, "using existing subdirectory: " << subdirectoryPathAndName);
+             }
+             else
+             {
+-              OFLOG_ERROR(storescpLogger, "could not create subdirectory for study: " << subdirectoryPathAndName);
++              OFLOG_ERROR(storescpLogger, "could not create subdirectory: " << subdirectoryPathAndName);
+               rsp->DimseStatus = STATUS_STORE_Error_CannotUnderstand;
+               return;
+             }
+           }
+           else
+           {
+-            OFLOG_INFO(storescpLogger, "created new subdirectory for study: " << subdirectoryPathAndName);
++            OFLOG_INFO(storescpLogger, "created new subdirectory: " << subdirectoryPathAndName);
+             // all objects of a study have been received, so a new subdirectory is started.
+             // ->timename counter can be reset, because the next filename can't cause a duplicate.
+             // if no reset would be done, files of a new study (->new directory) would start with a counter in filename
+@@ -1913,6 +2054,13 @@ storeSCPCallback(
+         // path and file name; however, the path refers to the output directory captured in opt_outputDirectory)
+         OFStandard::combineDirAndFilename(fileName, subdirectoryPathAndName, OFStandard::getFilenameFromPath(tmpStr, cbdata->imageFileName));
+ 
++        if(opt_tempfileWhileSaving)
++        {
++          newFileName = fileName;
++          // add an extension which stands for "to be processed"
++          fileName += ".tbp";
++        }
++
+         // update global variable outputFileNameArray
+         // (might be used in executeOnReception() and renameOnEndOfStudy)
+         outputFileNameArray.push_back(tmpStr);
+@@ -1921,7 +2069,12 @@ storeSCPCallback(
+       else
+       {
+         fileName = cbdata->imageFileName;
+-
++        if(opt_tempfileWhileSaving)
++        {
++          newFileName = fileName;
++          // add an extension which stands for "to be processed"
++          fileName += ".tbp";
++        }
+         // update global variables outputFileNameArray
+         // (might be used in executeOnReception() and renameOnEndOfStudy)
+         outputFileNameArray.push_back(OFStandard::getFilenameFromPath(tmpStr, fileName));
+@@ -1949,6 +2102,14 @@ storeSCPCallback(
+         OFStandard::deleteFile(fileName);
+       }
+ 
++      if(opt_tempfileWhileSaving)
++      {
++        newFileName += ".dcm";
++        // if the file already exists, delete it
++        unlink(newFileName.c_str());
++        rename(fileName.c_str(), newFileName.c_str());
++      }
++
+       // check the image to make sure it is consistent, i.e. that its sopClass and sopInstance correspond
+       // to those mentioned in the request. If not, set the status in the response message variable.
+       if (rsp->DimseStatus == STATUS_Success)
+@@ -1973,14 +2134,23 @@ storeSCPCallback(
+     // in case opt_bitPreserving is set, do some other things
+     if( opt_bitPreserving )
+     {
++      OFString newFileName = cbdata->imageFileName;
++      if (opt_tempfileWhileSaving)
++      {
++        newFileName += ".dcm";
++        // if the file already exists, delete it
++        unlink(newFileName.c_str());
++        OFString oldFileName = cbdata->imageFileName;
++        oldFileName += ".tbp";
++        rename(oldFileName.c_str(), newFileName.c_str());
++      }
+       // we need to set outputFileNameArray and outputFileNameArrayCnt to be
+       // able to perform the placeholder substitution in executeOnReception()
+-      outputFileNameArray.push_back(OFStandard::getFilenameFromPath(tmpStr, cbdata->imageFileName));
++      outputFileNameArray.push_back(OFStandard::getFilenameFromPath(tmpStr, newFileName.c_str()));
+     }
+   }
+ }
+ 
+-
+ static OFCondition storeSCP(
+   T_ASC_Association *assoc,
+   T_DIMSE_Message *msg,
+@@ -2115,7 +2285,13 @@ static OFCondition storeSCP(
+   // DIMSE_storeProvider must be called with certain parameters.
+   if (opt_bitPreserving)
+   {
+-    cond = DIMSE_storeProvider(assoc, presID, req, imageFileName, opt_useMetaheader, NULL,
++    OFString fileName = imageFileName;
++    if(opt_tempfileWhileSaving)
++    {
++      // add an extension which stands for "to be processed"
++      fileName += ".tbp";
++    }
++    cond = DIMSE_storeProvider(assoc, presID, req, fileName.c_str(), opt_useMetaheader, NULL,
+       storeSCPCallback, &callbackData, opt_blockMode, opt_dimse_timeout);
+   }
+   else

@@ -1,8 +1,12 @@
 #include <GL/glew.h>
-#include <stdio.h>
 
-int main()
+#include <assert.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+int main ()
 {
-    printf("GLEW version: %s\n", glewGetString(GLEW_VERSION));
-    return 0;
+    assert(glewGetString(GLEW_VERSION));
+    printf("GLEW %s\n", glewGetString(GLEW_VERSION));
+    return EXIT_SUCCESS;
 }

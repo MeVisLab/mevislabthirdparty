@@ -1,20 +1,22 @@
-cmake_minimum_required(VERSION 3.10)
-project(test_package C)
+cmake_minimum_required(VERSION 3.27)
+project(test_package LANGUAGES C)
 
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()
+find_package(EXPAT REQUIRED)
 
-# prevent CMake from complaining about this external unused variable.
-set(_UNUSED
-  ${CMAKE_EXPORT_NO_PACKAGE_REGISTRY}
-  ${CMAKE_INSTALL_BINDIR}
-  ${CMAKE_INSTALL_DATAROOTDIR}
-  ${CMAKE_INSTALL_INCLUDEDIR}
-  ${CMAKE_INSTALL_LIBDIR}
-  ${CMAKE_INSTALL_LIBEXECDIR}
-  ${CMAKE_INSTALL_OLDINCLUDEDIR}
-  ${CMAKE_INSTALL_SBINDIR}
+add_executable(test_package ../test_package/test_package.c)
+target_link_libraries(test_package PRIVATE EXPAT::EXPAT)
+
+# Test whether variables from https://cmake.org/cmake/help/latest/module/FindEXPAT.html
+# are properly defined in conan generators
+set(_vars
+    EXPAT_INCLUDE_DIRS
+    EXPAT_LIBRARIES
+    EXPAT_FOUND
 )
-
-add_executable(test_package test_package.c)
-target_link_libraries(test_package ${CONAN_LIBS})
+foreach(_var ${_vars})
+    if(DEFINED ${_var})
+        message(STATUS "${_var}: ${${_var}}")
+    else()
+        message(FATAL_ERROR "${_var} not defined")
+    endif()
+endforeach()

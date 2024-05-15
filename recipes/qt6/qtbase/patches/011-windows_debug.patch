@@ -1,0 +1,13 @@
+diff --git a/cmake/QtTargetHelpers.cmake b/cmake/QtTargetHelpers.cmake
+index 8b227957..0b324b8f 100644
+--- a/cmake/QtTargetHelpers.cmake
++++ b/cmake/QtTargetHelpers.cmake
+@@ -424,7 +424,7 @@ function(qt_internal_setup_cmake_config_postfix)
+                 set(default_cmake_debug_postfix "d")
+             endif()
+         else()
+-            set(default_cmake_debug_postfix "d")
++            set(default_cmake_debug_postfix "_d")
+         endif()
+     elseif(APPLE)
+         set(default_cmake_debug_postfix "_debug")

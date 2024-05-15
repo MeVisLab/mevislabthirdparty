@@ -1,8 +1,0 @@
-type: cpp
-name: openinventor
-cmake_name: OpenInventor
-display_name: OpenInventor
-version: "2.5.2"
-homepage: https://www.mevislab.de/mevislab/features/open-inventor
-description: An extensible 3D rendering toolkit
-license: LGPL-2.1-only

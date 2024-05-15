@@ -1,16 +1,21 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.27)
 project(sqlite3 C)
-
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()
 
 set(_UNUSED ${CMAKE_DEBUG_POSTFIX} ${CMAKE_EXPORT_NO_PACKAGE_REGISTRY} ${CMAKE_INSTALL_BINDIR} ${CMAKE_INSTALL_DATAROOTDIR} ${CMAKE_INSTALL_INCLUDEDIR} ${CMAKE_INSTALL_LIBDIR} ${CMAKE_INSTALL_LIBEXECDIR} ${CMAKE_INSTALL_OLDINCLUDEDIR} ${CMAKE_INSTALL_SBINDIR})
 
-add_library(sqlite3 SHARED sources/sqlite3.c sources/sqlite3.h sources/sqlite3ext.h)
+add_library(sqlite3 SHARED src/sqlite3.c src/sqlite3.h src/sqlite3ext.h)
 
 if (WIN32 AND MSVC)
   set_target_properties(sqlite3 PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
-endif(MSVC)
+endif()
+
+add_executable(shell src/shell.c)
+set_target_properties(shell PROPERTIES OUTPUT_NAME sqlite3)
+target_link_libraries(shell PRIVATE sqlite3)
+
+if (NOT WIN32 AND NOT APPLE)
+  target_link_libraries(shell PRIVATE dl pthread m)
+endif()
 
 target_compile_definitions(sqlite3 PRIVATE HAVE_FDATASYNC)
 target_compile_definitions(sqlite3 PRIVATE HAVE_GMTIME_R)
@@ -55,7 +60,6 @@ target_compile_definitions(sqlite3 PRIVATE SQLITE_ENABLE_DESERIALIZE)
 # Support comments in output of EXPLAIN.
 # https://sqlite.org/compile.html#enable_explain_comments
 target_compile_definitions(sqlite3 PRIVATE SQLITE_ENABLE_EXPLAIN_COMMENTS)
-
 
 # Support Full-Text Search versions 3, 4 and 5.
 # https://sqlite.org/fts3.html
@@ -134,5 +138,8 @@ target_compile_definitions(sqlite3 PRIVATE SQLITE_SOUNDEX)
 target_compile_definitions(sqlite3 PRIVATE SQLITE_USE_URI)
 
 
-install(TARGETS sqlite3 RUNTIME DESTINATION bin LIBRARY DESTINATION lib ARCHIVE DESTINATION lib)
-install(DIRECTORY sources/ DESTINATION include FILES_MATCHING PATTERN "*.h")
+install(TARGETS sqlite3 shell
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install(DIRECTORY src/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} FILES_MATCHING PATTERN "*.h")

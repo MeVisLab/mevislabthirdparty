@@ -1,73 +1,68 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans import CMake
-from conans import tools
-from conans.errors import ConanException
-import os
+from conan import ConanFile
+from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
+from conan.tools.files import copy, collect_libs
+
+required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
+    name = "openinventor"
+    version = "2.5.2"
+    license = "LGPL-2.1-only"
+    homepage = "https://www.mevislab.de/mevislab/features/open-inventor"
+    description = "An extensible 3D rendering toolkit"
+    settings = "os", "arch", "compiler", "build_type"
+    package_type = "shared-library"
+    exports_sources = "sources/*"
 
-    _cmake = None
+    mlab_hooks = {
+        "folders.exclude": ['doxygen'],
+        'dependencies.system_libs': [
+            'libfontconfig.so.1',
+            'libfreetype.so.6',
+            'libGLU.so.1',
+        ],
+    }
 
-    def system_requirements(self):
-        installer = tools.SystemPackageTool()
-        packages = []
-
-        if tools.os_info.linux_distro in ["ubuntu", "debian"]:
-            packages.append('libglu1-mesa-dev')
-            packages.append('libfreetype6-dev')
-            packages.append('libfontconfig-dev')
-            packages.append('bison')
-
-        if packages:
-            installer.install_packages(packages)
-
-
-    def build_requirements(self):
-        channel = "@{0}/{1}".format(self.user, self.channel)
-        if self.settings.os == 'Windows':
-            self.build_requires("winflexbison_installer/[>=2.5.18]" + channel)
-
+    def export_sources(self):
+        copy(self, "sources", self.recipe_folder, self.export_sources_folder)
 
     def requirements(self):
-        channel = "@{0}/{1}".format(self.user, self.channel)
-        self.requires("glew/[>=2.0.0]" + channel)
-        self.requires("libjpeg/9e" + channel)
+        self.requires("glew/[>=2.0.0]")
+        self.requires("libjpeg-turbo/[>=2.1.5]")
 
-        if tools.os_info.is_windows:
-            self.requires("libiconv/[>=1.16]" + channel)
+        if self.settings.os == "Windows":
+            self.requires("libiconv/[>=1.16]")
 
-        if not tools.os_info.is_linux:
-            self.requires("freetype/[>=2.10.4]" + channel)
+        if self.settings.os != "Linux":
+            self.requires("freetype/[>=2.10.4]")
 
+    def layout(self):
+        cmake_layout(self, src_folder="sources")
 
-    def _configure_cmake(self):
-        if not self._cmake:
-            self._cmake = CMake(self)
-            self._cmake.definitions["CMAKE_DEBUG_POSTFIX"] = "d"
-            self._cmake.definitions["BUILD_SHARED_LIBS"] = True
-            self._cmake.configure(source_folder="sources")
-        return self._cmake
-
+    def generate(self):
+        deps = CMakeDeps(self)
+        deps.generate()
+        tc = CMakeToolchain(self)
+        tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
+        tc.variables["BUILD_SHARED_LIBS"] = True
+        tc.variables["CMAKE_INSTALL_RPATH"] = "$ORIGIN;$ORIGIN/../lib"
+        tc.generate()
 
     def build(self):
-        # fix link name in header file
-        tools.replace_in_file(os.path.join(self.build_folder, 'sources', 'include', 'Inventor', 'system', 'SbSystem.h'), '"Inventor_d.', '"Inventord.')
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
+        cmake.configure()
         cmake.build()
 
-
     def package(self):
-        cmake = self._configure_cmake()
+        copy(self, "COPYING", src=self.source_path, dst=self.package_path / "licenses")
+        cmake = CMake(self)
         cmake.install()
-        self.patch_binaries()
-        self.default_package()
-
 
     def package_info(self):
-        self.default_package_info()
+        self.cpp_info.set_property("cmake_find_mode", "both")
+        self.cpp_info.set_property("cmake_file_name", "OpenInventor")
+        self.cpp_info.set_property("cmake_target_name", "OpenInventor::OpenInventor")
+        self.cpp_info.libs = collect_libs(self)
         self.cpp_info.defines.append("SGIOIV")
         self.cpp_info.defines.append("IV_STRICT")

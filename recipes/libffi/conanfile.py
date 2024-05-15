@@ -1,51 +1,55 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans import CMake
-from conans import tools
+from conan import ConanFile
+from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
+from conan.tools.files import get, collect_libs, copy
+
+required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
+    name = "libffi"
+    version = "3.4.6"
+    homepage = "https://sourceware.org/libffi/"
+    description = "A portable foreign-function interface library"
+    license = "MIT"
+    package_type = "static-library"
+    settings = "os", "arch", "compiler", "build_type"
+    exports_sources = "CMakeLists.txt", "files/fficonfig.h.in"
 
-    _cmake = None
+    def configure(self):
+        self.settings.rm_safe("compiler.libcxx")
+        self.settings.rm_safe("compiler.cppstd")
 
+    def layout(self):
+        cmake_layout(self, src_folder="src")
 
-    def _configure_cmake(self):
-        if not self._cmake:
-            if tools.os_info.is_windows:
-                self._cmake = CMake(self, toolset = "host=x64")
-            else:
-                self._cmake = CMake(self)
+    def source(self):
+        get(
+            self,
+            sha256="b0dea9df23c863a7a50e825440f3ebffabd65df1497108e5d437747843895a4e",
+            url=f"https://github.com/libffi/libffi/releases/download/v{self.version}/libffi-{self.version}.tar.gz",
+            strip_root=True,
+        )
 
-            self._cmake.definitions["VERSION"] = self.version
-            self._cmake.definitions["ARCH"] = self.settings.arch
-
-            self._cmake.definitions["CMAKE_DEBUG_POSTFIX"] = "d"
-
-            self._cmake.definitions["BUILD_SHARED_LIBS"] = False
-            self._cmake.definitions['CMAKE_POSITION_INDEPENDENT_CODE'] = True
-
-            self._cmake.configure(build_folder='build')
-        return self._cmake
-
+    def generate(self):
+        tc = CMakeToolchain(self)
+        tc.variables["BUILD_SHARED_LIBS"] = False
+        tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
+        tc.variables["CMAKE_POSITION_INDEPENDENT_CODE"] = True
+        tc.cache_variables["CONAN_LIBFFI_VERSION"] = f"{self.version}"
+        tc.cache_variables["CONAN_LIBFFI_ARCH"] = f"{self.settings.arch}"
+        tc.generate()
 
     def build(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
+        cmake.configure(build_script_folder=self.source_path.parent)
         cmake.build()
 
-
     def package(self):
-        cmake = self._configure_cmake()
+        copy(self, "LICENSE", src=self.source_path, dst=self.package_path / "licenses")
+        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False)
+        cmake = CMake(self)
         cmake.install()
 
-        self.copy("*.pdb", dst="bin", keep_path=False, excludes="*vc*.pdb")
-
-        self.default_package()
-
-
     def package_info(self):
-        self.default_package_info()
-
-        # only if statically linked
-        self.cpp_info.defines = ["FFI_BUILDING"]
+        self.cpp_info.defines = ["FFI_BUILDING", "FFI_STATIC_BUILD"]
+        self.cpp_info.libs = collect_libs(self)

@@ -90,41 +90,6 @@ bool SoQt::loopDetected()
   return _eventHandler ? _eventHandler->loopDetected() : false;
 }
 
-bool SoQt::useNewOpenGLWidget()
-{
-    static bool envVarChecked = false;
-    static bool _useNewOpenGLWidget = true;
-    if (!envVarChecked) {
-        envVarChecked = true;
-        QByteArray value = qgetenv("MLAB_QT_OPENGL_WIDGET").toLower();
-        if (!value.isEmpty()) {
-            if (value == "new") {
-                _useNewOpenGLWidget = true;
-            }
-            else if (value == "old") {
-                _useNewOpenGLWidget = false;
-            }
-            else {
-                qWarning("Ignoring content of environment variable MLAB_QT_OPENGL_WIDGET (must be 'new' or 'old'), default stays unchanged");
-            }
-        }
-#ifndef Q_OS_OSX
-        else {
-            // QGraphicsView has problems with QGLWidget if devicePixelRatio() > 1
-            if (qApp->devicePixelRatio() > 1) {
-                _useNewOpenGLWidget = true;
-            }
-        }
-#endif
-    }
-    return _useNewOpenGLWidget;
-}
-
-QGLWidget* SoQt::getContextSharingWidget()
-{
-    return SoQtContextShareManager::getContextSharingWidget();
-}
-
 //----------------------------------------------------------------------
 //
 //  SoQtEventHandler - this class ties in sensors to Qt events

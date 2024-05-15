@@ -1,0 +1,36 @@
+diff --git a/Modules/Filtering/LabelMap/include/itkMergeLabelMapFilter.h b/Modules/Filtering/LabelMap/include/itkMergeLabelMapFilter.h
+index 606dc469..576d269f 100644
+--- a/Modules/Filtering/LabelMap/include/itkMergeLabelMapFilter.h
++++ b/Modules/Filtering/LabelMap/include/itkMergeLabelMapFilter.h
+@@ -127,6 +127,7 @@ public:
+   /** Runtime information support. */
+   itkTypeMacro(MergeLabelMapFilter, InPlaceLabelMapFilter);
+ 
++  using ChoiceMethodEnum = MergeLabelMapFilterEnums::ChoiceMethod;
+ #if !defined(ITK_LEGACY_REMOVE)
+   /** Enables backwards compatibility for enum values */
+   using MethodChoice = ChoiceMethodEnum;
+diff --git a/Modules/Filtering/Smoothing/include/itkRecursiveGaussianImageFilter.h b/Modules/Filtering/Smoothing/include/itkRecursiveGaussianImageFilter.h
+index 350aa6ae..630a533f 100644
+--- a/Modules/Filtering/Smoothing/include/itkRecursiveGaussianImageFilter.h
++++ b/Modules/Filtering/Smoothing/include/itkRecursiveGaussianImageFilter.h
+@@ -127,6 +127,7 @@ public:
+   /** Type of the output image */
+   using OutputImageType = TOutputImage;
+ 
++  using GaussianOrderEnum = RecursiveGaussianImageFilterEnums::GaussianOrder;
+ #if !defined(ITK_LEGACY_REMOVE)
+   /** Enables backwards compatibility for enum values */
+   using OrderEnumType = GaussianOrderEnum;
+diff --git a/Modules/Numerics/Optimizersv4/include/itkRegistrationParameterScalesEstimator.h b/Modules/Numerics/Optimizersv4/include/itkRegistrationParameterScalesEstimator.h
+index c483e1d8..5e85482e 100644
+--- a/Modules/Numerics/Optimizersv4/include/itkRegistrationParameterScalesEstimator.h
++++ b/Modules/Numerics/Optimizersv4/include/itkRegistrationParameterScalesEstimator.h
+@@ -128,6 +128,7 @@ public:
+   using VirtualPointSetPointer = typename TMetric::VirtualPointSetPointer;
+ 
+   /** Enables backwards compatibility for enum values */
++  using SamplingStrategyEnum = RegistrationParameterScalesEstimatorEnums::SamplingStrategy;
+   using SamplingStrategyType = SamplingStrategyEnum;
+ #if !defined(ITK_LEGACY_REMOVE)
+   // We need to expose the enum values at the class level

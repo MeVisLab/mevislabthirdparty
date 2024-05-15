@@ -1,67 +1,90 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans import CMake
-from conans import tools
-from pathlib import Path
-import glob
-import os
+from conan import ConanFile
+from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout
+from conan.tools.files import get, patch, replace_in_file, rmdir, copy, collect_libs
+from conan.tools.microsoft import is_msvc
+
+required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
+    name = "qhull"
+    version = "8.0.2"
+    homepage = "http://www.qhull.org"
+    description = (
+        "Qhull computes the convex hull, Delaunay triangulation, Voronoi diagram, "
+        "halfspace intersection about a point, furthest-site Delaunay triangulation, "
+        "and furthest-site Voronoi diagram"
+    )
+    license = "Qhull"
+    package_type = "shared-library"
+    settings = "os", "arch", "compiler", "build_type"
+    exports_sources = ["patches/*"]
 
+    def layout(self):
+        cmake_layout(self, src_folder="src")
 
     def source(self):
-        self.default_source()
+        get(self,
+            sha256="8774e9a12c70b0180b95d6b0b563c5aa4bea8d5960c15e18ae3b6d2521d64f8b",
+            url=f"https://github.com/qhull/qhull/archive/refs/tags/v{self.version}.tar.gz",
+            strip_root=True
+            )
+        patch(self, patch_file="patches/001-add_missing_symbols.patch")
+        patch(self, patch_file="patches/002-minimum_cmake_version.patch")
+        patch(self, patch_file="patches/003-cpp20.patch")
 
         # we say we don't want static libs, but we need static qhullcpp (but only that)
-        tools.replace_in_file(os.path.join('sources', 'CMakeLists.txt'),
-            'set_target_properties(${qhull_CPP} PROPERTIES EXCLUDE_FROM_ALL TRUE)',
-            '')
-        tools.replace_in_file(os.path.join('sources', 'CMakeLists.txt'),
-            'list(APPEND qhull_TARGETS_INSTALL ${qhull_TARGETS_SHARED})',
-            'list(APPEND qhull_TARGETS_INSTALL ${qhull_TARGETS_SHARED} ${qhull_CPP})')
+        replace_in_file(self, self.source_path / "CMakeLists.txt",
+                        "set_target_properties(${qhull_CPP} PROPERTIES EXCLUDE_FROM_ALL TRUE)",
+                        "")
+        replace_in_file(self, self.source_path / "CMakeLists.txt",
+                        "list(APPEND qhull_TARGETS_INSTALL ${qhull_TARGETS_SHARED})",
+                        "list(APPEND qhull_TARGETS_INSTALL ${qhull_TARGETS_SHARED} ${qhull_CPP})")
 
-    _cmake = None
+        replace_in_file(self, self.source_path / "CMakeLists.txt",
+                         'INSTALL_RPATH_USE_LINK_PATH TRUE',
+                         'INSTALL_RPATH_USE_LINK_PATH FALSE')
 
-    def _configure_cmake(self):
-        if not self._cmake:
-            self.create_cmake_wrapper()
-            self._cmake = CMake(self)
-            # qhull add's d postfix itself, no need for CMAKE_DEBUG_POSTFIX
-            #self._cmake.definitions["CMAKE_DEBUG_POSTFIX"] = "d"
-            self._cmake.definitions["BUILD_STATIC_LIBS"] = False
-            self._cmake.definitions["BUILD_SHARED_LIBS"] = True
-            self._cmake.configure()
+        replace_in_file(self, self.source_path / "CMakeLists.txt",
+                         'INSTALL_RPATH "${LIB_INSTALL_DIR}"',
+                         'INSTALL_RPATH "\$ORIGIN;\$ORIGIN/../lib"')
 
-        return self._cmake
+        replace_in_file(self, self.source_path / "CMakeLists.txt",
+                         '$<$<CONFIG:Debug>:d>',
+                         '$<$<CONFIG:Debug>:_d>')
 
+    def generate(self):
+        tc = CMakeToolchain(self)
+        # qhull adds d postfix itself, no need for CMAKE_DEBUG_POSTFIX
+        # tc.variables["CMAKE_DEBUG_POSTFIX"] = "d"
+        tc.variables["BUILD_STATIC_LIBS"] = False
+        tc.variables["BUILD_SHARED_LIBS"] = True
+        tc.cache_variables["CMAKE_POLICY_DEFAULT_CMP0091"] = "NEW"
+        tc.generate()
 
     def build(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
+        cmake.configure()
         cmake.build()
 
-
     def package(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
         cmake.install()
 
-        for dll in glob.glob(self.package_folder + "/bin/*.dll"):
-            self.copy(Path(dll).stem + ".pdb", src="bin", dst="bin")
+        copy(self, "*/qhull_rd.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False)
+        copy(self, "COPYING.txt", src=self.source_path, dst=self.package_path / "licenses")
 
-        tools.rmdir(os.path.join(self.package_folder, "lib", "cmake"))
-        tools.rmdir(os.path.join(self.package_folder, "lib", "pkgconfig"))
-        tools.rmdir(os.path.join(self.package_folder, "share"))
-
-        self.patch_binaries()
-        self.default_package()
-
+        rmdir(self, self.package_path / "lib" / "cmake")
+        rmdir(self, self.package_path / "lib" / "pkgconfig")
+        rmdir(self, self.package_path / "share")
 
     def package_info(self):
-        self.default_package_info()
+        self.cpp_info.set_property("cmake_file_name", "Qhull")
+        self.cpp_info.set_property("cmake_target_name", "Qhull::Qhull")
+        self.cpp_info.set_property("mevislab_prosdk_exclude", True)
+        self.cpp_info.libs = collect_libs(self)
 
         if self.settings.os == "Linux":
-            self.cpp_info.system_libs = ["m"]
+            self.cpp_info.system_libs.append("m")
 
-        if self.settings.compiler == "Visual Studio":
-            self.cpp_info.defines.extend(["qh_dllimport"])
+        if is_msvc(self):
+            self.cpp_info.defines.append("qh_dllimport")

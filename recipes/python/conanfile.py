@@ -1,240 +1,323 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans import tools
-from conans import CMake
-from conans import RunEnvironment
-from conans import AutoToolsBuildEnvironment
-from conans.errors import ConanException
-import subprocess
-import shutil
-import os
 import glob
+import os
+import shutil
+import textwrap
+
+from conan import ConanFile
+from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
+from conan.tools.env import VirtualBuildEnv
+from conan.tools.files import get, copy, rmdir, chdir, save, replace_in_file, patch, collect_libs
+from conan.tools.gnu import Autotools, AutotoolsToolchain, PkgConfigDeps
+from conan.tools.layout import basic_layout
+from conan.tools.microsoft import is_msvc
+from conan.tools.scm import Version
+
+required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
-    generators = "cmake", "pkg_config"
+    name = "python"
+    version = "3.11.9"
+    homepage = "https://www.python.org"
+    description = "An interpreted, interactive, object-oriented programming language"
+    license = "Python-2.0"
+    package_type = "shared-library"
+    settings = "os", "arch", "compiler", "build_type"
+    exports_sources = ["CMakeLists.txt", "cmake/*", "patches/*.patch"]
 
-    exports_sources = ["CMakeLists.txt", "cmake/*", "patches/*", "sources/*", "LICENSE"]
+    mlab_hooks = {
+        "debug_suffix.skip": True,
+        "folders.exclude": ["DLLs", "libs", "Scripts", "python*.dll", "python*.exe", "MeVisPython*.exe"],
+        "dependencies.system_libs": [
+            "libcrypt.so.*",  # required for python module _crypt
+            "libb2.so.1",  # required for python module _blake2
+            "libbsd.so.0",  # required for python module fcntl
+            "libuuid.so.1",  # required for python module _uuid
+        ],
+    }
 
-    _autotools = None
-    _cmake = None
-
+    def configure(self):
+        self.settings.rm_safe("compiler.cppstd")
+        self.settings.rm_safe("compiler.libcxx")
 
     def requirements(self):
-        channel = "@{0}/{1}".format(self.user, self.channel)
-        self.requires("zlib/[>=1.2.11]" + channel)
-        self.requires("sqlite3/[>=3.33.0]" + channel)
-        self.requires("bzip2/[>=1.0.8]" + channel)
-        self.requires("xz-utils/[>=5.2.5]" + channel)
-        self.requires("libffi/[>=3.3]" + channel)
-        self.requires("openssl/[>=3.0]" + channel)
+        self.requires("zlib/[>=1.2.11]")
+        self.requires("sqlite3/[>=3.33.0]")
+        self.requires("bzip2/[>=1.0.8]")
+        self.requires("xz-utils/[>=5.2.5]")
+        self.requires("libffi/[>=3.3]")
+        self.requires("openssl/[>=3.0]")
 
-
-    def _unix_build(self):
-        # copy dependencies
-        deps = ['zlib'] if tools.os_info.is_linux else ['zlib', 'openssl', 'sqlite3', 'bzip2', 'xz-utils']
-        for dependency in self.deps_cpp_info.deps:
-            if dependency in deps:
-                imported_libs = os.listdir(self.deps_cpp_info[dependency].lib_paths[0])
-
-                for imported_lib in imported_libs:
-                    if os.path.isfile(self.deps_cpp_info[dependency].lib_paths[0] + '/' + imported_lib):
-                        shutil.copy(self.deps_cpp_info[dependency].lib_paths[0] + '/' + imported_lib, self.build_folder)
-                        shutil.copy(self.deps_cpp_info[dependency].lib_paths[0] + '/' + imported_lib, self.build_folder)
-
-        with tools.environment_append(RunEnvironment(self).vars):
-            tk_headers = None
-            if tools.os_info.is_macos:
-                result = subprocess.run(['xcode-select', '-p'], stdout=subprocess.PIPE)
-                tk_headers = os.path.join(result.stdout.decode(), "/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers")
-
-            with tools.environment_append({'CFLAGS': f'-I{tk_headers}'}) if tk_headers else tools.no_op():
-                args=[
-                    '--enable-shared',
-                    '--with-computed-gotos',
-                    '--with-ensurepip=yes',
-                ]
-                self._autotools = AutoToolsBuildEnvironment(self, win_bash=tools.os_info.is_windows)
-                # Do not add libs from dependencies, they are only used for Python extensions and detected in setup.py:
-                self._autotools.libs = []
-                self._autotools.configure(configure_dir='sources', args=args)
-                self._autotools.make()
-
-
-    def generate_symbol_export(self):
-        version = ''.join(self.version.split('.')[0:2])
-        sourceDef = self.source_folder + "/sources/PC/python3.def"
-        targetDef = "python3.def"
-        targetStubDef = "python3stub.def"
-
-        lines = open(sourceDef,"r").readlines()
-        stub = ["EXPORTS"]
-        for l in lines:
-            idx = l.find("=")
-            if idx > 0:
-                stub.append(l[:idx].strip())
-
-        with open(targetStubDef,"w") as o:
-            o.write("\n".join(stub))
-
-        if self.settings.build_type == "Release":
-            with open(targetDef,"w") as o:
-                o.write("".join(lines))
+    def layout(self):
+        if is_msvc(self):
+            cmake_layout(self, src_folder="src")
         else:
-            debugDef = []
-            for l in lines:
-                l = l.replace("\"python3\"","\"python3_d\"")
-                l = l.replace("python%s" % version,"python%s_d" % version)
-                debugDef.append(l)
+            basic_layout(self, src_folder="src")
 
-            with open(targetDef,"w") as o:
-                o.write("".join(debugDef))
+    def source(self):
+        get(
+            self,
+            sha256="e7de3240a8bc2b1e1ba5c81bf943f06861ff494b69fda990ce2722a504c6153d",
+            url=f"https://www.python.org/ftp/python/{self.version}/Python-{self.version}.tgz",
+            strip_root=True,
+        )
+        patch(self, patch_file="patches/001-macos_remove_rpath_prefix.patch")
+        patch(
+            self,
+            patch_file="patches/002-win32_multiprocessing_pool_limit.patch",
+            patch_type="bugfix",
+            patch_description="short term fix for https://github.com/python/cpython/issues/89240",
+        )
+        patch(
+            self,
+            patch_file="patches/003-sysconfig_posix_prefix.patch",
+            patch_description="replace build system prefix path in sysconfig with current python home",
+        )
+        patch(self, patch_file="patches/004-disable_modules_with_external_deps.patch")
+        patch(self, patch_file="patches/005-configure_abort_on_failure.patch")
+        patch(
+            self,
+            patch_file="patches/006-hide_own_importlib_frames.patch",
+            patch_description="suppress frames from our own injected importlib code in ImportError stacktraces"
+        )
 
+    def generate(self):
+        if is_msvc(self):
+            tc = CMakeToolchain(self)
+            tc.variables["PYTHON_VERSION"] = self.version
+            tc.variables["BUILD_SHARED_LIBS"] = True
+            tc.generate()
+            cd = CMakeDeps(self)
+            cd.generate()
+        else:
+            # copy dependencies
+            deps = ["zlib", "sqlite3", "xz-utils"]
+            if self.settings.os != "Linux":
+                deps += ["openssl", "bzip2"]
+            for dependency in deps:
+                lib_path = self.dependencies[dependency].cpp_info.libdirs[0]
+                for imported_lib in os.listdir(lib_path):
+                    lib_file = os.path.join(lib_path, imported_lib)
+                    if os.path.isfile(lib_file):
+                        shutil.copy(lib_file, self.build_folder)
 
-    def _windows_build(self):
-        self._cmake = CMake(self)
-        self._cmake.definitions["PYTHON_VERSION"] = self.version
-        self._cmake.definitions["BUILD_SHARED_LIBS"] = True
-        self._cmake.configure()
-        self._cmake.build()
-
+            env = VirtualBuildEnv(self)
+            env.generate()
+            tc = AutotoolsToolchain(self, prefix=self.package_folder)
+            tc.configure_args.append("--enable-shared")
+            tc.configure_args.append("--with-computed-gotos")
+            tc.configure_args.append("--with-ensurepip=yes")
+            env = tc.environment()
+            # for the build step:
+            if self.settings.os == "Linux":
+                libffi_info = self.dependencies["libffi"].cpp_info
+                tc.extra_cflags = ["-I" + libffi_info.includedirs[0]]
+                tc.extra_ldflags = ["-L" + libffi_info.libdirs[0]]
+            # for the install step:
+            env.define("LD_LIBRARY_PATH", os.path.join(self.package_folder, "lib"))
+            env.define("DYLD_LIBRARY_PATH", os.path.join(self.package_folder, "lib"))
+            tc.generate()
+            pc = PkgConfigDeps(self)
+            pc.generate()
 
     def build(self):
+        configureFile = os.path.join(self.source_folder, "configure")
         if self.settings.build_type == "Debug":
-            # Let setup.py look for the debug variant of the libraries
-            tools.replace_in_file("sources/setup.py", "'z'", "'zd'")
-            tools.replace_in_file("sources/setup.py", "'bz2'", "'bz2d'")
-            tools.replace_in_file("sources/setup.py", "'lzma'", "'lzmad'")
-            tools.replace_in_file("sources/setup.py", "'ffi'", "'ffid'")
-            tools.replace_in_file("sources/setup.py", "libraries=[\"sqlite3\",]", "libraries=[\"sqlite3d\",]")
-            tools.replace_in_file("sources/setup.py", "sqlite_dirs_to_check + self.lib_dirs, 'sqlite3')", "sqlite_dirs_to_check + self.lib_dirs, 'sqlite3d')")
-
-        tools.replace_in_file("sources/setup.py", "        depends = ['_ctypes/ctypes.h']\n", f"        depends = ['_ctypes/ctypes.h']\n        extra_link_args.append(\"-L{self.deps_cpp_info['libffi'].rootpath}/lib\")")
-
-        if self.settings.os == "Windows":
-            self.generate_symbol_export()
-            self._windows_build()
+            # Let configure use the debug variant of the libraries
+            replace_in_file(self, configureFile, "-lz", "-lz_d")
+            replace_in_file(self, configureFile, "-lbz2", "-lbz2_d")
+            replace_in_file(self, configureFile, "-llzma", "-llzma_d")
+            # replace_in_file(self, configureFile, "-lffi", "-lffid")  # not found
+            replace_in_file(self, configureFile, "-lsqlite3", "-lsqlite3_d -lm")  # avoid "undefined reference to `log'" with -lm
+            replace_in_file(
+                self,
+                os.path.join(self.source_folder, "setup.py"),
+                "for lib_name in ('ffi', 'ffi_pic'):",
+                "for lib_name in ('ffi_d', 'ffi_pic'):",
+            )
         else:
-            self._unix_build()
-
+            replace_in_file(self, configureFile, "-lsqlite3", "-lsqlite3 -lm")  # avoid "undefined reference to `log'" with -lm
+        if is_msvc(self):
+            cmake = CMake(self)
+            cmake.configure(build_script_folder=os.path.join(self.source_folder, os.pardir))
+            cmake.build()
+        else:
+            autotools = Autotools(self)
+            autotools.configure()
+            autotools.make()
 
     def package(self):
-        if self._autotools:
-            with tools.environment_append({
-                "LD_LIBRARY_PATH": os.path.join(self.package_folder, "lib"),
-                "DYLD_LIBRARY_PATH": os.path.join(self.package_folder, "lib")
-            }):
-                self._autotools.install()
-
-            tools.rmdir(os.path.join(self.package_folder, "share"))
-            tools.rmdir(os.path.join(self.package_folder, "lib", "pkgconfig"))
-
-            mm_version = '.'.join(self.version.split('.')[0:2])
-
-            # remove test directory
-            tools.rmdir(os.path.join(self.package_folder, "lib", f"python{mm_version}", "test"))
-
-            if self.settings.build_type == "Debug":
-                # FIXME python3 -> python3_d
-                mevis_python = os.path.join(self.package_folder, "bin", "MeVisPython_d")
-                os.symlink(f"python{mm_version}", mevis_python)
-            else:
-                mevis_python = os.path.join(self.package_folder, "bin", "MeVisPython")
-                os.symlink(f"python{mm_version}", mevis_python)
-
-            if tools.os_info.is_macos:
-                install_name_tool = tools.which("install_name_tool")
-                if not install_name_tool:
-                    raise ConanException("install_name_tool could not be found")
-                self.run(f'{install_name_tool} -change libpython{mm_version}.dylib "@rpath/libpython{mm_version}.dylib" ' + os.path.join(self.package_folder, 'bin', f'python{mm_version}'))
-                self.run(f'{install_name_tool} -add_rpath "@executable_path/../lib" ' + os.path.join(self.package_folder, 'bin', f'python{mm_version}'))
-            elif tools.os_info.is_linux:
-                patchelf = tools.which("patchelf")
-                if not patchelf:
-                    raise ConanException("patchelf could not be found")
-                self.run("%s --set-rpath '$ORIGIN/../lib' %s" % (patchelf, os.path.join(self.package_folder, 'bin', f'python{mm_version}')))
-        else:
-            self._cmake.install()
-
-            self.copy("*.pdb", src="bin", dst="bin")
+        copy(self, "LICENSE", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
+        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False, excludes="*vc???.pdb")
+        self._cmake_module_file_write()
+        if is_msvc(self):
+            cmake = CMake(self)
+            cmake.install()
 
             if self.settings.build_type == "Debug":
                 mevis_python = os.path.join(self.package_folder, "MeVisPython_d.exe")
-                shutil.copyfile(mevis_python, os.path.join(self.package_folder, "python3_d.exe"))
-                shutil.copyfile(mevis_python, os.path.join(self.package_folder, "python.exe"))
-                shutil.copyfile(mevis_python, os.path.join(self.package_folder, "python3.exe"))
+                for name in ["python3_d", "python3", "python"]:
+                    shutil.copy(src=mevis_python, dst=os.path.join(self.package_folder, f"{name}.exe"))
 
                 mevis_python_w = os.path.join(self.package_folder, "MeVisPythonW_d.exe")
-                shutil.copyfile(mevis_python_w, os.path.join(self.package_folder, "python3w_d.exe"))
-                shutil.copyfile(mevis_python_w, os.path.join(self.package_folder, "python3w.exe"))
-                shutil.copyfile(mevis_python_w, os.path.join(self.package_folder, "pythonw.exe"))
+                for name in ["python3w_d", "python3w", "pythonw"]:
+                    shutil.copy(src=mevis_python_w, dst=os.path.join(self.package_folder, f"{name}.exe"))
             else:
                 mevis_python = os.path.join(self.package_folder, "MeVisPython.exe")
-                shutil.copyfile(mevis_python, os.path.join(self.package_folder, "python3.exe"))
-                shutil.copyfile(mevis_python, os.path.join(self.package_folder, "python.exe"))
+                for name in ["python3", "python"]:
+                    shutil.copy(src=mevis_python, dst=os.path.join(self.package_folder, f"{name}.exe"))
 
                 mevis_python_w = os.path.join(self.package_folder, "MeVisPythonW.exe")
-                shutil.copyfile(mevis_python_w, os.path.join(self.package_folder, "python3w.exe"))
-                shutil.copyfile(mevis_python_w, os.path.join(self.package_folder, "pythonw.exe"))
+                for name in ["python3w", "pythonw"]:
+                    shutil.copy(src=mevis_python_w, dst=os.path.join(self.package_folder, f"{name}.exe"))
 
             # remove test directory
-            tools.rmdir(os.path.join(self.package_folder, "Lib", "test"))
+            rmdir(self, self.package_path / "Lib" / "test")
 
-        with tools.chdir(self.package_folder):
-            self.run("%s -m ensurepip --verbose --altinstall" % mevis_python, run_environment=True)
+        else:
+            autotools = Autotools(self)
+            autotools.make(target="install")  # instead of .install() to avoid setting DESTDIR
+            rmdir(self, self.package_path / "share")
+            rmdir(self, self.package_path / "lib" / "pkgconfig")
 
-        self.patch_binaries()
-        self.default_package()
+            mm_version = ".".join(self.version.split(".")[0:2])
 
+            # remove test directory
+            rmdir(self, self.package_path / "lib" / f"python{mm_version}" / "test")
+
+            orig_python = f"./python{mm_version}"
+            # FIXME python3 -> python3_d
+            mevis_python = os.path.join(
+                self.package_folder, "bin", "MeVisPython_d" if self.settings.build_type == "Debug" else "MeVisPython"
+            )
+            os.symlink(orig_python, mevis_python)
+
+            if self.settings.os == "Macos":
+                self.run(
+                    f'install_name_tool -change libpython{mm_version}.dylib "@rpath/libpython{mm_version}.dylib" '
+                    + os.path.join(self.package_folder, "bin", f"python{mm_version}")
+                )
+                self.run(
+                    f'install_name_tool -add_rpath "@executable_path/../lib" '
+                    + os.path.join(self.package_folder, "bin", f"python{mm_version}")
+                )
+            elif self.settings.os == "Linux":
+                self.run("patchelf --set-rpath '$ORIGIN/../lib' " + os.path.join(self.package_folder, "bin", f"python{mm_version}"))
+                dyn_modules = glob.glob(self.package_folder + "/**/lib-dynload/*.so", recursive=True)
+                for so_file in dyn_modules:
+                    # make the dynamically loaded modules work in an installed MeVisLab
+                    self.run("patchelf --add-rpath '$ORIGIN/../../../../../lib' " + so_file)
+
+        with chdir(self, self.package_folder):
+            self.run(f"{mevis_python} -m ensurepip --verbose --altinstall", env="conanbuild")
+
+        for pycache_path in (self.package_path / "lib").rglob("__pycache__"):
+            rmdir(self, pycache_path)
+
+        # fix bug in setuptools, see https://github.com/pypa/setuptools/issues/3591
+        ccompiler = glob.glob(self.package_folder + "/**/site-packages/setuptools/_distutils/ccompiler.py", recursive=True)
+        if ccompiler:
+            replace_in_file(self, ccompiler[0], "include_dirs = self.include_dirs", "include_dirs = list(self.include_dirs)")
+        else:
+            print("Did not find 'ccompiler.py'")
 
         # Hack for a shortcoming of building pyproject.toml projects through pip install:
         # It is not possible to pass on a flag to build in debug mode, which let's the linker fail on Windows in Debug mode
         # (and man, I almost despaired when trying to work out how the compiler is called)
         # We take a shortcut and set the flag where it is needed through an environment variable.
-        build_exts = glob.glob(self.package_folder + "/**/*distutils/command/build_ext.py",
-                              recursive=True)
+        build_exts = glob.glob(self.package_folder + "/**/*distutils/command/build_ext.py", recursive=True)
         if build_exts:
             for build_ext in build_exts:
-                tools.replace_in_file(build_ext,
-                                      "self.debug = None",
-                                      "self.debug = bool(int(os.environ.get('SETUPTOOLS_BUILD_DEBUG'))) if 'SETUPTOOLS_BUILD_DEBUG' in os.environ else None   # MeVis hack")
+                replace_in_file(
+                    self,
+                    build_ext,
+                    "self.debug = None",
+                    "self.debug = bool(int(os.environ.get('SETUPTOOLS_BUILD_DEBUG'))) "
+                    "if 'SETUPTOOLS_BUILD_DEBUG' in os.environ else None   # MeVis hack",
+                )
         else:
             print("Did not find 'command/build_ext.py'")
 
     def package_info(self):
-        self.default_package_info()
+        self.cpp_info.set_property("cmake_find_mode", "both")
+        self.cpp_info.set_property("cmake_file_name", "Python3")
+        self.cpp_info.set_property("cmake_target_name", "Python3::Python")
+        self.cpp_info.set_property("cmake_target_aliases", ["Python3::Module"])
+        self.cpp_info.set_property("cmake_build_modules", [self._cmake_module_file])
+        self.cpp_info.set_property("pkg_config_name", "python")
+        self.cpp_info.libs = collect_libs(self)
+        if self.settings.os == "Linux":
+            self.cpp_info.system_libs.append("pthread")
 
-        version = tools.Version(self.version)
-        self.cpp_info.includedirs = ['include', f'include/python{version.major}.{version.minor}']
+        if self.settings.os == "Windows":
+            self.cpp_info.defines.append("NT_THREADS")
+        else:
+            self.cpp_info.defines.append("_POSIX_THREADS")
+            version = Version(self.version)
+            self.cpp_info.includedirs = [f"include/python{version.major}.{version.minor}"]
 
         # MEVIS_PYTHON_CMD, the name of the mevislab python executable
-        if tools.os_info.is_windows:
-            self.cpp_info.libdirs = ['libs']
-            self.env_info.PATH.append(self.package_folder)
+        if self.settings.os == "Windows":
+            self.cpp_info.libdirs = ["libs"]
+            self.cpp_info.bindirs.append(self.package_folder)
 
             mevis_python = "MeVisPython_d.exe" if self.settings.build_type == "Debug" else "MeVisPython.exe"
         else:
-            self.env_info.PATH.append(os.path.join(self.package_folder, 'bin'))
             mevis_python = "MeVisPython_d" if self.settings.build_type == "Debug" else "MeVisPython"
 
-        self.output.info('Creating MEVIS_PYTHON_CMD environment variable: %s' % mevis_python)
-        self.env_info.MEVIS_PYTHON_CMD = mevis_python
+        self.output.info("Creating MEVIS_PYTHON_CMD environment variable: %s" % mevis_python)
+        self.buildenv_info.define("MEVIS_PYTHON_CMD", mevis_python)
+        self.runenv_info.define("MEVIS_PYTHON_CMD", mevis_python)
 
         # PYTHONHOME
-        self.output.info('Creating PYTHONHOME environment variable: %s' % self.package_folder)
-        self.env_info.PYTHONHOME = self.package_folder
+        self.output.info("Creating PYTHONHOME environment variable: %s" % self.package_folder)
+        self.buildenv_info.define("PYTHONHOME", self.package_folder)
+        self.runenv_info.define("PYTHONHOME", self.package_folder)
 
         # used by cmake's standard FindPython3.cmake
-        self.output.info('Creating Python3_ROOT_DIR environment variable: %s' % self.package_folder)
-        self.env_info.Python3_ROOT_DIR = self.package_folder
+        self.output.info("Creating Python3_ROOT_DIR environment variable: %s" % self.package_folder)
+        self.buildenv_info.define("Python3_ROOT_DIR", self.package_folder)
+        self.runenv_info.define("Python3_ROOT_DIR", self.package_folder)
 
         # relative site-packages directory
-        if tools.os_info.is_windows:
+        if self.settings.os == "Windows":
             sp = "Lib/site-packages"
         else:
             sp = f"lib/python{version.major}.{version.minor}/site-packages"
 
-        self.output.info('Creating MEVIS_PYTHON_SITE_PACKAGES_FOLDER environment variable: %s' % sp)
-        self.env_info.MEVIS_PYTHON_SITE_PACKAGES_FOLDER = sp
+        self.output.info("Creating MEVIS_PYTHON_SITE_PACKAGES_FOLDER environment variable: %s" % sp)
+        self.buildenv_info.define("MEVIS_PYTHON_SITE_PACKAGES_FOLDER", sp)
+        self.runenv_info.define("MEVIS_PYTHON_SITE_PACKAGES_FOLDER", sp)
+
+    @property
+    def _cmake_module_file(self):
+        return os.path.join("lib", "cmake", f"{self.name}-variables.cmake")
+
+    def _cmake_module_file_write(self):
+        v = Version(self.version)
+        file = self.package_path / self._cmake_module_file
+        content = textwrap.dedent(
+            f"""\
+            set(Python3_VERSION_VERSION {self.version})
+            set(Python3_VERSION_MAJOR {v.major})
+            set(Python3_VERSION_MINOR {v.minor})
+            set(Python3_VERSION_PATCH {v.patch})
+            set(Python3_VERSION_TWEAK 0)
+            set(Python3_VERSION_COUNT 0)
+
+            if(WIN32)
+                set_property(TARGET Python3::Python PROPERTY INTERFACE_LINK_OPTIONS /STACK:3000000)
+            endif()
+
+            if(NumPy IN_LIST Python3_FIND_COMPONENTS)
+                if(${{Python3_FIND_REQUIRED_NumPy}})
+                    set(_numpy_find_package_Options ${{_numpy_find_package_Options}} REQUIRED)
+                endif()
+                if(${{Python3_FIND_QUIETLY}})
+                    set(_numpy_find_package_Options ${{_numpy_find_package_Options}} QUIET)
+                endif()
+                find_package(numpy ${{_numpy_find_package_Options}})
+            endif()
+            """
+        )
+        save(self, file, content)

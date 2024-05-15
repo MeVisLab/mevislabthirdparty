@@ -45,12 +45,10 @@
 
 #include <Inventor/Qt/SoQtGLWidget.h>
 
-#include "SoQtRealQGLWidget.h"
 #include "SoQtRealQOpenGLWidget.h"
 #include "SoQtOffscreenGLWidget.h"
 
 #include <QVBoxLayout>
-#include <QGLWidget>
 #include <QStackedWidget>
 
 #include <QApplication>
@@ -70,18 +68,17 @@ SoQtGLWidget::SoQtGLWidget (QWidget* parent, Qt::WindowFlags f)
     // we should use a BorderLayout, but a QHBoxLayout inside a QVBoxLayout
     // should do the same:
     vertLayout = new QVBoxLayout();
-    vertLayout->setMargin (0);
+    vertLayout->setContentsMargins (0,0,0,0);
     vertLayout->setSpacing (0);
     setLayout (vertLayout);
     horiLayout = new QHBoxLayout();
-    horiLayout->setMargin (0);
+    horiLayout->setContentsMargins(0,0,0,0);
     horiLayout->setSpacing (0);
     vertLayout->addLayout (horiLayout, 1);
     managerWidget = new QStackedWidget (this);
-    managerWidget->layout()->setMargin(0);
+    managerWidget->layout()->setContentsMargins(0,0,0,0);
     horiLayout->addWidget (managerWidget, 1);
     // the managerWidget will contain the real GL widget... later
-    _autoBufferSwapOn = true;
     autoFocus = false;
     eventCB = nullptr;
     eventCBData = nullptr;
@@ -106,12 +103,12 @@ SoQtGLWidget::~SoQtGLWidget()
 }
 
 //! Set the GL format. Same restrictions apply as above.
-void SoQtGLWidget::setFormat (const QGLFormat& format)
+void SoQtGLWidget::setFormat (const QSurfaceFormat& format)
 {
     glFormat = format;
     if (!_useOffscreenGLWidget) {
         if (mainWidget) {
-            replaceWidget (SoQtContextShareManager::createWidget(format, this));
+            qobject_cast<SoQtRealQOpenGLWidget*>(mainWidget)->setFormat(format);
         }
     } else {
         // the offscreen gl widget needs not to be re-created.
@@ -148,7 +145,6 @@ void SoQtGLWidget::replaceWidget (QWidget* newWidget)
     QWidget* toBeDeleted = mainWidget;
     mainWidget = newWidget;
     replaceRenderWidget(newWidget, toBeDeleted);
-    setAutoBufferSwap(_autoBufferSwapOn);
 }
 
 
@@ -178,7 +174,7 @@ void SoQtGLWidget::buildWidget()
         if (_useOffscreenGLWidget) {
             replaceWidget (new SoQtOffscreenGLWidget(this, glFormat));
         } else {
-            replaceWidget (SoQtContextShareManager::createWidget(glFormat, this));
+            replaceWidget (new SoQtRealQOpenGLWidget(glFormat, this));
         }
     }
 }
@@ -209,22 +205,9 @@ QCursor SoQtGLWidget::glCursor() const
     }
 }
 
-bool SoQtGLWidget::autoBufferSwap() const
-{
-    return _autoBufferSwapOn;
-}
-
-void SoQtGLWidget::setAutoBufferSwap (bool on)
-{
-    _autoBufferSwapOn = on;
-    if (SoQtRealQGLWidget* w = qobject_cast<SoQtRealQGLWidget*>(mainWidget)) {
-        w->setAutoBufferSwap(on);
-    }
-}
-
 void SoQtGLWidget::initializeGL()
 {
-    if (format().depth()) {
+    if (format().depthBufferSize() > 0) {
         glEnable(GL_DEPTH_TEST);
     }
 }
@@ -232,10 +215,7 @@ void SoQtGLWidget::initializeGL()
 
 void SoQtGLWidget::updateGL()
 {
-    if (SoQtRealQGLWidget* w = qobject_cast<SoQtRealQGLWidget*>(mainWidget)) {
-        w->updateGL();
-    }
-    else if (SoQtRealQOpenGLWidget* w = qobject_cast<SoQtRealQOpenGLWidget*>(mainWidget)) {
+    if (SoQtRealQOpenGLWidget* w = qobject_cast<SoQtRealQOpenGLWidget*>(mainWidget)) {
         w->update();
     }
     else if (SoQtOffscreenGLWidget* w = qobject_cast<SoQtOffscreenGLWidget*>(mainWidget)) {
@@ -292,16 +272,15 @@ void SoQtGLWidget::processEvent (QEvent* /*anyEvent*/)
 }
 
 //@{ a set of public pass-through functions to the real GL widget:
-QGLFormat SoQtGLWidget::format() const
+QSurfaceFormat SoQtGLWidget::format() const
 {
-    QGLFormat f = glFormat;
-    if (SoQtRealQGLWidget* w = qobject_cast<SoQtRealQGLWidget*>(mainWidget)) {
-        f = w->format();
+    if (SoQtRealQOpenGLWidget* w = qobject_cast<SoQtRealQOpenGLWidget*>(mainWidget)) {
+        return w->format();
     }
     else if (SoQtOffscreenGLWidget* w = qobject_cast<SoQtOffscreenGLWidget*>(mainWidget)) {
-        f = w->format();
+        return w->format();
     }
-    return f;
+    return QSurfaceFormat();
 }
 
 void SoQtGLWidget::makeCurrent()
@@ -311,10 +290,7 @@ void SoQtGLWidget::makeCurrent()
     // that the RealGLWidget is lazily created here?
 
     QWidget* mw = getRenderingWidget();
-    if (SoQtRealQGLWidget* w = qobject_cast<SoQtRealQGLWidget*>(mw)) {
-        w->makeCurrent();
-    }
-    else if (SoQtRealQOpenGLWidget* w = qobject_cast<SoQtRealQOpenGLWidget*>(mw)) {
+    if (SoQtRealQOpenGLWidget* w = qobject_cast<SoQtRealQOpenGLWidget*>(mw)) {
         w->makeCurrent();
     }
     else if (SoQtOffscreenGLWidget* w = qobject_cast<SoQtOffscreenGLWidget*>(mw)) {
@@ -324,10 +300,7 @@ void SoQtGLWidget::makeCurrent()
 
 void SoQtGLWidget::doneCurrent()
 {
-    if (SoQtRealQGLWidget* w = qobject_cast<SoQtRealQGLWidget*>(mainWidget)) {
-        w->doneCurrent();
-    }
-    else if (SoQtRealQOpenGLWidget* w = qobject_cast<SoQtRealQOpenGLWidget*>(mainWidget)) {
+    if (SoQtRealQOpenGLWidget* w = qobject_cast<SoQtRealQOpenGLWidget*>(mainWidget)) {
         w->doneCurrent();
     }
     else if (SoQtOffscreenGLWidget* w = qobject_cast<SoQtOffscreenGLWidget*>(mainWidget)) {
@@ -337,15 +310,12 @@ void SoQtGLWidget::doneCurrent()
 
 bool SoQtGLWidget::doubleBuffer() const
 {
-    return format().doubleBuffer();
+    return (format().swapBehavior() == QSurfaceFormat::DoubleBuffer) || (format().swapBehavior() == QSurfaceFormat::TripleBuffer);
 }
 
 bool SoQtGLWidget::isValid() const
 {
-    if (SoQtRealQGLWidget* w = qobject_cast<SoQtRealQGLWidget*>(mainWidget)) {
-        return w->isValid();
-    }
-    else if (SoQtRealQOpenGLWidget* w = qobject_cast<SoQtRealQOpenGLWidget*>(mainWidget)) {
+    if (SoQtRealQOpenGLWidget* w = qobject_cast<SoQtRealQOpenGLWidget*>(mainWidget)) {
         return w->isValid();
     }
     else if (SoQtOffscreenGLWidget* w = qobject_cast<SoQtOffscreenGLWidget*>(mainWidget)) {
@@ -356,36 +326,13 @@ bool SoQtGLWidget::isValid() const
     }
 }
 
-QImage SoQtGLWidget::grabFrameBuffer (bool withAlpha)
-{
-    if (SoQtRealQGLWidget* w = qobject_cast<SoQtRealQGLWidget*>(mainWidget)) {
-        return w->grabFrameBuffer(withAlpha);
-    }
-    else {
-        // return invalid image
-        return QImage();
-    }
-}
-
-QPixmap SoQtGLWidget::renderPixmap (int w, int h, bool useContext)
-{
-    if (SoQtRealQGLWidget* wid = qobject_cast<SoQtRealQGLWidget*>(mainWidget)) {
-        return wid->renderPixmap(w, h, useContext);
-    }
-    else {
-        // return invalid image
-        return QPixmap();
-    }
-}
-
-
 
 void
 SoQtGLWidget::setDoubleBuffer (SbBool flag)
 {
     if (flag != isDoubleBuffer()) {
-        QGLFormat newFormat = format();
-        newFormat.setDoubleBuffer (flag);
+        QSurfaceFormat newFormat = format();
+        newFormat.setSwapBehavior(flag ? QSurfaceFormat::DoubleBuffer : QSurfaceFormat::SingleBuffer);
         setFormat (newFormat);
     }
 }
@@ -395,8 +342,8 @@ void
 SoQtGLWidget::setStereoBuffer (SbBool flag)
 {
     if (flag != isStereoBuffer()) {
-        QGLFormat newFormat = format();
-        newFormat.setStereo (flag);
+        QSurfaceFormat newFormat = format();
+        newFormat.setOption (QSurfaceFormat::StereoBuffers, flag);
         setFormat (newFormat);
     }
 }
@@ -406,7 +353,7 @@ void
 SoQtGLWidget::setColorBitDepth (int depth)
 {
     if (depth != getColorBitDepth()) {
-        QGLFormat newFormat = format();
+        QSurfaceFormat newFormat = format();
         newFormat.setRedBufferSize (depth);
         newFormat.setGreenBufferSize (depth);
         newFormat.setBlueBufferSize (depth);
@@ -417,7 +364,7 @@ SoQtGLWidget::setColorBitDepth (int depth)
 int
 SoQtGLWidget::getColorBitDepth()
 {
-    QGLFormat currFormat = format();
+    QSurfaceFormat currFormat = format();
     int depth = currFormat.redBufferSize();
     if (depth > currFormat.greenBufferSize()) { depth = currFormat.greenBufferSize(); }
     if (depth > currFormat.blueBufferSize())  { depth = currFormat.blueBufferSize();  }

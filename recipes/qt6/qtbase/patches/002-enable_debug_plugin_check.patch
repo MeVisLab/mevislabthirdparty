@@ -1,0 +1,19 @@
+diff --git a/src/corelib/plugin/qlibrary.cpp b/src/corelib/plugin/qlibrary.cpp
+index 12ae0c2e..9cd235d9 100644
+--- a/src/corelib/plugin/qlibrary.cpp
++++ b/src/corelib/plugin/qlibrary.cpp
+@@ -40,12 +40,8 @@ Q_TRACE_POINT(qtcore, QLibraryPrivate_load_exit, bool success);
+ // On Unix systema and on Windows with MinGW, we can mix and match debug and
+ // release plugins without problems. (unless compiled in debug-and-release mode
+ // - why?)
+-static constexpr bool PluginMustMatchQtDebug =
+-        QOperatingSystemVersion::currentType() == QOperatingSystemVersion::Windows
+-#if defined(Q_CC_MINGW)
+-        && QT_CONFIG(debug_and_release)
+-#endif
+-        ;
++// MeVis: We want the check to happen so that we can have debug and release plugins side-by-side
++static constexpr bool PluginMustMatchQtDebug = true;
+ 
+ #ifdef QT_NO_DEBUG
+ static constexpr bool QtBuildIsDebug = false;

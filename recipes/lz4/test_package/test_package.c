@@ -3,6 +3,6 @@
 
 int main()
 {
-	printf("Hello World ! LZ4 Library version = %d\n", LZ4_versionNumber());
+  printf("Hello World ! LZ4 Library version = %d\n", LZ4_versionNumber());
   return 0;
 }

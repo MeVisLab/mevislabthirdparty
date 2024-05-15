@@ -1,129 +1,178 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans import AutoToolsBuildEnvironment
-from conans import MSBuild
-from conans import tools
-import os
+from conan import ConanFile
+from conan.tools.apple import fix_apple_shared_install_name
+from conan.tools.env import Environment, VirtualBuildEnv, VirtualRunEnv
+from conan.tools.files import chdir, copy, get, replace_in_file, rm, rmdir
+from conan.tools.gnu import Autotools, AutotoolsToolchain, AutotoolsDeps
+from conan.tools.layout import basic_layout
+from conan.tools.microsoft import is_msvc, unix_path, VCVars, MSBuild
+
+required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
-
-    _autotools = None
-
-
-    def build_requirements(self):
-        channel = "@{0}/{1}".format(self.user, self.channel)
-        if self.settings.compiler == "Visual Studio":
-            self.build_requires("strawberryperl_installer/[>=5.30]" + channel)
-
+    name = "libpq"
+    version = "16.2"
+    homepage = "https://www.postgresql.org/docs/current/static/libpq.html"
+    description = "The library used by all the standard PostgreSQL tools."
+    license = "PostgreSQL"
+    package_type = "shared-library"
+    settings = "os", "arch", "compiler", "build_type"
 
     def requirements(self):
-        channel = "@mevislab/stable"
-        self.requires("openssl/[>=3.0]" + channel)
+        if self.settings.os != "Macos":
+            self.requires("openssl/[>=3.0.0]")
 
+    def configure(self):
+        self.settings.rm_safe("compiler.libcxx")
+        self.settings.rm_safe("compiler.cppstd")
 
-    def imports(self):
-        self.copy("*.dylib*", src="lib", dst="lib")
-        self.copy("*.so*", src="lib", dst="sources")
+    def source(self):
+        get(
+            self,
+            sha256="446e88294dbc2c9085ab4b7061a646fa604b4bec03521d5ea671c2e5ad9b2952",
+            url=f"https://ftp.postgresql.org/pub/source/v{self.version}/postgresql-{self.version}.tar.bz2",
+            strip_root=True,
+        )
 
+    def layout(self):
+        basic_layout(self, src_folder="src")
+
+    def generate(self):
+        env = VirtualBuildEnv(self)
+        env.generate()
+
+        if is_msvc(self):
+            vcvars = VCVars(self)
+            vcvars.generate()
+            config = "DEBUG" if self.settings.build_type == "Debug" else "RELEASE"
+            env = Environment()
+            env.define("CONFIG", config)
+            env.vars(self).save_script("conanbuild_msvc")
+        else:
+            env = VirtualRunEnv(self)
+            env.generate(scope="build")
+
+            ad = AutotoolsDeps(self)
+            ad.generate()
+
+            if self.settings.build_type == "Debug":
+                replace_in_file(self, self.source_path / "src" / "interfaces" / "libpq" / "Makefile", "NAME= pq", "NAME= pq_d")
+            tc = AutotoolsToolchain(self)
+            tc.configure_args.append("--without-readline")
+            tc.configure_args.append("--without-zlib")
+            tc.configure_args.append("--without-icu")
+
+            if self.settings.os != "Macos":
+                tc.configure_args.append("--with-openssl")
+            if self.settings.build_type == "Debug":
+                tc.configure_args.append("--enable-debug")
+            tc.make_args.append(f"DESTDIR={unix_path(self, self.package_folder)}")
+            tc.generate()
 
     def _build_windows(self):
         # fix openssl
-        solution_pm = os.path.join("sources", "src", "tools", "msvc", "Solution.pm")
-        for ssl in ["VC\libssl32", "VC\libssl64", "libssl"]:
-                tools.replace_in_file(solution_pm, "%s.lib" % ssl, "%s.lib" % self.deps_cpp_info["openssl"].libs[0])
-        for crypto in ["VC\libcrypto32", "VC\libcrypto64", "libcrypto"]:
-            tools.replace_in_file(solution_pm, "%s.lib" % crypto, "%s.lib" % self.deps_cpp_info["openssl"].libs[1])
+        tools_path = self.source_path / "src" / "tools" / "msvc"
+        solution_pm = tools_path / "Solution.pm"
+        openssl = self.dependencies["openssl"]
+        openssl_components = openssl.cpp_info.components
+        for ssl in [r"VC\libssl32", r"VC\libssl64", "libssl"]:
+            replace_in_file(self, solution_pm, ssl + ".lib", openssl_components["ssl"].libs[0] + ".lib")
+        for crypto in [r"VC\libcrypto32", r"VC\libcrypto64", "libcrypto"]:
+            replace_in_file(self, solution_pm, crypto + ".lib", openssl_components["crypto"].libs[0] + ".lib")
 
-        config_default_pl = os.path.join("sources", "src", "tools", "msvc", "config_default.pl")
-        tools.replace_in_file(config_default_pl, "openssl   => undef", "openssl   => '%s'" % self.deps_cpp_info["openssl"].rootpath.replace("\\", "/"))
+        config_default_pl = tools_path / "config_default.pl"
+        replace_in_file(self, config_default_pl, "openssl => undef,", "openssl => '%s'," % openssl.package_folder.replace("\\", "/"))
 
-        with tools.chdir(os.path.join("sources", "src", "tools", "msvc")):
-            with tools.environment_append({"LC_ALL": "C", "LANG": "C"}):
+        if self.settings.build_type == "Debug":
+            # adapt project and target names
+            replace_in_file(self, tools_path / "Project.pm", "name => $name", "name => $name . '_d'")
+            # adapt DLL name in generated libpqdll.def
+            replace_in_file(self, solution_pm, '"LIBPQ"', '"LIBPQ_D"')
+
+        with chdir(self, self.source_path / "src" / "tools" / "msvc"):
+            env = Environment()
+            env.append("LC_ALL", "C")
+            env.append("LANG", "C")
+            with env.vars(self).apply():
                 self.run("perl mkvcbuild.pl")
 
-        with tools.chdir(os.path.join("sources")):
+        with chdir(self, self.source_folder):
             msbuild = MSBuild(self)
-            msbuild.build('libpq.vcxproj', upgrade_project=False)
-
-
-    def _configure_autotools(self):
-        if not self._autotools:
-            self._autotools = AutoToolsBuildEnvironment(self, win_bash=tools.os_info.is_windows)
-            args = ['--without-readline']
-            args.append('--without-zlib')
-            args.append('--with-openssl')
-            #args.append('--disable-rpath') # ???
-            if self.settings.build_type == 'Debug':
-                args.append('--enable-debug')
-
-            if tools.os_info.is_macos:
-                self._autotools.link_flags.append(f"-rpath {self.build_folder}/lib")
-
-            with tools.chdir("sources"):
-                self._autotools.configure(args=args)
-
-        return self._autotools
-
+            debug_ext = "_d" if self.settings.build_type == "Debug" else ""
+            msbuild.build(f"libpq{debug_ext}.vcxproj")
 
     def build(self):
-        if self.settings.compiler == "Visual Studio":
+        if is_msvc(self):
             self._build_windows()
         else:
-            autotools = self._configure_autotools()
-
-            with tools.chdir(os.path.join("sources", "src", "backend")):
+            autotools = Autotools(self)
+            with chdir(self, self.source_path):
+                autotools.configure()
+            with chdir(self, self.source_path / "src" / "backend"):
                 autotools.make(target="generated-headers")
-            with tools.chdir(os.path.join("sources", "src", "common")):
+            with chdir(self, self.source_path / "src" / "common"):
                 autotools.make()
-            with tools.chdir(os.path.join("sources", "src", "include")):
+            with chdir(self, self.source_path / "src" / "include"):
                 autotools.make()
-            with tools.chdir(os.path.join("sources", "src", "interfaces", "libpq")):
+            with chdir(self, self.source_path / "src" / "interfaces" / "libpq"):
                 autotools.make()
-            with tools.chdir(os.path.join("sources", "src", "bin", "pg_config")):
+            with chdir(self, self.source_path / "src" / "port"):
                 autotools.make()
-
+            with chdir(self, self.source_path / "src" / "bin" / "pg_config"):
+                autotools.make()
+            for lib in (self.source_path / "src" / "interfaces" / "libpq").glob("*.so.*"):
+                self.run(f"patchelf --set-rpath '$ORIGIN/../lib' {lib}")
 
     def package(self):
-        if self.settings.compiler == "Visual Studio":
-            self.copy("*postgres_ext.h", src="sources", dst="include", keep_path=False)
-            self.copy("*pg_config.h", src="sources", dst="include", keep_path=False)
-            self.copy("*pg_config_ext.h", src="sources", dst="include", keep_path=False)
-            self.copy("*libpq-fe.h", src="sources", dst="include", keep_path=False)
-            self.copy("*libpq-events.h", src="sources", dst="include", keep_path=False)
-            self.copy("*.h", src=os.path.join("sources", "src", "include", "libpq"), dst=os.path.join("include", "libpq"), keep_path=False)
-            self.copy("*genbki.h", src="sources", dst=os.path.join("include", "catalog"), keep_path=False)
-            self.copy("*pg_type.h", src="sources", dst=os.path.join("include", "catalog"), keep_path=False)
-            self.copy("*.lib", src="sources", dst="lib", keep_path=False)
-            self.copy("*.dll", src="sources", dst="bin", keep_path=False)
-            self.copy("*.pdb", src="sources", dst="bin", keep_path=False, excludes="*vc*.pdb")
+        copy(self, "COPYRIGHT", src=self.source_path, dst=self.package_path / "licenses")
+        if is_msvc(self):
+            for pattern in ["*postgres_ext.h", "*pg_config.h", "*pg_config_ext.h", "*libpq-fe.h", "*libpq-events.h"]:
+                copy(self, pattern=pattern, src=self.source_path, dst=self.package_path / "include", keep_path=False)
+            copy(
+                self,
+                pattern="*.h",
+                src=self.source_path / "src" / "include" / "libpq",
+                dst=self.package_path / "include" / "libpq",
+                keep_path=False,
+            )
+            for pattern in ["*genbki.h", "*pg_type.h"]:
+                copy(self, pattern=pattern, src=self.source_path, dst=self.package_path / "include" / "catalog", keep_path=False)
+            debug_ext = "_d" if self.settings.build_type == "Debug" else ""
+            copy(self, pattern=f"*libpq{debug_ext}.dll", src=self.source_path, dst=self.package_path / "bin", keep_path=False)
+            copy(self, pattern=f"*libpq{debug_ext}.pdb", src=self.source_path, dst=self.package_path / "bin", keep_path=False)
+            copy(self, pattern=f"*libpq{debug_ext}.lib", src=self.source_path, dst=self.package_path / "lib", keep_path=False)
         else:
-            autotools = self._configure_autotools()
-            with tools.chdir(os.path.join("sources", "src", "common")):
+            autotools = Autotools(self)
+            with chdir(self, self.source_path / "src" / "common"):
                 autotools.install()
-            with tools.chdir(os.path.join("sources", "src", "include")):
+            with chdir(self, self.source_path / "src" / "include"):
                 autotools.install()
-            with tools.chdir(os.path.join("sources", "src", "interfaces", "libpq")):
+            with chdir(self, self.source_path / "src" / "interfaces" / "libpq"):
                 autotools.install()
-            with tools.chdir(os.path.join("sources", "src", "bin", "pg_config")):
+            with chdir(self, self.source_path / "src" / "port"):
                 autotools.install()
-            tools.rmdir(os.path.join(self.package_folder, "include", "postgresql", "server"))
-            self.copy(pattern="*.h", dst=os.path.join("include", "catalog"), src=os.path.join("sources", "src", "include", "catalog"))
-
-        self.copy(pattern="*.h", dst=os.path.join("include", "catalog"), src=os.path.join("sources", "src", "backend", "catalog"))
-        tools.rmdir(os.path.join(self.package_folder, "share"))
-        tools.rmdir(os.path.join(self.package_folder, "lib", "pkgconfig"))
-
-        self.patch_binaries(executables=['pg_config'])
-        self.default_package()
-
+            with chdir(self, self.source_path / "src" / "bin" / "pg_config"):
+                autotools.install()
+            copy(self, "*.h", src=self.build_path / "src" / "include" / "catalog", dst=self.package_path / "include" / "catalog")
+            rmdir(self, self.package_path / "share")
+            rmdir(self, self.package_path / "lib" / "pkgconfig")
+            rmdir(self, self.package_path / "include" / "postgresql" / "server")
+            rm(self, "*.a", self.package_path / "lib")
+            fix_apple_shared_install_name(self)
+        copy(self, "*.h", src=self.build_path / "src" / "backend" / "catalog", dst=self.package_path / "include" / "catalog")
 
     def package_info(self):
-        self.env_info.PostgreSQL_ROOT = self.package_folder
-        self.cpp_info.libs = tools.collect_libs(self)
+        self.cpp_info.set_property("cmake_find_mode", "both")
+        self.cpp_info.set_property("cmake_file_name", "PostgreSQL")
+        self.cpp_info.set_property("cmake_target_name", "PostgreSQL::PostgreSQL")
+        self.cpp_info.set_property("pkg_config_name", "libpq")
+
+        debug_ext = "_d" if self.settings.build_type == "Debug" else ""
+        self.cpp_info.components["pq"].libs = [f"{'lib' if is_msvc(self) else ''}pq{debug_ext}"]
+
+        if self.settings.os != "Macos":
+            self.cpp_info.components["pq"].requires.append("openssl::openssl")
         if self.settings.os == "Linux":
-            self.cpp_info.system_libs.append("pthread")
-        elif self.settings.os == "Windows":
-            self.cpp_info.system_libs.extend(["ws2_32", "secur32", "advapi32", "shell32", "crypt32", "wldap32"])
+            self.cpp_info.components["pq"].system_libs = ["pthread"]
+        if self.settings.os == "Windows":
+            self.cpp_info.components["pq"].system_libs = ["ws2_32", "secur32", "advapi32", "shell32", "crypt32", "wldap32"]

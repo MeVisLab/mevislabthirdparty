@@ -1,0 +1,25 @@
+diff --git a/cmake/JPEGCodec.cmake b/cmake/JPEGCodec.cmake
+index 8455a3e..f7496d7 100644
+--- a/cmake/JPEGCodec.cmake
++++ b/cmake/JPEGCodec.cmake
+@@ -47,19 +47,7 @@ if (JPEG_SUPPORT)
+     cmake_push_check_state(RESET)
+     set(CMAKE_REQUIRED_INCLUDES "${JPEG_INCLUDE_DIRS}")
+     set(CMAKE_REQUIRED_LIBRARIES "${JPEG_LIBRARIES}")
+-    check_c_source_compiles(
+-        "
+-        #include <stddef.h>
+-        #include <stdio.h>
+-        #include \"jpeglib.h\"
+-        int main()
+-        {
+-            jpeg_read_scanlines(0,0,0);
+-            jpeg12_read_scanlines(0,0,0);
+-            return 0;
+-        }
+-        "
+-        HAVE_JPEGTURBO_DUAL_MODE_8_12)
++    set(HAVE_JPEGTURBO_DUAL_MODE_8_12 FALSE)
+     cmake_pop_check_state()
+ endif()
+ 

@@ -1,0 +1,410 @@
+diff --git a/lib/matplotlib/backends/backend_qt5.py b/lib/matplotlib/backends/backend_qt5.py
+index dc4f6e2..3f00993 100644
+--- a/lib/matplotlib/backends/backend_qt5.py
++++ b/lib/matplotlib/backends/backend_qt5.py
+@@ -17,7 +17,7 @@ from matplotlib.backends.qt_editor.formsubplottool import UiSubplotTool
+ from matplotlib.backend_managers import ToolManager
+ from . import qt_compat
+ from .qt_compat import (
+-    QtCore, QtGui, QtWidgets, _isdeleted, _getSaveFileName,
++    QtCore, QtGui, QtWidgets, _isdeleted, _qt_property, _getSaveFileName,
+     is_pyqt5, __version__, QT_API, _setDevicePixelRatioF,
+     _devicePixelRatioF)
+
+@@ -165,7 +165,7 @@ def _allow_super_init(__init__):
+             next_coop_init = next(
+                 cls for cls in mro[mro.index(QtWidgets.QWidget) + 1:]
+                 if cls.__module__.split(".")[0] not in [
+-                    "PyQt4", "sip", "PySide", "PySide2", "Shiboken"])
++                    "PyQt4", "sip", "PySide", "PythonQt", "PySide2", "Shiboken"])
+             next_coop_init.__init__(self, *args, **kwargs)
+
+         @functools.wraps(__init__)
+@@ -284,7 +284,7 @@ class FigureCanvasQT(QtWidgets.QWidget, FigureCanvasBase):
+             # The easiest way to resize the canvas is to emit a resizeEvent
+             # since we implement all the logic for resizing the canvas for
+             # that event.
+-            event = QtGui.QResizeEvent(self.size(), self.size())
++            event = QtGui.QResizeEvent(_qt_property(self.size), _qt_property(self.size))
+             self.resizeEvent(event)
+             # resizeEvent triggers a paintEvent itself, so we exit this one
+             # (after making sure that the event is immediately handled).
+@@ -490,7 +490,7 @@ class FigureCanvasQT(QtWidgets.QWidget, FigureCanvasBase):
+             if not self._draw_pending:
+                 return
+             self._draw_pending = False
+-            if self.height() < 0 or self.width() < 0:
++            if _qt_property(self.height) < 0 or _qt_property(self.width) < 0:
+                 return
+             try:
+                 self.draw()
+@@ -577,14 +577,14 @@ class FigureManagerQT(FigureManagerBase):
+                 statusbar_label = QtWidgets.QLabel()
+                 self.window.statusBar().addWidget(statusbar_label)
+                 self.toolbar.message.connect(statusbar_label.setText)
+-            tbs_height = self.toolbar.sizeHint().height()
++            tbs_height = _qt_property(self.toolbar.sizeHint).height()
+         else:
+             tbs_height = 0
+
+         # resize the main window so it will display the canvas with the
+         # requested size:
+-        cs = canvas.sizeHint()
+-        sbs = self.window.statusBar().sizeHint()
++        cs = _qt_property(canvas.sizeHint)
++        sbs = _qt_property(self.window.statusBar().sizeHint)
+         height = cs.height() + tbs_height + sbs.height()
+         self.window.resize(cs.width(), height)
+
+@@ -635,8 +635,8 @@ class FigureManagerQT(FigureManagerBase):
+     def resize(self, width, height):
+         # these are Qt methods so they return sizes in 'virtual' pixels
+         # so we do not need to worry about dpi scaling here.
+-        extra_width = self.window.width() - self.canvas.width()
+-        extra_height = self.window.height() - self.canvas.height()
++        extra_width = _qt_property(self.window.width) - _qt_property(self.canvas.width)
++        extra_height = _qt_property(self.window.height) - _qt_property(self.canvas.height)
+         self.canvas.resize(width, height)
+         self.window.resize(width + extra_width, height + extra_height)
+
+@@ -657,7 +657,7 @@ class FigureManagerQT(FigureManagerBase):
+         self.window.close()
+
+     def get_window_title(self):
+-        return self.window.windowTitle()
++        return _qt_property(self.window.windowTitle)
+
+     def set_window_title(self, title):
+         self.window.setWindowTitle(title)
+@@ -669,7 +669,7 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
+     def __init__(self, canvas, parent, coordinates=True):
+         """coordinates: should we show the coordinates on the right?"""
+         self.canvas = canvas
+-        self.parent = parent
++        self._parent = parent
+         self.coordinates = coordinates
+         self._actions = {}
+         """A mapping of toolitem method names to their QActions"""
+@@ -692,8 +692,8 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
+     def _init_toolbar(self):
+         self.basedir = str(cbook._get_data_path('images'))
+
+-        background_color = self.palette().color(self.backgroundRole())
+-        foreground_color = self.palette().color(self.foregroundRole())
++        background_color = _qt_property(self.palette).color(self.backgroundRole())
++        foreground_color = _qt_property(self.palette).color(self.foregroundRole())
+         icon_color = (foreground_color
+                       if background_color.value() < 128 else None)
+
+@@ -741,7 +741,7 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
+         axes = self.canvas.figure.get_axes()
+         if not axes:
+             QtWidgets.QMessageBox.warning(
+-                self.parent, "Error", "There are no axes to edit.")
++                self._parent, "Error", "There are no axes to edit.")
+             return
+         elif len(axes) == 1:
+             ax, = axes
+@@ -757,10 +757,16 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
+             for i, ax in enumerate(axes):
+                 if titles[i] in duplicate_titles:
+                     titles[i] += f" (id: {id(ax):#x})"  # Deduplicate titles.
+-            item, ok = QtWidgets.QInputDialog.getItem(
+-                self.parent, 'Customize', 'Select axes:', titles, 0, False)
+-            if not ok:
+-                return
++            item = QtWidgets.QInputDialog.getItem(
++                self._parent, 'Customize', 'Select axes:', titles, 0, False)
++            if QT_API == "PythonQt":
++                # PythonQt only returns the immediate return value, not the ok flag
++                if not item:
++                    return
++            else:
++                if not item(1):
++                    return
++                item = item(0)
+             ax = axes[titles.index(item)]
+         figureoptions.figure_edit(ax, self)
+
+@@ -870,7 +876,7 @@ class SubplotToolQt(UiSubplotTool):
+         for action, method in [("Export values", self._export_values),
+                                ("Tight layout", self._tight_layout),
+                                ("Reset", self._reset),
+-                               ("Close", self.close)]:
++                               ("Close", self._close)]:
+             self._widgets[action].clicked.connect(method)
+
+     def _export_values(self):
+@@ -883,19 +889,19 @@ class SubplotToolQt(UiSubplotTool):
+         text.setReadOnly(True)
+         layout.addWidget(text)
+         text.setPlainText(
+-            ",\n".join("{}={:.3}".format(attr, self._widgets[attr].value())
++            ",\n".join("{}={:.3}".format(attr, _qt_property(self._widgets[attr].value))
+                        for attr in self._attrs))
+         # Adjust the height of the text widget to fit the whole text, plus
+         # some padding.
+-        size = text.maximumSize()
++        size = _qt_property(text.maximumSize)
+         size.setHeight(
+-            QtGui.QFontMetrics(text.document().defaultFont())
++            QtGui.QFontMetrics(_qt_property(text.document().defaultFont))
+             .size(0, text.toPlainText()).height() + 20)
+         text.setMaximumSize(size)
+         dialog.exec_()
+
+     def _on_value_changed(self):
+-        self._figure.subplots_adjust(**{attr: self._widgets[attr].value()
++        self._figure.subplots_adjust(**{attr: _qt_property(self._widgets[attr].value)
+                                         for attr in self._attrs})
+         self._figure.canvas.draw_idle()
+
+diff --git a/lib/matplotlib/backends/backend_qt5agg.py b/lib/matplotlib/backends/backend_qt5agg.py
+index f4d7842..dbde27c 100644
+--- a/lib/matplotlib/backends/backend_qt5agg.py
++++ b/lib/matplotlib/backends/backend_qt5agg.py
+@@ -58,11 +58,14 @@ class FigureCanvasQTAgg(FigureCanvasAgg, FigureCanvasQT):
+             reg = self.copy_from_bbox(bbox)
+             buf = cbook._unmultiplied_rgba8888_to_premultiplied_argb32(
+                 memoryview(reg))
++            bufdata = buf
++            if QT_API == "PythonQt":
++                bufdata = buf.tobytes()
+
+             # clear the widget canvas
+             painter.eraseRect(rect)
+
+-            qimage = QtGui.QImage(buf, buf.shape[1], buf.shape[0],
++            qimage = QtGui.QImage(bufdata, buf.shape[1], buf.shape[0],
+                                   QtGui.QImage.Format_ARGB32_Premultiplied)
+             _setDevicePixelRatioF(qimage, self._dpi_ratio)
+             # set origin using original QT coordinates
+diff --git a/lib/matplotlib/backends/qt_compat.py b/lib/matplotlib/backends/qt_compat.py
+index 906845a..39d8ebf 100644
+--- a/lib/matplotlib/backends/qt_compat.py
++++ b/lib/matplotlib/backends/qt_compat.py
+@@ -20,13 +20,14 @@ from matplotlib import rcParams
+
+ QT_API_PYQT5 = "PyQt5"
+ QT_API_PYSIDE2 = "PySide2"
++QT_API_PYTHONQT = "PythonQt"   # MeVisLab
+ QT_API_PYQTv2 = "PyQt4v2"
+ QT_API_PYSIDE = "PySide"
+ QT_API_PYQT = "PyQt4"   # Use the old sip v1 API (Py3 defaults to v2).
+ QT_API_ENV = os.environ.get("QT_API")
+ # Mapping of QT_API_ENV to requested binding.  ETS does not support PyQt4v1.
+ # (https://github.com/enthought/pyface/blob/master/pyface/qt/__init__.py)
+-_ETS = {"pyqt5": QT_API_PYQT5, "pyside2": QT_API_PYSIDE2,
++_ETS = {"pyqt5": QT_API_PYQT5, "pyside2": QT_API_PYSIDE2, "pythonqt": QT_API_PYTHONQT,
+         "pyqt": QT_API_PYQTv2, "pyside": QT_API_PYSIDE,
+         None: None}
+ # First, check if anything is already imported.
+@@ -34,6 +35,8 @@ if "PyQt5.QtCore" in sys.modules:
+     QT_API = QT_API_PYQT5
+ elif "PySide2.QtCore" in sys.modules:
+     QT_API = QT_API_PYSIDE2
++elif "PythonQt.QtCore" in sys.modules:
++    QT_API = QT_API_PYTHONQT
+ elif "PyQt4.QtCore" in sys.modules:
+     QT_API = QT_API_PYQTv2
+ elif "PySide.QtCore" in sys.modules:
+@@ -42,7 +45,7 @@ elif "PySide.QtCore" in sys.modules:
+ # only override the binding, not the backend (in other words, we check that the
+ # requested backend actually matches).
+ elif rcParams["backend"] in ["Qt5Agg", "Qt5Cairo"]:
+-    if QT_API_ENV in ["pyqt5", "pyside2"]:
++    if QT_API_ENV in ["pyqt5", "pyside2", "pythonqt"]:
+         QT_API = _ETS[QT_API_ENV]
+     else:
+         QT_API = None
+@@ -59,12 +62,12 @@ else:
+     except KeyError:
+         raise RuntimeError(
+             "The environment variable QT_API has the unrecognized value {!r};"
+-            "valid values are 'pyqt5', 'pyside2', 'pyqt', and 'pyside'")
++            "valid values are 'pyqt5', 'pyside2', 'pythonqt', 'pyqt', and 'pyside'")
+
+
+ def _setup_pyqt5():
+     global QtCore, QtGui, QtWidgets, __version__, is_pyqt5, \
+-        _isdeleted, _getSaveFileName
++        _isdeleted, _getSaveFileName, _qt_property
+
+     if QT_API == QT_API_PYQT5:
+         from PyQt5 import QtCore, QtGui, QtWidgets
+@@ -74,13 +77,26 @@ def _setup_pyqt5():
+         QtCore.Slot = QtCore.pyqtSlot
+         QtCore.Property = QtCore.pyqtProperty
+         _isdeleted = sip.isdeleted
++        def _qt_property(p): return p()
++        _getSaveFileName = QtWidgets.QFileDialog.getSaveFileName
+     elif QT_API == QT_API_PYSIDE2:
+         from PySide2 import QtCore, QtGui, QtWidgets, __version__
+         import shiboken2
+         def _isdeleted(obj): return not shiboken2.isValid(obj)
++        def _qt_property(p): return p()
++        _getSaveFileName = QtWidgets.QFileDialog.getSaveFileName
++    elif QT_API == QT_API_PYTHONQT:
++        from PythonQt import QtCore, QtGui
++        __version__ = "2.0"
++        # For backwards compatibility (with Qt4) QtWidgets is contained in QtGui:
++        QtWidgets = QtGui
++        def _isdeleted(obj): return not bool(obj)
++        def _qt_property(p): return p() if callable(p) else p
++        # PythonQt does not yet support a getSaveFileName variant returning the selected filter
++        def _getSaveFileName(*args, **kwargs):
++            return (QtGui.QFileDialog.getSaveFileName(*args, **kwargs), None)
+     else:
+         raise ValueError("Unexpected value for the 'backend.qt5' rcparam")
+-    _getSaveFileName = QtWidgets.QFileDialog.getSaveFileName
+
+     def is_pyqt5():
+         return True
+@@ -88,7 +104,7 @@ def _setup_pyqt5():
+
+ def _setup_pyqt4():
+     global QtCore, QtGui, QtWidgets, __version__, is_pyqt5, \
+-        _isdeleted, _getSaveFileName
++        _isdeleted, _getSaveFileName, _qt_property
+
+     def _setup_pyqt4_internal(api):
+         global QtCore, QtGui, QtWidgets, \
+@@ -137,11 +153,13 @@ def _setup_pyqt4():
+         raise ValueError("Unexpected value for the 'backend.qt4' rcparam")
+     QtWidgets = QtGui
+
++    def _qt_property(p): return p()
++
+     def is_pyqt5():
+         return False
+
+
+-if QT_API in [QT_API_PYQT5, QT_API_PYSIDE2]:
++if QT_API in [QT_API_PYQT5, QT_API_PYSIDE2, QT_API_PYTHONQT]:
+     _setup_pyqt5()
+ elif QT_API in [QT_API_PYQTv2, QT_API_PYSIDE, QT_API_PYQT]:
+     _setup_pyqt4()
+@@ -151,10 +169,12 @@ elif QT_API is None:
+                        (_setup_pyqt4, QT_API_PYSIDE),
+                        (_setup_pyqt4, QT_API_PYQT),
+                        (_setup_pyqt5, QT_API_PYQT5),
+-                       (_setup_pyqt5, QT_API_PYSIDE2)]
++                       (_setup_pyqt5, QT_API_PYSIDE2),
++                       (_setup_pyqt5, QT_API_PYTHONQT)]
+     else:
+         _candidates = [(_setup_pyqt5, QT_API_PYQT5),
+                        (_setup_pyqt5, QT_API_PYSIDE2),
++                       (_setup_pyqt5, QT_API_PYTHONQT),
+                        (_setup_pyqt4, QT_API_PYQTv2),
+                        (_setup_pyqt4, QT_API_PYSIDE),
+                        (_setup_pyqt4, QT_API_PYQT)]
+diff --git a/lib/matplotlib/backends/qt_editor/_formlayout.py b/lib/matplotlib/backends/qt_editor/_formlayout.py
+index b58f5eb..0f103d7 100644
+--- a/lib/matplotlib/backends/qt_editor/_formlayout.py
++++ b/lib/matplotlib/backends/qt_editor/_formlayout.py
+@@ -47,7 +47,7 @@ import logging
+ from numbers import Integral, Real
+
+ from matplotlib import cbook, colors as mcolors
+-from matplotlib.backends.qt_compat import QtGui, QtWidgets, QtCore
++from matplotlib.backends.qt_compat import QT_API, QtGui, QtWidgets, QtCore, _qt_property
+
+ _log = logging.getLogger(__name__)
+
+@@ -82,7 +82,7 @@ class ColorButton(QtWidgets.QPushButton):
+         if color != self._color:
+             self._color = color
+             self.colorChanged.emit(self._color)
+-            pixmap = QtGui.QPixmap(self.iconSize())
++            pixmap = QtGui.QPixmap(_qt_property(self.iconSize))
+             pixmap.fill(color)
+             self.setIcon(QtGui.QIcon(pixmap))
+
+@@ -101,13 +101,16 @@ def to_qcolor(color):
+     return qcolor
+
+
++def qcolor_to_hex(color):
++    return mcolors.to_hex((color.redF(), color.greenF(), color.blueF(), color.alphaF()), keep_alpha=True)
++
++
+ class ColorLayout(QtWidgets.QHBoxLayout):
+     """Color-specialized QLineEdit layout"""
+     def __init__(self, color, parent=None):
+         QtWidgets.QHBoxLayout.__init__(self)
+         assert isinstance(color, QtGui.QColor)
+-        self.lineedit = QtWidgets.QLineEdit(
+-            mcolors.to_hex(color.getRgbF(), keep_alpha=True), parent)
++        self.lineedit = QtWidgets.QLineEdit(qcolor_to_hex(color), parent)
+         self.lineedit.editingFinished.connect(self.update_color)
+         self.addWidget(self.lineedit)
+         self.colorbtn = ColorButton(parent)
+@@ -121,10 +124,10 @@ class ColorLayout(QtWidgets.QHBoxLayout):
+         self.colorbtn.color = qcolor
+
+     def update_text(self, color):
+-        self.lineedit.setText(mcolors.to_hex(color.getRgbF(), keep_alpha=True))
++        self.lineedit.setText(qcolor_to_hex(color))
+
+     def text(self):
+-        return self.lineedit.text()
++        return _qt_property(self.lineedit.text)
+
+
+ def font_is_installed(font):
+@@ -201,8 +204,9 @@ class FontLayout(QtWidgets.QGridLayout):
+
+
+ def is_edit_valid(edit):
+-    text = edit.text()
+-    state = edit.validator().validate(text, 0)[0]
++    text = _qt_property(edit.text)
++    result = edit.validator().validate(text, 0)
++    state = result if QT_API == "PythonQt" else result[0]
+
+     return state == QtGui.QDoubleValidator.Acceptable
+
+@@ -329,9 +333,9 @@ class FormWidget(QtWidgets.QWidget):
+             elif tuple_to_qfont(value) is not None:
+                 value = field.get_font()
+             elif isinstance(value, str) or mcolors.is_color_like(value):
+-                value = str(field.text())
++                value = str(_qt_property(field.text))
+             elif isinstance(value, (list, tuple)):
+-                index = int(field.currentIndex())
++                index = int(_qt_property(field.currentIndex))
+                 if isinstance(value[0], (list, tuple)):
+                     value = value[index][0]
+                 else:
+@@ -339,15 +343,15 @@ class FormWidget(QtWidgets.QWidget):
+             elif isinstance(value, bool):
+                 value = field.checkState() == QtCore.Qt.Checked
+             elif isinstance(value, Integral):
+-                value = int(field.value())
++                value = int(_qt_property(field.value))
+             elif isinstance(value, Real):
+-                value = float(str(field.text()))
++                value = float(str(_qt_property(field.text)))
+             elif isinstance(value, datetime.datetime):
+                 value = field.dateTime().toPyDateTime()
+             elif isinstance(value, datetime.date):
+                 value = field.date().toPyDate()
+             else:
+-                value = eval(str(field.text()))
++                value = eval(str(_qt_property(field.text)))
+             valuelist.append(value)
+         return valuelist
+
+diff --git a/lib/matplotlib/backends/qt_editor/formsubplottool.py b/lib/matplotlib/backends/qt_editor/formsubplottool.py
+index a0914ca..dfe5d14 100644
+--- a/lib/matplotlib/backends/qt_editor/formsubplottool.py
++++ b/lib/matplotlib/backends/qt_editor/formsubplottool.py
+@@ -54,3 +54,8 @@ class UiSubplotTool(QtWidgets.QDialog):
+             right.addWidget(widget)
+
+         self._widgets["Close"].setFocus()
++
++    def _close(self):
++        # Needed because PythonQt can't do the signal/slot connection correctly
++        # because of extra argument in signal (it works if it is a Python function)
++        self.close()

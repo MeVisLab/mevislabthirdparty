@@ -89,7 +89,7 @@ public:
     };
 
     //! Constructor/Destructor
-    SoQtFullViewer (BuildFlag flag, Type type = BROWSER, QWidget* parent = nullptr, Qt::WindowFlags f = nullptr);
+    SoQtFullViewer (BuildFlag flag, Type type = BROWSER, QWidget* parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags{});
 
     //! Show/hide the viewer component trims (default ON)
     void            setDecoration(SbBool onOrOff);

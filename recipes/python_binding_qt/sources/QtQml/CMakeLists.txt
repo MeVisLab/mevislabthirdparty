@@ -1,5 +1,3 @@
-find_package(Qt5 COMPONENTS Core Gui Qml REQUIRED)
-
 add_library(QtQml "")
 set_target_properties(QtQml PROPERTIES OUTPUT_NAME QtQml)
 
@@ -18,12 +16,9 @@ target_sources(QtQml PRIVATE
 
 target_link_libraries(QtQml
   PRIVATE
-    Qt5::Core
-    Qt5::Gui
-    Qt5::Qml
-    Python3::Python
-    Threads::Threads
-    ${CONAN_LIBS}
+    ${REQUIRED_LIBS}
+    Qt6::Gui
+    Qt6::Qml
 )
 
 install(TARGETS QtQml

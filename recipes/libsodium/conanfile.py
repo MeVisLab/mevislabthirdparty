@@ -1,53 +1,143 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans import AutoToolsBuildEnvironment
-from conans import MSBuild
-from conans import tools
 import os
+import textwrap
+
+from conan import ConanFile
+from conan.tools.env import VirtualBuildEnv
+from conan.tools.files import copy, collect_libs, get, replace_in_file, rm, rmdir, rename, patch, save
+from conan.tools.gnu import Autotools, AutotoolsToolchain
+from conan.tools.layout import basic_layout
+from conan.tools.microsoft import is_msvc, MSBuild, MSBuildToolchain
+from conans.model.version import Version
+
+required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
+    name = "libsodium"
+    version = "1.0.19"
+    homepage = "https://libsodium.org"
+    description = "A portable fork of NaCl, a higher-level cryptographic library"
+    license = "ISC"
+    package_type = "shared-library"
+    settings = "os", "arch", "compiler", "build_type"
+    exports_sources = "patches/*"
+
+    def configure(self):
+        self.settings.rm_safe("compiler.cppstd")
+        self.settings.rm_safe("compiler.libcxx")
+
+    def layout(self):
+        basic_layout(self, src_folder="src")
+
+    def source(self):
+        get(self,
+            sha256="018d79fe0a045cca07331d37bd0cb57b2e838c51bc48fd837a1472e50068bbea",
+            url=f"https://download.libsodium.org/libsodium/releases/libsodium-{self.version}.tar.gz",
+            strip_root=True
+            )
+        patch(self, patch_file="patches/001-debug_ext.patch")
+
+    def generate(self):
+        if is_msvc(self):
+            tc = MSBuildToolchain(self)
+            tc.configuration = f"Dyn{self.settings.build_type}DLL"
+            tc.generate()
+        else:
+            env = VirtualBuildEnv(self)
+            env.generate()
+            tc = AutotoolsToolchain(self)
+            tc.configure_args.append("--disable-static")
+            tc.configure_args.append("--enable-shared")
+            tc.configure_args.append("--with-pic")
+            if self.settings.build_type == "Debug":
+                tc.configure_args.append("--enable-debug")
+            tc.generate()
 
     def build(self):
-        if self.settings.compiler == "Visual Studio":
+        if is_msvc(self):
+            sln_path = self.source_path / "builds" / "msvc" / "vs2019"
+            proj_path = sln_path / "libsodium"
+            vcxproj_path = proj_path / "libsodium.vcxproj"
+
+            # TODO: to remove once https://github.com/conan-io/conan/pull/12817 is merged
+            replace_in_file(
+                self, vcxproj_path,
+                search="<PlatformToolset>v142</PlatformToolset>",
+                replace=f"<PlatformToolset>{MSBuildToolchain(self).toolset}</PlatformToolset>"
+            )
+
+            props = self.generators_path / MSBuildToolchain.filename
+            replace_in_file(
+                self, vcxproj_path,
+                "<Import Project=\"$(VCTargetsPath)\\Microsoft.Cpp.targets\" />",
+                f"<Import Project=\"{props}\" /><Import Project=\"$(VCTargetsPath)\\Microsoft.Cpp.targets\" />",
+            )
+
+            if self.settings.build_type == "Debug":
+                for filename in proj_path.iterdir():
+                    new_name = filename.parent / str(filename.name).replace("libsodium", "libsodium_d")
+                    rename(self, filename, new_name)
+                replace_in_file(self, proj_path / "libsodium_d.vcxproj",
+                                "<ProjectName>libsodium</ProjectName>",
+                                "<ProjectName>libsodium_d</ProjectName>")
+                replace_in_file(self, sln_path / "libsodium.sln", r'"libsodium", "libsodium\libsodium.vcxproj"',
+                                r'"libsodium", "libsodium\libsodium_d.vcxproj"')
+            # END
+
             msbuild = MSBuild(self)
-            build_type = "DynDebug" if self.settings.build_type == "Debug" else "DynRelease"
-            msvc = {
-                "16": "vs2019",
-                "17": "vs2022"
-            }.get(str(self.settings.compiler.version))
-
-            sln_dir = os.path.join("sources", "builds", "msvc")
-
-            if not os.path.exists(os.path.join(sln_dir, msvc)):
-                msvc = "vs2019"
-
-            with tools.chdir(os.path.join(sln_dir, msvc)):
-                msbuild.build("libsodium.sln", build_type=build_type, upgrade_project=False, platforms={"x86": "Win32"}, properties={"PostBuildEventUseInBuild": "false"})
+            msbuild.build_type = f"Dyn{self.settings.build_type}"
+            msbuild.build(self.source_path / "builds" / "msvc" / "vs2019" / "libsodium.sln")
         else:
-            with tools.chdir("sources"):
-                args = ["--disable-static", "--enable-shared", "--with-pic"]
-                if self.settings.build_type == "Debug":
-                    args.append("--enable-debug")
-                env_build = AutoToolsBuildEnvironment(self)
-                env_build.configure(args=args)
-                env_build.make()
-                env_build.install()
-
+            autotools = Autotools(self)
+            autotools.configure()
+            autotools.make()
 
     def package(self):
-        if self.settings.compiler == "Visual Studio":
-            self.copy("*.h", dst="include", src=os.path.join("sources", "src", "libsodium", "include"))
-            self.copy("*.lib", dst="lib", src="sources", keep_path=False)
-            self.copy("*.dll", dst="bin", src="sources", keep_path=False)
-            self.copy("*.pdb", dst="bin", src="sources", keep_path=False, excludes="*vc*.pdb")
+        copy(self, "*LICENSE", src=self.source_path, dst=self.package_path / "licenses")
+        if is_msvc(self):
+            copy(self, "*.dll", src=self.source_path / "bin", dst=self.package_path / "bin", keep_path=False)
+            copy(self, "*.pdb", src=self.source_path / "bin", dst=self.package_path / "bin", keep_path=False)
+            copy(self, "*.lib", src=self.source_path / "bin", dst=self.package_path / "lib", keep_path=False)
+            copy(self, "*.h", src=self.source_path / "src" / "libsodium" / "include",
+                 dst=self.package_path / "include", excludes="*/private/*")
+        else:
+            autotools = Autotools(self)
+            autotools.install()
+            rmdir(self, self.package_path / "lib" / "pkgconfig")
+            rm(self, "*.la", self.package_path / "lib")
+        self._cmake_module_file_write()
 
-        if os.path.exists(os.path.join(self.package_folder, 'lib', 'libsodium.la')):
-            os.unlink(os.path.join(self.package_folder, 'lib', 'libsodium.la'))
+    def package_info(self):
+        self.cpp_info.set_property("cmake_file_name", "sodium")
+        self.cpp_info.set_property("cmake_target_name", "sodium::sodium")
+        self.cpp_info.set_property("pkg_config_name", "libsodium")
+        self.cpp_info.set_property("cmake_build_modules", [self._cmake_module_file])
+        self.cpp_info.set_property("cmake_find_package", [self._cmake_module_file])
+        self.cpp_info.libs = collect_libs(self)
+        if self.settings.os == "Linux":
+            self.cpp_info.system_libs.append("pthread")
 
-        tools.rmdir(os.path.join(self.package_folder, "lib", "pkgconfig"))
+    @property
+    def _cmake_module_file(self):
+        return os.path.join("lib", "cmake", f"{self.name}-variables.cmake")
 
-        self.patch_binaries()
-        self.default_package()
+    def _cmake_module_file_write(self):
+        v = Version(self.version)
+        file = self.package_path / self._cmake_module_file
+        content = textwrap.dedent(f"""\
+            set(SODIUM_FOUND TRUE)
+            set(SODIUM_LIBRARY ${{sodium_LIBRARY}})
+            set(SODIUM_LIBRARIES ${{sodium_LIBRARIES}})
+            set(SODIUM_INCLUDE_DIRS ${{sodium_INCLUDE_DIR}})
+            set(SODIUM_INCLUDE_DIR ${{sodium_INCLUDE_DIR}})
+            set(SODIUM_VERSION "{self.version}")
+            set(SODIUM_VERSION_STRING "{self.version}")
+            set(SODIUM_VERSION_MAJOR {v.major})
+            set(SODIUM_VERSION_MINOR {v.minor})
+            set(SODIUM_VERSION_PATCH {v.patch})
+            set(SODIUM_MAJOR_VERSION {v.major})
+            set(SODIUM_MINOR_VERSION {v.minor})
+            set(SODIUM_PATCH_VERSION {v.patch})
+            """)
+        save(self, file, content)
+

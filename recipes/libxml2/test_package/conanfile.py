@@ -1,21 +1,25 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-import shutil
+from conan import ConanFile
+from conan.tools.build import can_run
+from conan.tools.cmake import CMake, cmake_layout
 import os
 
 class TestPackage(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonTest'
+    settings = "os", "arch", "compiler", "build_type"
+    generators = "CMakeToolchain", "CMakeDeps", "VirtualRunEnv"
 
-    test_with_environment = True
+    def layout(self):
+        cmake_layout(self)
 
-    def imports(self):
-        super(TestPackage, self).imports()
-        self.copy("*.dll", dst=".", src="bin")
-        self.copy("*.dylib*", dst=".", src="lib")
-        self.copy("*.so*", dst=".", src="lib")
+    def requirements(self):
+        self.requires(self.tested_reference_str)
 
+    def build(self):
+        cmake = CMake(self)
+        cmake.configure()
+        cmake.build()
 
     def test(self):
-        self.test_args = os.path.join(self.source_folder, "books.xml")
-        super(TestPackage, self).test()
+        if can_run(self):
+            bin_path = os.path.join(self.cpp.build.bindirs[0], "test_package")
+            arg_path = os.path.join(self.source_folder, "books.xml")
+            self.run(f"{bin_path} {arg_path}", env="conanrun")

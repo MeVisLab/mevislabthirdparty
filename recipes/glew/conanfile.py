@@ -1,71 +1,78 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans import tools
-from conans import CMake
 import os
+
+from conan import ConanFile
+from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
+from conan.tools.files import replace_in_file, collect_libs, copy, get, patch, rmdir
+
+required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
+    name = "glew"
+    version = "2.2.0"
+    homepage = "http://github.com/nigels-com/glew"
+    description = "The OpenGL Extension Wrangler Library"
+    license = "MIT", "BSD-3-Clause"
+    package_type = "shared-library"
+    settings = "os", "arch", "compiler", "build_type"
+    exports_sources = "patches/*.patch"
 
-    _cmake = None
+    def configure(self):
+        self.settings.rm_safe("compiler.libcxx")
+        self.settings.rm_safe("compiler.cppstd")
 
-    def system_requirements(self):
-        installer = tools.SystemPackageTool()
-        packages = []
+    def layout(self):
+        cmake_layout(self, src_folder="src")
 
-        if tools.os_info.linux_distro in ["ubuntu", "debian"]:
-            packages.append('libglu1-mesa-dev')
+    def source(self):
+        get(self,
+            url=f"https://github.com/nigels-com/glew/releases/download/glew-{self.version}/glew-{self.version}.tgz",
+            sha256="d4fc82893cfb00109578d0a1a2337fb8ca335b3ceccf97b97e5cc7f08e4353e1",
+            destination=self.source_folder,
+            strip_root=True)
+        replace_in_file(self, self.source_path / "build" / "cmake" / "CMakeLists.txt", 'set(CMAKE_DEBUG_POSTFIX d)', '')
+        replace_in_file(self, self.source_path / "build" / "cmake" / "CMakeLists.txt", '${OPENGL_LIBRARIES}', 'OpenGL::GL')
 
-        if packages:
-            installer.install_packages(packages)
+        # Fix cmake_minimum_required() before project():
+        patch(self, patch_file="patches/001-fix-cmake_minimum_required.patch")
 
-
-    def _configure_cmake(self):
-        if not self._cmake:
-            self.create_cmake_wrapper(add_subdirectory="sources/build/cmake")
-            self._cmake = CMake(self)
-            self._cmake.definitions["BUILD_SHARED_LIBS"] = True
-            self._cmake.definitions["CMAKE_POSITION_INDEPENDENT_CODE"] = self.settings.os != "Windows"
-            if self.settings.os == 'Windows':
-                self._cmake.definitions["GLEW_STATIC"] = True
-            self._cmake.configure()
-        return self._cmake
-
+    def generate(self):
+        tc = CMakeToolchain(self)
+        tc.variables["BUILD_UTILS"] = (self.settings.build_type != "Debug")
+        tc.variables["BUILD_SHARED_LIBS"] = True
+        tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
+        tc.variables["CMAKE_POSITION_INDEPENDENT_CODE"] = self.settings.os != "Windows"
+        tc.variables["OpenGL_GL_PREFERENCE"] = "LEGACY"
+        if self.settings.os == 'Windows':
+            tc.variables["GLEW_STATIC"] = True
+        tc.generate()
 
     def build(self):
-        cmake = self._configure_cmake()
-        cmake.build(target='glew')
-        if self.settings.build_type == 'Release':
-            cmake.build(target='glewinfo')
-            cmake.build(target='visualinfo')
-
+        cmake = CMake(self)
+        cmake.configure(build_script_folder=os.path.join(self.source_folder, "build", "cmake"))
+        cmake.build()
 
     def package(self):
-        self.copy("*.h", dst="include/GL", src="sources/include", keep_path=False)
-        self.copy("*", src="bin", dst="bin", keep_path=False)
-        self.copy("*.a", dst="lib", keep_path=False, symlinks=True)
-        self.copy("*.lib", dst="lib", keep_path=False, symlinks=True)
-        self.copy("*.dylib*", dst="lib", keep_path=False, symlinks=True)
-        self.copy("*.so*", dst="lib", keep_path=False, symlinks=True)
-        self.copy("*.pdb", src="bin", dst="bin")
-
-        if os.path.exists(os.path.join(self.package_folder, 'lib', 'Makefile.solaris')):
-            os.remove(os.path.join(self.package_folder, 'lib', 'Makefile.solaris'))
-        if os.path.exists(os.path.join(self.package_folder, 'lib', 'Makefile.solaris-gcc')):
-            os.remove(os.path.join(self.package_folder, 'lib', 'Makefile.solaris-gcc'))
-
-        self.patch_binaries(executables=['visualinfo', 'glewinfo'] if self.settings.build_type == 'Release' else [])
-        self.default_package()
-
+        copy(self, "LICENSE.txt", src=self.source_path, dst=self.package_path / "licenses")
+        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False, excludes="*vc???.pdb")
+        cmake = CMake(self)
+        cmake.install()
+        rmdir(self, self.package_path / "lib" / "pkgconfig")
+        rmdir(self, self.package_path / "lib" / "cmake")
+        for pdb in (self.package_path / "lib").glob("*.pdb"):
+            pdb.unlink()
 
     def package_info(self):
-        self.default_package_info()
+        self.cpp_info.set_property("cmake_file_name", "GLEW")
+        self.cpp_info.set_property("cmake_target_name", "GLEW::GLEW")
+        self.cpp_info.set_property("cmake_target_aliases", ["GLEW::glew"])
+        self.cpp_info.set_property("pkg_config_name", "glew")
+        self.cpp_info.libs = collect_libs(self)
 
-        if tools.os_info.is_macos:
-            self.cpp_info.exelinkflags.append("-framework OpenGL")
-        elif tools.os_info.is_windows:
+        if self.settings.os == "Macos":
+            self.cpp_info.defines.append("GL_SILENCE_DEPRECATION=1")
+            self.cpp_info.frameworks.append("OpenGL")
+        elif self.settings.os == "Windows":
             self.cpp_info.system_libs.append("opengl32")
-        else:
+        elif self.settings.os == "Linux":
             self.cpp_info.system_libs.append("GL")

@@ -1,6 +1,0 @@
-type: installer
-name: 7z_installer
-version: "23.01"
-homepage: https://7-zip.org
-description: A file archiver with a high compression ratio
-license: LGPL-2.1-only

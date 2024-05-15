@@ -20,10 +20,7 @@ target_sources(InventorFields PRIVATE
 
 target_link_libraries(InventorFields
   PRIVATE
-    Qt5::Core
-    Python3::Python
-    Threads::Threads
-    ${CONAN_LIBS}
+    ${REQUIRED_LIBS}
 )
 
 install(TARGETS InventorFields

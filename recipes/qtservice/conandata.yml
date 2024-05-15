@@ -1,8 +1,0 @@
-type: cpp
-name: qtservice
-cmake_name: QtService
-display_name: QtService
-version: "2019.06.10"
-homepage: https://code.qt.io/cgit/qt-solutions/qt-solutions.git/tree/qtsingleapplication
-description: Qt library for developing Windows services and Unix daemons
-license: BSD-3-Clause

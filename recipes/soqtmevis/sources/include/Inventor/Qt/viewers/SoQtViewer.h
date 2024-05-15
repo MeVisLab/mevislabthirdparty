@@ -230,7 +230,7 @@ public:
 
 public: // was protected
     //! Constructor/Destructor
-    SoQtViewer (Type type = BROWSER, QWidget* parent = nullptr, Qt::WindowFlags f = nullptr);
+    SoQtViewer (Type type = BROWSER, QWidget* parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags{});
 protected:
     ~SoQtViewer() override;
 

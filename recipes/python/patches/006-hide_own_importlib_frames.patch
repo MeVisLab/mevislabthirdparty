@@ -1,0 +1,22 @@
+diff --git a/Python/import.c b/Python/import.c
+index c4e2145..7a00d63 100644
+--- a/Python/import.c
++++ b/Python/import.c
+@@ -1491,6 +1491,7 @@ remove_importlib_frames(PyThreadState *tstate)
+ {
+     const char *importlib_filename = "<frozen importlib._bootstrap>";
+     const char *external_filename = "<frozen importlib._bootstrap_external>";
++    const char* mevislab_filename = "<frozen __mevislab_bootstrap_importlib>"; // MeVisLab specific
+     const char *remove_frames = "_call_with_frames_removed";
+     int always_trim = 0;
+     int in_importlib = 0;
+@@ -1521,7 +1522,8 @@ remove_importlib_frames(PyThreadState *tstate)
+ 
+         assert(PyTraceBack_Check(tb));
+         now_in_importlib = _PyUnicode_EqualToASCIIString(code->co_filename, importlib_filename) ||
+-                           _PyUnicode_EqualToASCIIString(code->co_filename, external_filename);
++                           _PyUnicode_EqualToASCIIString(code->co_filename, external_filename) ||
++                           _PyUnicode_EqualToASCIIString(code->co_filename, mevislab_filename);
+         if (now_in_importlib && !in_importlib) {
+             /* This is the link to this chunk of importlib tracebacks */
+             outer_link = prev_link;

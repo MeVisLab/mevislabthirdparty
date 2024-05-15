@@ -1,43 +1,53 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans import tools
-from conans import CMake
-import os
+from conan import ConanFile
+from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
+from conan.tools.files import collect_libs
+from conan.tools.files import copy, get, patch
+
+required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
-    _cmake = None
+    name = "easybmp"
+    version = "1.06"
+    homepage = "http://easybmp.sourceforge.net"
+    description = "Cross-Platform Windows Bitmap Library"
+    license = "BSD-3-Clause"
+    settings = "os", "arch", "compiler", "build_type"
+    package_type = "static-library"
+    exports_sources = "patches/*.patch", "CMakeLists.txt"
 
+    def layout(self):
+        cmake_layout(self, src_folder="src")
 
     def source(self):
-        tools.mkdir('sources')
-        with tools.chdir('sources'):
-            self.default_source()
-            tools.patch(base_path=".", patch_file=f"../patches/{self.version}-mevis.patch", strip=1)
-            os.rename("BSD_(revised)_license.txt", "LICENSE")
+        get(self,
+            url=f"https://sourceforge.net/projects/easybmp/files/easybmp/EasyBMP Library Files Version {self.version}/EasyBMP_{self.version}.zip/download",
+            sha256="1ef19cc92b18a8ab272bf68a4ce8ce862d08208d4e675560c33fbd04d997c469",
+            strip_root=False)
+        patch(self, patch_file="patches/001-mevis.patch")
+        copy(self, "CMakeLists.txt", src=self.source_path.parent, dst=self.source_path)
 
-
-    def _configure_cmake(self):
-        if not self._cmake:
-            self._cmake = CMake(self)
-            self._cmake.definitions["CMAKE_DEBUG_POSTFIX"] = "d"
-            self._cmake.definitions["BUILD_SHARED_LIBS"] = False
-            self._cmake.definitions['CMAKE_POSITION_INDEPENDENT_CODE'] = True
-            self._cmake.configure()
-        return self._cmake
-
+    def generate(self):
+        tc = CMakeToolchain(self)
+        tc.variables["CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS"] = True
+        tc.variables["BUILD_SHARED_LIBS"] = False
+        tc.variables['CMAKE_POSITION_INDEPENDENT_CODE'] = True
+        tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
+        tc.generate()
 
     def build(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
+        cmake.configure()
         cmake.build()
 
-
     def package(self):
-        cmake = self._configure_cmake()
+        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False)
+        cmake = CMake(self)
         cmake.install()
 
-        self.copy("*.pdb", src="lib", dst="bin")
+    def package_info(self):
+        self.cpp_info.set_property("cmake_file_name", "easybmp")
+        self.cpp_info.set_property("cmake_target_name", "EasyBMP::EasyBMP")
+        self.cpp_info.libs = collect_libs(self)
 
-        self.default_package()
+

@@ -43,12 +43,6 @@
 #pragma once
 
 
-class QWidget;
-class SoQtGLWidget;
-class QGLWidget;
-class QGLFormat;
-
-
 //! The SoContextShareManager does automatic GL context sharing between
 //! "share groups" with the same id. Since sharing isn't guaranteed to
 //! succeed, the effective share id (which isn't the same as the group
@@ -56,23 +50,6 @@ class QGLFormat;
 class SoQtContextShareManager
 {
 public:
-    //! Create new GL widget with given format and parent and try automatic
-    //! context sharing with other widgets (created with this method)
-    //! with the same shareGroup id. [Attention: Traverses linear list!]
-    //! A shareGroup of -1 means no sharing.
-    //!
-    //! Depending on the result of useNewOpenGLWidget this returns a
-    //! SoQtRealQOpenGLWidget or SoQtRealQGLWidget.
-    static QWidget* createWidget(const QGLFormat& format, SoQtGLWidget* parent);
-
-    //! Create a QGLWidget for sharing the context, and also set this context
-    //! for sharing between new-style OpenGL widgets, if activated for the application.
+    //! Initialize OpenGL context for sharing between widgets
     static void init();
-
-    //! Return the QGLWidget to use for context sharing
-    static QGLWidget* getContextSharingWidget() { return _shareWidget; }
-
-private:
-    //! internal list of widgets
-    static QGLWidget* _shareWidget;
 };

@@ -1,0 +1,21 @@
+diff --git a/src/core/api/qwebenginemessagepumpscheduler.cpp b/src/core/api/qwebenginemessagepumpscheduler.cpp
+index a435e2c..f185a22 100644
+--- a/src/core/api/qwebenginemessagepumpscheduler.cpp
++++ b/src/core/api/qwebenginemessagepumpscheduler.cpp
+@@ -34,10 +34,12 @@ void QWebEngineMessagePumpScheduler::scheduleDelayedWork(int delay)
+ 
+ void QWebEngineMessagePumpScheduler::timerEvent(QTimerEvent *ev)
+ {
+-    Q_ASSERT(!ev->timerId() || m_timerId == ev->timerId());
+-    killTimer(m_timerId);
+-    m_timerId = 0;
+-    m_callback();
++   if (!ev->timerId() || m_timerId == ev->timerId())
++   {
++       killTimer(m_timerId);
++       m_timerId = 0;
++       m_callback();
++   }
+ }
+ 
+ #include "moc_qwebenginemessagepumpscheduler_p.cpp"

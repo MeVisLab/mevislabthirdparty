@@ -1,4 +1,7 @@
+#include <vector>
+#include <string>
 #include <iostream>
+#include <iterator>
 #include <boost/asio.hpp>
 #include <boost/regex.hpp>
 #include <boost/thread.hpp>
@@ -6,8 +9,39 @@
 #include <boost/filesystem.hpp>
 
 
+#include <boost/iostreams/device/array.hpp>
+#include <boost/iostreams/device/back_inserter.hpp>
+#include <boost/iostreams/filtering_stream.hpp>
+#include <boost/iostreams/filter/zlib.hpp>
+
+namespace io = boost::iostreams;
+
+
+void zlib_iostream()
+{
+  // taken from https://theboostcpplibraries.com/boost.iostreams-filters, Example 34.8,
+  // then modified
+  std::vector<char> v;
+  io::back_insert_device<std::vector<char>> snk{v};
+  io::filtering_ostream os;
+  os.push(io::zlib_compressor{});
+  os.push(snk);
+  os << "This is Boost (compressed/decompressed with zlib)" << std::flush;
+  os.pop();
+
+  io::array_source src{v.data(), v.size()};
+  io::filtering_istream is;
+  is.push(io::zlib_decompressor{});
+  is.push(src);
+  std::string s(std::istreambuf_iterator<char>(is), {});
+  std::cout << s << '\n';
+}
+
+
 int main(int argc, char *argv[])
 {
+    zlib_iostream();
+
     // boost thread
     boost::thread workerThread([]() { boost::this_thread::sleep(boost::posix_time::microseconds(3)); });
 

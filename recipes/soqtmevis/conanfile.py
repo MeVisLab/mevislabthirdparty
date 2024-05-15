@@ -1,53 +1,61 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans import CMake
-from conans import tools
-from conans.errors import ConanException
-import os
+from conan import ConanFile
+from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
+from conan.tools.files import copy, collect_libs
+from conan.tools.env import VirtualRunEnv
+
+required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
+    name = "soqtmevis"
+    version = "1.2.0"
+    license = "LGPL-2.1-only"
+    homepage = "https://mevislab.de"
+    description = "Qt Inventor Binding"
+    settings = "os", "arch", "compiler", "build_type"
+    package_type = "shared-library"
+    exports_sources = "sources/*", "LICENSE"
 
-    _cmake = None
-
-    def system_requirements(self):
-        installer = tools.SystemPackageTool()
-        packages = []
-
-        if tools.os_info.linux_distro in ["ubuntu", "debian"]:
-            packages.append('libglu1-mesa-dev')
-            packages.append('libfreetype6-dev')
-            packages.append('libfontconfig-dev')
-
-        if packages:
-            installer.install_packages(packages)
+    mlab_hooks = {
+        'dependencies.system_libs': [
+            'libfontconfig.so.1',
+            'libGLU.so.1',
+        ]
+    }
 
     def requirements(self):
-        channel = "@mevislab/stable"
-        self.requires("glew/[>=2.0.0]" + channel)
-        self.requires('openinventor/[>=2.5.1]' + channel)
-        self.requires("qt5/[>=5.12.7]" + channel)
+        self.requires("glew/[>=2.0.0]")
+        self.requires("openinventor/[>=2.5.1]", transitive_headers=True)
+        self.requires("qtbase/[>=6.5]")
 
+    def layout(self):
+        cmake_layout(self, src_folder="sources")
 
-    def _configure_cmake(self):
-        if not self._cmake:
-            self._cmake = CMake(self)
+    def generate(self):
+        env = VirtualRunEnv(self)
+        env.generate(scope="build")
 
-            self._cmake.definitions["CMAKE_DEBUG_POSTFIX"] = "d"
-            self._cmake.definitions["BUILD_SHARED_LIBS"] = True
-            self._cmake.configure(source_folder="sources")
-        return self._cmake
-
+        deps = CMakeDeps(self)
+        deps.generate()
+        tc = CMakeToolchain(self)
+        tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
+        tc.variables["BUILD_SHARED_LIBS"] = True
+        tc.variables["CMAKE_INSTALL_RPATH"] = "$ORIGIN;$ORIGIN/../lib"
+        tc.variables["OpenGL_GL_PREFERENCE"] = "LEGACY"
+        tc.generate()
 
     def build(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
+        cmake.configure()
         cmake.build()
 
-
     def package(self):
-        cmake = self._configure_cmake()
+        copy(self, "LICENSE", src=self.source_path.parent, dst=self.package_path / "licenses")
+        cmake = CMake(self)
         cmake.install()
-        self.patch_binaries()
-        self.default_package()
+
+    def package_info(self):
+        self.cpp_info.set_property("cmake_find_mode", "both")
+        self.cpp_info.set_property("cmake_file_name", "SoQtMeVis")
+        self.cpp_info.set_property("cmake_target_name", "SoQtMeVis::SoQtMeVis")
+        self.cpp_info.libs = collect_libs(self)

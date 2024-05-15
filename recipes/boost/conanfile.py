@@ -1,13 +1,42 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans.client.build.cppstd_flags import cppstd_flag
-from conans.model.version import Version
-from conans import tools
+"""
+Parts of the recipe are taken from the Conan Center Index (https://github.com/conan-io/conan-center-index),
+licensed under the MIT License.
+"""
+
 import os
+from shutil import which
+
+from conan import ConanFile
+from conan.tools.build.flags import cppstd_flag
+from conan.tools.env import Environment
+from conan.tools.files import get, copy, collect_libs, files
+from conan.tools.microsoft import is_msvc
+from conan.tools.layout import basic_layout
+from conan.tools.microsoft.visual import msvc_version_to_toolset_version
+
+required_conan_version = ">=2.2.2"
+
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
+    name = "boost"
+    display_name = "Boost"
+    mli_name = "None"
+    version = "1.84.0"
+    homepage = "https://www.boost.org"
+    description = "Boost provides free peer-reviewed portable C++ source libraries"
+    license = "BSL-1.0"
+    settings = "os", "compiler", "arch", "build_type"
+    package_type = "shared-library"
+    exports_sources = ["patches/*"]
+
+    mlab_hooks = {
+        "debug_suffix.exclude": [
+            "libboost_exception-mt-d-x64.a",
+            "libboost_exception-mt-gd-x64.lib",
+            "libboost_*-mt-d-x64.*",
+            "boost_*-mt-gd-x64.*",
+        ],
+    }
 
     boost_components = [
         "atomic",
@@ -30,181 +59,161 @@ class ConanRecipe(ConanFile):
         "thread",
         "timer",
         "type_erasure",
-        #"python",          # TODO enable boost python
     ]
 
-
-    # TODO fix requirements
     def requirements(self):
-        channel = "@{0}/{1}".format(self.user, self.channel)
-    #    self.requires("BZip2/[>=1.0.6]" + channel)
-    #    self.requires("LZMA/[>=5.2.3]" + channel)
-    #    self.requires("SQLite3/[>=3.27.0]" + channel)
-    #    self.requires("ZLIB/[>=1.2.11]" + channel)
-    #    self.requires("ZStd/[>=1.4.0]" + channel)
+        self.requires("zlib/[>=1.2.11]")
 
-        # self.requires('python/3.9.7' + channel)
-
+    def layout(self):
+        basic_layout(self, src_folder="src")
 
     def source(self):
-        self.default_source()
-        os.rename(os.path.join("sources", "LICENSE_1_0.txt"), os.path.join("sources", "LICENSE"))
-
+        major, minor, patch = self.version.split(".")[:3]
+        get(self,
+            sha256="cc4b893acf645c9d4b698e9a0f08ca8846aa5d6c68275c14c3e7949c24109454",
+            url=f"https://boostorg.jfrog.io/artifactory/main/release/{self.version}/source/boost_{major}_{minor}_{patch}.tar.bz2",
+            strip_root=True
+        )
 
     def build(self):
         self._bootstrap()
 
         flags = self._get_build_flags()
-        b2dir = os.path.join(self.source_folder, "sources", "tools", "build")
-        b2 = os.path.join(b2dir, ("b2.exe" if tools.os_info.is_windows else "b2"))
-        b2 += " %s" % (" ".join(flags))
-        b2 += " -j%s" % tools.cpu_count()
-        b2 += " --abbreviate-paths"
-        b2 += " --debug-configuration"
-        b2 += " --disable-icu"
-        b2 += ' --build-dir="%s"' % self.build_folder
+        b2dir = self.source_path / "tools" / "build"
+        b2exe = b2dir / ("b2.exe" if self.settings.os == "Windows" else "b2")
+        b2 = (f'{b2exe} {" ".join(flags)} '
+              f'-j{os.cpu_count()} '
+              f'--abbreviate-paths '
+              f'--debug-configuration '
+              f'--disable-icu '
+              f'--build-dir="{self.build_folder}"')
 
-        with tools.vcvars(self.settings) if self.settings.compiler == "Visual Studio" else tools.no_op():
-            with tools.chdir(os.path.join(self.source_folder, "sources")):
-                # to locate user config jam (BOOST_BUILD_PATH)
-                with tools.environment_append({"BOOST_BUILD_PATH": os.path.join(self.source_folder, "sources", "tools", "build")}):
-                    self.run(b2,run_environment=True)
-
+        # to locate user config jam (BOOST_BUILD_PATH)
+        with files.chdir(self, self.source_folder):
+            env = Environment()
+            env.append_path("BOOST_BUILD_PATH", str(b2dir))
+            with env.vars(self).apply():
+                self.run(b2)
 
     def package(self):
-        self.copy(pattern="*", dst="include/boost", src="sources/boost", excludes="*/CMakeLists.txt")
+        copy(self, pattern="*", src=self.source_path / "boost",
+             dst=self.package_path / "include" / "boost", excludes="*/CMakeLists.txt")
+        copy(self, "LICENSE_1_0.txt", src=self.source_path, dst=self.package_path / "licenses")
 
-        out_lib_dir = os.path.join("sources", "stage", "lib")
-        self.copy(pattern="*.a",        dst="lib", src=out_lib_dir, keep_path=False)
-        self.copy(pattern="*.so",       dst="lib", src=out_lib_dir, keep_path=False, symlinks=True)
-        self.copy(pattern="*.so.*",     dst="lib", src=out_lib_dir, keep_path=False, symlinks=True)
-        self.copy(pattern="*.dylib*",   dst="lib", src=out_lib_dir, keep_path=False)
-        self.copy(pattern="*.lib",      dst="lib", src=out_lib_dir, keep_path=False)
-        self.copy(pattern="*.dll",      dst="bin", src=out_lib_dir, keep_path=False)
-        self.copy(pattern="boost*.pdb", dst="bin", src=out_lib_dir, keep_path=False)
-
-        self.default_package()
-
+        out_lib_dir = self.source_path / "stage" / "lib"
+        copy(self, pattern="*.a", dst=self.package_path / "lib", src=out_lib_dir, keep_path=False)
+        copy(self, pattern="*.so", dst=self.package_path / "lib", src=out_lib_dir, keep_path=False)
+        copy(self, pattern="*.so.*", dst=self.package_path / "lib", src=out_lib_dir, keep_path=False)
+        copy(self, pattern="*.dylib*", dst=self.package_path / "lib", src=out_lib_dir, keep_path=False)
+        copy(self, pattern="*.lib", dst=self.package_path / "lib", src=out_lib_dir, keep_path=False)
+        copy(self, pattern="*.dll", dst=self.package_path / "bin", src=out_lib_dir, keep_path=False)
+        copy(self, pattern="boost*.pdb", dst=self.package_path / "bin", src=out_lib_dir, keep_path=False)
 
     def package_info(self):
-        self.cpp_info.name = "Boost"
-        self.cpp_info.names["pkg_config"] = "boost"
-
-        self.env_info.BOOST_ROOT = self.package_folder
+        self.cpp_info.set_property("cmake_file_name", "Boost")
+        self.cpp_info.set_property("cmake_target_name", "Boost::boost")
 
         self.cpp_info.components["headers"].libs = []
+        self.cpp_info.components["headers"].set_property("cmake_target_name", "Boost::headers")
         self.cpp_info.components["headers"].defines.append("BOOST_ALL_DYN_LINK")
+
+        # PCL 1.13.1 still uses deprecated asio and filesystem functions
+        # self.cpp_info.components["headers"].defines.append("BOOST_ASIO_NO_DEPRECATED")
+        # self.cpp_info.components["headers"].defines.append("BOOST_FILESYSTEM_NO_DEPRECATED")
+        self.cpp_info.components["headers"].defines.append("BOOST_BEAST_NO_DEPRECATED")
+        self.cpp_info.components["headers"].defines.append("BOOST_PROCESS_NO_DEPRECATED")
         self.cpp_info.components["headers"].defines.append("BOOST_SYSTEM_NO_DEPRECATED")
 
-        if self.settings.compiler == "Visual Studio":
+        if is_msvc(self):
             # Avoid WINAPI mismatch in boost::log:
             self.cpp_info.components["headers"].defines.append("BOOST_USE_WINAPI_VERSION=0x600")
-
             self.cpp_info.components["headers"].defines.append("BOOST_ALL_NO_LIB")
-
-        # TODO PCL 1.12.0 uses deprecated filesystem and asio API's.
-        #      Check again with newer PCL version when available.
-        #self.cpp_info.components["headers"].defines.append("BOOST_ASIO_NO_DEPRECATED")
-        #self.cpp_info.components["headers"].defines.append("BOOST_FILESYSTEM_NO_DEPRECATED")
 
         # Boost::boost is an alias of Boost::headers
         self.cpp_info.components["_boost_cmake"].requires = ["headers"]
-        self.cpp_info.components["_boost_cmake"].names["cmake_find_package"] = "boost"
-        self.cpp_info.components["_boost_cmake"].names["cmake_find_package_multi"] = "boost"
 
         self.cpp_info.components["diagnostic_definitions"].libs = []
         self.cpp_info.components["diagnostic_definitions"].defines = ["BOOST_LIB_DIAGNOSTIC"]
+        self.cpp_info.components["diagnostic_definitions"].set_property(
+            "cmake_target_name", f"Boost::diagnostic_definitions")
 
         # A target defined by CMake's original Boost find package and used by openvdb
         self.cpp_info.components["disable_autolinking"].libs = []
-        self.cpp_info.components['disable_autolinking'].defines = ["BOOST_ALL_NO_LIB"]
+        self.cpp_info.components["disable_autolinking"].defines = ["BOOST_ALL_NO_LIB"]
+        self.cpp_info.components["disable_autolinking"].set_property("cmake_target_name", f"Boost::disable_autolinking")
 
-        for lib in tools.collect_libs(self):
+        for lib in collect_libs(self):
             # remove boost_ prefix and any suffix
-            comp = lib[len("boost_"):].split('-')[0]
+            comp = lib[lib.index("_") + 1:].split('-')[0]
 
             self.output.info(f"creating component {comp}")
 
             self.cpp_info.components[comp].requires = ["headers"]
             self.cpp_info.components[comp].libs = [lib]
-            self.cpp_info.components[comp].bindirs = "lib"
+            self.cpp_info.components[comp].bindirs = ["lib"]
+            self.cpp_info.components[comp].set_property("cmake_target_name", f"Boost::{comp}")
 
-            if comp == "thread" and self.settings.os == "Linux":
-                self.cpp_info.components[comp].libs.append("pthread")
-
+        if self.settings.os == "Linux":
+            self.cpp_info.components["thread"].system_libs.extend(["m", "pthread"])
 
     def _bootstrap(self):
-        folder = os.path.join(self.source_folder, "sources", "tools", "build")
+        folder = self.source_path / "tools" / "build"
         try:
-            bootstrap = "bootstrap.bat" if tools.os_info.is_windows else "sh bootstrap.sh"
-            with tools.vcvars(self.settings) if self.settings.compiler == "Visual Studio" else tools.no_op():
-                with tools.chdir(folder):
-                    option = "" if tools.os_info.is_windows else "-with-toolset="
-                    cmd = "%s --without-icu %s%s" % (bootstrap, option, self._boostrap_toolset())
-                    self.output.info(cmd)
-                    self.run(cmd)
+            bootstrap = "bootstrap.bat" if self.settings.os == "Windows" else "sh bootstrap.sh"
+            with files.chdir(self, folder):
+                option = "" if self.settings.os == "Windows" else "-with-toolset="
+                cmd = f"{bootstrap} --without-icu {option}{self._boostrap_toolset()}"
+                self.output.info(cmd)
+                self.run(cmd)
         except Exception as ex:
-            self.output.warn(str(ex))
-            if os.path.exists(os.path.join(folder, "bootstrap.log")):
-                self.output.warn(tools.load(os.path.join(folder, "bootstrap.log")))
+            self.output.warning(str(ex))
+            log_path = folder / "bootstrap.log"
+            if log_path.exists():
+                self.output.warning(files.load(self, log_path))
             raise
-
         self.output.info("boost bootstrap done")
 
-
     def _boostrap_toolset(self):
-        if self.settings.compiler == "Visual Studio":
-            comp_ver = self.settings.compiler.version
-            return "vc%s" % ("141" if Version(str(comp_ver)) >= "15" else comp_ver)
+        if is_msvc(self):
+            vc_version = msvc_version_to_toolset_version(self.settings.compiler.version)[1:]
+            return f"vc{vc_version}"
 
         with_toolset = {"apple-clang": "clang"}.get(str(self.settings.compiler), str(self.settings.compiler))
         # fallback for the case when no unversioned gcc/clang is available
-        if with_toolset in ["gcc", "clang"] and not tools.which(with_toolset):
+        if with_toolset in ["gcc", "clang"] and not which(with_toolset):
             with_toolset = "cc"
         return with_toolset
-
 
     def _b2_os(self):
         return {
             "Windows": "windows",
             "Linux": "linux",
-            "Android": "android",
             "Macos": "darwin",
-            "iOS": "iphone"
         }.get(str(self.settings.os))
-
 
     def _b2_address_model(self):
         if str(self.settings.arch) in ["x86_64", "armv8"]:
             return "64"
         return "32"
 
-
     def _b2_binary_format(self):
         return {
             "Windows": "pe",
             "Linux": "elf",
-            "Android": "elf",
             "Macos": "mach-o",
-            "iOS": "mach-o"
         }.get(str(self.settings.os))
 
-
     def _b2_architecture(self):
-        if str(self.settings.arch).startswith('x86'):
-            return 'x86'
-        elif str(self.settings.arch).startswith('arm'):
-            return 'arm'
-        return None
-
+        for arch in ("x86", "arm"):
+            if str(self.settings.arch).startswith(arch):
+                return arch
 
     def _b2_abi(self):
-        if str(self.settings.arch).startswith('x86'):
+        if str(self.settings.arch).startswith("x86"):
             return "ms" if self.settings.os == "Windows" else "sysv"
-        elif str(self.settings.arch).startswith('arm'):
+        elif str(self.settings.arch).startswith("arm"):
             return "aapcs"
         return None
-
 
     def _get_build_flags(self):
         flags = []
@@ -222,82 +231,59 @@ class ConanRecipe(ConanFile):
             flags.append("abi=%s" % self._b2_abi())
 
         flags.append("--layout=tagged")
-        flags.append("-sBOOST_BUILD_PATH=%s" % os.path.join(self.source_folder, "sources", "tools", "build"))
+        flags.append(f"-sBOOST_BUILD_PATH={self.source_path / 'sources' / 'tools' / 'build'}")
 
         # TODO fix requirements
-        flags.append("-sNO_ZLIB=1")
         flags.append("-sNO_BZIP2=1")
+        flags.append("-sNO_ZLIB=0")
         flags.append("-sNO_LZMA=1")
         flags.append("-sNO_ZSTD=1")
 
-        if self.settings.compiler == "Visual Studio":
+        zlib_info = self.dependencies["zlib"].cpp_info
+        zlib_name = "zlib" if self.settings.os == "Windows" else "z"
+        debug_suffix = "_d" if self.settings.build_type == "Debug" else ""
+        flags.append('-sZLIB_INCLUDE="%s"' % zlib_info.includedirs[0].replace('\\', '/'))
+        flags.append('-sZLIB_LIBPATH="%s"' % zlib_info.libdirs[0].replace('\\', '/'))
+        flags.append(f'-sZLIB_BINARY={zlib_name}{debug_suffix}')
+
+        flags.append("boost.locale.iconv=on")
+        flags.append("boost.locale.icu=off")
+
+        if is_msvc(self):
             # Avoid WINAPI mismatch in boost::log:
             flags.append("define=BOOST_USE_WINAPI_VERSION=0x600")
-
             flags.append("runtime-link=shared")
 
         flags.append("threading=multi")
         flags.append("link=shared")
         flags.append("variant=%s" % ("debug" if self.settings.build_type == "Debug" else "release"))
-
-        flags.extend([ "--with-" + c for c in self.boost_components ])
-
-        toolset, version, _ = self._get_toolset_version_and_exe()
-        if tools.os_info.is_windows:
-            flags.append("toolset=%s-%s" % (toolset,version) )
-        else:
-            flags.append("toolset=%s" % toolset)
+        flags.extend(["--with-" + c for c in self.boost_components])
+        flags.append(self._get_toolset_flag())
 
         if self.settings.get_safe("compiler.cppstd"):
-            flags.append("cxxflags=%s" % cppstd_flag(
-                self.settings.get_safe("compiler"),
-                self.settings.get_safe("compiler.version"),
-                self.settings.get_safe("compiler.cppstd")
-            ))
+            flags.append(f"cxxflags={cppstd_flag(self)}")
 
         cxx_flags = []
         if self.settings.os != "Windows":
             cxx_flags.append("-fPIC")
 
-        if self.settings.os != "Android":
-            try:
-                if str(self.settings.compiler.libcxx) == "libstdc++":
-                    flags.append("define=_GLIBCXX_USE_CXX11_ABI=0")
-                elif str(self.settings.compiler.libcxx) == "libstdc++11":
-                    flags.append("define=_GLIBCXX_USE_CXX11_ABI=1")
-                if "clang" in str(self.settings.compiler):
-                    if str(self.settings.compiler.libcxx) == "libc++":
-                        cxx_flags.append("-stdlib=libc++")
-                        flags.append('linkflags="-stdlib=libc++"')
-                    else:
-                        cxx_flags.append("-stdlib=libstdc++")
-            except:
-                pass
-
-        if tools.is_apple_os(self.settings.os):
-            if self.settings.get_safe("os.version"):
-                cxx_flags.append(tools.apple_deployment_target_flag(self.settings.os, self.settings.os.version))
-
-        cxx_flags = 'cxxflags="%s"' % " ".join(cxx_flags) if cxx_flags else ""
-        flags.append(cxx_flags)
+        if self.settings.get_safe("compiler.libcxx") == "libstdc++":
+            flags.append("define=_GLIBCXX_USE_CXX11_ABI=0")
+        elif self.settings.get_safe("compiler.libcxx") == "libstdc++11":
+            flags.append("define=_GLIBCXX_USE_CXX11_ABI=1")
+        if "clang" in str(self.settings.compiler):
+            if self.settings.get_safe("compiler.libcxx") == "libc++":
+                cxx_flags.append("-stdlib=libc++")
+                flags.append('linkflags="-stdlib=libc++"')
+            else:
+                cxx_flags.append("-stdlib=libstdc++")
+        if cxx_flags:
+            flags.append(f'cxxflags="{" ".join(cxx_flags)}"')
         return flags
 
-
-    def _get_toolset_version_and_exe(self):
-        compiler_version = str(self.settings.compiler.version)
-        compiler = str(self.settings.compiler)
-
-        if compiler == "gcc":
-            return compiler, compiler_version[0], ""
-        elif self.settings.compiler == "clang":
-            return compiler, compiler_version, ""
-        elif self.settings.compiler == "apple-clang":
-            return "clang", compiler_version, tools.XCRun(self.settings).cxx
-        elif self.settings.os == "Android" and self.settings.compiler == "clang":
-            return "clang-linux", compiler_version, ""
-        elif self.settings.compiler == "Visual Studio":
-            cversion = self.settings.compiler.version
-            _msvc_version = "14.1" if Version(str(cversion)) >= "15" else "%s.0" % cversion
-            return "msvc", _msvc_version, ""
-
-        return compiler, compiler_version, ""
+    def _get_toolset_flag(self):
+        toolset = str(self.settings.compiler)
+        if is_msvc(self):
+            vc_version = msvc_version_to_toolset_version(self.settings.compiler.version)[1:]
+            toolset = f"msvc-{vc_version[:2]}.{vc_version[2]}"
+        return f"toolset={toolset}"

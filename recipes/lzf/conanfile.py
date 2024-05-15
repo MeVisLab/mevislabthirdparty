@@ -1,33 +1,43 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans import CMake
-from conans import tools
-from conans.errors import ConanException
 import os
+
+from conan import ConanFile
+from conan.tools.cmake import CMake, CMakeToolchain
+from conan.tools.files import copy, collect_libs
+
+required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
+    name = "lzf"
+    version = "3.5.0"
+    description = "Fast LZ compression library"
+    homepage = "http://oldhome.schmorp.de/marc/liblzf.html"
+    license = "BSD-2-Clause"
+    package_type = "static-library"
+    settings = "os", "arch", "compiler", "build_type"
+    exports_sources = "LICENSE", "sources/**"
 
-    _cmake = None
-
-    def _configure_cmake(self):
-        if not self._cmake:
-            self._cmake = CMake(self)
-            self._cmake.definitions["CMAKE_DEBUG_POSTFIX"] = "d"
-            self._cmake.definitions["BUILD_SHARED_LIBS"] = False
-            self._cmake.definitions['CMAKE_POSITION_INDEPENDENT_CODE'] = True
-            self._cmake.configure(source_folder="sources")
-        return self._cmake
-
+    def generate(self):
+        tc = CMakeToolchain(self)
+        tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
+        tc.variables["BUILD_SHARED_LIBS"] = False
+        tc.variables['CMAKE_POSITION_INDEPENDENT_CODE'] = True
+        tc.cache_variables['CONAN_LZF_VERSION'] = f"{self.version}"
+        tc.generate()
 
     def build(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
+        cmake.configure(build_script_folder=os.path.join(self.source_folder, "sources"))
         cmake.build()
 
-
     def package(self):
-        cmake = self._configure_cmake()
+        copy(self, "LICENSE", src=self.source_path, dst=self.package_path / "licenses")
+        cmake = CMake(self)
         cmake.install()
-        self.default_package()
+
+    def package_info(self):
+        self.cpp_info.set_property("cmake_find_mode", "both")
+        self.cpp_info.set_property("cmake_file_name", "LZF")
+        self.cpp_info.set_property("cmake_target_name", "LZF::LZF")
+        self.cpp_info.set_property("pkg_config_name", "LZF")
+        self.cpp_info.libs = collect_libs(self)

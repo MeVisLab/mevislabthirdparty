@@ -1,0 +1,13 @@
+diff --git a/src/xercesc/util/Platforms/Win32/Win32PlatformUtils.cpp b/src/xercesc/util/Platforms/Win32/Win32PlatformUtils.cpp
+index 9f42487..bfc1230 100644
+--- a/src/xercesc/util/Platforms/Win32/Win32PlatformUtils.cpp
++++ b/src/xercesc/util/Platforms/Win32/Win32PlatformUtils.cpp
+@@ -686,7 +686,7 @@ XMLPlatformUtils::compareAndSwap(       void**      toFill
+                                 , const void* const newValue
+                                 , const void* const toCompare)
+ {
+-#if defined WIN64
++#if defined WIN64 || defined _WIN64
+     return ::InterlockedCompareExchangePointer(toFill, (void*)newValue, (void*)toCompare);
+ #else
+ 

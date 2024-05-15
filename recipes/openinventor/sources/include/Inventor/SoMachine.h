@@ -72,9 +72,6 @@
  */
 
 #if defined(WIN32)
-#if !defined(__i386__)
-#define __i386__ 1
-#endif /* not __i386__ */
 
 #define MACHINE_WORD_FORMAT     DGL_LITTLE_ENDIAN
 #define MACHINE_FLOAT_FORMAT    DGL_NON_IEEE
@@ -190,7 +187,7 @@
  */
 
 #if MACHINE_FLOAT_FORMAT == DGL_NON_IEEE
-#if __i386__ || __x86_64__ || __ia64__ || __arm__ || __arm64__ || __arch64__
+#if __i386__ || __x86_64__ || _M_X64 || __ia64__ || __arm__ || __arm64__ || __arch64__
 void mem_hton_float(float *t, float *f);
 void mem_ntoh_float(float *t, float *f);
 void mem_hton_double(double *t, double *f);

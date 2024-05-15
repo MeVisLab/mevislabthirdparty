@@ -20,8 +20,6 @@ static PyMethodDef NoMethods[] = {
  Q_DECLARE_METATYPE(QModelIndex)
 
 
-#if PY_MAJOR_VERSION >= 3
-
 static PyModuleDef QtCoreModuleDef = {
   PyModuleDef_HEAD_INIT,
   "QtCore",
@@ -34,28 +32,23 @@ static PyModuleDef QtCoreModuleDef = {
   nullptr
 };
 
-  #define Py_2_3_InitModFunc(name) PyInit_##name(void)
-  #define Py_2_3_ModuleInit(name) PyModule_Create(&QtCoreModuleDef)
-
-#else
-  #define Py_2_3_InitModFunc(name) init##name(void)
-  #define Py_2_3_ModuleInit(name) Py_InitModule(name, NoMethods)
-#endif
+#define PyInitModFunc(name) PyInit_##name(void)
+#define PyModuleInit(name) PyModule_Create(&QtCoreModuleDef)
 
 
 #ifdef UNIX
 PyMODINIT_FUNC
-Py_2_3_InitModFunc(QtCore) ML_LIBRARY_EXPORT_ATTRIBUTE ;
+PyInitModFunc(QtCore) ML_LIBRARY_EXPORT_ATTRIBUTE ;
 #endif
 
 PyMODINIT_FUNC
-Py_2_3_InitModFunc(QtCore)
+PyInitModFunc(QtCore)
 {
   // Initialize PythonQt if not yet done, to support e.g. pylint
   if (!PythonQt::self()) {
     PythonQt::init(PythonQt::IgnoreSiteModule, "_PythonQt");
   }
-  PyObject* module = Py_2_3_ModuleInit("QtCore");
+  PyObject* module = PyModuleInit("QtCore");
   PythonQt_init_QtCore(module);
   PyObject* qtcoreDict = PyModule_GetDict(module);
 
@@ -85,9 +78,7 @@ Py_2_3_InitModFunc(QtCore)
 
   PythonQt::self()->clearNotFoundCachedMembers();
 
-#if PY_MAJOR_VERSION >= 3
   return module;
-#endif
 }
 
 

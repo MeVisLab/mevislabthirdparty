@@ -12,16 +12,6 @@ if(WIN32)
     install(DIRECTORY "{{ rootpath }}/bin/" DESTINATION "MeVisLab/IDE/bin/MESA" FILES_MATCHING PATTERN "*.dll")
 endif()
 
-{%- elif name == 'qt5' %}
-
-install(
-  DIRECTORY "{{ rootpath }}/"
-  DESTINATION "${MEVISLAB_INSTALL_THIRDPARTYDIR}/"
-  USE_SOURCE_PERMISSIONS
-  {{exclude_common}}
-  {{exclude_site_packages}}
-)
-
 {%- elif name == 'python' %}
 
 if(WIN32)
@@ -56,52 +46,13 @@ endif()
 
 {% endif %}
 
-{% if bin_paths %}
-foreach(d {{ bin_paths }})
-  install(
-    DIRECTORY "${d}/"
-    DESTINATION "${MEVISLAB_INSTALL_THIRDPARTYDIR}/bin"
-    USE_SOURCE_PERMISSIONS
-    {{exclude_common}}
-    {{exclude_site_packages}}
-  )
-endforeach()
-{% endif %}
-
-{% if lib_paths %}
-foreach(d {{ lib_paths }})
-  install(
-    DIRECTORY "${d}/"
-    DESTINATION "${MEVISLAB_INSTALL_THIRDPARTYDIR}/lib"
-    USE_SOURCE_PERMISSIONS
-    {{exclude_common}}
-    {{exclude_site_packages}}
-  )
-endforeach()
-{% endif %}
-
-{% if res_paths %}
-foreach(d {{ res_paths }})
-  install(DIRECTORY "${d}/"
-    DESTINATION "${MEVISLAB_INSTALL_THIRDPARTYDIR}/res"
-    USE_SOURCE_PERMISSIONS
-    {{exclude_common}}
-    {{exclude_site_packages}}
-  )
-endforeach()
-{% endif %}
-
-{% if include_paths %}
-foreach(d {{ include_paths }})
-  install(
-    DIRECTORY "${d}/"
-    DESTINATION "${MEVISLAB_INSTALL_THIRDPARTYDIR}/include"
-    USE_SOURCE_PERMISSIONS
-    {{exclude_common}}
-    {{exclude_site_packages}}
-  )
-endforeach()
-{% endif %}
+install(
+  DIRECTORY "{{ rootpath }}/"
+  DESTINATION "${MEVISLAB_INSTALL_THIRDPARTYDIR}/"
+  USE_SOURCE_PERMISSIONS
+  {{exclude_common}}
+  {{exclude_site_packages}}
+)
 
 {% if python_major_version %}
 if(WIN32)
@@ -119,8 +70,7 @@ if(WIN32)
   set(_DST_DIR "${MEVISLAB_INSTALL_THIRDPARTYDIR}/Python/Scripts")
   install(DIRECTORY "${_SRC_DIR}" DESTINATION "${_DST_DIR}" OPTIONAL USE_SOURCE_PERMISSIONS)
 endif()
-{% endif %}
 
 {% endif %}
 
-install(DIRECTORY "{{ rootpath }}/MeVis/ThirdParty/" DESTINATION "${MEVISLAB_INSTALL_THIRDPARTYDIR}" OPTIONAL USE_SOURCE_PERMISSIONS)
+{% endif %}

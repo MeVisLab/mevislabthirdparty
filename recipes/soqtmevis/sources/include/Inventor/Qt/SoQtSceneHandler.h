@@ -109,7 +109,7 @@ public:
     void        reattachAllDevices();
 
     //! Set the window background color when in RGB mode (defaults to black (0,0,0))
-    void        setBackgroundColor (const SbColor &c)
+    virtual void setBackgroundColor (const SbColor &c)
                                 { sceneMgr->setBackgroundColor(c); }
     //! Get the window background color when in RGB mode
     const SbColor&  getBackgroundColor() const

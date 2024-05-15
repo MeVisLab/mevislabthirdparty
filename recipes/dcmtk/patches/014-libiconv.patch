@@ -1,0 +1,14 @@
+diff --git a/CMake/3rdparty.cmake b/CMake/3rdparty.cmake
+index 12169ce..4288950 100644
+--- a/CMake/3rdparty.cmake
++++ b/CMake/3rdparty.cmake
+@@ -425,7 +425,8 @@ if(DCMTK_WITH_DOXYGEN)
+   endif()
+ endif()
+ 
+-if(DCMTK_WITH_ICONV OR DCMTK_WITH_STDLIBC_ICONV)
++set(LIBICONV_SECOND_ARGUMENT_CONST FALSE)
++if(FALSE)
+   include(CheckCXXSourceCompiles)
+   set(CMAKE_REQUIRED_INCLUDES ${LIBICONV_INCDIR})
+   set(CMAKE_REQUIRED_LIBRARIES ${LIBICONV_LIBS})

@@ -1,37 +1,32 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.27)
 project(QtService)
 
-include(conanbuildinfo.cmake)
-conan_basic_setup()
-
 set(CMAKE_AUTOMOC ON)
-
-set(_UNUSED ${CMAKE_EXPORT_NO_PACKAGE_REGISTRY} ${CMAKE_INSTALL_BINDIR} ${CMAKE_INSTALL_DATAROOTDIR} ${CMAKE_INSTALL_INCLUDEDIR} ${CMAKE_INSTALL_LIBDIR} ${CMAKE_INSTALL_LIBEXECDIR} ${CMAKE_INSTALL_OLDINCLUDEDIR} ${CMAKE_INSTALL_SBINDIR})
 
 add_library(QtService "")
 
 add_definitions(-DUNICODE -D_UNICODE)
 
 target_sources(QtService PRIVATE
-    sources/src/qtservice.cpp
-    sources/src/qtservice.h
-    sources/src/qtservice_p.h
+    src/qtservice/src/qtservice.cpp
+    src/qtservice/src/qtservice.h
+    src/qtservice/src/qtservice_p.h
 )
 
 if(WIN32)
-  target_sources(QtService PRIVATE sources/src/qtservice_win.cpp)
+  target_sources(QtService PRIVATE src/qtservice/src/qtservice_win.cpp)
 else()
   target_sources(QtService PRIVATE
-      sources/src/qtservice_unix.cpp
-      sources/src/qtunixserversocket.cpp
-      sources/src/qtunixserversocket.h
-      sources/src/qtunixsocket.cpp
-      sources/src/qtunixsocket.h
+      src/qtservice/src/qtservice_unix.cpp
+      src/qtservice/src/qtunixserversocket.cpp
+      src/qtservice/src/qtunixserversocket.h
+      src/qtservice/src/qtunixsocket.cpp
+      src/qtservice/src/qtunixsocket.h
   )
 endif()
 
-find_package(Qt5 COMPONENTS Core Network REQUIRED)
-target_link_libraries(QtService PUBLIC Qt5::Core Qt5::Network)
+find_package(Qt6 COMPONENTS Core Network REQUIRED)
+target_link_libraries(QtService PUBLIC Qt6::Core Qt6::Network)
 
 if(WIN32)
   target_compile_definitions(QtService PRIVATE $<BUILD_INTERFACE:QT_QTSERVICE_EXPORT>)
@@ -47,10 +42,10 @@ install(TARGETS QtService
 )
 
 install(FILES
-    sources/src/QtService
-    sources/src/QtServiceBase
-    sources/src/QtServiceController
-    sources/src/qtservice.h
+    src/qtservice/src/QtService
+    src/qtservice/src/QtServiceBase
+    src/qtservice/src/QtServiceController
+    src/qtservice/src/qtservice.h
   DESTINATION include/QtService
 )
 

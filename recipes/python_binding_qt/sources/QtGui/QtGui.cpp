@@ -17,8 +17,6 @@ static PyMethodDef NoMethods[] = {
     {nullptr, nullptr, 0, nullptr}        /* Sentinel */
 };
 
-#if PY_MAJOR_VERSION >= 3
-
 static PyModuleDef QtGuiModuleDef = {
   PyModuleDef_HEAD_INIT,
   "QtGui",
@@ -31,29 +29,24 @@ static PyModuleDef QtGuiModuleDef = {
   nullptr
 };
 
-  #define Py_2_3_InitModFunc(name) PyInit_##name(void)
-  #define Py_2_3_ModuleInit(name) PyModule_Create(&QtGuiModuleDef)
-
-#else
-  #define Py_2_3_InitModFunc(name) init##name(void)
-  #define Py_2_3_ModuleInit(name) Py_InitModule(name, NoMethods)
-#endif
+#define PyInitModFunc(name) PyInit_##name(void)
+#define PyModuleInit(name) PyModule_Create(&QtGuiModuleDef)
 
 
 #ifdef UNIX
 PyMODINIT_FUNC
-Py_2_3_InitModFunc(QtGui) ML_LIBRARY_EXPORT_ATTRIBUTE ;
+PyInitModFunc(QtGui) ML_LIBRARY_EXPORT_ATTRIBUTE ;
 #endif
 
 PyMODINIT_FUNC
-Py_2_3_InitModFunc(QtGui)
+PyInitModFunc(QtGui)
 {
   // these are needed for QGraphicsWidget::layout and QGraphicsObject::effect
   qRegisterMetaType<QGraphicsLayout*>("QGraphicsLayout*");
   qRegisterMetaType<QGraphicsEffect*>("QGraphicsEffect*");
 
   PyObject* qtcore = PyImport_ImportModule("PythonQt.QtCore");
-  PyObject* module = Py_2_3_ModuleInit("QtGui");
+  PyObject* module = PyModuleInit("QtGui");
   PythonQt_init_QtGui(module);
   PyObject* qtguiDict = PyModule_GetDict(module);
 
@@ -82,9 +75,7 @@ Py_2_3_InitModFunc(QtGui)
 
   PythonQt::self()->clearNotFoundCachedMembers();
 
-#if PY_MAJOR_VERSION >= 3
   return module;
-#endif
 }
 
 

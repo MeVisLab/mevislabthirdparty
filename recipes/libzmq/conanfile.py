@@ -1,55 +1,87 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans import tools
-from conans import CMake
-import os
+from conan import ConanFile
+from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout, CMakeDeps
+from conan.tools.files import get, patch, rmdir, copy, collect_libs, rm
+
+required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
+    name = "libzmq"
+    version = "4.3.5"
+    homepage = "https://zeromq.org"
+    description = "ZeroMQ core engine in C++, implements ZMTP/3.1"
+    license = "MPL-2.0"
+    settings = "os", "arch", "compiler", "build_type"
+    package_type = "shared-library"
+    exports_sources = ["patches/*"]
 
-    _cmake = None
+    mlab_hooks = {
+        "debug_suffix.exclude": ['libzmq-*-mt-gd-*.dll', 'libzmq-*-mt-gd-*.lib']
+    }
 
+    def layout(self):
+        cmake_layout(self, src_folder="src")
 
     def requirements(self):
-        channel = "@{0}/{1}".format(self.user, self.channel)
-        self.requires('libsodium/[>=1.0.18]' + channel)
+        self.requires('libsodium/[>=1.0.18]')
 
+    def source(self):
+        get(self,
+            sha256="6653ef5910f17954861fe72332e68b03ca6e4d9c7160eb3a8de5a5a913bfab43",
+            url=f"https://github.com/zeromq/libzmq/releases/download/v{self.version}/zeromq-{self.version}.tar.gz",
+            strip_root=True
+        )
+        patch(self, patch_file="patches/001-minimum_cmake_version.patch")
+        rm(self, "FindSodium.cmake", self.source_path / "builds" / "cmake" / "Modules")
 
-    def _configure_cmake(self):
-        if not self._cmake:
-            self.create_cmake_wrapper()
-            self._cmake = CMake(self)
-            self._cmake.definitions['CMAKE_DEBUG_POSTFIX'] = "d"
+    def generate(self):
+        cd = CMakeDeps(self)
+        cd.generate()
 
-            self._cmake.definitions['ENABLE_CURVE'] = True
-            self._cmake.definitions['ENABLE_CPACK'] = False
-            self._cmake.definitions['WITH_LIBSODIUM'] = True
-            self._cmake.definitions['ZMQ_BUILD_TESTS'] = False
-            self._cmake.definitions['WITH_PERF_TOOL'] = False
-            self._cmake.definitions['BUILD_SHARED'] = True
-            self._cmake.definitions['BUILD_STATIC'] = False
-            self._cmake.configure()
-        return self._cmake
+        tc = CMakeToolchain(self)
+        tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
+        tc.variables["CMAKE_INSTALL_RPATH"] = "$ORIGIN;$ORIGIN/../lib"
+        tc.variables['ENABLE_CURVE'] = True
+        tc.variables['ENABLE_CPACK'] = False
+        tc.variables['ENABLE_DRAFTS'] = False
+        tc.variables['ENABLE_WS'] = False
+        tc.variables['WITH_NSS'] = False
+        tc.variables['WITH_TLS'] = False
+        tc.variables['ZMQ_BUILD_TESTS'] = False
+        tc.variables['BUILD_SHARED'] = True
+        tc.variables['BUILD_STATIC'] = False
+        tc.variables['CMAKE_DISABLE_FIND_PACKAGE_AsciiDoc'] = True
+        tc.variables['WITH_DOC'] = False
+        tc.variables['WITH_LIBSODIUM'] = True
+        tc.variables['WITH_LIBBSD'] = False
+        tc.variables['WITH_PERF_TOOL'] = False
 
+        tc.generate()
 
     def build(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
+        cmake.configure()
         cmake.build()
 
-
     def package(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
         cmake.install()
+        copy(self, "LICENSE", src=self.source_path, dst=self.package_path / "licenses")
+        copy(self, "*.pdb", src=self.source_path / "bin", dst=self.package_path / "bin")
 
-        self.copy("*.pdb", src="bin", dst="bin")
+        rmdir(self, self.package_path / "doc")
+        rmdir(self, self.package_path / "share")
+        rmdir(self, self.package_path / "CMake")
+        rmdir(self, self.package_path / "lib" / "cmake")
+        rmdir(self, self.package_path / "lib" / "pkgconfig")
 
-        tools.rmdir(os.path.join(self.package_folder, "doc"))
-        tools.rmdir(os.path.join(self.package_folder, "share"))
-        tools.rmdir(os.path.join(self.package_folder, "CMake"))
-        tools.rmdir(os.path.join(self.package_folder, "lib", "cmake"))
-        tools.rmdir(os.path.join(self.package_folder, "lib", "pkgconfig"))
-
-        self.patch_binaries()
-        self.default_package()
+    def package_info(self):
+        self.cpp_info.set_property("cmake_find_mode", "both")
+        # This is how libzmq itself generates the CMake files
+        self.cpp_info.set_property("cmake_file_name", "ZeroMQ")
+        self.cpp_info.set_property("cmake_target_name", "libzmq")
+        # This is how we generated it with Conan 1:
+        self.cpp_info.set_property("cmake_module_file_name", "libzmq")
+        self.cpp_info.set_property("cmake_module_target_name", "libzmq::libzmq")
+        self.cpp_info.set_property("pkg_config_name", "libzmq")
+        self.cpp_info.libs = collect_libs(self)

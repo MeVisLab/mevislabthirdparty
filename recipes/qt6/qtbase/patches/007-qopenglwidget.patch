@@ -1,0 +1,49 @@
+diff --git a/src/openglwidgets/qopenglwidget.cpp b/src/openglwidgets/qopenglwidget.cpp
+index c1640164..d654a336 100644
+--- a/src/openglwidgets/qopenglwidget.cpp
++++ b/src/openglwidgets/qopenglwidget.cpp
+@@ -738,6 +738,12 @@ void QOpenGLWidgetPrivate::recreateFbos()
+     format.setSamples(samples);
+     if (textureFormat)
+         format.setInternalTextureFormat(textureFormat);
++    // MeVis: Check if GL context supports more than 8 bit color depth:
++    else if ((samples <= 1) && (context->format().redBufferSize() > 8)) {
++        // we need an internal texture format which can store the higher bit depth:
++        format.setInternalTextureFormat(GL_RGB10_A2);
++    }
++    // MeVis end
+ 
+     const QSize deviceSize = q->size() * q->devicePixelRatio();
+     fbos[QOpenGLWidget::LeftBuffer] = new QOpenGLFramebufferObject(deviceSize, format);
+@@ -756,12 +762,20 @@ void QOpenGLWidgetPrivate::recreateFbos()
+ 
+     currentTargetBuffer = QOpenGLWidget::LeftBuffer;
+     fbos[currentTargetBuffer]->bind();
++    // MeVis: set the clear color to the background color
++    QColor c = q->palette().brush(q->backgroundRole()).color();
++    float alpha = c.alphaF();
++    context->functions()->glClearColor(c.redF() * alpha, c.greenF() * alpha, c.blueF() * alpha, alpha);
++    // MeVis end
+     context->functions()->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+     ensureRhiDependentResources();
+ 
+     if (stereo) {
+         currentTargetBuffer = QOpenGLWidget::RightBuffer;
+         fbos[currentTargetBuffer]->bind();
++        // MeVis: set the clear color to the background color
++        context->functions()->glClearColor(c.redF() * alpha, c.greenF() * alpha, c.blueF() * alpha, alpha);
++        // MeVis end
+         context->functions()->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+         ensureRhiDependentResources();
+         currentTargetBuffer = QOpenGLWidget::LeftBuffer;
+@@ -1046,7 +1060,9 @@ QImage QOpenGLWidgetPrivate::grabFramebuffer(QOpenGLWidget::TargetBuffer targetB
+         resolvedFbos[targetBuffer]->bind();
+     }
+ 
+-    const bool hasAlpha = q->format().hasAlpha();
++    // MEVIS patch begin
++    const bool hasAlpha = q->format().hasAlpha() && requestedFormat.hasAlpha();
++    // MEVIS patch end
+     QImage res = qt_gl_read_framebuffer(q->size() * q->devicePixelRatio(), hasAlpha, hasAlpha);
+     res.setDevicePixelRatio(q->devicePixelRatio());
+ 

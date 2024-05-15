@@ -1,91 +1,103 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans import CMake
-from conans import tools
-import glob
-import os
+from conan import ConanFile
+from conan.tools.cmake import CMakeToolchain, CMakeDeps, CMake, cmake_layout
+from conan.tools.files import rmdir, collect_libs, copy, get, patch, replace_in_file
+
+required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
-    generators = "cmake", "cmake_find_package"
-
-    _cmake = None
-
+    name = "pcl"
+    version = "1.14.0"
+    homepage = "https://pointclouds.org"
+    description = "The Point Cloud Library (PCL) is a standalone, large scale, " "open project for 2D/3D image and point cloud processing."
+    license = "BSD-3-Clause"
+    package_type = "shared-library"
+    settings = "os", "arch", "compiler", "build_type"
+    exports_sources = ["patches/*", "CMakeLists.txt"]
 
     def requirements(self):
-        channel = f"@{self.user}/{self.channel}"
-        self.requires("boost/[>=1.75.0]" + channel)
-        self.requires("eigen/[>=3.3.9]" + channel)
-        self.requires("flann/[>=1.9.1]" + channel)
-        self.requires("glew/[>=2.0.0]" + channel)
-        self.requires("libpng/[>=1.6.37]" + channel)
-        self.requires("qhull/[>=8.0.2]" + channel)
-        #self.requires("vtk/[>=7.1.1]" + channel)
-        self.requires("zlib/[>=1.2.11]" + channel)
+        self.requires("boost/[>=1.75.0]", transitive_headers=True)
+        self.requires("eigen/[>=3.3.9]", transitive_headers=True)
+        self.requires("flann/[>=1.9.1]")
+        self.requires("glew/[>=2.0.0]")
+        self.requires("libpng/[>=1.6.37]")
+        self.requires("qhull/[>=8.0.2]")
+        # self.requires("vtk/[>=7.1.1]")
+        self.requires("zlib/[>=1.2.11]")
 
+    def layout(self):
+        cmake_layout(self, src_folder="src")
 
-    def _configure_cmake(self):
-        if not self._cmake:
-            self._cmake = CMake(self)
-            self._cmake.definitions["CMAKE_DEBUG_POSTFIX"] = "d"
-            self._cmake.definitions["PCL_SHARED_LIBS"] = True
+    def source(self):
+        get(
+            self,
+            sha256="db7580a83c4a2df4e6e12aa05615fea90cbb4d72e5746772dbb86e4a8590c62c",
+            url=f"https://github.com/PointCloudLibrary/pcl/releases/download/pcl-{self.version}/source.tar.gz",
+            strip_root=True,
+        )
+        patch(self, patch_file="patches/001-boost_no_mpi.patch")
+        patch(self, patch_file="patches/002-missing_export_macro.patch")
+        replace_in_file(self, self.source_path / "CMakeLists.txt", "set(CMAKE_INSTALL_RPATH", "#set(CMAKE_INSTALL_RPATH")
 
-            self._cmake.definitions["BUILD_tools"] = False
-            self._cmake.definitions["BUILD_CUDA"] = False
+    def generate(self):
+        tc = CMakeToolchain(self)
+        tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
+        tc.variables["PCL_SHARED_LIBS"] = True
+        tc.variables["CMAKE_INSTALL_RPATH"] = "$ORIGIN;$ORIGIN/../lib"
 
-            self._cmake.definitions["CMAKE_CXX_STANDARD"] = 17
-            self._cmake.definitions["PCL_ENABLE_MARCHNATIVE"] = False
+        tc.variables["BUILD_tools"] = False
+        tc.variables["BUILD_CUDA"] = False
 
-            self._cmake.definitions["PCL_DISABLE_GPU_TESTS"] = False
-            self._cmake.definitions["PCL_DISABLE_VISUALIZATION_TESTS"] = False
-            self._cmake.definitions["PCL_BUILD_WITH_BOOST_DYNAMIC_LINKING_WIN32"] = True
+        tc.variables["CMAKE_CXX_STANDARD"] = 17
+        tc.variables["CMAKE_DISABLE_FIND_PACKAGE_VTK"] = True
+        tc.variables["PCL_ENABLE_MARCHNATIVE"] = False
+        tc.variables["PCL_DISABLE_GPU_TESTS"] = False
+        tc.variables["PCL_DISABLE_VISUALIZATION_TESTS"] = False
+        tc.variables["PCL_BUILD_WITH_BOOST_DYNAMIC_LINKING_WIN32"] = True
 
-            self._cmake.definitions["WITH_DOCS"] = False
-            self._cmake.definitions["WITH_TUTORIALS"] = False
+        tc.variables["WITH_DOCS"] = False
+        tc.variables["WITH_TUTORIALS"] = False
+        tc.variables["WITH_OPENMP"] = False
+        tc.variables["WITH_LIBUSB"] = False
+        tc.variables["WITH_PNG"] = True
+        tc.variables["WITH_QHULL"] = True
+        tc.variables["WITH_CUDA"] = False
+        tc.variables["WITH_VTK"] = True
+        tc.variables["WITH_QT"] = False
+        tc.variables["WITH_PCAP"] = False
+        tc.variables["WITH_OPENGL"] = True
 
-            self._cmake.definitions["WITH_OPENMP"] = False
-            self._cmake.definitions["WITH_LIBUSB"] = False
-            self._cmake.definitions["WITH_PNG"] = True
-            self._cmake.definitions["WITH_QHULL"] = True
-            self._cmake.definitions["WITH_CUDA"] = False
-            self._cmake.definitions["WITH_VTK"] = True
-            self._cmake.definitions["WITH_QT"] = False
-            self._cmake.definitions["WITH_PCAP"] = False
-            self._cmake.definitions["WITH_OPENGL"] = True
+        tc.generate()
 
-            self._cmake.definitions["CMAKE_DISABLE_FIND_PACKAGE_VTK"] = True if 'vtk' not in self.deps_cpp_info.deps else False
-
-            self._cmake.configure()
-
-        return self._cmake
-
+        cd = CMakeDeps(self)
+        cd.generate()
 
     def build(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
+        cmake.configure(build_script_folder=self.source_path.parent)
         cmake.build()
 
-
     def package(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
         cmake.install()
 
-        tools.rmdir(os.path.join(self.package_folder, "cmake"))
-        tools.rmdir(os.path.join(self.package_folder, "share"))
-        tools.rmdir(os.path.join(self.package_folder, "lib", "pkgconfig"))
+        copy(self, "LICENSE.txt", src=self.source_path, dst=self.package_path / "licenses")
+        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False, excludes="*/vc???.pdb")
+        rmdir(self, self.package_path / "cmake")
+        rmdir(self, self.package_path / "share")
+        rmdir(self, self.package_path / "lib" / "pkgconfig")
 
         # Remove MS runtime files
         for pattern in ["concrt*.dll", "msvcp*.dll", "vcruntime*.dll"]:
-            for lib in glob.glob(os.path.join(self.package_folder, "bin", pattern)):
-                os.remove(lib)
-
-        self.patch_binaries()
-        self.default_package()
-
+            for lib in (self.package_path / "bin").glob(pattern):
+                lib.unlink()
 
     def package_info(self):
-        self.default_package_info()
+        self.cpp_info.set_property("cmake_file_name", "PCL")
+        self.cpp_info.set_property("cmake_target_name", "PCL::PCL")
+        self.cpp_info.set_property("display_name", "Point Cloud Library")
+        self.cpp_info.set_property("mevislab_prosdk_exclude", True)
+        self.cpp_info.libs = collect_libs(self)
 
-        v = tools.Version(self.version)
-        self.cpp_info.includedirs = ['include', f'include/pcl-{v.major}.{v.minor}']
+        major, minor = self.version.split(".")[:2]
+        self.cpp_info.includedirs.append(f"include/pcl-{major}.{minor}")

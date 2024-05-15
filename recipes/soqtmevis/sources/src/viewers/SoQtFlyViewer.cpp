@@ -335,14 +335,14 @@ SoQtFlyViewer::processEvent(QEvent *anyEvent)
     case QEvent::MouseButtonPress:
         {
             me = (QMouseEvent*) anyEvent;
-            if (me->button() != Qt::LeftButton && me->button() != Qt::MidButton) {
+            if (me->button() != Qt::LeftButton && me->button() != Qt::MiddleButton) {
                 break;
             }
             locator[0] = me->x() * raViewScale;
             locator[1] = raSize[1] - (me->y() * raViewScale);
             // check if both buttons are down
-            bool both = (me->button() == Qt::LeftButton && me->buttons() & Qt::MidButton) ||
-                        (me->button() == Qt::MidButton  && me->buttons() & Qt::LeftButton);
+            bool both = (me->button() == Qt::LeftButton && me->buttons() & Qt::MiddleButton) ||
+                        (me->button() == Qt::MiddleButton  && me->buttons() & Qt::LeftButton);
             switch(mode) {
                 case STILL_MODE:
                     // check if both buttons are down

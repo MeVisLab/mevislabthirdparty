@@ -1,0 +1,74 @@
+diff --git a/qasync/__init__.py b/qasync/__init__.py
+index bf20dda..0ad2bcd 100644
+--- a/qasync/__init__.py
++++ b/qasync/__init__.py
+@@ -520,13 +520,13 @@ class _QEventLoop:
+         else:
+             # this is necessary to avoid race condition-like issues
+             existing.setEnabled(False)
+-            existing.activated["int"].disconnect()
++            existing.disconnect("activated(int)")
+             # will get overwritten by the assignment below anyways
+ 
+         notifier = QtCore.QSocketNotifier(_fileno(fd), QtCore.QSocketNotifier.Read)
+         notifier.setEnabled(True)
+         self.__log_debug("Adding reader callback for file descriptor %s", fd)
+-        notifier.activated["int"].connect(
++        notifier.connect("activated(int)",
+             lambda: self.__on_notifier_ready(
+                 self._read_notifiers, notifier, fd, callback, args
+             )  # noqa: C812
+@@ -557,7 +557,7 @@ class _QEventLoop:
+         else:
+             # this is necessary to avoid race condition-like issues
+             existing.setEnabled(False)
+-            existing.activated["int"].disconnect()
++            existing.disconnect("activated(int)")
+             # will get overwritten by the assignment below anyways
+ 
+         notifier = QtCore.QSocketNotifier(
+@@ -566,7 +566,7 @@ class _QEventLoop:
+         )
+         notifier.setEnabled(True)
+         self.__log_debug("Adding writer callback for file descriptor %s", fd)
+-        notifier.activated["int"].connect(
++        notifier.connect("activated(int)",
+             lambda: self.__on_notifier_ready(
+                 self._write_notifiers, notifier, fd, callback, args
+             )  # noqa: C812
+@@ -601,7 +601,7 @@ class _QEventLoop:
+             if notifiers.get(fd, None) is notifier:
+                 notifier.setEnabled(True)
+             else:
+-                notifier.activated["int"].disconnect()
++                notifier.disconnect("activated(int)")
+ 
+     def __on_notifier_ready(self, notifiers, notifier, fd, callback, args):
+         if fd not in notifiers:
+diff --git a/qasync/_unix.py b/qasync/_unix.py
+index c311e50..1ecc5d6 100644
+--- a/qasync/_unix.py
++++ b/qasync/_unix.py
+@@ -86,11 +86,11 @@ class _Selector(selectors.BaseSelector):
+ 
+         if events & EVENT_READ:
+             notifier = QtCore.QSocketNotifier(key.fd, QtCore.QSocketNotifier.Read)
+-            notifier.activated["int"].connect(self.__on_read_activated)
++            notifier.connect("activated(int)", self.__on_read_activated)
+             self.__read_notifiers[key.fd] = notifier
+         if events & EVENT_WRITE:
+             notifier = QtCore.QSocketNotifier(key.fd, QtCore.QSocketNotifier.Write)
+-            notifier.activated["int"].connect(self.__on_write_activated)
++            notifier.connect("activated(int)", self.__on_write_activated)
+             self.__write_notifiers[key.fd] = notifier
+ 
+         return key
+@@ -114,7 +114,7 @@ class _Selector(selectors.BaseSelector):
+             except KeyError:
+                 pass
+             else:
+-                notifier.activated["int"].disconnect()
++                notifier.disconnect("activated(int)")
+ 
+         try:
+             key = self._fd_to_key.pop(self._fileobj_lookup(fileobj))

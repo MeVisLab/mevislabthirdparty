@@ -1,49 +1,64 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans import CMake
-from conans import tools
-import shutil
-import os
+from conan import ConanFile
+from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
+from conan.tools.files import collect_libs, copy, get, rmdir
+
+required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
+    name = "expat"
+    version = "2.6.2"
+    homepage = "https://libexpat.github.io"
+    description = "Fast stream-oriented XML parser library"
+    license = "MIT"
+    package_type = "shared-library"
+    settings = "os", "arch", "compiler", "build_type"
 
-    _cmake = None
+    def configure(self):
+        self.settings.rm_safe("compiler.cppstd")
+        self.settings.rm_safe("compiler.libcxx")
 
+    def layout(self):
+        cmake_layout(self, src_folder="src")
 
-    def _configure_cmake(self):
-        if not self._cmake:
-            self.create_cmake_wrapper(add_subdirectory='sources/expat')
-            self._cmake = CMake(self)
-            self._cmake.definitions["CMAKE_DEBUG_POSTFIX"] = "d"
-            self._cmake.definitions['EXPAT_BUILD_DOCS'] = False
-            self._cmake.definitions['EXPAT_BUILD_EXAMPLES'] = False
-            self._cmake.definitions['EXPAT_BUILD_TESTS'] = False
-            self._cmake.definitions['EXPAT_BUILD_TOOLS'] = False
-            self._cmake.definitions['EXPAT_BUILD_PKGCONFIG'] = False
-            self._cmake.definitions['EXPAT_SHARED_LIBS'] = True
-            self._cmake.configure()
+    def source(self):
+        get(
+            self,
+            sha256="ee14b4c5d8908b1bec37ad937607eab183d4d9806a08adee472c3c3121d27364",
+            url=f"https://github.com/libexpat/libexpat/releases/download/R_{self.version.replace('.', '_')}/expat-{self.version}.tar.xz",
+            strip_root=True,
+        )
 
-        return self._cmake
-
+    def generate(self):
+        tc = CMakeToolchain(self)
+        tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
+        tc.variables["EXPAT_DEBUG_POSTFIX"] = "_d"
+        tc.variables["EXPAT_BUILD_DOCS"] = False
+        tc.variables["EXPAT_BUILD_EXAMPLES"] = False
+        tc.variables["EXPAT_SHARED_LIBS"] = True
+        tc.variables["EXPAT_BUILD_TESTS"] = False
+        tc.variables["EXPAT_BUILD_TOOLS"] = False
+        tc.variables["EXPAT_BUILD_PKGCONFIG"] = False
+        tc.generate()
 
     def build(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
+        cmake.configure()
         cmake.build()
-        shutil.move(os.path.join("sources", "expat", "COPYING"), os.path.join(".", "LICENSE"))
-
 
     def package(self):
-        cmake = self._configure_cmake()
+        copy(self, "COPYING", src=self.source_path, dst=self.package_path / "licenses")
+        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False, excludes="*vc???.pdb")
+        cmake = CMake(self)
         cmake.install()
+        rmdir(self, self.package_path / "lib" / "cmake")
+        rmdir(self, self.package_path / "lib" / "pkgconfig")
+        rmdir(self, self.package_path / "share")
 
-        self.copy("*.pdb", src="bin", dst="bin")
-
-        tools.rmdir(os.path.join(self.package_folder, "lib", "cmake"))
-        tools.rmdir(os.path.join(self.package_folder, "lib", "pkgconfig"))
-        tools.rmdir(os.path.join(self.package_folder, "share"))
-
-        self.patch_binaries()
-        self.default_package()
+    def package_info(self):
+        self.cpp_info.set_property("cmake_file_name", "EXPAT")
+        self.cpp_info.set_property("cmake_target_name", "EXPAT::EXPAT")
+        self.cpp_info.set_property("pkg_config_name", "expat")
+        self.cpp_info.libs = collect_libs(self)
+        if self.settings.os in ["Linux"]:
+            self.cpp_info.system_libs.append("m")

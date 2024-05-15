@@ -1,8 +1,0 @@
-type: cpp
-name: qtsingleapplication
-cmake_name: QtSingleApplication
-display_name: QtSingleApplication
-version: "2019.05.20"
-homepage: https://code.qt.io/cgit/qt-solutions/qt-solutions.git/tree/qtsingleapplication
-description: Qt library to start applications only once per user
-license: BSD-3-Clause

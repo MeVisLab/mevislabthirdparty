@@ -24,7 +24,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  *  Contact information: MeVis, Center for Medical Diagnostic Systems and
- *  Visualization GmbH, Universit‰tsallee 29, D-28359 Bremen, GERMANY, or:
+ *  Visualization GmbH, Universit√§tsallee 29, D-28359 Bremen, GERMANY, or:
  *
  *  http://www.mevis.de
  *
@@ -51,10 +51,6 @@
 #include <Inventor/system/SbConfig.h>
 
 #ifdef WIN32
-
-#ifndef  __i386__
-# define __i386__  1
-#endif
 
 //! Disable some annoying warnings on MSVC 6
 #ifdef _MSC_VER

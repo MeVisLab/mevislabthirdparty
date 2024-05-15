@@ -46,15 +46,15 @@
 #include <QEvent>
 #include <iostream>
 
-SoQtRealQOpenGLWidget::SoQtRealQOpenGLWidget(const QGLFormat& format, SoQtGLWidget* parent)
+SoQtRealQOpenGLWidget::SoQtRealQOpenGLWidget(const QSurfaceFormat& format, SoQtGLWidget* parent)
   : QOpenGLWidget(parent)
 {
     _w = parent;
     // it is important to use defaultFormat() here, to get 10bit support if it is enabled
     QSurfaceFormat f = QSurfaceFormat::defaultFormat();
     // copy relevant format parameters from old QGLFormat
-    f.setSamples(format.sampleBuffers() ? format.samples() : 0);
-    f.setStencilBufferSize(format.stencil() ? format.stencilBufferSize() : 0);
+    f.setSamples(format.samples());
+    f.setStencilBufferSize(format.stencilBufferSize());
     setFormat(f);
     setMouseTracking (true);
     setFocusPolicy(Qt::WheelFocus);
@@ -121,7 +121,7 @@ bool SoQtRealQOpenGLWidget::handleEvent (QWidget* self, SoQtGLWidget* w, QEvent*
     return true;
 }
 
-void SoQtRealQOpenGLWidget::enterEvent (QEvent*)
+void SoQtRealQOpenGLWidget::enterEvent (QEnterEvent*)
 {
     if (_w->autoFocus) {
         setFocus (Qt::OtherFocusReason);

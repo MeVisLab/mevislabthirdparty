@@ -1,0 +1,29 @@
+diff --git a/lib/matplotlib/backends/backend_qt5.py b/lib/matplotlib/backends/backend_qt5.py
+index 8b0c2e4..70a6433 100644
+--- a/lib/matplotlib/backends/backend_qt5.py
++++ b/lib/matplotlib/backends/backend_qt5.py
+@@ -227,7 +227,7 @@ class FigureCanvasQT(QtWidgets.QWidget, FigureCanvasBase):
+ 
+     # map Qt button codes to MouseEvent's ones:
+     buttond = {QtCore.Qt.LeftButton: MouseButton.LEFT,
+-               QtCore.Qt.MidButton: MouseButton.MIDDLE,
++               QtCore.Qt.MiddleButton: MouseButton.MIDDLE,
+                QtCore.Qt.RightButton: MouseButton.RIGHT,
+                QtCore.Qt.XButton1: MouseButton.BACK,
+                QtCore.Qt.XButton2: MouseButton.FORWARD,
+@@ -351,12 +351,9 @@ class FigureCanvasQT(QtWidgets.QWidget, FigureCanvasBase):
+ 
+     if is_pyqt5():
+         def wheelEvent(self, event):
+-            x, y = self.mouseEventCoords(event)
+-            # from QWheelEvent::delta doc
+-            if event.pixelDelta().x() == 0 and event.pixelDelta().y() == 0:
+-                steps = event.angleDelta().y() / 120
+-            else:
+-                steps = event.pixelDelta().y()
++            x, y = self.mouseEventCoords(event.position())
++            # from QWheelEvent doc
++            steps = event.angleDelta().y() / 120
+             if steps:
+                 FigureCanvasBase.scroll_event(
+                     self, x, y, steps, guiEvent=event)

@@ -18,10 +18,7 @@ target_sources(InventorEngines PRIVATE
 
 target_link_libraries(InventorEngines
   PRIVATE
-    Qt5::Core
-    Python3::Python
-    Threads::Threads
-    ${CONAN_LIBS}
+    ${REQUIRED_LIBS}
 )
 
 install(TARGETS InventorEngines

@@ -1,4 +1,4 @@
-find_package(Qt5 COMPONENTS Core Gui Network REQUIRED)
+find_package(Qt6 COMPONENTS Core Gui Network REQUIRED)
 
 add_library(QtNetwork "")
 set_target_properties(QtNetwork PROPERTIES OUTPUT_NAME QtNetwork)
@@ -13,19 +13,16 @@ target_sources(QtNetwork PRIVATE QtNetwork.cpp)
 target_sources(QtNetwork PRIVATE
   ../generated_cpp/com_trolltech_qt_network/com_trolltech_qt_network0.h
   ../generated_cpp/com_trolltech_qt_network/com_trolltech_qt_network0.cpp
-  ../generated_cpp/com_trolltech_qt_network/com_trolltech_qt_network1.h
-  ../generated_cpp/com_trolltech_qt_network/com_trolltech_qt_network1.cpp
+#   ../generated_cpp/com_trolltech_qt_network/com_trolltech_qt_network1.h
+#   ../generated_cpp/com_trolltech_qt_network/com_trolltech_qt_network1.cpp
   ../generated_cpp/com_trolltech_qt_network/com_trolltech_qt_network_init.cpp
 )
 
 target_link_libraries(QtNetwork
   PRIVATE
-    Qt5::Core
-    Qt5::Gui
-    Qt5::Network
-    Python3::Python
-    Threads::Threads
-    ${CONAN_LIBS}
+    ${REQUIRED_LIBS}
+    Qt6::Gui
+    Qt6::Network
 )
 
 install(TARGETS QtNetwork

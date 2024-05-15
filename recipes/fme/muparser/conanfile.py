@@ -1,39 +1,52 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans import CMake
-from conans import tools
-import os
+from conan import ConanFile
+from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout
+from conan.tools.files import copy, rmdir, collect_libs, get, patch
+
+required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
+    name = "muparser"
+    version = "2.3.4"
+    homepage = "https://github.com/beltoforion/muparser"
+    description = "fast math parser library"
+    license = "BSD-2-Clause"
+    settings = "os", "arch", "compiler", "build_type"
+    package_type = "shared-library"
+    exports_sources = ["patches/*"]
 
-    _cmake = None
+    def layout(self):
+        cmake_layout(self, src_folder="src")
 
-    def _configure_cmake(self):
-        if not self._cmake:
-            self.create_cmake_wrapper()
-            self._cmake = CMake(self)
-            self._cmake.definitions["CMAKE_DEBUG_POSTFIX"] = "d"
-            self._cmake.definitions["ENABLE_SAMPLES"] = False
-            self._cmake.definitions["ENABLE_OPENMP"] = False
-            self._cmake.configure()
-        return self._cmake
+    def generate(self):
+        tc = CMakeToolchain(self)
+        tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
+        tc.variables["ENABLE_SAMPLES"] = False
+        tc.variables["ENABLE_OPENMP"] = False
+        tc.generate()
 
+    def source(self):
+        get(self,
+            sha256="0c3fa54a3ebf36dda0ed3e7cd5451c964afbb15102bdbcba08aafb359a290121",
+            url=f"https://github.com/beltoforion/muparser/archive/refs/tags/v{self.version}.tar.gz",
+            strip_root=True
+            )
+        patch(self, patch_file="patches/001-disable_unicode.patch")
 
     def build(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
+        cmake.configure()
         cmake.build()
 
-
     def package(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
         cmake.install()
 
-        self.copy("muparser*.pdb", src="bin", dst="bin")
+        copy(self, "LICENSE", src=self.source_path, dst=self.package_path / "licenses")
+        copy(self, "*/muparserd.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False)
+        rmdir(self, self.package_path / "lib" / "cmake")
+        rmdir(self, self.package_path / "lib" / "pkgconfig")
 
-        tools.rmdir(os.path.join(self.package_folder, "lib", "cmake"))
-        tools.rmdir(os.path.join(self.package_folder, "lib", "pkgconfig"))
-
-        self.patch_binaries()
-        self.default_package()
+    def package_info(self):
+        self.cpp_info.set_property("display_name", "muParser")
+        self.cpp_info.set_property("mevislab_prosdk_exclude", True)
+        self.cpp_info.libs = collect_libs(self)

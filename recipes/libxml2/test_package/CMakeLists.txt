@@ -1,22 +1,26 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.27)
 project(test_package C)
 
-# prevent CMake from complaining about this external unused variable.
-set(_UNUSED
-  ${CMAKE_EXPORT_NO_PACKAGE_REGISTRY}
-  ${CMAKE_INSTALL_BINDIR}
-  ${CMAKE_INSTALL_DATAROOTDIR}
-  ${CMAKE_INSTALL_INCLUDEDIR}
-  ${CMAKE_INSTALL_LIBDIR}
-  ${CMAKE_INSTALL_LIBEXECDIR}
-  ${CMAKE_INSTALL_OLDINCLUDEDIR}
-  ${CMAKE_INSTALL_SBINDIR}
+find_package(LibXml2 REQUIRED)
+
+# https://cmake.org/cmake/help/latest/module/FindLibXml2.html
+set(_result_vars
+    LibXml2_FOUND
+    LIBXML2_FOUND
+    LIBXML2_INCLUDE_DIR
+    LIBXML2_INCLUDE_DIRS
+    LIBXML2_LIBRARIES
+    LIBXML2_VERSION_STRING
 )
 
-# load and setup conan
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()
+foreach(_var ${_result_vars})
+  if(DEFINED ${_var})
+    message(STATUS "${_var}: ${${_var}}")
+  else()
+    message(FATAL_ERROR "${_var} not defined")
+  endif()
+endforeach()
 
-# create the test application
+
 add_executable(test_package test_package.c)
-target_link_libraries(test_package ${CONAN_LIBS})
+target_link_libraries(test_package LibXml2::LibXml2)

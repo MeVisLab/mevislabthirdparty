@@ -47,6 +47,7 @@
 #include <QMouseEvent>
 #include <QDate>
 #include <QTime>
+#include <QPalette>
 
 #include <Inventor/SoInteraction.h>
 #include <Inventor/SoDB.h>
@@ -77,7 +78,11 @@ SoQtRenderArea::SoQtRenderArea (QWidget* parent, Qt::WindowFlags f, bool build)
     SoQt::init("Dummy");
 
     // Inventor specific variables
-    QGLFormat glf (QGL::Rgba | QGL::DoubleBuffer | QGL::DepthBuffer | QGL::DirectRendering);
+    QSurfaceFormat glf = QSurfaceFormat::defaultFormat();
+    glf.setOption(QSurfaceFormat::DeprecatedFunctions);
+    glf.setProfile(QSurfaceFormat::CompatibilityProfile);
+    glf.setSwapBehavior(QSurfaceFormat::DoubleBuffer);
+    glf.setDepthBufferSize(8);
     // Call setFormat from parent class to avoid early construction of decoration which will fail
     SoQtGLWidget::setFormat(glf);
 
@@ -101,19 +106,6 @@ SoQtRenderArea::~SoQtRenderArea()
 }
 
 void
-SoQtRenderArea::setFormat(const QGLFormat& format)
-{
-  // Since setting a new format will result in a new QGLWidget
-  // we have to give the devices a chance to detach and reattach.
-
-  detachAllDevices();
-
-  SoQtGLWidget::setFormat(format);
-
-  reattachAllDevices();
-}
-
-void
 SoQtRenderArea::processEvent(QEvent *anyevent)
 {
     processSceneEvent(anyevent);
@@ -131,6 +123,19 @@ SoQtRenderArea::setWindowElement(SoState* state)
     }
 }
 
+void
+SoQtRenderArea::setBackgroundColor (const SbColor &c)
+{
+    SoQtSceneHandler::setBackgroundColor(c);
+    QWidget* rw = getRenderingWidget();
+    if (rw) {
+        // also set the background color on the rendering QWidget,
+        // needed for screenshots with QWidget::grab()
+        QPalette p = rw->palette();
+        p.setColor(rw->backgroundRole(), QColor::fromRgbF(c[0], c[1], c[2]));
+        rw->setPalette(p);
+    }
+}
 
 void
 SoQtRenderArea::initializeGL()
@@ -144,8 +149,7 @@ void
 SoQtRenderArea::resizeGL (int width, int height)
 {
     SoQtGLWidget::resizeGL (width, height);
-    resizeScene(width, height, getGlxDevicePixelRatio(),
-      qobject_cast<QGLWidget*>(const_cast<const SoQtRenderArea*>(this)->getRenderingWidget()));
+    resizeScene(width, height, getGlxDevicePixelRatio(), false);
 }
 
 void
@@ -157,43 +161,26 @@ SoQtRenderArea::paintGL()
     initialRendering = false;
 }
 
-bool
-SoQtRenderArea::setAntialiasing (SbBool smoothing, int numPasses)
-{
-    if (SoQtSceneHandler::setAntialiasing(smoothing, numPasses)) {
-
-        QGLFormat format = this->format();
-        if (format.accum() != (bool)smoothing) {
-            format.setAccum ((bool)smoothing);
-            setFormat (format);
-        }
-        return true;
-    } else {
-      return false;
-    }
-}
-
 void SoQtRenderArea::setSampleBuffers( bool useSampleBuffers, int numSampleBuffers )
 {
   if (useSampleBuffers != this->useSampleBuffers ||
-    numSampleBuffers != this->numSampleBuffers) {
-
+      numSampleBuffers != this->numSampleBuffers)
+  {
       this->useSampleBuffers = useSampleBuffers;
       this->numSampleBuffers = numSampleBuffers;
 
-      QGLFormat format = this->format();
-      format.setSampleBuffers(useSampleBuffers);
+      QSurfaceFormat aFormat = this->format();
       if (useSampleBuffers) {
-        if (numSampleBuffers <= 0) {
-          if (format.samples()!=-1) {
-            // unfortunately there is no way to remove the samplers from the format...
-            format.setSamples(16);
+          if (numSampleBuffers <= 0) {
+              aFormat.setSamples(16);
+          } else {
+              aFormat.setSamples(numSampleBuffers);
           }
-        } else {
-          format.setSamples(numSampleBuffers);
-        }
       }
-      setFormat (format);
+      else {
+          aFormat.setSamples(0);
+      }
+      setFormat (aFormat);
   }
 }
 

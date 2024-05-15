@@ -1,0 +1,15 @@
+diff --git a/lib/matplotlib/backends/backend_qt5.py bw/lib/matplotlib/backends/backend_qt5.py
+index 3f00993..8b0c2e4 100644
+--- a/lib/matplotlib/backends/backend_qt5.py
++++ b/lib/matplotlib/backends/backend_qt5.py
+@@ -1051,6 +1051,10 @@ class _BackendQT5(_Backend):
+
+     @staticmethod
+     def mainloop():
++        if QtCore.QThread.currentThread().loopLevel():
++            # there is already an event loop running
++            return
++
+         old_signal = signal.getsignal(signal.SIGINT)
+         # allow SIGINT exceptions to close the plot window.
+         is_python_signal_handler = old_signal is not None

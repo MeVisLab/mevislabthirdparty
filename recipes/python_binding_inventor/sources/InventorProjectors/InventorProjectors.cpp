@@ -15,8 +15,6 @@ static PyMethodDef NoMethods[] = {
     {nullptr, nullptr, 0, nullptr}        /* Sentinel */
 };
 
-#if PY_MAJOR_VERSION >= 3
-
 static PyModuleDef projectorsModuleDef = {
   PyModuleDef_HEAD_INIT,
   "projectors",
@@ -29,31 +27,24 @@ static PyModuleDef projectorsModuleDef = {
   nullptr
 };
 
-  #define Py_2_3_InitModFunc(name) PyInit_##name(void)
-  #define Py_2_3_ModuleInit(name) PyModule_Create(&projectorsModuleDef)
-
-#else
-  #define Py_2_3_InitModFunc(name) init##name(void)
-  #define Py_2_3_ModuleInit(name) Py_InitModule(name, NoMethods)
-#endif
+#define PyInitModFunc(name) PyInit_##name(void)
+  #define PyModuleInit(name) PyModule_Create(&projectorsModuleDef)
 
 #ifdef UNIX
 PyMODINIT_FUNC
-Py_2_3_InitModFunc(projectors) ML_LIBRARY_EXPORT_ATTRIBUTE ;
+PyInitModFunc(projectors) ML_LIBRARY_EXPORT_ATTRIBUTE ;
 #endif
 
 PyMODINIT_FUNC
-Py_2_3_InitModFunc(projectors)
+PyInitModFunc(projectors)
 {
   PyObject* base = PyImport_ImportModule("Inventor.base");
   Py_XDECREF(base);
 
-  PyObject* module = Py_2_3_ModuleInit("projectors");
+  PyObject* module = PyModuleInit("projectors");
   PythonQt_init_InventorProjectors(module);
 
-#if PY_MAJOR_VERSION >= 3
   return module;
-#endif
 }
 
 

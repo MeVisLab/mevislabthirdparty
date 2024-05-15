@@ -1,0 +1,19 @@
+diff --git a/Modules/Setup b/Modules/Setup
+index d3647ec..bcc98d3 100644
+--- a/Modules/Setup
++++ b/Modules/Setup
+@@ -300,3 +300,14 @@ xxsubtype xxsubtype.c  # Required for the test suite to pass!
+ #
+ # _sqlite3 _tkinter _curses pyexpat
+ # _codecs_jp _codecs_kr _codecs_tw unicodedata
++
++*disabled*
++
++_curses
++_curses_panel
++_dbm
++_gdbm
++_tkinter
++nis
++readline
++

@@ -1,14 +1,11 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.27)
+project(Dummy) # trigger reading the toolchain file
 project(Python VERSION ${PYTHON_VERSION} LANGUAGES C CXX ASM)
 enable_language(ASM_MASM)
 
 set(CMAKE_DEBUG_POSTFIX _d)
 
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup(TARGETS)
-
-set(_UNUSED ${CMAKE_EXPORT_NO_PACKAGE_REGISTRY} ${CMAKE_INSTALL_BINDIR} ${CMAKE_INSTALL_DATAROOTDIR} ${CMAKE_INSTALL_INCLUDEDIR} ${CMAKE_INSTALL_LIBDIR} ${CMAKE_INSTALL_LIBEXECDIR} ${CMAKE_INSTALL_OLDINCLUDEDIR} ${CMAKE_INSTALL_SBINDIR})
-
+set(SRC src)
 
 function(add_pyd libname)
     add_library(${libname})
@@ -16,12 +13,13 @@ function(add_pyd libname)
 
     target_link_libraries(${libname} PRIVATE pythoncore)
     target_compile_definitions(${libname} PRIVATE Py_BUILD_CORE_MODULE)
-    target_include_directories(${libname} PRIVATE sources/PC)
+    target_include_directories(${libname} PRIVATE ${SRC}/PC)
 
     install(TARGETS ${libname} RUNTIME DESTINATION DLLs LIBRARY DESTINATION DLLs)
 endfunction()
 
 # Core:
+include(cmake/_freeze_module.cmake)
 include(cmake/pythoncore.cmake)
 include(cmake/python3dll.cmake)
 include(cmake/MeVisPython.cmake)

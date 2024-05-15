@@ -1,31 +1,39 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans import tools
-import shutil
+from conan import ConanFile
+from conan.tools.files import copy, get
+
+required_conan_version = ">=2.2.2"
+
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
-
+    name = "jquery-ui"
+    version = "1.13.2"
+    homepage = "https://jqueryui.com"
+    description = "A curated set of user interface interactions, effects, widgets, and themes built on top of the jQuery JavaScript Library"
+    package_type = "build-scripts"
+    license = "MIT"
     settings = None
-    generate_cmake = False
+
+    mlab_hooks = {
+        'test_package.skip': True,
+        'folders.skip': True
+    }
 
     def source(self):
-        fileName = "jquery-ui-%s.zip" % self.version
-        url = "https://jqueryui.com/resources/download/%s" % fileName
-        sha256 = "5F063F91DF85431E3FEA84F5D5709726D6DCD15EE4BF86B0E9A4B134912A5EFD"
-        self.download_distfile(url=url, sha256=sha256, fileName=fileName)
-
-        fileName = "jquery-ui-themes-%s.zip" % self.version
-        url = "https://jqueryui.com/resources/download/%s" % fileName
-        sha256 = "45B4EACD4B033539538CD8996B8A02670B3B429EFC2044840DD20A3FAC9E1FED"
-        self.download_distfile(url=url, sha256=sha256, fileName=fileName)
-
-    def build(self):
-        shutil.copytree("jquery-ui-themes-%s" % self.version, "sources", dirs_exist_ok=True)
-        shutil.copytree("jquery-ui-%s" % self.version, "sources", dirs_exist_ok=True)
-        shutil.move('sources/LICENSE.txt', 'sources/LICENSE')
+        get(self,
+            sha256="f73762976d178159a1592a643f297609f2cf4a2af2d2d90068086f2cbdbe5777",
+            url=f"https://jqueryui.com/resources/download/jquery-ui-{self.version}.zip",
+            strip_root=True
+        )
+        get(self,
+            sha256="60a08a7f7d71db54796e82ed4cfafbbaa96ca8635fe3da331867d1061ae2e1f2",
+            url=f"https://jqueryui.com/resources/download/jquery-ui-themes-{self.version}.zip",
+            strip_root=True
+        )
 
     def package(self):
-        self.copy("*", src='sources', dst=f"web/{self.name}", excludes='sources/external/*')
-        self.default_package()
+        copy(self, "*", src=self.source_path, dst=self.package_path / f"web/{self.name}", excludes=["*conan*"])
+        copy(self, "LICENSE.txt", src=self.source_path, dst=self.package_path / "licenses")
+
+    def package_info(self):
+        self.cpp_info.includedirs.clear()
+        self.cpp_info.set_property("cmake_find_mode", "none")

@@ -1,8 +1,0 @@
-type: cpp
-name: lzf
-cmake_name: LZF
-display_name: LZF
-version: "3.5.0"
-description: Fast LZ compression library
-homepage: http://oldhome.schmorp.de/marc/liblzf.html
-license: BSD-2-Clause

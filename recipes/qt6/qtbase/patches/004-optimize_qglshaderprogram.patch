@@ -1,0 +1,44 @@
+diff --git a/src/opengl/qopenglshaderprogram.cpp b/src/opengl/qopenglshaderprogram.cpp
+index fb33bf0d..db88fdca 100644
+--- a/src/opengl/qopenglshaderprogram.cpp
++++ b/src/opengl/qopenglshaderprogram.cpp
+@@ -1299,22 +1299,24 @@ bool QOpenGLShaderProgram::link()
+     value = 0;
+     d->glfuncs->glGetProgramiv(program, GL_LINK_STATUS, &value);
+     d->linked = (value != 0);
+-    value = 0;
+-    d->glfuncs->glGetProgramiv(program, GL_INFO_LOG_LENGTH, &value);
+-    d->log = QString();
+-    if (value > 1) {
+-        char *logbuf = new char [value];
+-        GLint len;
+-        d->glfuncs->glGetProgramInfoLog(program, value, &len, logbuf);
+-        d->log = QString::fromLatin1(logbuf);
+-        if (!d->linked && !d->linkBinaryRecursion) {
+-            QString name = objectName();
+-            if (name.isEmpty())
+-                qWarning("QOpenGLShader::link: %ls", qUtf16Printable(d->log));
+-            else
+-                qWarning("QOpenGLShader::link[%ls]: %ls", qUtf16Printable(name), qUtf16Printable(d->log));
++    if (!d->linked) {    
++        value = 0;
++        d->glfuncs->glGetProgramiv(program, GL_INFO_LOG_LENGTH, &value);
++        d->log = QString();
++        if (value > 1) {
++            char *logbuf = new char [value];
++            GLint len;
++            d->glfuncs->glGetProgramInfoLog(program, value, &len, logbuf);
++            d->log = QString::fromLatin1(logbuf);
++            if (!d->linked && !d->linkBinaryRecursion) {
++                QString name = objectName();
++                if (name.isEmpty())
++                    qWarning("QOpenGLShader::link: %ls", qUtf16Printable(d->log));
++                else
++                    qWarning("QOpenGLShader::link[%ls]: %ls", qUtf16Printable(name), qUtf16Printable(d->log));
++            }
++            delete [] logbuf;
+         }
+-        delete [] logbuf;
+     }
+     return d->linked;
+ }

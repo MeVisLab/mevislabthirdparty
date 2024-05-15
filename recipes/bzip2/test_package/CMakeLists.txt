@@ -1,20 +1,26 @@
-cmake_minimum_required(VERSION 3.10)
-project(test_package C)
+cmake_minimum_required(VERSION 3.27)
+project(test_package LANGUAGES C)
 
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()
-
-# prevent CMake from complaining about this external unused variable.
-set(_UNUSED
-  ${CMAKE_EXPORT_NO_PACKAGE_REGISTRY}
-  ${CMAKE_INSTALL_BINDIR}
-  ${CMAKE_INSTALL_DATAROOTDIR}
-  ${CMAKE_INSTALL_INCLUDEDIR}
-  ${CMAKE_INSTALL_LIBDIR}
-  ${CMAKE_INSTALL_LIBEXECDIR}
-  ${CMAKE_INSTALL_OLDINCLUDEDIR}
-  ${CMAKE_INSTALL_SBINDIR}
-)
+find_package(BZip2 REQUIRED)
 
 add_executable(test_package test_package.c)
-target_link_libraries(test_package ${CONAN_LIBS})
+target_link_libraries(test_package PRIVATE BZip2::BZip2)
+
+# Test whether variables from https://cmake.org/cmake/help/latest/module/FindBZip2.html are properly defined
+set(vars
+    BZIP2_FOUND
+    BZIP2_INCLUDE_DIRS
+    BZIP2_LIBRARIES
+    BZIP2_NEED_PREFIX
+    BZIP2_VERSION
+    BZIP2_INCLUDE_DIR
+    BZIP2_VERSION_STRING
+)
+
+foreach(var ${vars})
+    if(DEFINED ${var})
+        message(STATUS "${var}: ${${var}}")
+    else()
+        message(FATAL_ERROR "${var} not defined")
+    endif()
+endforeach()

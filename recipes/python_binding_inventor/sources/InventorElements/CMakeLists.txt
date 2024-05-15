@@ -20,10 +20,7 @@ target_sources(InventorElements PRIVATE
 
 target_link_libraries(InventorElements
   PRIVATE
-    Qt5::Core
-    Python3::Python
-    Threads::Threads
-    ${CONAN_LIBS}
+    ${REQUIRED_LIBS}
 )
 
 install(TARGETS InventorElements

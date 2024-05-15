@@ -66,14 +66,8 @@ class SOQT_MEVIS_EXPORT SoQtRenderArea
     Q_OBJECT
 
 public:
-    SoQtRenderArea (QWidget* parent = nullptr, Qt::WindowFlags f = nullptr, bool build = true);
+    SoQtRenderArea (QWidget* parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags{}, bool build = true);
     ~SoQtRenderArea() override;
-
-    //! Set old-school anti-aliasing hints (setting smoothing to TRUE will turn on
-    //! anti-aliasing. If numPasses is 1, GL_*_SMOOTH_HINT are set to GL_NICEST.
-    //! If numPasses is >1, Open Inventor does multiple renderings into the
-    //! accumulation buffer (see SoGLRenderAction for details).
-    bool setAntialiasing (SbBool smoothing, int numPasses) override;
 
     //! Enable/disable GL sample buffers on the framebuffer of the render area.
     //! If numSampleBuffers is set to 0, the maximum available sample buffers are used.
@@ -104,14 +98,14 @@ public:
     //! returns true if the viewer does the initial rendering after it became visible
     bool isInitialRendering() const { return initialRendering; }
 
+    //! Set the window background color when in RGB mode (defaults to black (0,0,0))
+    void setBackgroundColor (const SbColor &c) override;
+
 signals:
     //! this is emitted when the scene manager requests a redraw of the scene
     void redrawRequested();
 
 protected:
-
-    //! Set the GL format.
-    void setFormat(const QGLFormat& format) override;
 
     void visibilityChanged (bool flag) override;
 

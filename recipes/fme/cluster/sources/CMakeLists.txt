@@ -1,20 +1,5 @@
-cmake_minimum_required(VERSION 3.18)
+cmake_minimum_required(VERSION 3.27)
 project(cluster)
-
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()
-
-set(_UNUSED
-  ${CMAKE_DEBUG_POSTFIX}
-  ${CMAKE_EXPORT_NO_PACKAGE_REGISTRY}
-  ${CMAKE_INSTALL_BINDIR}
-  ${CMAKE_INSTALL_DATAROOTDIR}
-  ${CMAKE_INSTALL_INCLUDEDIR}
-  ${CMAKE_INSTALL_LIBDIR}
-  ${CMAKE_INSTALL_LIBEXECDIR}
-  ${CMAKE_INSTALL_OLDINCLUDEDIR}
-  ${CMAKE_INSTALL_SBINDIR}
-)
 
 add_library(cluster)
 

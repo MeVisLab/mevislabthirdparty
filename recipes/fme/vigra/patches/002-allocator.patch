@@ -1,0 +1,103 @@
+diff --git a/include/vigra/array_vector.hxx b/include/vigra/array_vector.hxx
+index 19a44a1..f716f55 100644
+--- a/include/vigra/array_vector.hxx
++++ b/include/vigra/array_vector.hxx
+@@ -696,7 +696,7 @@ template <class T, class Alloc>
+ inline void ArrayVector<T, Alloc>::pop_back()
+ {
+     --this->size_;
+-    alloc_.destroy(this->data_ + this->size_);
++    std::allocator_traits<Alloc>::destroy(alloc_, this->data_ + this->size_);
+ }
+ 
+ template <class T, class Alloc>
+@@ -704,7 +704,7 @@ inline void ArrayVector<T, Alloc>::push_back( value_type const & t )
+ {
+     size_type old_capacity = this->capacity_;
+     pointer old_data = reserveImpl(false);
+-    alloc_.construct(this->data_ + this->size_, t);
++    std::allocator_traits<Alloc>::construct(alloc_, this->data_ + this->size_, t);
+     // deallocate old data _after_ construction of new element, so that
+     // 't' can refer to the old data as in 'push_back(front())'
+     deallocate(old_data, this->size_, old_capacity);
+diff --git a/include/vigra/basicimage.hxx b/include/vigra/basicimage.hxx
+index 84a05cc..11b716e 100644
+--- a/include/vigra/basicimage.hxx
++++ b/include/vigra/basicimage.hxx
+@@ -582,7 +582,7 @@ class BasicImage
+     typedef Alloc allocator_type;
+ 
+     typedef Alloc Allocator;
+-    typedef typename Alloc::template rebind<PIXELTYPE *>::other LineAllocator;
++    typedef typename std::allocator_traits<Alloc>::template rebind_alloc<PIXELTYPE *> LineAllocator;
+ 
+         /** construct image of size 0x0
+         */
+diff --git a/include/vigra/multi_array.hxx b/include/vigra/multi_array.hxx
+index da3e1ba..d894297 100644
+--- a/include/vigra/multi_array.hxx
++++ b/include/vigra/multi_array.hxx
+@@ -267,7 +267,7 @@ uninitializedCopyMultiArrayData(SrcIterator s, Shape const & shape, T * & d, ALL
+     SrcIterator send = s + shape[0];
+     for(; s < send; ++s, ++d)
+     {
+-        a.construct(d, static_cast<T const &>(*s));
++        std::allocator_traits<ALLOC>::construct(a, d, static_cast<T const &>(*s));
+     }
+ }
+ 
+@@ -279,7 +279,7 @@ uninitializedCopyMultiArrayData(MultiIterator<1, UInt8, Ref, Ptr> si, Shape cons
+     Ptr s = &(*si), send = s + shape[0];
+     for(; s < send; ++s, ++d)
+     {
+-        a.construct(d, static_cast<T const &>(*s));
++        std::allocator_traits<ALLOC>::construct(a, d, static_cast<T const &>(*s));
+     }
+ }
+ 
+@@ -3088,11 +3088,11 @@ void MultiArray <N, T, A>::allocate (pointer & ptr, difference_type_1 s,
+     difference_type_1 i = 0;
+     try {
+         for (; i < s; ++i)
+-            m_alloc.construct (ptr + i, init);
++            std::allocator_traits<allocator_type>::construct (m_alloc, ptr + i, init);
+     }
+     catch (...) {
+         for (difference_type_1 j = 0; j < i; ++j)
+-            m_alloc.destroy (ptr + j);
++            std::allocator_traits<allocator_type>::destroy (m_alloc, ptr + j);
+         m_alloc.deallocate (ptr, (typename A::size_type)s);
+         throw;
+     }
+@@ -3112,11 +3112,11 @@ void MultiArray <N, T, A>::allocate (pointer & ptr, difference_type_1 s,
+     difference_type_1 i = 0;
+     try {
+         for (; i < s; ++i, ++init)
+-            m_alloc.construct (ptr + i, *init);
++            std::allocator_traits<allocator_type>::construct(m_alloc, ptr + i, *init);
+     }
+     catch (...) {
+         for (difference_type_1 j = 0; j < i; ++j)
+-            m_alloc.destroy (ptr + j);
++            std::allocator_traits<allocator_type>::destroy (m_alloc, ptr + j);
+         m_alloc.deallocate (ptr, (typename A::size_type)s);
+         throw;
+     }
+@@ -3140,7 +3140,7 @@ void MultiArray <N, T, A>::allocate (pointer & ptr, MultiArrayView<N, U, StrideT
+     }
+     catch (...) {
+         for (pointer pp = ptr; pp < p; ++pp)
+-            m_alloc.destroy (pp);
++            std::allocator_traits<allocator_type>::destroy (m_alloc, pp);
+         m_alloc.deallocate (ptr, (typename A::size_type)s);
+         throw;
+     }
+@@ -3152,7 +3152,7 @@ inline void MultiArray <N, T, A>::deallocate (pointer & ptr, difference_type_1 s
+     if (ptr == 0)
+         return;
+     for (difference_type_1 i = 0; i < s; ++i)
+-        m_alloc.destroy (ptr + i);
++        std::allocator_traits<allocator_type>::destroy (m_alloc, ptr + i);
+     m_alloc.deallocate (ptr, (typename A::size_type)s);
+     ptr = 0;
+ }

@@ -1,78 +1,86 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans import CMake
-from conans import tools
-import glob
-import os
+from conan import ConanFile
+from conan.tools.cmake import cmake_layout, CMakeToolchain, CMake, CMakeDeps
+from conan.tools.files import get, patch, rmdir, copy, collect_libs
+
+required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
+    name = "flann"
+    version = "1.9.2"
+    homepage = "https://github.com/flann-lib/flann"
+    description = "FLANN - Fast Library for Approximate Nearest Neighbors"
+    license = "BSD-3-Clause"
+    package_type = "shared-library"
+    settings = "os", "arch", "compiler", "build_type"
+    exports_sources = ["patches/*"]
 
-    _cmake = None
-
+    def layout(self):
+        cmake_layout(self, src_folder="src")
 
     def requirements(self):
-        channel = f"@{self.user}/{self.channel}"
-        self.requires("lz4/[>=1.9.3]" + channel)
-        self.requires("hdf5/[>=1.14.2]" + channel)
-
+        self.requires("lz4/[>=1.9.3]", transitive_headers=True, transitive_libs=True)
+        self.requires("hdf5/[>=1.14.2]", transitive_headers=True, transitive_libs=True)
 
     def source(self):
-        self.default_source()
-        # remove embeded lz4
-        tools.rmdir(os.path.join("sources", "src", "cpp", "flann", "ext"))
+        get(self,
+            sha256="e26829bb0017f317d9cc45ab83ddcb8b16d75ada1ae07157006c1e7d601c8824",
+            url=f"https://github.com/flann-lib/flann/archive/refs/tags/{self.version}.tar.gz",
+            strip_root=True
+            )
+        patch(self, patch_file="patches/001-export_symbols.patch")
+        patch(self, patch_file="patches/002-arm_neon_include.patch")
+        patch(self, patch_file="patches/003-conan_lz4.patch")
+        # remove embedded lz4
+        rmdir(self, self.source_path / "src" / "cpp" / "flann" / "ext")
 
+    def generate(self):
+        tc = CMakeToolchain(self)
+        tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
+        tc.variables["BUILD_SHARED_LIBS"] = False
+        tc.variables['CMAKE_POSITION_INDEPENDENT_CODE'] = True
+        tc.variables["USE_OPENMP"] = False
+        tc.variables["BUILD_C_BINDINGS"] = True
+        tc.variables["BUILD_DOC"] = False
+        tc.variables["BUILD_EXAMPLES"] = False
+        tc.variables["BUILD_TESTS"] = False
+        tc.variables["BUILD_MATLAB_BINDINGS"] = False
+        tc.variables["BUILD_PYTHON_BINDINGS"] = False
+        tc.generate()
 
-    def _configure_cmake(self):
-        if not self._cmake:
-            self.create_cmake_wrapper()
-            self._cmake = CMake(self)
-            self._cmake.definitions["CMAKE_DEBUG_POSTFIX"] = "d" if self.settings.build_type == "Debug" else ""
-            self._cmake.definitions["USE_OPENMP"] = False
-            self._cmake.definitions["BUILD_C_BINDINGS"] = True
-            self._cmake.definitions["BUILD_DOC"] = False
-            self._cmake.definitions["BUILD_EXAMPLES"] = False
-            self._cmake.definitions["BUILD_TESTS"] = False
-            self._cmake.definitions["BUILD_MATLAB_BINDINGS"] = False
-            self._cmake.definitions["BUILD_PYTHON_BINDINGS"] = False
-
-            self._cmake.configure()
-
-        return self._cmake
-
+        cd = CMakeDeps(self)
+        cd.generate()
 
     def build(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
+        cmake.configure()
         cmake.build()
 
-
     def package(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
         cmake.install()
 
-        self.copy("*.pdb", src="bin", dst="bin")
+        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False, excludes="*vc???.pdb")
+        copy(self, "COPYING", src=self.source_path, dst=self.package_path / "licenses")
 
-        tools.rmdir(os.path.join(self.package_folder, "lib", "cmake"))
-        tools.rmdir(os.path.join(self.package_folder, "lib", "pkgconfig"))
+        rmdir(self, self.package_path / "lib" / "cmake")
+        rmdir(self, self.package_path / "lib" / "pkgconfig")
 
         # Remove MS runtime files
         for pattern in ["concrt*.dll", "msvcp*.dll", "vcruntime*.dll"]:
-            for lib in glob.glob(os.path.join(self.package_folder, "bin", pattern)):
-                os.remove(lib)
+            for lib in (self.package_path / "bin").glob(pattern):
+                lib.unlink()
 
         # Remove static libraries
         static_libs = ["*flann_cpp_s.*", "*flann_cpp_sd.*", "*flann_s.*", "*flann_sd.*"]
         for pattern in static_libs:
-            for lib in glob.glob(os.path.join(self.package_folder, "lib", pattern)):
-                os.remove(lib)
-
-        self.patch_binaries()
-        self.default_package()
-
+            for lib in (self.package_path / "lib").glob(pattern):
+                lib.unlink()
 
     def package_info(self):
-        self.default_package_info()
-
+        self.cpp_info.set_property("cmake_file_name", "FLANN")
+        self.cpp_info.set_property("cmake_target_name", "FLANN::FLANN")
+        self.cpp_info.set_property("pkg_config_name", "FLANN")
+        self.cpp_info.set_property("mevislab_prosdk_exclude", True)
+        self.cpp_info.libs = collect_libs(self)
         if self.settings.os == "Linux":
-            self.cpp_info.system_libs = ["m"]
+            self.cpp_info.system_libs.append("m")

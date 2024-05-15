@@ -1,72 +1,100 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans import CMake
-from conans import tools
-import shutil
-import os
+from conan import ConanFile
+from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
+from conan.tools.files import copy, get, rmdir, collect_libs
+
+required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
+    name = "c-blosc"
+    version = "1.21.5"
+    homepage = "https://www.blosc.org"
+    description = "An extremely fast, multi-threaded, meta-compressor library"
+    license = "BSD-3-Clause"
+    package_type = "shared-library"
+    settings = "os", "arch", "compiler", "build_type"
+    exports_sources = "patches/*.patch"
 
-    _cmake = None
+    def configure(self):
+        self.settings.rm_safe("compiler.libcxx")
+        self.settings.rm_safe("compiler.cppstd")
+
+    def layout(self):
+        cmake_layout(self, src_folder="src")
 
     def requirements(self):
-        channel = "@{0}/{1}".format(self.user, self.channel)
-        self.requires("lz4/[>=1.9.4]" + channel)
-        self.requires("zlib/[>=1.2.11]" + channel)
-        self.requires("zstd/[>=1.4.9]" + channel)
+        self.requires("lz4/[>=1.9.4]")
+        #self.requires("snappy/[>=1.1.9]")
+        self.requires("zlib/[>=1.2.13]")
+        self.requires("zstd/[>=1.5.2]")
 
     def source(self):
-        self.default_source()
-        tools.rmdir(os.path.join("sources", "internal-complibs"))
+        get(self,
+            sha256="32e61961bbf81ffea6ff30e9d70fca36c86178afd3e3cfa13376adec8c687509",
+            url=f"https://github.com/Blosc/c-blosc/archive/refs/tags/v{self.version}.tar.gz",
+            strip_root=True
+        )
+        rmdir(self, self.source_path / "cmake")
+        rmdir(self, self.source_path / "internal-complibs")
 
-    def _configure_cmake(self):
-        if not self._cmake:
-            self.create_cmake_wrapper()
-            self._cmake = CMake(self)
+    def generate(self):
+        tc = CMakeToolchain(self)
 
-            self._cmake.definitions["CMAKE_DEBUG_POSTFIX"] = "d"
+        tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
 
-            self._cmake.definitions["BLOSC_INSTALL"] = True
+        tc.variables["BLOSC_INSTALL"] = True
 
-            self._cmake.definitions["BUILD_STATIC"] = False
-            self._cmake.definitions["BUILD_SHARED"] = True
-            self._cmake.definitions["BUILD_TESTS"] = False
-            self._cmake.definitions["BUILD_FUZZERS"] = False
-            self._cmake.definitions["BUILD_BENCHMARKS"] = False
+        tc.variables["CMAKE_INSTALL_RPATH"] = "$ORIGIN;$ORIGIN/../lib"
+        tc.variables["BUILD_STATIC"] = False
+        tc.variables["BUILD_SHARED"] = True
+        tc.variables["BUILD_TESTS"] = False
+        tc.variables["BUILD_FUZZERS"] = False
+        tc.variables["BUILD_BENCHMARKS"] = False
 
-            self._cmake.definitions["PREFER_EXTERNAL_LZ4"] = True
-            self._cmake.definitions["PREFER_EXTERNAL_ZLIB"] = True
-            self._cmake.definitions["PREFER_EXTERNAL_ZSTD"] = True
+        tc.variables["PREFER_EXTERNAL_LZ4"] = True
+        tc.variables["PREFER_EXTERNAL_Snappy"] = True
+        tc.variables["PREFER_EXTERNAL_ZLIB"] = True
+        tc.variables["PREFER_EXTERNAL_ZSTD"] = True
 
-            self._cmake.definitions["DEACTIVATE_LZ4"] = False
-            self._cmake.definitions["DEACTIVATE_SNAPPY"] = True
-            self._cmake.definitions["DEACTIVATE_ZLIB"] = False
-            self._cmake.definitions["DEACTIVATE_ZSTD"] = False
+        tc.variables["CMAKE_REQUIRE_FIND_PACKAGE_LZ4"] = True
+        tc.variables["CMAKE_REQUIRE_FIND_PACKAGE_Snappy"] = True
+        tc.variables["CMAKE_REQUIRE_FIND_PACKAGE_ZLIB"] = True
+        tc.variables["CMAKE_REQUIRE_FIND_PACKAGE_Zstd"] = True
 
-            self._cmake.configure()
-        return self._cmake
+        def _has_dependency(name):
+            try:
+                self.dependencies.get(name)
+                return True
+            except KeyError:
+                return False
+
+        tc.variables["DEACTIVATE_LZ4"] = not _has_dependency("lz4")
+        tc.variables["DEACTIVATE_SNAPPY"] = not _has_dependency("snappy")
+        tc.variables["DEACTIVATE_ZLIB"] = not _has_dependency("zlib")
+        tc.variables["DEACTIVATE_ZSTD"] = not _has_dependency("zstd")
+
+        tc.variables["CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP"] = True
+
+        tc.cache_variables["CMAKE_POLICY_DEFAULT_CMP0042"] = "NEW"
+        tc.generate()
+
+        deps = CMakeDeps(self)
+        deps.generate()
 
     def build(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
+        cmake.configure()
         cmake.build()
 
     def package(self):
-        cmake = self._configure_cmake()
+        copy(self, "LICENSE.txt", src=self.source_path, dst=self.package_path / "licenses")
+        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False, excludes="*vc???.pdb")
+        cmake = CMake(self)
         cmake.install()
-
-        self.copy("*.pdb", src="bin", dst="bin")
-
-        tools.rmdir(os.path.join(self.package_folder, "lib", "pkgconfig"))
-
-        self.patch_binaries()
-        self.default_package()
+        rmdir(self, self.package_path / "lib" / "pkgconfig")
 
     def package_info(self):
-        self.default_package_info()
-        self.cpp_info.names["pkg_config"] = "blosc"
-
+        self.cpp_info.set_property("pkg_config_name", "blosc")
+        self.cpp_info.libs = collect_libs(self)
         if self.settings.os == "Linux":
-            self.cpp_info.system_libs.extend(["pthread"])
+            self.cpp_info.system_libs.extend(["m", "pthread"])

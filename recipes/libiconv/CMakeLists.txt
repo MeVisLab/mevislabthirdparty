@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.27)
 project(libiconv C)
 
 set(_unused
@@ -12,8 +12,7 @@ set(_unused
     ${CMAKE_INSTALL_SBINDIR}
 )
 
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()
+include(${CMAKE_TOOLCHAIN_FILE})
 
 set(LIBICONV_DYNAMIC "1")
 
@@ -23,7 +22,7 @@ if(WIN32)
   set(BROKEN_WCHAR_H "0 /*BROKEN_WCHAR_H*/")
   set(HAVE_VISIBILITY "0 /*HAVE_VISIBILITY*/")
 
-  configure_file(sources/config.h.in config.h)
+  configure_file(src/config.h.in config.h)
   file(READ "${CMAKE_CURRENT_BINARY_DIR}/config.h" _contents)
   string(REPLACE "#undef HAVE_WORKING_O_NOFOLLOW" "#define HAVE_WORKING_O_NOFOLLOW 0" _contents "${_contents}")
   string(REPLACE "#undef HAVE_MBRTOWC" "#define HAVE_MBRTOWC 1" _contents "${_contents}")
@@ -34,12 +33,12 @@ if(WIN32)
   string(REPLACE "#undef WORDS_LITTLEENDIAN" "#define WORDS_LITTLEENDIAN 1" _contents "${_contents}")
   file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/config.h" "${_contents}")
 
-  configure_file(sources/libcharset/include/localcharset.h.build.in localcharset.h)
-  configure_file(sources/include/iconv.h.build.in iconv.h)
+  configure_file(src/libcharset/include/localcharset.h.build.in localcharset.h)
+  configure_file(src/include/iconv.h.build.in iconv.h)
 else()
   file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/autoconf)
   execute_process(
-    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/sources/configure --enable-relocatable --enable-shared --disable-static --without-libiconv-prefix --without-libintl-prefix
+    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/src/configure --enable-relocatable --enable-shared --disable-static --without-libiconv-prefix --without-libintl-prefix
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/autoconf
   )
 
@@ -51,12 +50,12 @@ endif()
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 add_definitions(-DLIBDIR -D_CRT_SECURE_NO_WARNINGS)
 
-add_library(libcharset SHARED sources/libcharset/lib/localcharset.c)
-target_include_directories(libcharset PUBLIC $<INSTALL_INTERFACE:sources/include>)
+add_library(libcharset SHARED src/libcharset/lib/localcharset.c)
+target_include_directories(libcharset PUBLIC $<INSTALL_INTERFACE:src/include>)
 
-add_library(libiconv SHARED sources/lib/iconv.c)
+add_library(libiconv SHARED src/lib/iconv.c)
 target_link_libraries(libiconv PRIVATE libcharset)
-target_include_directories(libiconv PUBLIC $<INSTALL_INTERFACE:sources/include>)
+target_include_directories(libiconv PUBLIC $<INSTALL_INTERFACE:src/include>)
 
 install(TARGETS libcharset libiconv
   RUNTIME DESTINATION bin

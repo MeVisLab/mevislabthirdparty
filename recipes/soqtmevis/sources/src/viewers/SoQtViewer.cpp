@@ -178,8 +178,7 @@ void
 SoQtViewer::resizeGL (int width, int height)
 {
     SoQtRenderArea::resizeGL(width, height);
-    SoQtCameraController::setSceneSize(SbVec2s(width, height) *
-      (qobject_cast<QGLWidget*>(const_cast<const SoQtViewer*>(this)->getRenderingWidget()) ? 1.0 : getGlxDevicePixelRatio()));
+    SoQtCameraController::setSceneSize(SbVec2s(width, height) * getGlxDevicePixelRatio());
 }
 
 

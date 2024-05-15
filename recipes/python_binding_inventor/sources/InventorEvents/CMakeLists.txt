@@ -16,10 +16,7 @@ target_sources(InventorEvents PRIVATE
 
 target_link_libraries(InventorEvents
   PRIVATE
-    Qt5::Core
-    Python3::Python
-    Threads::Threads
-    ${CONAN_LIBS}
+    ${REQUIRED_LIBS}
 )
 
 install(TARGETS InventorEvents

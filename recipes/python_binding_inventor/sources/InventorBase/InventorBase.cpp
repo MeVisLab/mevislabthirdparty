@@ -68,7 +68,7 @@ static void* polymorphicHandler_SoBase(const void *ptr, const char **class_name)
     SoType type = object->getTypeId();
     do {
       QByteArray name = type.getName().getString();
-    
+
       if (!name.startsWith("So")) {
         name = "So" + name;
       }
@@ -124,8 +124,6 @@ static void SoBaseUnrefCB(void* object) {
   static_cast<SoBase*>(object)->unref();
 }
 
-#if PY_MAJOR_VERSION >= 3
-
 static PyModuleDef baseModuleDef = {
   PyModuleDef_HEAD_INIT,
   "base",
@@ -138,28 +136,23 @@ static PyModuleDef baseModuleDef = {
   nullptr
 };
 
-  #define Py_2_3_InitModFunc(name) PyInit_##name(void)
-  #define Py_2_3_ModuleInit(name) PyModule_Create(&baseModuleDef)
-
-#else
-  #define Py_2_3_InitModFunc(name) init##name(void)
-  #define Py_2_3_ModuleInit(name) Py_InitModule(name, NoMethods)
-#endif
+#define PyInitModFunc(name) PyInit_##name(void)
+  #define PyModuleInit(name) PyModule_Create(&baseModuleDef)
 
 #ifdef UNIX
 PyMODINIT_FUNC
-Py_2_3_InitModFunc(base) ML_LIBRARY_EXPORT_ATTRIBUTE ;
+PyInitModFunc(base) ML_LIBRARY_EXPORT_ATTRIBUTE ;
 #endif
 
 PyMODINIT_FUNC
-Py_2_3_InitModFunc(base)
+PyInitModFunc(base)
 {
   // Initialize PythonQt if not yet done, to support e.g. pylint
   if (!PythonQt::self()) {
     PythonQt::init(PythonQt::IgnoreSiteModule, "_PythonQt");
   }
 
-  PyObject* module = Py_2_3_ModuleInit("base");
+  PyObject* module = PyModuleInit("base");
   PythonQt_init_InventorBase(module);
 
   PythonQt::priv()->getClassInfo("SoBase")->setReferenceCounting(SoBaseRefCB, SoBaseUnrefCB);
@@ -179,9 +172,7 @@ Py_2_3_InitModFunc(base)
 
   PythonQt::self()->addDecorators(new InventorBaseDecorator());
 
-#if PY_MAJOR_VERSION >= 3
   return module;
-#endif
 }
 
 
@@ -226,7 +217,7 @@ void InventorBaseDecorator::addFieldsToDict( SoFieldContainer* container, PyObje
   for (int i = 0;i<fields.getLength(); i++) {
     SoField* field = fields[i];
     SbName fieldName;
-    if (container->getFieldName(field, fieldName)) 
+    if (container->getFieldName(field, fieldName))
     {
       PyObject* object = PythonQt::priv()->wrapPtr(field, "SoField");
       PyDict_SetItemString(dict, fieldName.getString(), object);
@@ -247,7 +238,7 @@ PyObject* InventorBaseDecorator::py_dynamic_dict( SoEngine* engine )
   for (int i = 0;i<fields.getLength(); i++) {
     SoEngineOutput* field = fields[i];
     SbName fieldName;
-    if (engine->getOutputName(field, fieldName)) 
+    if (engine->getOutputName(field, fieldName))
     {
       PyObject* object = PythonQt::priv()->wrapPtr(field, "SoEngineOutput");
       PyDict_SetItemString(dict, fieldName.getString(), object);
@@ -671,7 +662,7 @@ void setVectorValuesHelper( FIELD* field, int start, PyObject* obj, PyTypeObject
   if (!PyArray_Check(obj)) {
     // if it is a sequence, check if it is a sequence of VECTOR
     if (PySequence_Check(obj)) {
-      bool sequenceOfVectors = false; 
+      bool sequenceOfVectors = false;
       int count = PySequence_Size(obj);
       if (count > 0) {
         sequenceOfVectors = true;

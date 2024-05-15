@@ -1,0 +1,13 @@
+diff --git a/Modules/ThirdParty/VNL/src/vxl/config/cmake/config/vxl_shared_link_test/CMakeLists.txt b/Modules/ThirdParty/VNL/src/vxl/config/cmake/config/vxl_shared_link_test/CMakeLists.txt
+index 09a5ec8b..8024e741 100644
+--- a/Modules/ThirdParty/VNL/src/vxl/config/cmake/config/vxl_shared_link_test/CMakeLists.txt
++++ b/Modules/ThirdParty/VNL/src/vxl/config/cmake/config/vxl_shared_link_test/CMakeLists.txt
+@@ -8,7 +8,7 @@ cmake_minimum_required(VERSION 3.16.3)
+ if(CMAKE_VERSION VERSION_LESS 3.12.0)
+   cmake_policy(VERSION ${CMAKE_VERSION})
+ else()
+-  cmake_policy(VERSION 3.10.2...3.13.2)
++  # cmake_policy(VERSION 3.10.2...3.13.2)
+ endif()
+ 
+ project(vxl_pic_compatible)

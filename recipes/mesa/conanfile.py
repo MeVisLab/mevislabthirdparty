@@ -1,85 +1,132 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans import tools
-from conans import Meson
-from conans.errors import ConanInvalidConfiguration
-import os
+from conan import ConanFile
+from conan.errors import ConanInvalidConfiguration
+from conan.tools.files import get, rmdir, copy, replace_in_file
+from conan.tools.layout import basic_layout
+from conan.tools.meson import Meson, MesonToolchain
+
+required_conan_version = ">=2.0.7"
+
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
+    name = "mesa"
+    display_name = "Mesa"
+    version = "24.0.4"
+    homepage = "https://mesa3d.org"
+    description = "an open source software implementation of OpenGL, Vulkan, and other graphics API specifications"
+    license = "MIT"
+    settings = "os", "compiler", "arch", "build_type"
+    package_type = "shared-library"
+    exports_sources = ["patches/*", "LICENSE"]
 
-    _meson = None
-
+    mlab_hooks = {
+        "test_package.skip": True,
+        "dependencies.system_libs": [
+            "libdrm.so.2",
+            "libsensors.so.5",
+            "libunwind.so.8",
+            "libwayland-client.so.0",
+            "libwayland-server.so.0",
+            "libX11-xcb.so.1",
+            "libxcb-dri2.so.0",
+            "libxcb-dri3.so.0",
+            "libxcb-glx.so.0",
+            "libxcb-present.so.0",
+            "libxcb-randr.so.0",
+            "libxcb-shm.so.0",
+            "libxcb-sync.so.1",
+            "libxcb-xfixes.so.0",
+            "libxcb.so.1",
+            "libXfixes.so.3",
+            "libxshmfence.so.1",
+            "libXxf86vm.so.1",
+        ],
+    }
 
     def package_id(self):
-        self.info.clear()
-
+        self.info.settings.rm_safe("build_type")
+        self.info.settings.rm_safe("compiler.runtime_type")
 
     def configure(self):
         if self.settings.os != "Windows":
             raise ConanInvalidConfiguration(f"{self.name} is only supported on Windows")
 
-
     def validate(self):
         if self.settings.os != "Windows":
             raise ConanInvalidConfiguration(f"{self.name} is only supported on Windows")
-
 
     def validate_build(self):
         if self.settings.build_type != "Release":
             raise ConanInvalidConfiguration(f"{self.name} is built in release mode only.")
 
-
-    def build_requirements(self):
-        channel = "@{0}/{1}".format(self.user, self.channel)
-        self.build_requires("mako/[>=1.0.0]" + channel)
-
-        if tools.os_info.is_windows:
-            self.build_requires("meson_installer/[>=0.54.1]" + channel)
-            self.build_requires("winflexbison_installer/[>=2.5.22]" + channel)
-
-
     def requirements(self):
-        channel = "@{0}/{1}".format(self.user, self.channel)
-        self.requires("llvm/[>=14.0.0]" + channel, private=True)
+        self.requires("llvm/[>=17.0.0]", visible=False)
 
+    def layout(self):
+        basic_layout(self, src_folder="src")
 
-    def _configure_meson(self):
-        if not self._meson:
-            # hack to get the right compiler runtime:
-            if self.settings.compiler == "Visual Studio":
-                self.settings.compiler.runtime = "MT"
+    def source(self):
+        get(
+            self,
+            sha256="90febd30a098cbcd97ff62ecc3dcf5c93d76f7fa314de944cfce81951ba745f0",
+            url=f"https://mesa.freedesktop.org/archive/mesa-{self.version}.tar.xz",
+            strip_root=True,
+        )
 
-            with tools.environment_append({"ZLIB_ROOT": self.deps_cpp_info['zlib'].rootpath}):
-                self._meson = Meson(self, build_type="Release")
-                self._meson.configure(
-                    # This version creates separate AVX and AVX2 dlls (besides OpenGL32.dll):
-                    # defs={ "gallium-drivers": "swr,swrast" },
-                    # This version only creates the OpenGL32.dll (with only AVX support):
-                    defs={
-                        "gallium-drivers": "swrast",
-                        #"shared-swr": "false",
-                        #"swr-arches": "avx"
-                    },
-                    source_folder="sources",
-                    build_folder="build")
-        return self._meson
+    def generate(self):
+        tc = MesonToolchain(self)
+        tc.project_options.update(
+            {
+                "gallium-drivers": "swrast",
+                "llvm": "enabled",  # make sure we get the llvmpipe driver, not softpipe
+                "shared-llvm": "disabled",
+                "platforms": "windows" if self.settings.os == "Windows" else "x11",
+                "video-codecs": "",  # no video codecs needed, no patented codecs wanted
+                "vulkan-drivers": "",  # no Vulkan drivers on Windows anyway (just to be able to build on Linux too)
+                "cpp_rtti": "false",  # on Linux Mesa complains that LLVM was built without RTTI (LLVM_ENABLE_RTTI=ON was not set)
+                "zlib": "disabled",  # disable find zlib (used for shader-cache, but not supported on Windows anyway)
+                "zstd": "disabled",  # disable find zstd (used for shader-cache, but not supported on Windows anyway)
+                "xmlconfig": "disabled",  # disabled on Windows anyway (just to be able to build on Linux too)
+                "expat": "disabled",  # disabled on Windows anyway (just to be able to build on Linux too)
+                "shader-cache": "disabled",  # disabled on Windows anyway (just to be able to build on Linux too)
+            }
+        )
+        tc.generate()
 
+        # Need to either set llvm-config binary or cmake_config_path built-in option in the configuration .ini file
+        # for meson, otherwise llvm isn't found, but unfortunately MesonToolchain doesn't support this (yet):
+        llvm_config = self.dependencies["llvm"].cpp_info.bindirs[0] + (
+            "\\llvm-config.exe" if self.settings.os == "Windows" else "/llvm-config"
+        )
+        replace_in_file(
+            self,
+            tc.native_filename,
+            "[binaries]",
+            f"[binaries]\nllvm-config = '{llvm_config}'",
+        )
 
     def build(self):
-        meson = self._configure_meson()
+        meson = Meson(self)
+        meson.configure()
         meson.build()
 
-
     def package(self):
-        meson = self._configure_meson()
+        meson = Meson(self)
         meson.install()
 
-        tools.rmdir(os.path.join(self.package_folder, 'share'))
+        rmdir(self, self.package_path / "share")
+        rmdir(self, self.package_path / "lib" / "pkgconfig")
+
+        copy(self, "LICENSE", src=self.source_path.parent, dst=self.package_path / "licenses")
 
         # copy ThirdPartyInformation from llvm, because llvm isn't a direct dependency of MeVisLab
-        rootpath = self.deps_cpp_info["llvm"].rootpath
-        self.copy("*", src=os.path.join(rootpath, "MeVis", "ThirdParty", "ThirdPartyInformation"), dst=os.path.join("MeVis", "ThirdParty", "ThirdPartyInformation"))
+        # TODO: no ThirdPartyInformation created yet
+        rootpath = self.dependencies["llvm"].package_path
+        copy(
+            self,
+            "*",
+            src=rootpath / "MeVis" / "ThirdParty" / "ThirdPartyInformation",
+            dst=self.package_path / "MeVis" / "ThirdParty" / "ThirdPartyInformation",
+        )
 
-        self.default_package()
+    def package_info(self):
+        self.cpp_info.includedirs = []

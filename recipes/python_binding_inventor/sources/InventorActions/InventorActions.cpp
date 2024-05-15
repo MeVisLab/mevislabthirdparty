@@ -57,8 +57,6 @@ static void* polymorphicHandler_SoAction(const void *ptr, const char **class_nam
   return object;
 }
 
-#if PY_MAJOR_VERSION >= 3
-
 static PyModuleDef actionsModuleDef = {
   PyModuleDef_HEAD_INIT,
   "actions",
@@ -71,33 +69,26 @@ static PyModuleDef actionsModuleDef = {
   nullptr
 };
 
-  #define Py_2_3_InitModFunc(name) PyInit_##name(void)
-  #define Py_2_3_ModuleInit(name) PyModule_Create(&actionsModuleDef)
-
-#else
-  #define Py_2_3_InitModFunc(name) init##name(void)
-  #define Py_2_3_ModuleInit(name) Py_InitModule(name, NoMethods)
-#endif
+#define PyInitModFunc(name) PyInit_##name(void)
+  #define PyModuleInit(name) PyModule_Create(&actionsModuleDef)
 
 #ifdef UNIX
 PyMODINIT_FUNC
-Py_2_3_InitModFunc(actions) ML_LIBRARY_EXPORT_ATTRIBUTE ;
+PyInitModFunc(actions) ML_LIBRARY_EXPORT_ATTRIBUTE ;
 #endif
 
 PyMODINIT_FUNC
-Py_2_3_InitModFunc(actions)
+PyInitModFunc(actions)
 {
   PyObject* nodes = PyImport_ImportModule("Inventor.nodes");
   Py_XDECREF(nodes);
 
-  PyObject* module = Py_2_3_ModuleInit("actions");
+  PyObject* module = PyModuleInit("actions");
   PythonQt_init_InventorActions(module);
 
   PythonQt::self()->addPolymorphicHandler("SoAction", polymorphicHandler_SoAction);
 
-#if PY_MAJOR_VERSION >= 3
   return module;
-#endif
 }
 
 

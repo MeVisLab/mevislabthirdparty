@@ -1,73 +1,77 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans import CMake
-from conans import tools
-import glob
-import os
+from conan import ConanFile
+from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
+from conan.tools.files import collect_libs, replace_in_file
+from conan.tools.files import get, rmdir, copy
+from conan.tools.scm import Version
+
+required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
+    name = "glfw"
+    version = "3.4"
+    homepage = "https://github.com/glfw/glfw"
+    description = "A multi-platform library for OpenGL, OpenGL ES, Vulkan, window and input"
+    license = "Zlib"
+    package_type = "shared-library"
+    settings = "os", "arch", "compiler", "build_type"
 
-    _cmake = None
+    mlab_hooks = {"debug_suffix.exclude": ["glfw3ddll.lib", "glfw3d.dll"]}
 
+    def configure(self):
+        self.settings.rm_safe("compiler.libcxx")
+        self.settings.rm_safe("compiler.cppstd")
 
-    def system_requirements(self):
-        installer = tools.SystemPackageTool()
-        packages = []
+    def layout(self):
+        cmake_layout(self, src_folder="src")
 
-        if tools.os_info.linux_distro in ["ubuntu", "debian"]:
-            packages.append('libxi-dev')
-            packages.append('libxcursor-dev')
-            packages.append('libxrandr-dev')
-            packages.append('libxinerama-dev')
+    def source(self):
+        v = Version(self.version)
+        v_str = f"{v.major}.{v.minor}" + (f".{v.patch}" if v.patch and v.patch > 0 else "")
+        get(
+            self,
+            sha256="c038d34200234d071fae9345bc455e4a8f2f544ab60150765d7704e08f3dac01",
+            url=f"https://github.com/glfw/glfw/archive/{v_str}.tar.gz",
+            strip_root=True,
+        )
+        replace_in_file(
+            self,
+            self.source_path / "src" / "CMakeLists.txt",
+            "set_target_properties(glfw PROPERTIES IMPORT_SUFFIX",
+            "#set_target_properties(glfw PROPERTIES IMPORT_SUFFIX",
+        )
 
-        if packages:
-            installer.install_packages(packages)
-
-
-    def _configure_cmake(self):
-        if not self._cmake:
-            self.create_cmake_wrapper()
-            self._cmake = CMake(self)
-            self._cmake.definitions["BUILD_SHARED_LIBS"] = True
-            self._cmake.definitions["GLFW_BUILD_EXAMPLES"] = False
-            self._cmake.definitions["GLFW_BUILD_TESTS"] = False
-            self._cmake.definitions["GLFW_BUILD_DOCS"] = False
-            self._cmake.configure()
-        return self._cmake
-
+    def generate(self):
+        tc = CMakeToolchain(self)
+        tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
+        tc.variables["BUILD_SHARED_LIBS"] = True
+        tc.variables["GLFW_BUILD_EXAMPLES"] = False
+        tc.variables["GLFW_BUILD_TESTS"] = False
+        tc.variables["GLFW_BUILD_DOCS"] = False
+        tc.variables["GLFW_BUILD_WAYLAND"] = False
+        tc.variables["GLFW_INSTALL"] = True
+        tc.generate()
 
     def build(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
+        cmake.configure()
         cmake.build()
 
-        if self.settings.os == "Macos":
-            with tools.chdir(os.path.join('sources', 'src')):
-                for filename in glob.glob('*.dylib'):
-                    self.run('install_name_tool -id {filename} {filename}'.format(filename=filename))
-
-
     def package(self):
-        cmake = self._configure_cmake()
+        copy(self, "LICENSE*", src=self.source_path, dst=self.package_path / "licenses")
+        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False, excludes="*vc???.pdb")
+        cmake = CMake(self)
         cmake.install()
-
-        self.copy("*.pdb", src="bin", dst="bin")
-
-        tools.rmdir(os.path.join(self.package_folder, "lib", "cmake"))
-        tools.rmdir(os.path.join(self.package_folder, "lib", "pkgconfig"))
-
-        self.patch_binaries()
-        self.default_package()
-
+        rmdir(self, self.package_path / "lib" / "cmake")
+        rmdir(self, self.package_path / "lib" / "pkgconfig")
 
     def package_info(self):
-        self.default_package_info()
-
-        self.cpp_info.libs = tools.collect_libs(self)
+        self.cpp_info.set_property("cmake_file_name", "glfw3")
+        self.cpp_info.set_property("cmake_target_name", "glfw")
+        self.cpp_info.set_property("pkg_config_name", "glfw3")
+        self.cpp_info.libs = collect_libs(self)
         if self.settings.os == "Linux":
-            self.cpp_info.system_libs.extend(['m', 'dl', 'pthread'])
-            self.cpp_info.exelinkflags.append("-lrt -lm -ldl")
-        elif self.settings.os == "Macos":
-            self.cpp_info.frameworks.extend(["Cocoa", "IOKit", "CoreVideo"])
+            self.cpp_info.system_libs.extend(["m", "pthread", "dl", "rt"])
+        elif self.settings.os == "Windows":
+            self.cpp_info.defines.append("GLFW_DLL")
+            self.cpp_info.system_libs.append("gdi32")

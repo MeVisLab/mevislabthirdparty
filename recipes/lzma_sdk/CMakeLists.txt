@@ -1,48 +1,34 @@
-cmake_minimum_required(VERSION 3.17)
-project(LZMA LANGUAGES C)
+cmake_minimum_required(VERSION 3.27)
+project(LZMA VERSION ${CONAN_LZMA_VERISON} LANGUAGES C)
 
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup(TARGETS)
-
-set(_UNUSED
-  ${CMAKE_DEBUG_POSTFIX}
-  ${CMAKE_EXPORT_NO_PACKAGE_REGISTRY}
-  ${CMAKE_INSTALL_BINDIR}
-  ${CMAKE_INSTALL_DATAROOTDIR}
-  ${CMAKE_INSTALL_INCLUDEDIR}
-  ${CMAKE_INSTALL_LIBDIR}
-  ${CMAKE_INSTALL_LIBEXECDIR}
-  ${CMAKE_INSTALL_OLDINCLUDEDIR}
-  ${CMAKE_INSTALL_SBINDIR})
-
-add_library(lzma_sdk STATIC "")
-add_library(lzma_sdk::lzma_sdk ALIAS lzma_sdk)
+add_library(lzma_sdk)
+set_target_properties(lzma_sdk PROPERTIES VERSION "${PROJECT_VERSION}" SOVERSION "${PROJECT_VERSION_MAJOR}")
 
 set(_HEADERS
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/C/Alloc.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/C/7zTypes.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/C/Bra.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/C/CpuArch.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/C/LzFindMt.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/C/LzFind.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/C/LzHash.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/C/Lzma86.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/C/LzmaDec.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/C/LzmaEnc.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/C/RotateDefs.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/C/Threads.h
+  src/C/Alloc.h
+  src/C/7zTypes.h
+  src/C/Bra.h
+  src/C/CpuArch.h
+  src/C/LzFindMt.h
+  src/C/LzFind.h
+  src/C/LzHash.h
+  src/C/Lzma86.h
+  src/C/LzmaDec.h
+  src/C/LzmaEnc.h
+  src/C/RotateDefs.h
+  src/C/Threads.h
   )
 
 target_sources(lzma_sdk PRIVATE
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/C/Alloc.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/C/Bra.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/C/Bra86.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/C/CpuArch.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/C/LzFind.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/C/Lzma86Dec.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/C/Lzma86Enc.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/C/LzmaDec.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/C/LzmaEnc.c
+  src/C/Alloc.c
+  src/C/Bra.c
+  src/C/Bra86.c
+  src/C/CpuArch.c
+  src/C/LzFind.c
+  src/C/Lzma86Dec.c
+  src/C/Lzma86Enc.c
+  src/C/LzmaDec.c
+  src/C/LzmaEnc.c
   ${_HEADERS}
 )
 
@@ -50,16 +36,14 @@ target_sources(lzma_sdk PRIVATE
 # On other platforms, we have to disabled it
 if (WIN32)
   target_sources(lzma_sdk PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/sources/C/LzFindMt.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/sources/C/Threads.c
+    src/C/LzFindMt.c
+    src/C/Threads.c
   )
 else()
   target_compile_definitions(lzma_sdk PRIVATE _7ZIP_ST)
 endif()
 
-target_include_directories(lzma_sdk PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/sources/C>
-)
+target_include_directories(lzma_sdk PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/C>)
 
 install(TARGETS lzma_sdk RUNTIME DESTINATION bin LIBRARY DESTINATION lib ARCHIVE DESTINATION lib)
 install(FILES ${_HEADERS} DESTINATION "include/C")

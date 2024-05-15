@@ -1,0 +1,591 @@
+diff --git a/EasyBMP.cpp b/EasyBMP.cpp
+index 4e2b006..4912061 100644
+--- a/EasyBMP.cpp
++++ b/EasyBMP.cpp
+@@ -421,7 +421,7 @@ bool BMP::SetSize(int NewWidth , int NewHeight )
+  return true; 
+ }
+ 
+-bool BMP::WriteToFile( const char* FileName )
++bool BMP::WriteToFile( BMPWriter *writer )
+ {
+  using namespace std;
+  if( !EasyBMPcheckDataSize() )
+@@ -437,18 +437,6 @@ bool BMP::WriteToFile( const char* FileName )
+   return false; 
+  }
+  
+- FILE* fp = fopen( FileName, "wb" );
+- if( fp == NULL )
+- {
+-  if( EasyBMPwarnings )
+-  {
+-   cout << "EasyBMP Error: Cannot open file " 
+-        << FileName << " for output." << endl;
+-  }
+-  fclose( fp );
+-  return false;
+- }
+-  
+  // some preliminaries
+  
+  double dBytesPerPixel = ( (double) BitDepth ) / 8.0;
+@@ -484,11 +472,11 @@ bool BMP::WriteToFile( const char* FileName )
+  if( IsBigEndian() )
+  { bmfh.SwitchEndianess(); }
+  
+- fwrite( (char*) &(bmfh.bfType) , sizeof(ebmpWORD) , 1 , fp );
+- fwrite( (char*) &(bmfh.bfSize) , sizeof(ebmpDWORD) , 1 , fp );
+- fwrite( (char*) &(bmfh.bfReserved1) , sizeof(ebmpWORD) , 1 , fp );
+- fwrite( (char*) &(bmfh.bfReserved2) , sizeof(ebmpWORD) , 1 , fp );
+- fwrite( (char*) &(bmfh.bfOffBits) , sizeof(ebmpDWORD) , 1 , fp );
++ Fwrite( (char*) &(bmfh.bfType) , sizeof(ebmpWORD) , 1 , writer );
++ Fwrite( (char*) &(bmfh.bfSize) , sizeof(ebmpDWORD) , 1 , writer );
++ Fwrite( (char*) &(bmfh.bfReserved1) , sizeof(ebmpWORD) , 1 , writer );
++ Fwrite( (char*) &(bmfh.bfReserved2) , sizeof(ebmpWORD) , 1 , writer );
++ Fwrite( (char*) &(bmfh.bfOffBits) , sizeof(ebmpDWORD) , 1 , writer );
+  
+  // write the info header 
+  
+@@ -519,17 +507,17 @@ bool BMP::WriteToFile( const char* FileName )
+  if( IsBigEndian() )
+  { bmih.SwitchEndianess(); }
+  
+- fwrite( (char*) &(bmih.biSize) , sizeof(ebmpDWORD) , 1 , fp );
+- fwrite( (char*) &(bmih.biWidth) , sizeof(ebmpDWORD) , 1 , fp );
+- fwrite( (char*) &(bmih.biHeight) , sizeof(ebmpDWORD) , 1 , fp );
+- fwrite( (char*) &(bmih.biPlanes) , sizeof(ebmpWORD) , 1 , fp );
+- fwrite( (char*) &(bmih.biBitCount) , sizeof(ebmpWORD) , 1 , fp );
+- fwrite( (char*) &(bmih.biCompression) , sizeof(ebmpDWORD) , 1 , fp );
+- fwrite( (char*) &(bmih.biSizeImage) , sizeof(ebmpDWORD) , 1 , fp );
+- fwrite( (char*) &(bmih.biXPelsPerMeter) , sizeof(ebmpDWORD) , 1 , fp );
+- fwrite( (char*) &(bmih.biYPelsPerMeter) , sizeof(ebmpDWORD) , 1 , fp ); 
+- fwrite( (char*) &(bmih.biClrUsed) , sizeof(ebmpDWORD) , 1 , fp);
+- fwrite( (char*) &(bmih.biClrImportant) , sizeof(ebmpDWORD) , 1 , fp);
++ Fwrite( (char*) &(bmih.biSize) , sizeof(ebmpDWORD) , 1 , writer );
++ Fwrite( (char*) &(bmih.biWidth) , sizeof(ebmpDWORD) , 1 , writer );
++ Fwrite( (char*) &(bmih.biHeight) , sizeof(ebmpDWORD) , 1 , writer );
++ Fwrite( (char*) &(bmih.biPlanes) , sizeof(ebmpWORD) , 1 , writer );
++ Fwrite( (char*) &(bmih.biBitCount) , sizeof(ebmpWORD) , 1 , writer );
++ Fwrite( (char*) &(bmih.biCompression) , sizeof(ebmpDWORD) , 1 , writer );
++ Fwrite( (char*) &(bmih.biSizeImage) , sizeof(ebmpDWORD) , 1 , writer );
++ Fwrite( (char*) &(bmih.biXPelsPerMeter) , sizeof(ebmpDWORD) , 1 , writer );
++ Fwrite( (char*) &(bmih.biYPelsPerMeter) , sizeof(ebmpDWORD) , 1 , writer ); 
++ Fwrite( (char*) &(bmih.biClrUsed) , sizeof(ebmpDWORD) , 1 , writer);
++ Fwrite( (char*) &(bmih.biClrImportant) , sizeof(ebmpDWORD) , 1 , writer);
+  
+  // write the palette 
+  if( BitDepth == 1 || BitDepth == 4 || BitDepth == 8 )
+@@ -546,7 +534,7 @@ bool BMP::WriteToFile( const char* FileName )
+    
+   int n;
+   for( n=0 ; n < NumberOfColors ; n++ )
+-  { fwrite( (char*) &(Colors[n]) , 4 , 1 , fp ); }
++  { Fwrite( (char*) &(Colors[n]) , 4 , 1 , writer ); }
+  }
+  
+  // write the pixels 
+@@ -581,7 +569,7 @@ bool BMP::WriteToFile( const char* FileName )
+    { Success = Write1bitRow( Buffer, BufferSize, j ); }
+    if( Success )
+    {
+-    int BytesWritten = (int) fwrite( (char*) Buffer, 1, BufferSize, fp );
++    int BytesWritten = (int) Fwrite( (char*) Buffer, 1, BufferSize, writer );
+     if( BytesWritten != BufferSize )
+     { Success = false; }
+    }
+@@ -610,18 +598,18 @@ bool BMP::WriteToFile( const char* FileName )
+   
+   if( IsBigEndian() )
+   { RedMask = FlipWORD( RedMask ); }
+-  fwrite( (char*) &RedMask , 2 , 1 , fp );
+-  fwrite( (char*) &ZeroWORD , 2 , 1 , fp );
++  Fwrite( (char*) &RedMask , 2 , 1 , writer );
++  Fwrite( (char*) &ZeroWORD , 2 , 1 , writer );
+ 
+   if( IsBigEndian() )
+   { GreenMask = FlipWORD( GreenMask ); }
+-  fwrite( (char*) &GreenMask , 2 , 1 , fp );
+-  fwrite( (char*) &ZeroWORD , 2 , 1 , fp );
++  Fwrite( (char*) &GreenMask , 2 , 1 , writer );
++  Fwrite( (char*) &ZeroWORD , 2 , 1 , writer );
+ 
+   if( IsBigEndian() )
+   { BlueMask = FlipWORD( BlueMask ); }
+-  fwrite( (char*) &BlueMask , 2 , 1 , fp );
+-  fwrite( (char*) &ZeroWORD , 2 , 1 , fp );
++  Fwrite( (char*) &BlueMask , 2 , 1 , writer );
++  Fwrite( (char*) &ZeroWORD , 2 , 1 , writer );
+ 
+   int DataBytes = Width*2;
+   int PaddingBytes = ( 4 - DataBytes % 4 ) % 4;
+@@ -645,7 +633,7 @@ bool BMP::WriteToFile( const char* FileName )
+ 	if( IsBigEndian() )
+ 	{ TempWORD = FlipWORD( TempWORD ); }
+ 	
+-    fwrite( (char*) &TempWORD , 2, 1, fp);
++    Fwrite( (char*) &TempWORD , 2, 1, writer);
+     WriteNumber += 2;
+ 	i++;
+    }
+@@ -654,18 +642,17 @@ bool BMP::WriteToFile( const char* FileName )
+    while( WriteNumber < PaddingBytes )
+    {
+     ebmpBYTE TempBYTE;
+-    fwrite( (char*) &TempBYTE , 1, 1, fp);
++    Fwrite( (char*) &TempBYTE , 1, 1, writer);
+     WriteNumber++;
+    }
+   }
+   
+  }
+ 
+- fclose(fp);
+  return true;
+ }
+ 
+-bool BMP::ReadFromFile( const char* FileName )
++bool BMP::ReadFromFile( BMPReader *reader )
+ { 
+  using namespace std;
+  if( !EasyBMPcheckDataSize() )
+@@ -681,25 +668,23 @@ bool BMP::ReadFromFile( const char* FileName )
+   return false; 
+  }
+ 
+- FILE* fp = fopen( FileName, "rb" );
+- if( fp == NULL )
++ if( reader == NULL )
+  {
+   if( EasyBMPwarnings )
+   {
+-   cout << "EasyBMP Error: Cannot open file " 
+-        << FileName << " for input." << endl;
++   cout << "EasyBMP Error: File reader object not specified." << endl;
+   }
+   SetBitDepth(1);
+   SetSize(1,1);
+   return false;
+  }
+- 
++
+  // read the file header 
+  
+  BMFH bmfh;
+  bool NotCorrupted = true;
+  
+- NotCorrupted &= SafeFread( (char*) &(bmfh.bfType) , sizeof(ebmpWORD), 1, fp);
++ NotCorrupted &= SafeFread( (char*) &(bmfh.bfType) , sizeof(ebmpWORD), 1, reader);
+  
+  bool IsBitmap = false;
+  
+@@ -712,17 +697,15 @@ bool BMP::ReadFromFile( const char* FileName )
+  {
+   if( EasyBMPwarnings )
+   {
+-   cout << "EasyBMP Error: " << FileName 
+-        << " is not a Windows BMP file!" << endl; 
++   cout << "EasyBMP Error: Input file is not a Windows BMP file!" << endl; 
+   }
+-  fclose( fp ); 
+   return false;
+  }
+ 
+- NotCorrupted &= SafeFread( (char*) &(bmfh.bfSize) , sizeof(ebmpDWORD) , 1, fp); 
+- NotCorrupted &= SafeFread( (char*) &(bmfh.bfReserved1) , sizeof(ebmpWORD) , 1, fp);
+- NotCorrupted &= SafeFread( (char*) &(bmfh.bfReserved2) , sizeof(ebmpWORD) , 1, fp);
+- NotCorrupted &= SafeFread( (char*) &(bmfh.bfOffBits) , sizeof(ebmpDWORD) , 1 , fp);
++ NotCorrupted &= SafeFread( (char*) &(bmfh.bfSize) , sizeof(ebmpDWORD) , 1, reader); 
++ NotCorrupted &= SafeFread( (char*) &(bmfh.bfReserved1) , sizeof(ebmpWORD) , 1, reader);
++ NotCorrupted &= SafeFread( (char*) &(bmfh.bfReserved2) , sizeof(ebmpWORD) , 1, reader);
++ NotCorrupted &= SafeFread( (char*) &(bmfh.bfOffBits) , sizeof(ebmpDWORD) , 1 , reader);
+  
+  if( IsBigEndian() ) 
+  { bmfh.SwitchEndianess(); }
+@@ -731,18 +714,18 @@ bool BMP::ReadFromFile( const char* FileName )
+ 
+  BMIH bmih; 
+  
+- NotCorrupted &= SafeFread( (char*) &(bmih.biSize) , sizeof(ebmpDWORD) , 1 , fp);
+- NotCorrupted &= SafeFread( (char*) &(bmih.biWidth) , sizeof(ebmpDWORD) , 1 , fp); 
+- NotCorrupted &= SafeFread( (char*) &(bmih.biHeight) , sizeof(ebmpDWORD) , 1 , fp);
+- NotCorrupted &= SafeFread( (char*) &(bmih.biPlanes) , sizeof(ebmpWORD) , 1, fp); 
+- NotCorrupted &= SafeFread( (char*) &(bmih.biBitCount) , sizeof(ebmpWORD) , 1, fp);
++ NotCorrupted &= SafeFread( (char*) &(bmih.biSize) , sizeof(ebmpDWORD) , 1 , reader);
++ NotCorrupted &= SafeFread( (char*) &(bmih.biWidth) , sizeof(ebmpDWORD) , 1 , reader); 
++ NotCorrupted &= SafeFread( (char*) &(bmih.biHeight) , sizeof(ebmpDWORD) , 1 , reader);
++ NotCorrupted &= SafeFread( (char*) &(bmih.biPlanes) , sizeof(ebmpWORD) , 1, reader); 
++ NotCorrupted &= SafeFread( (char*) &(bmih.biBitCount) , sizeof(ebmpWORD) , 1, reader);
+ 
+- NotCorrupted &= SafeFread( (char*) &(bmih.biCompression) , sizeof(ebmpDWORD) , 1 , fp);
+- NotCorrupted &= SafeFread( (char*) &(bmih.biSizeImage) , sizeof(ebmpDWORD) , 1 , fp);
+- NotCorrupted &= SafeFread( (char*) &(bmih.biXPelsPerMeter) , sizeof(ebmpDWORD) , 1 , fp);
+- NotCorrupted &= SafeFread( (char*) &(bmih.biYPelsPerMeter) , sizeof(ebmpDWORD) , 1 , fp);
+- NotCorrupted &= SafeFread( (char*) &(bmih.biClrUsed) , sizeof(ebmpDWORD) , 1 , fp);
+- NotCorrupted &= SafeFread( (char*) &(bmih.biClrImportant) , sizeof(ebmpDWORD) , 1 , fp);
++ NotCorrupted &= SafeFread( (char*) &(bmih.biCompression) , sizeof(ebmpDWORD) , 1 , reader);
++ NotCorrupted &= SafeFread( (char*) &(bmih.biSizeImage) , sizeof(ebmpDWORD) , 1 , reader);
++ NotCorrupted &= SafeFread( (char*) &(bmih.biXPelsPerMeter) , sizeof(ebmpDWORD) , 1 , reader);
++ NotCorrupted &= SafeFread( (char*) &(bmih.biYPelsPerMeter) , sizeof(ebmpDWORD) , 1 , reader);
++ NotCorrupted &= SafeFread( (char*) &(bmih.biClrUsed) , sizeof(ebmpDWORD) , 1 , reader);
++ NotCorrupted &= SafeFread( (char*) &(bmih.biClrImportant) , sizeof(ebmpDWORD) , 1 , reader);
+  
+  if( IsBigEndian() ) 
+  { bmih.SwitchEndianess(); }
+@@ -754,12 +737,10 @@ bool BMP::ReadFromFile( const char* FileName )
+  {
+   if( EasyBMPwarnings )
+   {
+-   cout << "EasyBMP Error: " << FileName 
+-        << " is obviously corrupted." << endl;
++   cout << "EasyBMP Error: Input file is obviously corrupted." << endl;
+   }
+   SetSize(1,1);
+   SetBitDepth(1);
+-  fclose(fp);
+   return false;
+  } 
+  
+@@ -772,12 +753,11 @@ bool BMP::ReadFromFile( const char* FileName )
+  {
+   if( EasyBMPwarnings )
+   {
+-   cout << "EasyBMP Error: " << FileName << " is (RLE) compressed." << endl
++   cout << "EasyBMP Error: Input file is (RLE) compressed." << endl
+         << "               EasyBMP does not support compression." << endl;
+   }
+   SetSize(1,1);
+   SetBitDepth(1);
+-  fclose(fp);
+   return false; 
+  }
+  
+@@ -788,7 +768,7 @@ bool BMP::ReadFromFile( const char* FileName )
+  {
+   if( EasyBMPwarnings )
+   {
+-   cout << "EasyBMP Error: " << FileName << " is in an unsupported format." 
++   cout << "EasyBMP Error: Input file is in an unsupported format." 
+         << endl
+         << "               (bmih.biCompression = " 
+ 	    << bmih.biCompression << ")" << endl
+@@ -797,7 +777,6 @@ bool BMP::ReadFromFile( const char* FileName )
+   }		
+   SetSize(1,1);
+   SetBitDepth(1);
+-  fclose(fp);
+   return false; 
+  }
+  
+@@ -805,13 +784,11 @@ bool BMP::ReadFromFile( const char* FileName )
+  {
+   if( EasyBMPwarnings )
+   {
+-   cout << "EasyBMP Error: " << FileName 
+-        << " uses bit fields and is not a" << endl
++   cout << "EasyBMP Error: Input file uses bit fields and is not a" << endl
+         << "               16-bit file. This is not supported." << endl;
+   }
+   SetSize(1,1);
+   SetBitDepth(1);
+-  fclose(fp);
+   return false; 
+  }
+ 
+@@ -824,11 +801,10 @@ bool BMP::ReadFromFile( const char* FileName )
+  {
+   if( EasyBMPwarnings )
+   {
+-   cout << "EasyBMP Error: " << FileName << " has unrecognized bit depth." << endl;
++   cout << "EasyBMP Error: Input file has unrecognized bit depth." << endl;
+   }
+   SetSize(1,1);
+   SetBitDepth(1);
+-  fclose(fp);
+   return false;
+  }
+  SetBitDepth( (int) bmih.biBitCount ); 
+@@ -839,12 +815,10 @@ bool BMP::ReadFromFile( const char* FileName )
+  {
+   if( EasyBMPwarnings )
+   {
+-   cout << "EasyBMP Error: " << FileName 
+-        << " has a non-positive width or height." << endl;
++   cout << "EasyBMP Error: Input file has a non-positive width or height." << endl;
+   }
+   SetSize(1,1);
+   SetBitDepth(1);
+-  fclose(fp);
+   return false;
+  } 
+  SetSize( (int) bmih.biWidth , (int) bmih.biHeight );
+@@ -874,7 +848,7 @@ bool BMP::ReadFromFile( const char* FileName )
+   {
+    if( EasyBMPwarnings )
+    {
+-    cout << "EasyBMP Warning: file " << FileName << " has an underspecified" << endl
++    cout << "EasyBMP Warning: Input file has an underspecified" << endl
+          << "                 color table. The table will be padded with extra" << endl
+ 	 	 << "                 white (255,255,255,0) entries." << endl;
+    }
+@@ -883,7 +857,7 @@ bool BMP::ReadFromFile( const char* FileName )
+   int n;
+   for( n=0; n < NumberOfColorsToRead ; n++ )
+   {
+-   SafeFread( (char*) &(Colors[n]) , 4 , 1 , fp);     
++   SafeFread( (char*) &(Colors[n]) , 4 , 1 , reader);     
+   }
+   for( n=NumberOfColorsToRead ; n < TellNumberOfColors() ; n++ )
+   {
+@@ -911,12 +885,12 @@ bool BMP::ReadFromFile( const char* FileName )
+  {
+   if( EasyBMPwarnings )
+   {
+-   cout << "EasyBMP Warning: Extra meta data detected in file " << FileName << endl
++   cout << "EasyBMP Warning: Extra meta data detected in file input file" << endl
+         << "                 Data will be skipped." << endl;
+   }
+   ebmpBYTE* TempSkipBYTE;
+   TempSkipBYTE = new ebmpBYTE [BytesToSkip];
+-  SafeFread( (char*) TempSkipBYTE , BytesToSkip , 1 , fp);   
++  SafeFread( (char*) TempSkipBYTE , BytesToSkip , 1 , reader);   
+   delete [] TempSkipBYTE;
+  } 
+   
+@@ -936,7 +910,7 @@ bool BMP::ReadFromFile( const char* FileName )
+   j= Height-1;
+   while( j > -1 )
+   {
+-   int BytesRead = (int) fread( (char*) Buffer, 1, BufferSize, fp );
++   int BytesRead = reader->read( (char*) Buffer, BufferSize );
+    if( BytesRead < BufferSize )
+    {
+     j = -1; 
+@@ -991,22 +965,21 @@ bool BMP::ReadFromFile( const char* FileName )
+    // read the three bit masks
+ 
+    ebmpWORD TempMaskWORD;
+-   ebmpWORD ZeroWORD;
+   
+-   SafeFread( (char*) &RedMask , 2 , 1 , fp );
++   SafeFread( (char*) &RedMask , 2 , 1 , reader );
+    if( IsBigEndian() )
+    { RedMask = FlipWORD(RedMask); }
+-   SafeFread( (char*) &TempMaskWORD , 2, 1, fp );
++   SafeFread( (char*) &TempMaskWORD , 2, 1, reader );
+   
+-   SafeFread( (char*) &GreenMask , 2 , 1 , fp );
++   SafeFread( (char*) &GreenMask , 2 , 1 , reader );
+    if( IsBigEndian() )
+    { GreenMask = FlipWORD(GreenMask); }
+-   SafeFread( (char*) &TempMaskWORD , 2, 1, fp );
++   SafeFread( (char*) &TempMaskWORD , 2, 1, reader );
+ 
+-   SafeFread( (char*) &BlueMask , 2 , 1 , fp );
++   SafeFread( (char*) &BlueMask , 2 , 1 , reader );
+    if( IsBigEndian() )
+    { BlueMask = FlipWORD(BlueMask); }
+-   SafeFread( (char*) &TempMaskWORD , 2, 1, fp );
++   SafeFread( (char*) &TempMaskWORD , 2, 1, reader );
+   }
+   
+   // read and skip any meta data
+@@ -1015,13 +988,12 @@ bool BMP::ReadFromFile( const char* FileName )
+   {
+    if( EasyBMPwarnings )
+    {
+-    cout << "EasyBMP Warning: Extra meta data detected in file " 
+-         << FileName << endl
++    cout << "EasyBMP Warning: Extra meta data detected in input file" << endl
+          << "                 Data will be skipped." << endl;
+    }
+    ebmpBYTE* TempSkipBYTE;
+    TempSkipBYTE = new ebmpBYTE [BytesToSkip];
+-   SafeFread( (char*) TempSkipBYTE , BytesToSkip , 1 , fp);
++   SafeFread( (char*) TempSkipBYTE , BytesToSkip , 1 , reader);
+    delete [] TempSkipBYTE;   
+   } 
+   
+@@ -1049,7 +1021,7 @@ bool BMP::ReadFromFile( const char* FileName )
+    while( ReadNumber < DataBytes )
+    {
+ 	ebmpWORD TempWORD;
+-	SafeFread( (char*) &TempWORD , 2 , 1 , fp );
++	SafeFread( (char*) &TempWORD , 2 , 1 , reader );
+ 	if( IsBigEndian() )
+ 	{ TempWORD = FlipWORD(TempWORD); }
+     ReadNumber += 2;
+@@ -1072,14 +1044,13 @@ bool BMP::ReadFromFile( const char* FileName )
+    while( ReadNumber < PaddingBytes )
+    {
+     ebmpBYTE TempBYTE;
+-    SafeFread( (char*) &TempBYTE , 1, 1, fp);
++    SafeFread( (char*) &TempBYTE , 1, 1, reader);
+     ReadNumber++;
+    }
+   }
+ 
+  }
+  
+- fclose(fp);
+  return true;
+ }
+ 
+@@ -1267,6 +1238,21 @@ bool SafeFread( char* buffer, int size, int number, FILE* fp )
+  return true;
+ }
+ 
++bool SafeFread( char* buffer, int size, int number, BMPReader *reader )
++{
++ int bytesToRead = size*number;
++ int bytesRead = reader ? reader->read( buffer , bytesToRead ) : 0;
++ if( bytesRead < bytesToRead )
++ { return false; }
++ return true;
++}
++
++int Fwrite ( char* buffer, int size, int number, BMPWriter *writer )
++{
++  return writer->write(buffer, size*number);
++}
++
++
+ void BMP::SetDPI( int HorizontalDPI, int VerticalDPI )
+ {
+  XPelsPerMeter = (int) ( HorizontalDPI * 39.37007874015748 );
+@@ -1278,7 +1264,7 @@ int BMP::TellVerticalDPI( void )
+ {
+  if( !YPelsPerMeter )
+  { YPelsPerMeter = DefaultYPelsPerMeter; }
+- return (int) ( YPelsPerMeter / (double) 39.37007874015748 ); 
++ return (int) floor( YPelsPerMeter / (double) 39.37007874015748 + 0.5); 
+ }
+ 
+ // int BMP::TellHorizontalDPI( void ) const
+@@ -1286,7 +1272,7 @@ int BMP::TellHorizontalDPI( void )
+ {
+  if( !XPelsPerMeter )
+  { XPelsPerMeter = DefaultXPelsPerMeter; }
+- return (int) ( XPelsPerMeter / (double) 39.37007874015748 );
++ return (int) floor( XPelsPerMeter / (double) 39.37007874015748 + 0.5);
+ }
+ 
+ /* These functions are defined in EasyBMP_VariousBMPutilities.h */
+diff --git a/EasyBMP_BMP.h b/EasyBMP_BMP.h
+index 819a976..afd3bc1 100644
+--- a/EasyBMP_BMP.h
++++ b/EasyBMP_BMP.h
+@@ -1,6 +1,6 @@
+ /*************************************************
+ *                                                *
+-*  EasyBMP Cross-Platform Windows Bitmap Library * 
++*  EasyBMP Cross-Platform Windows Bitmap Library *
+ *                                                *
+ *  Author: Paul Macklin                          *
+ *   email: macklin01@users.sourceforge.net       *
+@@ -12,7 +12,7 @@
+ *       version: 1.06                            *
+ *                                                *
+ *   License: BSD (revised/modified)              *
+-* Copyright: 2005-6 by the EasyBMP Project       * 
++* Copyright: 2005-6 by the EasyBMP Project       *
+ *                                                *
+ * description: Defines BMP class                 *
+ *                                                *
+@@ -21,7 +21,28 @@
+ #ifndef _EasyBMP_BMP_h_
+ #define _EasyBMP_BMP_h_
+ 
++
++// Abstract file reader class
++class BMPReader {
++public:
++  virtual ~BMPReader() = default;
++  virtual int read (char *buffer, int size) = 0;
++};
++
++// Abstract file writer class
++class BMPWriter {
++public:
++  virtual ~BMPWriter() = default;
++  virtual int write (char *buffer, int size) = 0;
++};
++
++
+ bool SafeFread( char* buffer, int size, int number, FILE* fp );
++
++// Replacement methods for reading/writing through abstract file handlers
++bool SafeFread( char* buffer, int size, int number, BMPReader *reader );
++int Fwrite ( char* buffer, int size, int number, BMPWriter *writer );
++
+ bool EasyBMPcheckDataSize( void );
+ 
+ class BMP
+@@ -39,22 +60,22 @@ class BMP
+  int SizeOfMetaData1;
+  ebmpBYTE* MetaData2;
+  int SizeOfMetaData2;
+-   
+- bool Read32bitRow( ebmpBYTE* Buffer, int BufferSize, int Row );   
+- bool Read24bitRow( ebmpBYTE* Buffer, int BufferSize, int Row );   
+- bool Read8bitRow(  ebmpBYTE* Buffer, int BufferSize, int Row );  
+- bool Read4bitRow(  ebmpBYTE* Buffer, int BufferSize, int Row );  
++
++ bool Read32bitRow( ebmpBYTE* Buffer, int BufferSize, int Row );
++ bool Read24bitRow( ebmpBYTE* Buffer, int BufferSize, int Row );
++ bool Read8bitRow(  ebmpBYTE* Buffer, int BufferSize, int Row );
++ bool Read4bitRow(  ebmpBYTE* Buffer, int BufferSize, int Row );
+  bool Read1bitRow(  ebmpBYTE* Buffer, int BufferSize, int Row );
+-   
+- bool Write32bitRow( ebmpBYTE* Buffer, int BufferSize, int Row );   
+- bool Write24bitRow( ebmpBYTE* Buffer, int BufferSize, int Row );   
+- bool Write8bitRow(  ebmpBYTE* Buffer, int BufferSize, int Row );  
+- bool Write4bitRow(  ebmpBYTE* Buffer, int BufferSize, int Row );  
++
++ bool Write32bitRow( ebmpBYTE* Buffer, int BufferSize, int Row );
++ bool Write24bitRow( ebmpBYTE* Buffer, int BufferSize, int Row );
++ bool Write8bitRow(  ebmpBYTE* Buffer, int BufferSize, int Row );
++ bool Write4bitRow(  ebmpBYTE* Buffer, int BufferSize, int Row );
+  bool Write1bitRow(  ebmpBYTE* Buffer, int BufferSize, int Row );
+- 
++
+  ebmpBYTE FindClosestColor( RGBApixel& input );
+ 
+- public: 
++ public:
+ 
+  int TellBitDepth( void );
+  int TellWidth( void );
+@@ -63,24 +84,24 @@ class BMP
+  void SetDPI( int HorizontalDPI, int VerticalDPI );
+  int TellVerticalDPI( void );
+  int TellHorizontalDPI( void );
+-  
++
+  BMP();
+  BMP( BMP& Input );
+  ~BMP();
+  RGBApixel* operator()(int i,int j);
+- 
++
+  RGBApixel GetPixel( int i, int j ) const;
+  bool SetPixel( int i, int j, RGBApixel NewPixel );
+- 
++
+  bool CreateStandardColorTable( void );
+- 
++
+  bool SetSize( int NewWidth, int NewHeight );
+  bool SetBitDepth( int NewDepth );
+- bool WriteToFile( const char* FileName );
+- bool ReadFromFile( const char* FileName );
+- 
++ bool WriteToFile( BMPWriter *writer );
++ bool ReadFromFile( BMPReader *reader );
++
+  RGBApixel GetColor( int ColorNumber );
+- bool SetColor( int ColorNumber, RGBApixel NewColor ); 
++ bool SetColor( int ColorNumber, RGBApixel NewColor );
+ };
+ 
+ #endif

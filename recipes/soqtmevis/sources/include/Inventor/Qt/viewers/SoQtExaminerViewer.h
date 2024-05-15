@@ -93,7 +93,7 @@ class SOQT_MEVIS_EXPORT SoQtExaminerViewer : public SoQtFullViewer
 public:
     //! Constructor/Destructor
     SoQtExaminerViewer (BuildFlag flag, Type type = BROWSER,
-                        QWidget* parent = nullptr, Qt::WindowFlags f = nullptr);
+                        QWidget* parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags{});
 
     //! compatibility constructor
     SoQtExaminerViewer(

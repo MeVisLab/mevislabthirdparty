@@ -1,7 +1,7 @@
 #include <iconv.h>
-#include <cstddef>
 #include <iostream>
 #include <iconv.h>
+#include <stdint.h>
 #include <cstdlib> //for EXIT_FAILURE
 
 int main()

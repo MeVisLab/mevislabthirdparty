@@ -1,13 +1,30 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
+from conan import ConanFile
+from conan.tools.files import get
+
+required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.PythonPackageRecipe'
+    name = "kiwisolver"
+    version = "1.4.5"
+    homepage = "https://github.com/nucleic/kiwi"
+    description = "A fast implementation of the Cassowary constraint solver"
+    license = "BSD-3-Clause"
+    python_requires = "python_package/[>=1.0.0]"
+    python_requires_extend = "python_package.PythonPackageRecipe"
+    package_type = "application"
+    exports_sources = "requirements.txt"
 
-    def build_requirements(self):
-        self.build_requires(f"setuptools_scm/[>=7.0.5]@{self.user}/{self.channel}")
-		# pinned for Python 3.9, change for newer Python version
-        self.build_requires(f"cppy/[==1.2.0]@{self.user}/{self.channel}")
-        self.build_requires(f"wheel/[>=0.38.4]@{self.user}/{self.channel}")
+    @property
+    def license_path(self):
+        return "LICENSE"
+
+    def configure(self):
+        self.settings.rm_safe("compiler.libcxx")
+        self.settings.rm_safe("compiler.cppstd")
+
+    def source(self):
+        get(self,
+            sha256="2f3df2625993276a67a3ad312959f9c8333e23dfda0b7e5464b4927d34be6faa",
+            url=f"https://github.com/nucleic/kiwi/archive/refs/tags/{self.version}.tar.gz",
+            strip_root=True)

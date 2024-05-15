@@ -1,0 +1,21 @@
+diff --git a/dcmdata/libsrc/dcpixel.cc b/dcmdata/libsrc/dcpixel.cc
+index b5c682f..5a6f556 100644
+--- a/dcmdata/libsrc/dcpixel.cc
++++ b/dcmdata/libsrc/dcpixel.cc
+@@ -1209,7 +1209,15 @@ OFCondition DcmPixelData::getUncompressedFrame(
+       // we already have an uncompressed version of the pixel data
+       // either in memory or in file. We can directly access this using
+       // DcmElement::getPartialValue.
+-      result = getPartialValue(buffer, frameNo * frameSize, frameSize, cache);
++
++      // consider a padding byte for each frame
++      // we use DcmPolymorphOBOW::getLength() because we know that we are uncompressed here
++      Uint32 frameLength = DcmPolymorphOBOW::getLength() / numberOfFrames;
++      if (frameLength != frameSize && ((frameLength != frameSize + 1) || !(frameSize & 1))) 
++      {
++        return EC_InvalidTag;
++      }
++      result = getPartialValue(buffer, frameNo * frameLength, frameSize, cache);
+       if (result.good()) result = dataset->findAndGetOFString(DCM_PhotometricInterpretation, decompressedColorModel);
+     }
+     else

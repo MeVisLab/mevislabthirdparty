@@ -56,7 +56,7 @@ class SOQT_MEVIS_EXPORT SoQtThumbWheel : public QWidget
 public:
     //! default constructor, main argument is the orientation of the wheel
     SoQtThumbWheel (Qt::Orientation orientation = Qt::Horizontal,
-                QWidget* parent = nullptr, Qt::WindowFlags f = nullptr);
+                    QWidget* parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags{});
     ~SoQtThumbWheel() override;
 
     //! the SoQtThumbWheel widget has a fixed size

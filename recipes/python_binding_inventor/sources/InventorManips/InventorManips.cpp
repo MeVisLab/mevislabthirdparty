@@ -15,8 +15,6 @@ static PyMethodDef NoMethods[] = {
     {nullptr, nullptr, 0, nullptr}        /* Sentinel */
 };
 
-#if PY_MAJOR_VERSION >= 3
-
 static PyModuleDef manipsModuleDef = {
   PyModuleDef_HEAD_INIT,
   "manips",
@@ -29,31 +27,24 @@ static PyModuleDef manipsModuleDef = {
   nullptr
 };
 
-  #define Py_2_3_InitModFunc(name) PyInit_##name(void)
-  #define Py_2_3_ModuleInit(name) PyModule_Create(&manipsModuleDef)
-
-#else
-  #define Py_2_3_InitModFunc(name) init##name(void)
-  #define Py_2_3_ModuleInit(name) Py_InitModule(name, NoMethods)
-#endif
+#define PyInitModFunc(name) PyInit_##name(void)
+  #define PyModuleInit(name) PyModule_Create(&manipsModuleDef)
 
 #ifdef UNIX
 PyMODINIT_FUNC
-Py_2_3_InitModFunc(manips) ML_LIBRARY_EXPORT_ATTRIBUTE ;
+PyInitModFunc(manips) ML_LIBRARY_EXPORT_ATTRIBUTE ;
 #endif
 
 PyMODINIT_FUNC
-Py_2_3_InitModFunc(manips)
+PyInitModFunc(manips)
 {
   PyObject* draggers = PyImport_ImportModule("Inventor.draggers");
   Py_XDECREF(draggers);
 
-  PyObject* module = Py_2_3_ModuleInit("manips");
+  PyObject* module = PyModuleInit("manips");
   PythonQt_init_InventorManips(module);
 
-#if PY_MAJOR_VERSION >= 3
   return module;
-#endif
 }
 
 

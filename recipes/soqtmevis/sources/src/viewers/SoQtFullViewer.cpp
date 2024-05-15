@@ -624,11 +624,11 @@ SoQtFullViewer::createLeftBorder (QWidget* parent)
 {
     leftTrimForm = new QWidget (parent);
     QVBoxLayout* box = new QVBoxLayout();
-    box->setMargin(2);
+    box->setContentsMargins(2,2,2,2);
     leftTrimForm->setLayout (box);
     appButtonForm = new QWidget (leftTrimForm);
     QVBoxLayout* appButtonLayout = new QVBoxLayout();
-    appButtonLayout->setMargin (0);
+    appButtonLayout->setContentsMargins(0,0,0,0);
     appButtonLayout->setSpacing (2);
     appButtonForm->setLayout (appButtonLayout);
     createAppButtons (appButtonForm);
@@ -650,7 +650,7 @@ SoQtFullViewer::createLowerBorder (QWidget* parent)
 {
     bottomTrimForm = new QWidget (parent);
     QHBoxLayout* box = new QHBoxLayout();
-    box->setMargin(2);
+    box->setContentsMargins(2,2,2,2);
     bottomTrimForm->setLayout (box);
     leftWheelLabel = new QLabel (leftWheelName, bottomTrimForm);
     box->addWidget (leftWheelLabel);
@@ -676,7 +676,7 @@ SoQtFullViewer::createRightBorder (QWidget* parent)
 {
     rightTrimForm = new QWidget (parent);
     QVBoxLayout* box = new QVBoxLayout();
-    box->setMargin(2);
+    box->setContentsMargins(2,2,2,2);
     rightTrimForm->setLayout (box);
     viewerButtonBar = new QToolBar (rightTrimForm);
     viewerButtonBar->setOrientation (Qt::Vertical);

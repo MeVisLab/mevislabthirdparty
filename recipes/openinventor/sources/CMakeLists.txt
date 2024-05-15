@@ -1,19 +1,18 @@
-cmake_minimum_required(VERSION 3.14)
-project(Inventor VERSION 2.5.1)
+cmake_minimum_required(VERSION 3.27)
+project(Inventor VERSION 2.5.2)
 
 # prefer the legacy libGL library instead of GLVND
 set(OpenGL_GL_PREFERENCE LEGACY)
 
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup(TARGETS)
-
-set(_UNUSED ${CMAKE_DEBUG_POSTFIX} ${CMAKE_EXPORT_NO_PACKAGE_REGISTRY} ${CMAKE_INSTALL_BINDIR} ${CMAKE_INSTALL_DATAROOTDIR} ${CMAKE_INSTALL_INCLUDEDIR} ${CMAKE_INSTALL_LIBDIR} ${CMAKE_INSTALL_LIBEXECDIR} ${CMAKE_INSTALL_OLDINCLUDEDIR} ${CMAKE_INSTALL_SBINDIR})
-
 find_package(BISON 2.1 REQUIRED)
 find_package(OpenGL 2.1 REQUIRED)
+find_package(Iconv REQUIRED)
+find_package(JPEG REQUIRED)
+find_package(GLEW REQUIRED)
+find_package(Freetype REQUIRED)
 
 if(UNIX AND NOT APPLE)
-    find_package(Freetype REQUIRED)
+    find_package(Fontconfig REQUIRED)
     add_definitions(-DLINUX)
 endif()
 
@@ -55,10 +54,9 @@ set_target_properties(FL PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 target_compile_definitions(FL PRIVATE $<BUILD_INTERFACE:INVENTOR_EXPORTS>)
 
+target_link_libraries(FL PUBLIC Freetype::Freetype)
 if(UNIX AND NOT APPLE)
-    target_link_libraries(FL PUBLIC Freetype::Freetype)
-else()
-    target_link_libraries(FL PUBLIC CONAN_PKG::Freetype)
+    target_link_libraries(FL PRIVATE Fontconfig::Fontconfig)
 endif()
 
 if (APPLE)
@@ -1409,13 +1407,13 @@ if(WIN32)
   target_sources(Inventor PRIVATE source/utf8_filesupport_win32.h source/utf8_filesupport_win32.cpp)
   target_compile_definitions(Inventor PRIVATE $<BUILD_INTERFACE:WIN32>)
   target_compile_definitions(Inventor PRIVATE $<BUILD_INTERFACE:__SGIOIV_BUILD_DLL>)
-  target_link_libraries(Inventor PRIVATE wsock32 ws2_32 CONAN_PKG::libiconv)
+  target_link_libraries(Inventor PRIVATE wsock32 ws2_32 Iconv::Iconv)
 endif()
 
 set_target_properties(Inventor PROPERTIES C_VISIBILITY_PRESET default)
 set_target_properties(Inventor PROPERTIES CXX_VISIBILITY_PRESET default)
 
-target_link_libraries(Inventor PUBLIC OpenGL::GL OpenGL::GLU CONAN_PKG::JPEG CONAN_PKG::GLEW)
+target_link_libraries(Inventor PUBLIC OpenGL::GL OpenGL::GLU JPEG::JPEG GLEW::GLEW)
 target_link_libraries(Inventor PRIVATE FL::FL)
 
 add_dependencies(Inventor inventor_generate_ppp)

@@ -1,0 +1,14 @@
+diff --git a/src/cpp/flann/algorithms/dist.h b/src/cpp/flann/algorithms/dist.h
+index ff0093a..cbc6cd0 100644
+--- a/src/cpp/flann/algorithms/dist.h
++++ b/src/cpp/flann/algorithms/dist.h
+@@ -43,6 +43,9 @@ typedef unsigned __int64 uint64_t;
+
+ #include "flann/defines.h"
+
++#ifdef __aarch64__
++#  include <arm_neon.h>
++#endif
+
+ namespace flann
+ {

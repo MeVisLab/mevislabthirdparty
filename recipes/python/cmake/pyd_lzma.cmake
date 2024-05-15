@@ -1,6 +1,9 @@
 add_pyd(_lzma)
-target_link_libraries(_lzma PRIVATE CONAN_PKG::xz-utils)
+
+find_package(LibLZMA REQUIRED)
+
+target_link_libraries(_lzma PRIVATE LibLZMA::LibLZMA)
 
 target_sources(_lzma PRIVATE
-    sources/Modules/_lzmamodule.c
+    ${SRC}/Modules/_lzmamodule.c
 )

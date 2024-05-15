@@ -40,46 +40,16 @@
  * Ported to Qt4 by MeVis (http://www.mevis.de), 2006
  */
 
-#include <Inventor/Qt/SoQt.h>
-
 #include "SoQtContextShareManager.h"
-#include "SoQtRealQGLWidget.h"
-#include "SoQtRealQOpenGLWidget.h"
 
-#include <QGLFormat>
 #include <QOpenGLContext>
 
 
-QGLWidget* SoQtContextShareManager::_shareWidget = nullptr;
-
-
-QWidget* SoQtContextShareManager::createWidget (const QGLFormat& theFormat,
-    SoQtGLWidget* parent)
-{
-    QGLFormat format = theFormat;
-//  Use these to enable core profile without deprecated functions (Experimental!)
-//    format.setProfile(QGLFormat::CoreProfile);
-//    format.setOption(QGL::NoDeprecatedFunctions);
-    format.setProfile(QGLFormat::CompatibilityProfile);
-    format.setOption(QGL::DeprecatedFunctions);
-
-    if (SoQt::useNewOpenGLWidget()) {
-        return new SoQtRealQOpenGLWidget(format, parent);
-    }
-    else {
-        return new SoQtRealQGLWidget(format, parent, _shareWidget);
-    }
-}
-
 void SoQtContextShareManager::init()
 {
-    if (_shareWidget == nullptr) {
-        _shareWidget = new QGLWidget();
-    }
     // set shared context also for new OpenGL widgets (if context sharing is enabled for these):
     QOpenGLContext* shareContext = QOpenGLContext::globalShareContext();
     if (shareContext) {
-        shareContext->setShareContext(_shareWidget->context()->contextHandle());
         shareContext->create();
     }
 }

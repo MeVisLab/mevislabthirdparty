@@ -1,49 +1,90 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans import CMake
-from conans import tools
 import os
+import textwrap
+
+from conan import ConanFile
+from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
+from conan.tools.files import collect_libs
+from conan.tools.files import get, copy, rmdir, save
+
+required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
+    name = "zstd"
+    version = "1.5.6"
+    homepage = "https://facebook.github.io/zstd"
+    description = "Zstandard - Fast real-time compression algorithm"
+    license = "BSD-3-Clause"
+    package_type = "static-library"
+    settings = "os", "arch", "compiler", "build_type"
 
-    _cmake = None
+    def configure(self):
+        self.settings.rm_safe("compiler.libcxx")
+        self.settings.rm_safe("compiler.cppstd")
 
-    def _configure_cmake(self):
-        if not self._cmake:
-            self.create_cmake_wrapper(add_subdirectory='sources/build/cmake')
-            self._cmake = CMake(self)
-            self._cmake.definitions["CMAKE_INSTALL_LIBDIR"] = "lib"
-            self._cmake.definitions['CMAKE_POSITION_INDEPENDENT_CODE'] = self.settings.compiler != 'Visual Studio'
-            self._cmake.definitions["ZSTD_BUILD_PROGRAMS"] = False
-            self._cmake.definitions["ZSTD_BUILD_STATIC"] = True
-            self._cmake.definitions["ZSTD_BUILD_SHARED"] = False
-            self._cmake.definitions["ZSTD_LEGACY_SUPPORT"] = True
-            self._cmake.configure()
+    def layout(self):
+        cmake_layout(self, src_folder="src")
 
-        return self._cmake
+    def source(self):
+        get(
+            self,
+            sha256="3b1c3b46e416d36931efd34663122d7f51b550c87f74de2d38249516fe7d8be5",
+            url=f"https://github.com/facebook/zstd/archive/v{self.version}.zip",
+            destination=self.source_folder,
+            strip_root=True,
+        )
 
+    def generate(self):
+        tc = CMakeToolchain(self)
+        tc.variables["BUILD_SHARED_LIBS"] = False
+        tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
+        tc.variables["CMAKE_POSITION_INDEPENDENT_CODE"] = self.settings.compiler != "msvc"
+        tc.variables["ZSTD_BUILD_PROGRAMS"] = False
+        tc.variables["ZSTD_BUILD_STATIC"] = not tc.variables["BUILD_SHARED_LIBS"]
+        tc.variables["ZSTD_BUILD_SHARED"] = tc.variables["BUILD_SHARED_LIBS"]
+        tc.variables["ZSTD_LEGACY_SUPPORT"] = True
+        tc.variables["ZSTD_MULTITHREAD_SUPPORT"] = True
+        tc.generate()
 
     def build(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
+        cmake.configure(build_script_folder=os.path.join(self.source_folder, "build", "cmake"))
         cmake.build()
 
-
     def package(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
         cmake.install()
-
-        self.copy("*.pdb", dst="bin", keep_path=False)
-
-        tools.rmdir(os.path.join(self.package_folder, 'lib', 'cmake'))
-        tools.rmdir(os.path.join(self.package_folder, 'lib', 'pkgconfig'))
-
-        self.default_package()
-
+        copy(self, "LICENSE", src=self.source_path, dst=self.package_path / "licenses")
+        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False)
+        rmdir(self, self.package_path / "lib" / "cmake")
+        rmdir(self, self.package_path / "lib" / "pkgconfig")
+        self._cmake_module_file_write()
 
     def package_info(self):
-        self.default_package_info()
+        self.cpp_info.set_property("cmake_find_mode", "both")
+        self.cpp_info.set_property("cmake_file_name", "zstd")
+        self.cpp_info.set_property("cmake_target_name", "zstd::zstd")
+        self.cpp_info.set_property("cmake_target_aliases", ["zstd::libzstd_static"])
+        self.cpp_info.set_property("cmake_build_modules", [self._cmake_module_file])
+        self.cpp_info.set_property("cmake_find_package", [self._cmake_module_file])
+        self.cpp_info.set_property("pkg_config_name", "zstd")
+        self.cpp_info.libs = collect_libs(self)
         if self.settings.os == "Linux":
-            self.cpp_info.system_libs.extend(["pthread"])
+            self.cpp_info.system_libs.append("pthread")
+
+    @property
+    def _cmake_module_file(self):
+        return os.path.join("lib", "cmake", f"{self.name}-variables.cmake")
+
+    def _cmake_module_file_write(self):
+        file = self.package_path / self._cmake_module_file
+        content = textwrap.dedent(
+            f"""\
+            set(ZSTD_FOUND TRUE)
+            set(ZSTD_LIBRARY ${{zstd_LIBRARIES}})
+            set(ZSTD_LIBRARIES ${{zstd_LIBRARIES}})
+            set(ZSTD_INCLUDE_DIR ${{zstd_INCLUDE_DIR}})
+            set(ZSTD_INCLUDE_DIRS ${{zstd_INCLUDE_DIR}})
+            """
+        )
+        save(self, file, content)

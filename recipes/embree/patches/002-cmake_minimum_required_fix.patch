@@ -1,0 +1,23 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index afa704d..2fb0c51 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -14,6 +14,9 @@
+ ## limitations under the License.                                           ##
+ ## ======================================================================== ##
+
++
++CMAKE_MINIMUM_REQUIRED(VERSION 2.8.11)
++
+ SET(EMBREE_VERSION_MAJOR 2)
+ SET(EMBREE_VERSION_MINOR 17)
+ SET(EMBREE_VERSION_PATCH 7)
+@@ -24,8 +27,6 @@ SET(CPACK_RPM_PACKAGE_RELEASE 1)
+
+ PROJECT(embree${EMBREE_VERSION_MAJOR})
+
+-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.11)
+-
+ # find git version
+ IF(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/.git)
+   FIND_PACKAGE(Git)

@@ -1,60 +1,82 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans import CMake
-from conans import tools
-import os
+from conan import ConanFile
+from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
+from conan.tools.files import patch, collect_libs, copy, get, rmdir
+from conan.tools.microsoft import is_msvc
+
+required_conan_version = ">=2.2.2"
+
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
+    name = "assimp"
+    version = "5.3.1"
+    homepage = "https://www.assimp.org"
+    description = "library to import and export various 3d-model-formats including scene-post-processing to generate missing render data"
+    license = "BSD-3-Clause"
+    package_type = "shared-library"
+    settings = "os", "arch", "compiler", "build_type"
+    exports_sources = "patches/*.patch"
 
-    _cmake = None
+    def layout(self):
+        cmake_layout(self, src_folder="src")
 
+    def requirements(self):
+        self.requires("zlib/[>=1.2.13]")
 
-    def build_requirements(self):
-        channel = "@{0}/{1}".format(self.user, self.channel)
-        self.build_requires("zlib/[>=1.2.11]" + channel)
+    def source(self):
+        get(self,
+            sha256="f4020735fe4601de9d85cb335115568cce0e027a65e546dd8895081696d624bd",
+            url=f"https://github.com/assimp/assimp/archive/v{self.version}.zip",
+            strip_root=True
+        )
+        patch(self, patch_file="patches/001-no_pkgconfig_minizip.patch")
+        patch(self, patch_file="patches/002-zlib_names.patch")
 
+    def generate(self):
+        tc = CMakeToolchain(self)
+        tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
+        tc.variables["BUILD_SHARED_LIBS"] = True
+        tc.variables["ASSIMP_WARNINGS_AS_ERRORS"] = False
+        tc.variables["ASSIMP_DOUBLE_PRECISION"] = False
+        tc.variables["ASSIMP_BUILD_ASSIMP_TOOLS"] = False
+        tc.variables["ASSIMP_BUILD_TESTS"] = False
+        tc.variables["ASSIMP_BUILD_SAMPLES"] = False
+        tc.variables["ASSIMP_BUILD_MINIZIP"] = False
+        tc.variables["ASSIMP_INSTALL_PDB"] = False
+        tc.variables["ASSIMP_IGNORE_GIT_HASH"] = True
+        tc.variables["ASSIMP_BUILD_ZLIB"] = False
 
-    def _configure_cmake(self):
-        if not self._cmake:
-            self.create_cmake_wrapper()
-            self._cmake = CMake(self)
-            self._cmake.definitions["CMAKE_DEBUG_POSTFIX"] = "d"
-            self._cmake.definitions["BUILD_SHARED_LIBS"] = True
+        # disable Collada module, see CVE-2022-45748 / https://github.com/assimp/assimp/issues/4286
+        tc.variables["ASSIMP_BUILD_COLLADA_IMPORTER"] = False
+        tc.variables["ASSIMP_BUILD_COLLADA_EXPORTER"] = False
 
-            self._cmake.definitions["ASSIMP_WARNINGS_AS_ERRORS"] = False
+        if self.settings.os == "Windows":
+            tc.preprocessor_definitions["NOMINMAX"] = 1
+        tc.cache_variables["CMAKE_POLICY_DEFAULT_CMP0077"] = "NEW" # to avoid warnings
 
-            self._cmake.definitions["ASSIMP_DOUBLE_PRECISION"] = False
-            self._cmake.definitions["ASSIMP_BUILD_ASSIMP_TOOLS"] = False
-            self._cmake.definitions["ASSIMP_BUILD_TESTS"] = False
-            self._cmake.definitions["ASSIMP_INSTALL_PDB"] = False
-            self._cmake.definitions["ASSIMP_IGNORE_GIT_HASH"] = True
-            self._cmake.definitions["ASSIMP_BUILD_ZLIB"] = False
-            self._cmake.definitions["ZLIB_INC_SEARCH_PATH"] = self.deps_cpp_info['zlib'].include_paths
-            self._cmake.definitions["ZLIB_LIB_SEARCH_PATH"] = self.deps_cpp_info['zlib'].lib_paths
+        tc.generate()
 
-            # disable Collada module, see CVE-2022-45748 / https://github.com/assimp/assimp/issues/4286
-            self._cmake.definitions["ASSIMP_BUILD_COLLADA_IMPORTER"] = False
-            self._cmake.definitions["ASSIMP_BUILD_COLLADA_EXPORTER"] = False
-
-            self._cmake.configure()
-        return self._cmake
-
+        cd = CMakeDeps(self)
+        cd.generate()
 
     def build(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
+        cmake.configure()
         cmake.build()
 
-
     def package(self):
-        cmake = cmake = self._configure_cmake()
+        copy(self, "LICENSE", src=self.source_path, dst=self.package_path / "licenses")
+        copy(self, "*.pdb", src=self.build_path / "bin", dst=self.package_path / "bin", keep_path=False)
+        cmake = CMake(self)
         cmake.install()
+        rmdir(self, self.package_path / "lib" / "cmake")
+        rmdir(self, self.package_path / "lib" / "pkgconfig")
 
-        self.copy("*.pdb", src="bin", dst="bin")
-
-        tools.rmdir(os.path.join(self.package_folder, "lib", "cmake"))
-        tools.rmdir(os.path.join(self.package_folder, "lib", "pkgconfig"))
-
-        self.patch_binaries()
-        self.default_package()
+    def package_info(self):
+        self.cpp_info.set_property("cmake_file_name", "assimp")
+        self.cpp_info.set_property("cmake_target_name", "assimp::assimp")
+        self.cpp_info.set_property("pkg_config_name", "assimp")
+        self.cpp_info.libs = collect_libs(self)
+        if is_msvc(self):
+            self.cpp_info.defines.append("ASSIMP_DLL")
+        if self.settings.os == "Linux":
+            self.cpp_info.system_libs = ["rt", "m", "pthread"]

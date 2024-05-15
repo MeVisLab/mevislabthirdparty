@@ -15,13 +15,6 @@ static PyMethodDef NoMethods[] = {
     {nullptr, nullptr, 0, nullptr}        /* Sentinel */
 };
 
-//Q_DECLARE_METATYPE(QWebHistoryItem)
-#if QT_VERSION < 0x040800
-Q_DECLARE_METATYPE(QWebElement)
-#endif
-
-#if PY_MAJOR_VERSION >= 3
-
 static PyModuleDef QtMultimediaModuleDef = {
   PyModuleDef_HEAD_INIT,
   "QtMultimedia",
@@ -34,34 +27,26 @@ static PyModuleDef QtMultimediaModuleDef = {
   nullptr
 };
 
-  #define Py_2_3_InitModFunc(name) PyInit_##name(void)
-  #define Py_2_3_ModuleInit(name) PyModule_Create(&QtMultimediaModuleDef)
-
-#else
-  #define Py_2_3_InitModFunc(name) init##name(void)
-  #define Py_2_3_ModuleInit(name) Py_InitModule(name, NoMethods)
-#endif
+#define PyInitModFunc(name) PyInit_##name(void)
+#define PyModuleInit(name) PyModule_Create(&QtMultimediaModuleDef)
 
 
 #ifdef UNIX
 PyMODINIT_FUNC
-Py_2_3_InitModFunc(QtMultimedia) ML_LIBRARY_EXPORT_ATTRIBUTE ;
+PyInitModFunc(QtMultimedia) ML_LIBRARY_EXPORT_ATTRIBUTE ;
 #endif
 
 PyMODINIT_FUNC
-Py_2_3_InitModFunc(QtMultimedia)
+PyInitModFunc(QtMultimedia)
 {
   PyObject* qtgui = PyImport_ImportModule("PythonQt.QtGui");
-  PyObject* module = Py_2_3_ModuleInit("QtMultimedia");
+  PyObject* module = PyModuleInit("QtMultimedia");
   PythonQt_init_QtMultimedia(module);
 
   Py_XDECREF(qtgui);
 
   PythonQt::self()->clearNotFoundCachedMembers();
-
-#if PY_MAJOR_VERSION >= 3
-  return module;
-#endif
+    return module;
 }
 
 

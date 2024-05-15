@@ -1,0 +1,22 @@
+diff --git a/qasync/__init__.py b/qasync/__init__.py
+index 00d80cd..bf20dda 100644
+--- a/qasync/__init__.py
++++ b/qasync/__init__.py
+@@ -523,7 +523,7 @@ class _QEventLoop:
+             existing.activated["int"].disconnect()
+             # will get overwritten by the assignment below anyways
+ 
+-        notifier = QtCore.QSocketNotifier(_fileno(fd), QtCore.QSocketNotifier.Type.Read)
++        notifier = QtCore.QSocketNotifier(_fileno(fd), QtCore.QSocketNotifier.Read)
+         notifier.setEnabled(True)
+         self.__log_debug("Adding reader callback for file descriptor %s", fd)
+         notifier.activated["int"].connect(
+@@ -562,7 +562,7 @@ class _QEventLoop:
+ 
+         notifier = QtCore.QSocketNotifier(
+             _fileno(fd),
+-            QtCore.QSocketNotifier.Type.Write,
++            QtCore.QSocketNotifier.Write,
+         )
+         notifier.setEnabled(True)
+         self.__log_debug("Adding writer callback for file descriptor %s", fd)

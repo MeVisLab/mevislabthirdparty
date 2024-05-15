@@ -19,10 +19,8 @@ target_sources(InventorBase PRIVATE
 
 target_link_libraries(InventorBase
   PRIVATE
-    Qt5::Core
-    Python3::Python
-    Threads::Threads
-    ${CONAN_LIBS}
+    ${REQUIRED_LIBS}
+    Python3::NumPy
 )
 
 install(TARGETS InventorBase

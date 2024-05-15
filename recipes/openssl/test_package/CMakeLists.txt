@@ -1,22 +1,29 @@
-cmake_minimum_required(VERSION 3.14)
-project(test_package C)
+cmake_minimum_required(VERSION 3.27)
+project(test_package LANGUAGES C)
 
-# prevent CMake from complaining about this external unused variable.
-set(_UNUSED
-  ${CMAKE_EXPORT_NO_PACKAGE_REGISTRY}
-  ${CMAKE_INSTALL_BINDIR}
-  ${CMAKE_INSTALL_DATAROOTDIR}
-  ${CMAKE_INSTALL_INCLUDEDIR}
-  ${CMAKE_INSTALL_LIBDIR}
-  ${CMAKE_INSTALL_LIBEXECDIR}
-  ${CMAKE_INSTALL_OLDINCLUDEDIR}
-  ${CMAKE_INSTALL_SBINDIR}
+set(OpenSSL_DEBUG 1)
+find_package(OpenSSL REQUIRED)
+find_package(ZLIB REQUIRED)
+
+# Test whether variables from https://cmake.org/cmake/help/latest/module/FindOpenSSL.html
+# are properly defined in conan generators
+set(_custom_vars
+    OPENSSL_FOUND
+    OPENSSL_INCLUDE_DIR
+    OPENSSL_CRYPTO_LIBRARY
+    OPENSSL_CRYPTO_LIBRARIES
+    OPENSSL_SSL_LIBRARY
+    OPENSSL_SSL_LIBRARIES
+    OPENSSL_LIBRARIES
+    OPENSSL_VERSION
 )
+foreach(_custom_var ${_custom_vars})
+    if(DEFINED ${_custom_var})
+        message(STATUS "${_custom_var}: ${${_custom_var}}")
+    else()
+        message(FATAL_ERROR "${_custom_var} not defined")
+    endif()
+endforeach()
 
-# load and setup conan
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()
-
-# create the test application
 add_executable(test_package test_package.c)
-target_link_libraries(test_package ${CONAN_LIBS})
+target_link_libraries(test_package PRIVATE OpenSSL::SSL OpenSSL::Crypto ZLIB::ZLIB)

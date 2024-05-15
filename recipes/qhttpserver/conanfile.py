@@ -1,43 +1,64 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans import CMake
+from conan import ConanFile
+from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
+from conan.tools.files import patch, collect_libs, copy, get
+from conan.tools.env import VirtualRunEnv
+
+required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
-    _cmake = None
+    name = "qhttpserver"
+    version = "2020.12.29"
+    homepage = "https://github.com/nikhilm/qhttpserver"
+    description = "Qt based HTTP Server based on Joyent's HTTP Parser library"
+    license = "MIT"
+    package_type = "shared-library"
+    settings = "os", "arch", "compiler", "build_type"
+    exports_sources = "patches/*.patch", "CMakeLists.txt"
 
+    def layout(self):
+        cmake_layout(self)
 
     def requirements(self):
-        channel = "@{0}/{1}".format(self.user, self.channel)
-        self.requires("qt5/[>=5.12.6]"+ channel)
+        self.requires("qtbase/[>=6.6]")
 
+    def source(self):
+        get(self,
+            sha256="49628e859a6aea81ada25b9b51630808cb6d7e9042b017b6514cdfd9dabb65dd",
+            url=f"https://github.com/nikhilm/qhttpserver/archive/30ac5715d123030b01bbac7383fb73d1d00d932b.tar.gz",
+            destination="src",
+            strip_root=True,
+        )
+        patch(self, base_path="src", patch_file="patches/001-allow_set_qtcpserver.patch")
+        patch(self, base_path="src", patch_file="patches/002-qt6.patch")
 
-    def _configure_cmake(self):
-        if not self._cmake:
-            self._cmake = CMake(self)
-            self._cmake.definitions["CMAKE_DEBUG_POSTFIX"] = "d"
-            self._cmake.definitions["BUILD_SHARED_LIBS"] = True
-            self._cmake.definitions["CMAKE_POSITION_INDEPENDENT_CODE"] = True
-            self._cmake.definitions["CMAKE_CXX_VISIBILITY_PRESET"] = "default" #fixme
-            self._cmake.configure()
-        return self._cmake
-
+    def generate(self):
+        env = VirtualRunEnv(self)
+        env.generate(scope="build")
+        deps = CMakeDeps(self)
+        deps.generate()
+        tc = CMakeToolchain(self)
+        tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
+        tc.variables["BUILD_SHARED_LIBS"] = True
+        tc.variables["CMAKE_INSTALL_RPATH"] = "$ORIGIN;$ORIGIN/../lib"
+        tc.variables["CMAKE_POSITION_INDEPENDENT_CODE"] = True
+        tc.variables["CMAKE_CXX_VISIBILITY_PRESET"] = "default" #fixme
+        tc.generate()
 
     def build(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
+        cmake.configure()
         cmake.build()
 
-
     def package(self):
-        cmake = self._configure_cmake()
+        copy(self, "LICENSE", src=self.source_path / "src", dst=self.package_path / "licenses")
+        cmake = CMake(self)
         cmake.install()
 
-        self.patch_binaries()
-        self.default_package()
-
-
     def package_info(self):
-        self.default_package_info()
+        self.cpp_info.set_property("cmake_file_name", "QHttpServer")
+        self.cpp_info.set_property("cmake_target_name", "QHttpServer::QHttpServer")
+        self.cpp_info.set_property("cmake_config_version_compat", "AnyNewerVersion")
+        self.cpp_info.set_property("pkg_config_name", "QHttpServer")
         self.cpp_info.includedirs = ["include", "include/QHttpServer"]
+        self.cpp_info.libs = collect_libs(self)

@@ -1,0 +1,30 @@
+cmake_minimum_required(VERSION 3.27)
+project(test_package CXX)
+
+include(CTest)
+enable_testing()
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+find_package(Qt6 REQUIRED COMPONENTS Core REQUIRED)
+qt_standard_project_setup()
+
+macro(module_test module)
+    string(TOLOWER ${module} name)
+    find_package(Qt6 COMPONENTS ${module} REQUIRED)
+    qt_add_executable(${name}_test ${name}_test.cpp)
+    target_link_libraries(${name}_test PRIVATE Qt6::${module})
+    add_test(NAME tst_${name} COMMAND ${name}_test)
+endmacro()
+
+module_test(Concurrent)
+module_test(Core)
+module_test(Gui)
+module_test(Network)
+module_test(OpenGL)
+module_test(PrintSupport)
+module_test(Sql)
+module_test(Widgets)
+module_test(Xml)
+module_test(Test)

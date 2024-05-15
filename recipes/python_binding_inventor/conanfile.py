@@ -1,50 +1,67 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans import CMake
-from conans import tools
-from conans.errors import ConanException
-import os
+from conan import ConanFile
+from conan.tools.cmake import CMakeToolchain, CMakeDeps, CMake, cmake_layout
+from conan.tools.env import VirtualRunEnv
+from conan.tools.files import copy, collect_libs
+
+required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
+    name = "python_binding_inventor"
+    version = "2022.02.11"
+    homepage = "https://mevislab.de"
+    description = "Python binding into Inventor"
+    license = "LGPL-2.1-only"
+    settings = "os", "arch", "compiler", "build_type"
+    package_type = "shared-library"
+    exports_sources = "sources/*", "LICENSE"
 
-    _cmake = None
+    mlab_hooks = {
+        "test_package.skip": True,
+    }
 
     def requirements(self):
-        channel = "@mevislab/stable"
-        self.requires("glew/[>=2.0.0]" + channel)
-        self.requires("numpy/[>=1.17.5]" + channel)
-        self.requires("openinventor/[>=2.5.1]" + channel)
-        self.requires("qt5/[>=5.12.7]" + channel)
-        self.requires("python/[>=3.9.7]" + channel)
-        self.requires("pythonqt/[>=3.4.1]" + channel)
+        self.requires("glew/[>=2.0.0]")
+        self.requires("numpy/[>=1.17.5]")
+        self.requires("openinventor/[>=2.5.1]")
+        self.requires("qtbase/[>=6.5]")
+        self.build_requires("pcre2/[>=10.34]")
+        self.requires("python/[>=3.11]")
+        self.requires("pythonqt/[>=3.4.2]")
 
+    def layout(self):
+        cmake_layout(self, src_folder="sources")
 
-    def _configure_cmake(self):
-        if not self._cmake:
-            self._cmake = CMake(self)
+    def generate(self):
+        env = VirtualRunEnv(self)
+        env.generate(scope="build")
 
-            python_package = self.deps_cpp_info['python']
-            version = python_package.version.split('.')
-            major, minor = version[0], version[1]
+        tc = CMakeToolchain(self)
+        version = self.dependencies['python'].ref.version
 
-            self._cmake.definitions["CMAKE_DEBUG_POSTFIX"] = "_d"
-            self._cmake.definitions["BUILD_SHARED_LIBS"] = True
-            self._cmake.definitions["python_VERSION_MAJOR"] = major
-            self._cmake.definitions["python_VERSION_MINOR"] = minor
-            self._cmake.definitions["MEVIS_PYTHON_SITE_PACKAGES_FOLDER"] = os.environ['MEVIS_PYTHON_SITE_PACKAGES_FOLDER']
-            self._cmake.configure(source_folder="sources")
-        return self._cmake
-
+        tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
+        tc.variables["BUILD_SHARED_LIBS"] = True
+        tc.variables["python_VERSION_MAJOR"] = version.major
+        tc.variables["python_VERSION_MINOR"] = version.minor
+        tc.variables["CMAKE_INSTALL_RPATH"] = "$ORIGIN;$ORIGIN/../../../../lib/"
+        tc.generate()
+        cd = CMakeDeps(self)
+        cd.generate()
 
     def build(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
+        cmake.configure()
         cmake.build()
 
-
     def package(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
         cmake.install()
-        self.default_package()
+        copy(self, "LICENSE", src=self.source_path.parent, dst=self.package_path / "licenses")
+
+    def package_info(self):
+        self.cpp_info.set_property("cmake_file_name", "PythonBindingInventor")
+        self.cpp_info.set_property("cmake_target_name", "PythonBindingInventor::PythonBindingInventor")
+        self.cpp_info.set_property("cmake_config_version_compat", "AnyNewerVersion")
+        self.cpp_info.set_property("pkg_config_name", "PythonBindingInventor")
+        self.cpp_info.libs = collect_libs(self)
+        self.cpp_info.includedirs.clear()

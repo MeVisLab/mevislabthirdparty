@@ -21,8 +21,6 @@ static void addModuleToDict(PyObject* dict, const char* moduleName) {
   }
 }
 
-#if PY_MAJOR_VERSION >= 3
-
 static PyModuleDef QtModuleDef = {
   PyModuleDef_HEAD_INIT,
   "Qt",
@@ -35,24 +33,20 @@ static PyModuleDef QtModuleDef = {
   nullptr
 };
 
-  #define Py_2_3_InitModFunc(name) PyInit_##name(void)
-  #define Py_2_3_ModuleInit(name) PyModule_Create(&QtModuleDef)
+#define PyInitModFunc(name) PyInit_##name(void)
+#define PyModuleInit(name) PyModule_Create(&QtModuleDef)
 
-#else
-  #define Py_2_3_InitModFunc(name) init##name(void)
-  #define Py_2_3_ModuleInit(name) Py_InitModule(name, NoMethods)
-#endif
 
 
 #ifdef UNIX
 PyMODINIT_FUNC
-Py_2_3_InitModFunc(Qt) ML_LIBRARY_EXPORT_ATTRIBUTE ;
+PyInitModFunc(Qt) ML_LIBRARY_EXPORT_ATTRIBUTE ;
 #endif
 
 PyMODINIT_FUNC
-Py_2_3_InitModFunc(Qt)
+PyInitModFunc(Qt)
 {
-  PyObject* module = Py_2_3_ModuleInit("Qt");
+  PyObject* module = PyModuleInit("Qt");
   PyObject* dict = PyModule_GetDict(module);
   addModuleToDict(dict, "PythonQt.QtCore");
   addModuleToDict(dict, "PythonQt.QtGui");
@@ -70,9 +64,7 @@ Py_2_3_InitModFunc(Qt)
 //  addModuleToDict(dict, "PythonQt.QtXml");
 //  addModuleToDict(dict, "PythonQt.QtXmlPatterns");
 
-#if PY_MAJOR_VERSION >= 3
   return module;
-#endif
 }
 
 

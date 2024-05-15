@@ -87,7 +87,7 @@ public:
         SoQtFullViewer::BuildFlag flag = BUILD_ALL,
         SoQtViewer::Type type = BROWSER,
         QWidget* parent = nullptr,
-        Qt::WindowFlags f = nullptr);
+        Qt::WindowFlags f = Qt::WindowFlags{});
 
     // compatibility constructor
     SoQtFlyViewer(

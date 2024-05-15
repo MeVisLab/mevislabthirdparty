@@ -1,0 +1,40 @@
+tier0:
+  - qt6/qt_package
+
+tier1:
+  - qt6/qtbase
+
+tier2:
+  - qt6/qtimageformats
+  - qt6/qtlanguageserver
+  - qt6/qtserialport
+  - qt6/qtshadertools
+  - qt6/qtsvg
+
+tier3:
+  - qt6/qtdeclarative
+  - qt6/qtserialbus
+
+tier4:
+  - qt6/qt5compat
+  - qt6/qtmultimedia
+  - qt6/qtpositioning
+  - qt6/qtremoteobjects
+  - qt6/qtscxml
+  - qt6/qttools
+  - qt6/qtwayland
+  - qt6/qtwebsockets
+
+tier5:
+  - qt6/qtconnectivity
+  - qt6/qtsensors
+  - qt6/qttranslations
+  - qt6/qtwebchannel
+
+tier6:
+  - qt6/qtwebengine
+
+tier7:
+  - qt6/qt3d
+  - qt6/qtwebview
+

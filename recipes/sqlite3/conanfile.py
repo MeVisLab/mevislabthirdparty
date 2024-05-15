@@ -1,62 +1,76 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans import tools
-from conans import CMake
-import os
+from conan import ConanFile
+from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
+from conan.tools.files import get, load, save, copy, collect_libs
+from conan.tools.scm import Version
+
+required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
+    name = "sqlite3"
+    version = "3.45.2"
+    description = "Self-contained, serverless, in-process SQL database engine."
+    license = "Unlicense"
+    homepage = "https://www.sqlite.org"
+    package_type = "shared-library"
+    settings = "os", "arch", "compiler", "build_type"
+    exports_sources = "CMakeLists.txt"
 
-    _cmake = None
+    def configure(self):
+        self.settings.rm_safe("compiler.cppstd")
+        self.settings.rm_safe("compiler.libcxx")
 
+    def layout(self):
+        cmake_layout(self, src_folder="src")
 
     def build_requirements(self):
-        channel = "@{0}/{1}".format(self.user, self.channel)
-        self.build_requires("zlib/[>=1.2.11]" + channel)
+        self.build_requires("zlib/[>=1.2.11]")
 
+    def source(self):
+        v = Version(self.version)
+        get(
+            self,
+            sha256="65230414820d43a6d1445d1d98cfe57e8eb9f7ac0d6a96ad6932e0647cce51db",
+            url=f"https://www.sqlite.org/2024/sqlite-amalgamation-{v.major}{str(v.minor).zfill(2)}{str(v.patch).zfill(2)}00.zip",
+            strip_root=True,
+        )
 
-    def _configure_cmake(self):
-        if not self._cmake:
-            self._cmake = CMake(self)
-            self._cmake.definitions["CMAKE_DEBUG_POSTFIX"] = "d"
-            self._cmake.definitions["BUILD_SHARED_LIBS"] = True
-            self._cmake.definitions["HAVE_LOCALTIME_R"] = True
-            self._cmake.definitions["HAVE_POSIX_FALLOCATE"] = True
-
-            if self.settings.os == "Windows":
-                self._cmake.definitions["HAVE_LOCALTIME_R"] = False
-                self._cmake.definitions["HAVE_POSIX_FALLOCATE"] = False
-
-            if self.settings.os == "Macos":
-                self._cmake.definitions["HAVE_POSIX_FALLOCATE"] = False
-
-            self._cmake.configure()
-        return self._cmake
-
+    def generate(self):
+        tc = CMakeToolchain(self)
+        tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
+        tc.variables["BUILD_SHARED_LIBS"] = True
+        tc.variables["HAVE_LOCALTIME_R"] = self.settings.os != "Windows"
+        tc.variables["HAVE_POSIX_FALLOCATE"] = self.settings.os == "Linux"
+        tc.variables["SQLITE3_SRC_DIR"] = self.source_folder.replace("\\", "/")
+        tc.variables["SQLITE3_VERSION"] = self.version
+        tc.variables["SQLITE3_BUILD_EXECUTABLE"] = False
+        tc.generate()
 
     def build(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
+        cmake.configure(build_script_folder=self.source_path.parent)
         cmake.build()
 
+    def _extract_license(self):
+        header = load(self, self.source_path / "sqlite3.h")
+        license_content = header[3 : header.find("***", 1)]
+        return license_content
 
     def package(self):
-        header = tools.load(os.path.join("sources", "sqlite3.h"))
-        license_content = header[3:header.find("***", 1)]
-        tools.save("LICENSE", license_content)
-        self.copy("LICENSE", dst="licenses")
-
-        cmake = self._configure_cmake()
+        save(self, self.package_path / "licenses" / "LICENSE", self._extract_license())
+        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False, excludes="*vc???.pdb")
+        cmake = CMake(self)
         cmake.install()
 
-        self.copy("*.pdb", src="bin", dst="bin")
-
-        self.patch_binaries()
-        self.default_package()
-
-
     def package_info(self):
-        self.default_package_info()
+        self.cpp_info.set_property("cmake_find_mode", "both")
+        self.cpp_info.set_property("cmake_file_name", "SQLite3")
+        self.cpp_info.set_property("cmake_module_file_name", "sqlite3")
+        self.cpp_info.set_property("cmake_target_name", "SQLite::SQLite3")
+        self.cpp_info.set_property("cmake_module_target_name", "sqlite3::sqlite3")
+        self.cpp_info.set_property("cmake_target_aliases", ["sqlite3::sqlite3"])
+        self.cpp_info.set_property("pkg_config_name", "sqlite3")
+        self.cpp_info.libs = collect_libs(self)
+
         if self.settings.os == "Linux":
             self.cpp_info.system_libs.extend(["m", "dl", "pthread"])

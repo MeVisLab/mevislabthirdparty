@@ -1,0 +1,19 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 75b160c..c253f36 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -524,12 +524,12 @@ ENDIF()
+ 
+ IF( NOT IOS )
+   IF( NOT ASSIMP_BUILD_MINIZIP )
+-    use_pkgconfig(UNZIP minizip)
++    #use_pkgconfig(UNZIP minizip)
+   ENDIF()
+ ELSE ()
+   IF( NOT BUILD_SHARED_LIBS )
+     IF( NOT ASSIMP_BUILD_MINIZIP )
+-      use_pkgconfig(UNZIP minizip)
++      #use_pkgconfig(UNZIP minizip)
+     ENDIF()
+   ENDIF ()
+ ENDIF ()

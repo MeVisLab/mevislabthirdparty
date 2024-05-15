@@ -1,5 +1,3 @@
-find_package(Qt5 COMPONENTS Core Widgets WebEngineWidgets REQUIRED)
-
 add_library(QtWebEngineWidgets "")
 set_target_properties(QtWebEngineWidgets PROPERTIES OUTPUT_NAME QtWebEngineWidgets)
 
@@ -18,12 +16,9 @@ target_sources(QtWebEngineWidgets PRIVATE
 
 target_link_libraries(QtWebEngineWidgets
   PRIVATE
-    Qt5::Core
-    Qt5::Widgets
-    Qt5::WebEngineWidgets
-    Python3::Python
-    Threads::Threads
-    ${CONAN_LIBS}
+    ${REQUIRED_LIBS}
+    Qt6::Widgets
+    Qt6::WebEngineWidgets
 )
 
 install(TARGETS QtWebEngineWidgets

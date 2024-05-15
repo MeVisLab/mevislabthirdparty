@@ -1,5 +1,3 @@
-find_package(Qt5 COMPONENTS Core Gui Qml Quick QuickWidgets REQUIRED)
-
 add_library(QtQuick "")
 set_target_properties(QtQuick PROPERTIES OUTPUT_NAME QtQuick)
 
@@ -13,21 +11,18 @@ target_sources(QtQuick PRIVATE QtQuick.cpp)
 target_sources(QtQuick PRIVATE
   ../generated_cpp/com_trolltech_qt_quick/com_trolltech_qt_quick0.h
   ../generated_cpp/com_trolltech_qt_quick/com_trolltech_qt_quick0.cpp
-  ../generated_cpp/com_trolltech_qt_quick/com_trolltech_qt_quick1.h
-  ../generated_cpp/com_trolltech_qt_quick/com_trolltech_qt_quick1.cpp
+#   ../generated_cpp/com_trolltech_qt_quick/com_trolltech_qt_quick1.h
+#   ../generated_cpp/com_trolltech_qt_quick/com_trolltech_qt_quick1.cpp
   ../generated_cpp/com_trolltech_qt_quick/com_trolltech_qt_quick_init.cpp
 )
 
 target_link_libraries(QtQuick
   PRIVATE
-    Qt5::Core
-    Qt5::Gui
-    Qt5::Qml 
-    Qt5::Quick
-    Qt5::QuickWidgets
-    Python3::Python
-    Threads::Threads
-    ${CONAN_LIBS}
+    ${REQUIRED_LIBS}
+    Qt6::Gui
+    Qt6::Qml
+    Qt6::Quick
+    Qt6::QuickWidgets
 )
 
 install(TARGETS QtQuick

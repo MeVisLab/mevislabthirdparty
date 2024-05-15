@@ -1,23 +1,10 @@
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.27)
 project(SoQtMeVis LANGUAGES CXX)
 
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()
-
-set(_UNUSED 
-  ${CMAKE_DEBUG_POSTFIX} 
-  ${CMAKE_EXPORT_NO_PACKAGE_REGISTRY} 
-  ${CMAKE_INSTALL_BINDIR} 
-  ${CMAKE_INSTALL_DATAROOTDIR} 
-  ${CMAKE_INSTALL_INCLUDEDIR} 
-  ${CMAKE_INSTALL_LIBDIR} 
-  ${CMAKE_INSTALL_LIBEXECDIR} 
-  ${CMAKE_INSTALL_OLDINCLUDEDIR} 
-  ${CMAKE_INSTALL_SBINDIR})
-
-find_package(Qt5 COMPONENTS Core Gui Widgets OpenGL REQUIRED)
+find_package(Qt6 COMPONENTS Core Gui Widgets OpenGL OpenGLWidgets REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
+find_package(OpenInventor REQUIRED)
 
 if(UNIX AND NOT APPLE)
     find_package(Fontconfig REQUIRED)
@@ -58,8 +45,6 @@ target_sources(SoQtMeVis PRIVATE
   src/SoQtHeadlight.h
   src/SoQtOffscreenGLWidget.cpp
   src/SoQtOffscreenGLWidget.h
-  src/SoQtRealQGLWidget.cpp
-  src/SoQtRealQGLWidget.h
   src/SoQtRealQOpenGLWidget.cpp
   src/SoQtRealQOpenGLWidget.h
   src/SoQtRenderArea.cpp
@@ -84,13 +69,14 @@ target_compile_definitions(SoQtMeVis PRIVATE $<BUILD_INTERFACE:SOQT_MEVIS_EXPORT
 
 target_link_libraries(SoQtMeVis
   PUBLIC
-    Qt5::Core
-    Qt5::Gui
-    Qt5::Widgets
-    Qt5::OpenGL
+    Qt6::Core
+    Qt6::Gui
+    Qt6::Widgets
+    Qt6::OpenGL
+    Qt6::OpenGLWidgets
     OpenGL::GL
     OpenGL::GLU
-    ${CONAN_LIBS}
+    OpenInventor::OpenInventor
 )
 
 if(UNIX AND NOT APPLE)

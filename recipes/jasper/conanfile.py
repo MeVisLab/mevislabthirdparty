@@ -1,76 +1,81 @@
-# -*- coding: utf-8 -*-
-from email import generator
-from conans import ConanFile
-from conans import tools
-#from conans import CMake
-import glob
-import os
+from conan import ConanFile
+from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
+from conan.tools.files import collect_libs, replace_in_file
+from conan.tools.files import get, copy, rmdir
 
-from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps
+required_conan_version = ">=2.2.2"
+
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
+    name = "jasper"
+    version = "4.2.3"
+    homepage = "https://www.ece.uvic.ca/~mdadams/jasper/"
+    description = "Implementation of the codec specified in the JPEG-2000 Part-1 standard"
+    license = "JasPer-2.0"
+    package_type = "shared-library"
+    settings = "os", "arch", "compiler", "build_type"
 
-    generators = "cmake_find_package"
+    def configure(self):
+        self.settings.rm_safe("compiler.libcxx")
+        self.settings.rm_safe("compiler.cppstd")
 
-    def system_requirements(self):
-        installer = tools.SystemPackageTool()
-        packages = []
-
-        if tools.os_info.linux_distro in ["ubuntu", "debian"]:
-            packages.append('libglu1-mesa-dev')
-
-        if packages:
-            installer.install_packages(packages)
-
+    def layout(self):
+        cmake_layout(self, src_folder="src")
 
     def requirements(self):
-        channel = "@{0}/{1}".format(self.user, self.channel)
-        self.requires("libjpeg/9e" + channel)
+        self.requires("libjpeg-turbo/[>=2.1.5]")
 
+    def source(self):
+        get(
+            self,
+            sha256="54d23d19c837137daf20978d4c2aec6a3321ef5870c327da19ed20f997f107d1",
+            url=f"https://github.com/mdadams/jasper/archive/version-{self.version}.zip",
+            strip_root=True,
+        )
+        replace_in_file(self, self.source_path / "CMakeLists.txt", "set(CMAKE_INSTALL_RPATH", "set(__CMAKE_INSTALL_RPATH")
 
     def generate(self):
-        toolchain = CMakeToolchain(self)
-        toolchain.variables["CMAKE_DEBUG_POSTFIX"] = "d"
-        toolchain.variables["BUILD_SHARED_LIBS"] = True
-        toolchain.variables["JAS_ENABLE_DOC"] = False
-        toolchain.variables["JAS_ENABLE_PROGRAMS"] = False
-        toolchain.variables["JAS_ENABLE_SHARED"] = True
-        toolchain.variables["JAS_LIBJPEG_REQUIRED"] = "REQUIRED"
-        toolchain.variables["JAS_ENABLE_OPENGL"] = False
-        toolchain.variables["ALLOW_IN_SOURCE_BUILD"] = True
-        toolchain.variables["JAS_ENABLE_AUTOMATIC_DEPENDENCIES"] = False
-        toolchain.variables["JAS_ENABLE_LIBHEIF"] = False
-
-        toolchain.generate()
-
+        cd = CMakeDeps(self)
+        cd.generate()
+        tc = CMakeToolchain(self)
+        tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
+        tc.variables["BUILD_SHARED_LIBS"] = True
+        tc.variables["CMAKE_INSTALL_RPATH"] = "$ORIGIN;$ORIGIN/../lib"
+        tc.variables["CMAKE_INSTALL_RPATH_USE_LINK_PATH"] = False
+        tc.variables["JAS_ENABLE_DOC"] = False
+        tc.variables["JAS_ENABLE_PROGRAMS"] = False
+        tc.variables["JAS_ENABLE_SHARED"] = True
+        tc.variables["JAS_LIBJPEG_REQUIRED"] = "REQUIRED"
+        tc.variables["JAS_ENABLE_OPENGL"] = False
+        tc.variables["ALLOW_IN_SOURCE_BUILD"] = True
+        tc.variables["JAS_ENABLE_AUTOMATIC_DEPENDENCIES"] = False
+        tc.variables["JAS_ENABLE_LIBHEIF"] = False
+        tc.generate()
 
     def build(self):
         cmake = CMake(self)
-        cmake.configure(build_script_folder="sources")
+        cmake.configure()
         cmake.build()
-
 
     def package(self):
         cmake = CMake(self)
         cmake.install()
-
-        self.copy("*.pdb", dst="bin", keep_path=False, excludes="*vc*.pdb")
-
-        tools.rmdir(os.path.join(self.package_folder, "share"))
-        tools.rmdir(os.path.join(self.package_folder, "lib", "pkgconfig"))
-
+        copy(self, "LICENSE.txt", src=self.source_path, dst=self.package_path / "licenses")
+        rmdir(self, self.package_path / "lib" / "cmake")
+        rmdir(self, self.package_path / "lib" / "pkgconfig")
+        rmdir(self, self.package_path / "share")
         if self.settings.os == "Windows":
-            for dll_file in glob.glob(os.path.join(self.package_folder, "bin", "*.dll")):
-                if os.path.basename(dll_file).startswith(("concrt", "msvcp", "vcruntime")):
-                    os.unlink(dll_file)
-
-        self.patch_binaries()
-        self.default_package()
-
+            copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False, excludes="*vc*.pdb")
+            for dll_file in (self.package_path / "bin").glob("*.dll"):
+                if dll_file.name.startswith(("concrt", "msvcp", "vcruntime")):
+                    dll_file.unlink()
 
     def package_info(self):
-        self.default_package_info()
+        self.cpp_info.set_property("cmake_find_mode", "both")
+        self.cpp_info.set_property("cmake_file_name", "Jasper")
+        self.cpp_info.set_property("cmake_target_name", "Jasper::Jasper")
+        self.cpp_info.set_property("pkg_config_name", "jasper")
+        self.cpp_info.libs = collect_libs(self)
+
         if self.settings.os == "Linux":
             self.cpp_info.system_libs.append("m")

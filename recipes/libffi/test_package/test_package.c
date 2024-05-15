@@ -38,8 +38,10 @@ int main()
     unsigned rvalue = 0;
     unsigned arg1 = 13;
     const unsigned expected_ret = 3 * arg1;
+    printf("Dummy: %d\n", expected_ret); // work around Visual Studio 2022 compiler bug
     void *args[] = {(void*)(&arg1)};
     ffi_call(&cif, FFI_FN(&print_uint), (void *) &rvalue, args);
+    printf("Dummy: %d\n", expected_ret); // work around Visual Studio 2022 compiler bug
     printf("ffi_call returns %d (should be %d)\n", rvalue, expected_ret);
     if (rvalue != expected_ret) {
         printf("ffi_call FAILED. Expected %d, but got %d.\n", expected_ret, rvalue);

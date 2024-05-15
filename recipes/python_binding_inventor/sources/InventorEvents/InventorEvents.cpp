@@ -57,8 +57,6 @@ static void* polymorphicHandler_SoEvent(const void *ptr, const char **class_name
   return object;
 }
 
-#if PY_MAJOR_VERSION >= 3
-
 static PyModuleDef eventsModuleDef = {
   PyModuleDef_HEAD_INIT,
   "events",
@@ -71,33 +69,26 @@ static PyModuleDef eventsModuleDef = {
   nullptr
 };
 
-  #define Py_2_3_InitModFunc(name) PyInit_##name(void)
-  #define Py_2_3_ModuleInit(name) PyModule_Create(&eventsModuleDef)
-
-#else
-  #define Py_2_3_InitModFunc(name) init##name(void)
-  #define Py_2_3_ModuleInit(name) Py_InitModule(name, NoMethods)
-#endif
+#define PyInitModFunc(name) PyInit_##name(void)
+  #define PyModuleInit(name) PyModule_Create(&eventsModuleDef)
 
 #ifdef UNIX
 PyMODINIT_FUNC
-Py_2_3_InitModFunc(events) ML_LIBRARY_EXPORT_ATTRIBUTE ;
+PyInitModFunc(events) ML_LIBRARY_EXPORT_ATTRIBUTE ;
 #endif
 
 PyMODINIT_FUNC
-Py_2_3_InitModFunc(events)
+PyInitModFunc(events)
 {
   PyObject* base = PyImport_ImportModule("Inventor.base");
   Py_XDECREF(base);
 
-  PyObject* module = Py_2_3_ModuleInit("events");
+  PyObject* module = PyModuleInit("events");
   PythonQt_init_InventorEvents(module);
 
   PythonQt::self()->addPolymorphicHandler("SoEvent", polymorphicHandler_SoEvent);
 
-#if PY_MAJOR_VERSION >= 3
   return module;
-#endif
 }
 
 

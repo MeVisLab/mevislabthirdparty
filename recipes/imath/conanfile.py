@@ -1,53 +1,70 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans import CMake
-from conans import tools
-import os
+from conan import ConanFile
+from conan.tools.build import check_min_cppstd
+from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
+from conan.tools.files import collect_libs, copy, get, rmdir
+
+required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
+    name = "imath"
+    version = "3.1.11"
+    homepage = "https://imath.readthedocs.io"
+    description = "Imath is a C++ and python library of 2D and 3D vector, matrix, and math operations for computer graphics"
+    license = "BSD-3-Clause"
+    package_type = "shared-library"
+    settings = "os", "arch", "compiler", "build_type"
 
-    _cmake = None
+    def layout(self):
+        cmake_layout(self, src_folder="src")
 
-    def _configure_cmake(self):
-        if not self._cmake:
-            self.create_cmake_wrapper()
-            self._cmake = CMake(self)
-            self._cmake.definitions["BUILD_SHARED_LIBS"] = True
+    def validate(self):
+        if self.settings.compiler.get_safe("cppstd"):
+            check_min_cppstd(self, 11)
 
-            self._cmake.definitions["IMATH_INSTALL_PKG_CONFIG"] = False
-            self._cmake.definitions["IMATH_HALF_USE_LOOKUP_TABLE"] = True
+    def source(self):
+        get(
+            self,
+            sha256="9057849585e49b8b85abe7cc1e76e22963b01bfdc3b6d83eac90c499cd760063",
+            url=f"https://github.com/AcademySoftwareFoundation/Imath/archive/refs/tags/v{self.version}.tar.gz",
+            strip_root=True,
+        )
 
-            self._cmake.configure()
-        return self._cmake
-
+    def generate(self):
+        tc = CMakeToolchain(self)
+        tc.variables["BUILD_SHARED_LIBS"] = True
+        tc.variables["IMATH_INSTALL_PKG_CONFIG"] = False
+        tc.variables["IMATH_HALF_USE_LOOKUP_TABLE"] = True
+        tc.variables["CMAKE_INSTALL_RPATH"] = "$ORIGIN;$ORIGIN/../lib"
+        tc.generate()
 
     def build(self):
-        cmake = self._configure_cmake()
+        cmake = CMake(self)
+        cmake.configure()
         cmake.build()
 
-
     def package(self):
-        cmake = self._configure_cmake()
+        copy(self, "LICENSE.md", src=self.source_path, dst=self.package_path / "licenses")
+        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False, excludes=["*vc???.pdb", "*Test.pdb"])
+        cmake = CMake(self)
         cmake.install()
-
-        self.copy("*.pdb", src="bin", dst="bin", excludes="*Test.pdb")
-
-        tools.rmdir(os.path.join(self.package_folder, "lib", "pkgconfig"))
-        tools.rmdir(os.path.join(self.package_folder, 'lib', 'cmake'))
-
-        self.patch_binaries()
-        self.default_package()
-
+        rmdir(self, self.package_path / "cmake")
+        rmdir(self, self.package_path / "lib" / "pkgconfig")
+        rmdir(self, self.package_path / "lib" / "cmake")
 
     def package_info(self):
-        self.default_package_info()
+        self.cpp_info.set_property("cmake_file_name", "Imath")
+        self.cpp_info.set_property("cmake_target_name", "Imath::Imath")
+        self.cpp_info.set_property("pkg_config_name", "Imath")
 
-        self.cpp_info.includedirs = ['include', 'include/Imath']
+        imath_config = self.cpp_info.components["imath_config"]
+        imath_config.set_property("cmake_target_name", "Imath::ImathConfig")
+        imath_config.includedirs.append("include/Imath")
 
-        if tools.os_info.is_windows:
-            self.cpp_info.defines.append("IMATH_DLL")
-        else:
-            self.cpp_info.cxxflags = ["-pthread"]
+        imath_lib = self.cpp_info.components["imath_lib"]
+        imath_lib.set_property("cmake_target_name", "Imath::Imath")
+        imath_lib.set_property("pkg_config_name", "Imath")
+        imath_lib.libs = collect_libs(self)
+        imath_lib.requires = ["imath_config"]
+        if self.settings.os == "Windows":
+            imath_lib.defines.append("IMATH_DLL")

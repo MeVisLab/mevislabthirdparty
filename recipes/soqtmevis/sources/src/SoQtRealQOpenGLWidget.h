@@ -45,6 +45,7 @@
 #include <Inventor/Qt/SoQtGLWidget.h>
 
 #include <QOpenGLWidget>
+#include <QSurfaceFormat>
 
 
 class SoQtRealQOpenGLWidget : public QOpenGLWidget
@@ -54,7 +55,7 @@ class SoQtRealQOpenGLWidget : public QOpenGLWidget
     friend class SoQtContextShareManager;
 
 public:
-    SoQtRealQOpenGLWidget(const QGLFormat& format, SoQtGLWidget* parent);
+    SoQtRealQOpenGLWidget(const QSurfaceFormat& format, SoQtGLWidget* parent);
 
     ~SoQtRealQOpenGLWidget() override;
 
@@ -62,7 +63,7 @@ public:
 
     static bool handleEvent(QWidget* self, SoQtGLWidget* w, QEvent* event);
 
-    void enterEvent (QEvent* event) override;
+    void enterEvent (QEnterEvent* event) override;
     void leaveEvent (QEvent* event) override;
 
     void initializeGL() override;

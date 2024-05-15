@@ -1,86 +1,99 @@
-# -*- coding: utf-8 -*-
-from conans import ConanFile
-from conans import AutoToolsBuildEnvironment
-from conans import MSBuild
-from conans import tools
 import os
-import xml.etree.ElementTree as ET
+import textwrap
+from conan import ConanFile
+from conan.tools.scm import Version
+from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
+from conan.tools.files import get, copy, rmdir, save, collect_libs
+
+required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
-    python_requires = 'common/1.0.0@mevislab/stable'
-    python_requires_extend = 'common.CommonRecipe'
+    name = "xz-utils"
+    version = "5.4.2"
+    homepage = "https://tukaani.org/xz"
+    description = "XZ Utils is free general-purpose data compression software with a high compression ratio"
+    license = "Unlicense"
+    package_type = "shared-library"
+    settings = "os", "arch", "compiler", "build_type"
+    exports_sources = "patches/*.patch"
 
-    _autotools = None
+    def configure(self):
+        self.settings.rm_safe("compiler.cppstd")
+        self.settings.rm_safe("compiler.libcxx")
+
+    def layout(self):
+        cmake_layout(self, src_folder="src")
 
     def source(self):
-        self.default_source()
+        get(
+            self,
+            sha256="aa49909cbd9028c4666a35fa4975f9a6203ed98154fbb8223ee43ef9ceee97c3",
+            # url=f"https://github.com/tukaani-project/xz/releases/download/v{self.version}/xz-{self.version}.tar.bz2",
+            url=f"http://downloads.sourceforge.net/project/lzmautils/xz-{self.version}.tar.bz2",
+            strip_root=True,
+        )
 
-        # fix/remove rpath (for macos)
-        tools.replace_in_file(os.path.join("sources", "configure"), r"-install_name \$rpath/", "-install_name ")
-
-        if tools.os_info.is_windows:
-            liblzmaFile = os.path.join('sources', 'windows', 'vs2019', 'liblzma_dll.vcxproj')
-            # Adapt VC project file for debug suffix:
-            ns = {'': 'http://schemas.microsoft.com/developer/msbuild/2003'}
-            ET.register_namespace('', ns[''])
-            tree = ET.parse(liblzmaFile)
-            root = tree.getroot()
-            # we need to add the debug suffix to the liblzma_dll.vcxproj
-            for child in root.findall("PropertyGroup", ns):
-                if "Debug" in child.get("Condition", ""):
-                    targetNameElem = child.find("TargetName", ns)
-                    if targetNameElem is not None and not targetNameElem.text.endswith('d'):
-                        targetNameElem.text += 'd'
-            tree.write(liblzmaFile, encoding="utf-8", xml_declaration=True)
-
-
-    def _configure_autotools(self):
-        if not self._autotools:
-            self._autotools = AutoToolsBuildEnvironment(self)
-            config_args=[ "--enable-static=no", "--enable-shared=yes",
-                        "--disable-xz", "--disable-xzdec",
-                        "--disable-lzmadec", "--disable-lzmainfo",
-                        "--disable-lzma-links", "--disable-scripts",
-                        "--disable-doc" ]
-
-            if self.settings.build_type == "Debug":
-                config_args.append("--enable-debug")
-
-            self._autotools.configure(configure_dir="sources", vars=self._autotools.vars, args=config_args)
-
-        return self._autotools
-
+    def generate(self):
+        tc = CMakeToolchain(self)
+        tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
+        tc.variables["BUILD_SHARED_LIBS"] = True
+        tc.generate()
 
     def build(self):
-        if self.settings.os == 'Windows':
-            with tools.chdir(os.path.join('sources', 'windows', 'vs2019')):
-                msbuild = MSBuild(self)
-                msbuild.build('xz_win.sln', targets=['liblzma_dll:Rebuild'], build_type="Debug" if self.settings.build_type == "Debug" else "Release", platforms={"x86": "Win32", "x86_64": "x64"}, upgrade_project=False)
-        else:
-            autotools = self._configure_autotools()
-            autotools.make(vars=autotools.vars)
-
+        cmake = CMake(self)
+        cmake.configure()
+        cmake.build()
 
     def package(self):
-        if self.settings.os == 'Windows':
-            self.copy("*.h", dst="include", src=os.path.join('sources', 'src', 'liblzma', 'api'), keep_path=True)
-            bindir = os.path.join("sources", "windows", 'vs2017' if self.settings.compiler.version == 15 else 'vs2019')
-            self.copy("*.dll", dst="bin", src=bindir, keep_path=False)
-            self.copy("*.pdb", dst="bin", src=bindir, keep_path=False, excludes="*/vc*.pdb")
-            self.copy("*.lib", dst="lib", src=bindir, keep_path=False)
-        else:
-            autotools = self._configure_autotools()
-            autotools.install(vars=autotools.vars)
+        cmake = CMake(self)
+        cmake.install()
 
-        if os.path.exists(os.path.join(self.package_folder, 'lib', 'liblzma.la')):
-            os.unlink(os.path.join(self.package_folder, 'lib', 'liblzma.la'))
+        rmdir(self, self.package_path / "lib" / "cmake")
+        rmdir(self, self.package_path / "lib" / "pkgconfig")
+        rmdir(self, self.package_path / "share")
 
-        if not tools.os_info.is_windows:
-            tools.rmdir(os.path.join(self.package_folder, "bin"))
+        copy(self, "COPYING", src=self.source_path, dst=self.package_path / "licenses")
 
-        tools.rmdir(os.path.join(self.package_folder, "share"))
-        tools.rmdir(os.path.join(self.package_folder, "lib", "pkgconfig"))
+        content = textwrap.dedent(
+            f"""\
+            if (NOT TARGET LibLZMA::LibLZMA)
+                message(FATAL_ERROR "Target LibZMA missing")
+            endif()
 
-        self.patch_binaries()
-        self.default_package()
+            set(LIBLZMA_FOUND TRUE)
+            # include(CheckLibraryExists)
+            set(CMAKE_REQUIRED_QUIET_SAVE ${{CMAKE_REQUIRED_QUIET}})
+            set(CMAKE_REQUIRED_QUIET ${{LIBLZMA_FIND_QUIETLY}})
+            # CHECK_LIBRARY_EXISTS(LibLZMA::LibLZMA lzma_auto_decoder "" LIBLZMA_HAS_AUTO_DECODER)
+            # CHECK_LIBRARY_EXISTS(LibLZMA::LibLZMA lzma_easy_encoder "" LIBLZMA_HAS_EASY_ENCODER)
+            # CHECK_LIBRARY_EXISTS(LibLZMA::LibLZMA lzma_lzma_preset "" LIBLZMA_HAS_LZMA_PRESET)
+            unset(LIBLZMA_LIBRARY_check)
+            set(CMAKE_REQUIRED_QUIET ${{CMAKE_REQUIRED_QUIET_SAVE}})
+
+            set(LIBLZMA_VERSION {self.version})
+            set(LIBLZMA_INCLUDE_DIRS ${{LibLZMA_INCLUDE_DIRS}})
+            set(LIBLZMA_LIBRARIES ${{LibLZMA_LIBRARIES}})
+
+            set(LIBLZMA_VERSION_MAJOR {Version(self.version).major})
+            set(LIBLZMA_VERSION_MINOR {Version(self.version).minor})
+            set(LIBLZMA_VERSION_PATCH {Version(self.version).patch})
+            set(LIBLZMA_VERSION_STRING "{self.version}")
+        """
+        )
+        save(self, self.package_path / self._module_file_rel_path, content)
+
+    @property
+    def _module_file_rel_path(self):
+        return os.path.join("lib", "cmake", "liblzma-variables.cmake")
+
+    def package_info(self):
+        self.cpp_info.set_property("cmake_find_mode", "both")
+        self.cpp_info.set_property("cmake_file_name", "LibLZMA")
+        self.cpp_info.set_property("cmake_target_name", "LibLZMA::LibLZMA")
+        self.cpp_info.set_property("cmake_target_aliases", ["liblzma::liblzma"])
+        self.cpp_info.set_property("cmake_build_modules", [self._module_file_rel_path])
+        self.cpp_info.set_property("pkg_config_name", "liblzma")
+        self.cpp_info.libs = collect_libs(self)
+        if self.settings.os == "Linux":
+            self.cpp_info.system_libs.append("pthread")

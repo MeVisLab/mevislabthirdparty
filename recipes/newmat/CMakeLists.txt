@@ -1,76 +1,63 @@
-cmake_minimum_required(VERSION 3.14)
-project(conan-wrapper)
-
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()
-
-set(_UNUSED
-    ${CMAKE_EXPORT_NO_PACKAGE_REGISTRY}
-    ${CMAKE_INSTALL_BINDIR}
-    ${CMAKE_INSTALL_DATAROOTDIR}
-    ${CMAKE_INSTALL_INCLUDEDIR}
-    ${CMAKE_INSTALL_LIBDIR}
-    ${CMAKE_INSTALL_LIBEXECDIR}
-    ${CMAKE_INSTALL_OLDINCLUDEDIR}
-    ${CMAKE_INSTALL_SBINDIR}
-)
+cmake_minimum_required(VERSION 3.27)
+project(newmat VERSION ${CONAN_NEWMAT_VERSION} LANGUAGES CXX)
 
 add_library(newmat)
+set_target_properties(newmat PROPERTIES VERSION "${PROJECT_VERSION}" SOVERSION "${PROJECT_VERSION_MAJOR}")
+
 target_sources(newmat PRIVATE
-    sources/bandmat.cpp
-    sources/cholesky.cpp
-    sources/controlw.h
-    sources/evalue.cpp
-    sources/fft.cpp
-    sources/hholder.cpp
-    sources/include.h
-    sources/jacobi.cpp
-    sources/myexcept.cpp
-    sources/myexcept.h
-    sources/newfft.cpp
-    sources/newmat.h
-    sources/newmat1.cpp
-    sources/newmat2.cpp
-    sources/newmat3.cpp
-    sources/newmat4.cpp
-    sources/newmat5.cpp
-    sources/newmat6.cpp
-    sources/newmat7.cpp
-    sources/newmat8.cpp
-    sources/newmat9.cpp
-    sources/newmatap.h
-    sources/newmatex.cpp
-    sources/newmatio.h
-    sources/newmatnl.cpp
-    sources/newmatnl.h
-    sources/newmatrc.h
-    sources/newmatrm.cpp
-    sources/newmatrm.h
-    sources/nm_misc.cpp
-    sources/precisio.h
-    sources/solution.cpp
-    sources/solution.h
-    sources/sort.cpp
-    sources/submat.cpp
-    sources/svd.cpp
+    src/bandmat.cpp
+    src/cholesky.cpp
+    src/controlw.h
+    src/evalue.cpp
+    src/fft.cpp
+    src/hholder.cpp
+    src/include.h
+    src/jacobi.cpp
+    src/myexcept.cpp
+    src/myexcept.h
+    src/newfft.cpp
+    src/newmat.h
+    src/newmat1.cpp
+    src/newmat2.cpp
+    src/newmat3.cpp
+    src/newmat4.cpp
+    src/newmat5.cpp
+    src/newmat6.cpp
+    src/newmat7.cpp
+    src/newmat8.cpp
+    src/newmat9.cpp
+    src/newmatap.h
+    src/newmatex.cpp
+    src/newmatio.h
+    src/newmatnl.cpp
+    src/newmatnl.h
+    src/newmatrc.h
+    src/newmatrm.cpp
+    src/newmatrm.h
+    src/nm_misc.cpp
+    src/precisio.h
+    src/solution.cpp
+    src/solution.h
+    src/sort.cpp
+    src/submat.cpp
+    src/svd.cpp
 )
 
-target_link_libraries(newmat ${CONAN_LIBS})
-target_include_directories(newmat PRIVATE sources)
+target_include_directories(newmat PRIVATE src)
 
 install(TARGETS newmat DESTINATION lib)
 install(FILES
-    sources/controlw.h
-    sources/include.h
-    sources/myexcept.h
-    sources/newmat.h
-    sources/newmatap.h
-    sources/newmatio.h
-    sources/newmatnl.h
-    sources/newmatrc.h
-    sources/newmatrm.h
-    sources/precisio.h
-    sources/solution.h
+    src/controlw.h
+    src/include.h
+    src/myexcept.h
+    src/newmat.h
+    src/newmatap.h
+    src/newmatio.h
+    src/newmatnl.h
+    src/newmatrc.h
+    src/newmatrm.h
+    src/precisio.h
+    src/solution.h
   DESTINATION
     include/newmat
 )

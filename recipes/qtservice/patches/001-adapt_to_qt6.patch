@@ -1,0 +1,42 @@
+diff --git a/qtservice/src/qtservice.cpp b/qtservice/src/qtservice.cpp
+index e3b3794..63a57e1 100644
+--- a/qtservice/src/qtservice.cpp
++++ b/qtservice/src/qtservice.cpp
+@@ -626,7 +626,7 @@ QtServiceBase::QtServiceBase(int argc, char **argv, const QString &name)
+     d_ptr = new QtServiceBasePrivate(nm);
+     d_ptr->q_ptr = this;
+ 
+-    d_ptr->serviceFlags = 0;
++    d_ptr->serviceFlags = Default;
+     d_ptr->sysd = 0;
+     for (int i = 0; i < argc; ++i)
+         d_ptr->args.append(QString::fromLocal8Bit(argv[i]));
+diff --git a/qtservice/src/qtservice.h b/qtservice/src/qtservice.h
+index bab1fea..68e10f9 100644
+--- a/qtservice/src/qtservice.h
++++ b/qtservice/src/qtservice.h
+@@ -22,7 +22,6 @@
+ #  define QT_QTSERVICE_EXPORT
+ #endif
+ 
+-class QStringList;
+ class QtServiceControllerPrivate;
+ 
+ class QT_QTSERVICE_EXPORT QtServiceController
+diff --git a/qtservice/src/qtservice_win.cpp b/qtservice/src/qtservice_win.cpp
+index d0441f4..ec9851b 100644
+--- a/qtservice/src/qtservice_win.cpp
++++ b/qtservice/src/qtservice_win.cpp
+@@ -700,10 +700,10 @@ class QtServiceAppEventFilter : public QAbstractNativeEventFilter
+ {
+ public:
+     QtServiceAppEventFilter() {}
+-    bool nativeEventFilter(const QByteArray &eventType, void *message, long *result);
++    bool nativeEventFilter(const QByteArray &eventType, void *message, qintptr *result);
+ };
+ 
+-bool QtServiceAppEventFilter::nativeEventFilter(const QByteArray &, void *message, long *result)
++bool QtServiceAppEventFilter::nativeEventFilter(const QByteArray &, void *message, qintptr *result)
+ {
+     MSG *winMessage = (MSG*)message;
+     if (winMessage->message == WM_ENDSESSION && (winMessage->lParam & ENDSESSION_LOGOFF)) {

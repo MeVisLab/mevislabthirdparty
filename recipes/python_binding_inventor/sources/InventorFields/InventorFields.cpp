@@ -34,8 +34,6 @@ static void* polymorphicHandler_SoField(const void *ptr, const char **class_name
   return object;
 }
 
-#if PY_MAJOR_VERSION >= 3
-
 static PyModuleDef fieldsModuleDef = {
   PyModuleDef_HEAD_INIT,
   "fields",
@@ -48,33 +46,26 @@ static PyModuleDef fieldsModuleDef = {
   nullptr
 };
 
-  #define Py_2_3_InitModFunc(name) PyInit_##name(void)
-  #define Py_2_3_ModuleInit(name) PyModule_Create(&fieldsModuleDef)
-
-#else
-  #define Py_2_3_InitModFunc(name) init##name(void)
-  #define Py_2_3_ModuleInit(name) Py_InitModule(name, NoMethods)
-#endif
+#define PyInitModFunc(name) PyInit_##name(void)
+  #define PyModuleInit(name) PyModule_Create(&fieldsModuleDef)
 
 #ifdef UNIX
 PyMODINIT_FUNC
-Py_2_3_InitModFunc(fields) ML_LIBRARY_EXPORT_ATTRIBUTE ;
+PyInitModFunc(fields) ML_LIBRARY_EXPORT_ATTRIBUTE ;
 #endif
 
 PyMODINIT_FUNC
-Py_2_3_InitModFunc(fields)
+PyInitModFunc(fields)
 {
   PyObject* base = PyImport_ImportModule("Inventor.base");
   Py_XDECREF(base);
 
-  PyObject* module = Py_2_3_ModuleInit("fields");
+  PyObject* module = PyModuleInit("fields");
   PythonQt_init_InventorFields(module);
 
   PythonQt::self()->addPolymorphicHandler("SoField", polymorphicHandler_SoField);
 
-#if PY_MAJOR_VERSION >= 3
   return module;
-#endif
 }
 
 

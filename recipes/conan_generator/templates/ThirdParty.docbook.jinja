@@ -19,6 +19,10 @@
     <section>
       <title>{{ it.name }} / {{ it.version }}</title>
       <para>{{ it.description }}</para>
+      {% if it.homepage %}
+      <para>Homepage: <ulink url="{{ it.homepage }}"/></para>
+      {% endif %}
+      <para>License: {{ it.license }}</para>
 
       {% if it.public_sdk_only %}
       <note><para>Only available in PublicSDK</para></note>
@@ -68,6 +72,10 @@
     <section>
       <title>{{ it.name }} / {{ it.version }}</title>
       <para>{{ it.description }}</para>
+      {% if it.homepage %}
+      <para>Homepage: <ulink url="{{ it.homepage }}"/></para>
+      {% endif %}
+      <para>License: {{ it.license }}</para>
 
       {% if it.components %}
       <simplesect>

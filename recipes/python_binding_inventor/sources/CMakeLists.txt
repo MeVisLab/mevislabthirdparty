@@ -1,45 +1,22 @@
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.27)
 project(PythonBindingInventor LANGUAGES CXX)
-
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()
-
-set(_UNUSED 
-    ${CMAKE_DEBUG_POSTFIX} 
-    ${CMAKE_EXPORT_NO_PACKAGE_REGISTRY} 
-    ${CMAKE_INSTALL_BINDIR} 
-    ${CMAKE_INSTALL_DATAROOTDIR} 
-    ${CMAKE_INSTALL_INCLUDEDIR} 
-    ${CMAKE_INSTALL_LIBDIR} 
-    ${CMAKE_INSTALL_LIBEXECDIR} 
-    ${CMAKE_INSTALL_OLDINCLUDEDIR} 
-    ${CMAKE_INSTALL_SBINDIR})
 
 find_package(GLEW REQUIRED)
 find_package(OpenGL 2.1 REQUIRED)
-find_library(Python3_LIBRARY NAMES ${CONAN_LIBS_PYTHON} PATHS ${CONAN_LIB_DIRS_PYTHON})
-if(WIN32)
-    find_library(Python3_LIBRARY_RELEASE NAMES python${python_VERSION_MAJOR}${python_VERSION_MINOR} PATHS ${CONAN_LIB_DIRS_PYTHON})
-    find_library(Python3_LIBRARY_DEBUG NAMES python${python_VERSION_MAJOR}${python_VERSION_MINOR}_d PATHS ${CONAN_LIB_DIRS_PYTHON})
-else()
-    find_library(Python3_LIBRARY_RELEASE NAMES python${python_VERSION_MAJOR}.${python_VERSION_MINOR}m python${python_VERSION_MAJOR}.${python_VERSION_MINOR} PATHS ${CONAN_LIB_DIRS_PYTHON})
-    find_library(Python3_LIBRARY_DEBUG NAMES python${python_VERSION_MAJOR}.${python_VERSION_MINOR}m python${python_VERSION_MAJOR}.${python_VERSION_MINOR} PATHS ${CONAN_LIB_DIRS_PYTHON})
-endif()
-
-find_package(Qt5 COMPONENTS Core REQUIRED)
+find_package(Python3 REQUIRED)
+find_package(NumPy REQUIRED)
+find_package(PythonQt REQUIRED)
+find_package(Qt6 COMPONENTS Core REQUIRED)
 find_package(Threads REQUIRED)
+find_package(OpenInventor REQUIRED)
 
-add_library(Python3::Python INTERFACE IMPORTED)
-set_property(TARGET Python3::Python PROPERTY INTERFACE_LINK_LIBRARIES $<IF:$<CONFIG:Debug>,${Python3_LIBRARY_DEBUG},${Python3_LIBRARY_RELEASE}>)
-set_property(TARGET Python3::Python PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${CONAN_INCLUDE_DIRS_PYTHON})
+set(REQUIRED_LIBS Qt6::Core Python3::Python PythonQt::PythonQt OpenInventor::OpenInventor Threads::Threads)
 
-set(SITE_PACKAGE_TARGET_DIR "${MEVIS_PYTHON_SITE_PACKAGES_FOLDER}")
+set(SITE_PACKAGE_TARGET_DIR "$ENV{MEVIS_PYTHON_SITE_PACKAGES_FOLDER}")
 
 set(TARGET_RUNTIME_OUTPUT_DIRECTORY "${SITE_PACKAGE_TARGET_DIR}/Inventor")
 
 set(CMAKE_AUTOMOC ON)
-
-set(_UNUSED ${CMAKE_DEBUG_POSTFIX} ${CMAKE_EXPORT_NO_PACKAGE_REGISTRY} ${CMAKE_INSTALL_BINDIR} ${CMAKE_INSTALL_DATAROOTDIR} ${CMAKE_INSTALL_INCLUDEDIR} ${CMAKE_INSTALL_LIBDIR} ${CMAKE_INSTALL_LIBEXECDIR} ${CMAKE_INSTALL_OLDINCLUDEDIR} ${CMAKE_INSTALL_SBINDIR})
 
 add_subdirectory(InventorActions)
 add_subdirectory(InventorBase)

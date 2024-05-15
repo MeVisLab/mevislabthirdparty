@@ -1,24 +1,34 @@
-cmake_minimum_required(VERSION 3.14)
-project(test_package C)
+cmake_minimum_required(VERSION 3.27)
+project(test_package LANGUAGES C)
 
-# add install rule for Microsofts compiler-provided system runtime libraries
-set(CMAKE_INSTALL_UCRT_LIBRARIES TRUE)
-include(InstallRequiredSystemLibraries)
-
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()
-
-# prevent CMake from complaining about this external unused variable.
-set(_UNUSED
-  ${CMAKE_EXPORT_NO_PACKAGE_REGISTRY}
-  ${CMAKE_INSTALL_BINDIR}
-  ${CMAKE_INSTALL_DATAROOTDIR}
-  ${CMAKE_INSTALL_INCLUDEDIR}
-  ${CMAKE_INSTALL_LIBDIR}
-  ${CMAKE_INSTALL_LIBEXECDIR}
-  ${CMAKE_INSTALL_OLDINCLUDEDIR}
-  ${CMAKE_INSTALL_SBINDIR}
-)
+find_package(ZLIB REQUIRED)
 
 add_executable(test_package test_package.c)
-target_link_libraries(test_package ${CONAN_LIBS})
+target_link_libraries(test_package PRIVATE ZLIB::ZLIB)
+
+# https://cmake.org/cmake/help/latest/module/FindZLIB.html
+set(_result_vars
+    ZLIB_INCLUDE_DIRS
+    ZLIB_LIBRARIES
+    ZLIB_LIBRARY
+    ZLIB_FOUND
+    ZLIB_VERSION
+
+    # legacy
+    ZLIB_VERSION_MAJOR
+    ZLIB_VERSION_MINOR
+    ZLIB_VERSION_PATCH
+    ZLIB_VERSION_TWEAK
+    ZLIB_VERSION_STRING
+    ZLIB_MAJOR_VERSION
+    ZLIB_MINOR_VERSION
+    ZLIB_PATCH_VERSION
+)
+
+foreach(_var ${_result_vars})
+  if(DEFINED ${_var})
+    message(STATUS "${_var}: ${${_var}}")
+  else()
+    message(FATAL_ERROR "${_var} not defined")
+  endif()
+endforeach()

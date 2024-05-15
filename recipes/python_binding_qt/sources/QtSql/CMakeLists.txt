@@ -1,5 +1,3 @@
-find_package(Qt5 COMPONENTS Core Gui Sql REQUIRED)
-
 add_library(QtSql "")
 set_target_properties(QtSql PROPERTIES OUTPUT_NAME QtSql)
 
@@ -18,12 +16,9 @@ target_sources(QtSql PRIVATE
 
 target_link_libraries(QtSql
   PRIVATE
-    Qt5::Core 
-    Qt5::Gui
-    Qt5::Sql
-    Python3::Python
-    Threads::Threads
-    ${CONAN_LIBS}
+    ${REQUIRED_LIBS}
+    Qt6::Gui
+    Qt6::Sql
 )
 
 install(TARGETS QtSql

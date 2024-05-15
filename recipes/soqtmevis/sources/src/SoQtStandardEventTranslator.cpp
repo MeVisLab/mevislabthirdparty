@@ -85,8 +85,8 @@ SoQtStandardEventTranslator::translateEvent(QEvent *anyEvent, const SbVec2s& vie
   }
   else if (anyEvent->type() == QEvent::Wheel) {
     QWheelEvent* we = static_cast<QWheelEvent *>(anyEvent);
-    wheelEvent = new QWheelEvent(we->posF() * devicePixelRatio, we->globalPosF(), we->pixelDelta() * devicePixelRatio,
-      we->angleDelta(), we->delta(), we->orientation(), we->buttons(), we->modifiers(),
+    wheelEvent = new QWheelEvent(we->position() * devicePixelRatio, we->globalPosition(), we->pixelDelta() * devicePixelRatio,
+      we->angleDelta(), we->buttons(), we->modifiers(),
       we->phase(), we->source());
   }
 
@@ -160,21 +160,31 @@ SoMouseWheelEvent* SoQtStandardEventTranslator::translateWheelEvent(QWheelEvent*
     environmentRead = true;
     roundUpWheelDelta = qEnvironmentVariableIsSet("MLAB_SOQT_ROUNDUP_WHEEL_DELTA");
   }
-  lastMouseX = wevent->pos().x();
-  lastMouseY = wevent->pos().y();
+  lastMouseX = wevent->position().toPoint().x();
+  lastMouseY = wevent->position().toPoint().y();
   // Qt 5.12.3 has a bug that returns a wrong buttons state in wheel events on Windows if the
   // user previously clicked on the window title bar - as a workaround we ignore this and simply
   // rely on the state provided by previous QMouseEvents:
   // lastMouseButtons = wevent->buttons();
 
-  int delta = wevent->delta();
+  int delta{};
+  SoMouseWheelEvent::Orientation orientation{};
+  QPoint angleDelta = wevent->angleDelta();
+  if (angleDelta.y()) {
+    delta = angleDelta.y();
+    orientation = SoMouseWheelEvent::VERTICAL;
+  }
+  else {
+    delta = angleDelta.x();
+    orientation = SoMouseWheelEvent::HORIZONTAL;
+  }
   if (roundUpWheelDelta && qAbs(delta) < 120) {
     // apply fix for TouchStrip of WACOM monitor;
     // NOTE: this would collide with the Apple Magic/Mighty Mouse handling
     delta = (delta < 0) ? -120 : 120;
   }
   mouseWheelEvent.setWheelRotation(delta);
-  mouseWheelEvent.setWheelOrientation((wevent->orientation() == Qt::Horizontal) ? SoMouseWheelEvent::HORIZONTAL : SoMouseWheelEvent::VERTICAL);
+  mouseWheelEvent.setWheelOrientation(orientation);
 
   fillInEventState(&mouseWheelEvent, wevent, viewportSize);
 
@@ -212,7 +222,7 @@ SoQtStandardEventTranslator::translateButtonEvent (QMouseEvent *be, SoButtonEven
     case Qt::LeftButton:
       whichButton = SoMouseButtonEvent::LEFT_BUTTON;
       break;
-    case Qt::MidButton:
+    case Qt::MiddleButton:
       whichButton = SoMouseButtonEvent::MIDDLE_BUTTON;
       break;
     case Qt::RightButton:

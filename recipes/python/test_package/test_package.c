@@ -22,8 +22,17 @@ void run_program(const char *desc, const char *prog)
 }
 
 int main() {
+    Py_DontWriteBytecodeFlag = 1;
     Py_Initialize();
 
+    run_program("set DLL directories on Windows",
+        "import os\n"
+        "import sys\n"
+        "if sys.platform == 'win32':\n"
+        "    for p in os.environ['PATH'].split(';'):\n"
+        "        if os.path.exists(p):\n"
+        "            os.add_dll_directory(p)\n"
+    );
     run_stmt("import lzma");
     run_stmt("import argparse");
     run_stmt("import asyncio");
@@ -65,7 +74,7 @@ int main() {
         "def done_cb(arg):\n"
         "  pass\n"
         "fut.add_done_callback(functools.partial(done_cb, fut))\n"
-        "assert(repr(fut) == \"<Future pending cb=[done_cb(<Future ... [recursion]>)() at <string>:6]>\")\n"
+        "assert(repr(fut) == \"<Future pending cb=[done_cb(...)() at <string>:6]>\")\n"
     );
 
 	Py_Finalize();
