@@ -10,7 +10,7 @@ required_conan_version = ">=2.2.2"
 class ConanRecipe(ConanFile):
     name = "libjpeg-turbo"
     provides = "libjpeg"
-    version = "3.0.2"
+    version = "3.0.3"
     description = "SIMD-accelerated libjpeg-compatible JPEG codec library"
     license = ("BSD-3-Clause", "IJG", "Zlib")
     homepage = "https://libjpeg-turbo.org"
@@ -28,7 +28,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="c2ce515a78d91b09023773ef2770d6b0df77d674e144de80d63e0389b3a15ca6",
+            sha256="343e789069fc7afbcdfe44dbba7dbbf45afa98a15150e079a38e60e44578865d",
             url=f"https://github.com/libjpeg-turbo/libjpeg-turbo/releases/download/{self.version}/libjpeg-turbo-{self.version}.tar.gz",
             strip_root=True,
         )

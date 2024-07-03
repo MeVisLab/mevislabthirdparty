@@ -14,7 +14,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "libsodium"
-    version = "1.0.19"
+    version = "1.0.20"
     homepage = "https://libsodium.org"
     description = "A portable fork of NaCl, a higher-level cryptographic library"
     license = "ISC"
@@ -30,11 +30,12 @@ class ConanRecipe(ConanFile):
         basic_layout(self, src_folder="src")
 
     def source(self):
-        get(self,
-            sha256="018d79fe0a045cca07331d37bd0cb57b2e838c51bc48fd837a1472e50068bbea",
+        get(
+            self,
+            sha256="ebb65ef6ca439333c2bb41a0c1990587288da07f6c7fd07cb3a18cc18d30ce19",
             url=f"https://download.libsodium.org/libsodium/releases/libsodium-{self.version}.tar.gz",
-            strip_root=True
-            )
+            strip_root=True,
+        )
         patch(self, patch_file="patches/001-debug_ext.patch")
 
     def generate(self):
@@ -61,27 +62,36 @@ class ConanRecipe(ConanFile):
 
             # TODO: to remove once https://github.com/conan-io/conan/pull/12817 is merged
             replace_in_file(
-                self, vcxproj_path,
+                self,
+                vcxproj_path,
                 search="<PlatformToolset>v142</PlatformToolset>",
-                replace=f"<PlatformToolset>{MSBuildToolchain(self).toolset}</PlatformToolset>"
+                replace=f"<PlatformToolset>{MSBuildToolchain(self).toolset}</PlatformToolset>",
             )
 
             props = self.generators_path / MSBuildToolchain.filename
             replace_in_file(
-                self, vcxproj_path,
-                "<Import Project=\"$(VCTargetsPath)\\Microsoft.Cpp.targets\" />",
-                f"<Import Project=\"{props}\" /><Import Project=\"$(VCTargetsPath)\\Microsoft.Cpp.targets\" />",
+                self,
+                vcxproj_path,
+                '<Import Project="$(VCTargetsPath)\\Microsoft.Cpp.targets" />',
+                f'<Import Project="{props}" /><Import Project="$(VCTargetsPath)\\Microsoft.Cpp.targets" />',
             )
 
             if self.settings.build_type == "Debug":
                 for filename in proj_path.iterdir():
                     new_name = filename.parent / str(filename.name).replace("libsodium", "libsodium_d")
                     rename(self, filename, new_name)
-                replace_in_file(self, proj_path / "libsodium_d.vcxproj",
-                                "<ProjectName>libsodium</ProjectName>",
-                                "<ProjectName>libsodium_d</ProjectName>")
-                replace_in_file(self, sln_path / "libsodium.sln", r'"libsodium", "libsodium\libsodium.vcxproj"',
-                                r'"libsodium", "libsodium\libsodium_d.vcxproj"')
+                replace_in_file(
+                    self,
+                    proj_path / "libsodium_d.vcxproj",
+                    "<ProjectName>libsodium</ProjectName>",
+                    "<ProjectName>libsodium_d</ProjectName>",
+                )
+                replace_in_file(
+                    self,
+                    sln_path / "libsodium.sln",
+                    r'"libsodium", "libsodium\libsodium.vcxproj"',
+                    r'"libsodium", "libsodium\libsodium_d.vcxproj"',
+                )
             # END
 
             msbuild = MSBuild(self)
@@ -98,8 +108,13 @@ class ConanRecipe(ConanFile):
             copy(self, "*.dll", src=self.source_path / "bin", dst=self.package_path / "bin", keep_path=False)
             copy(self, "*.pdb", src=self.source_path / "bin", dst=self.package_path / "bin", keep_path=False)
             copy(self, "*.lib", src=self.source_path / "bin", dst=self.package_path / "lib", keep_path=False)
-            copy(self, "*.h", src=self.source_path / "src" / "libsodium" / "include",
-                 dst=self.package_path / "include", excludes="*/private/*")
+            copy(
+                self,
+                "*.h",
+                src=self.source_path / "src" / "libsodium" / "include",
+                dst=self.package_path / "include",
+                excludes="*/private/*",
+            )
         else:
             autotools = Autotools(self)
             autotools.install()
@@ -124,7 +139,8 @@ class ConanRecipe(ConanFile):
     def _cmake_module_file_write(self):
         v = Version(self.version)
         file = self.package_path / self._cmake_module_file
-        content = textwrap.dedent(f"""\
+        content = textwrap.dedent(
+            f"""\
             set(SODIUM_FOUND TRUE)
             set(SODIUM_LIBRARY ${{sodium_LIBRARY}})
             set(SODIUM_LIBRARIES ${{sodium_LIBRARIES}})
@@ -138,6 +154,6 @@ class ConanRecipe(ConanFile):
             set(SODIUM_MAJOR_VERSION {v.major})
             set(SODIUM_MINOR_VERSION {v.minor})
             set(SODIUM_PATCH_VERSION {v.patch})
-            """)
+            """
+        )
         save(self, file, content)
-

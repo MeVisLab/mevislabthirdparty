@@ -11,7 +11,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "libxml2"
-    version = "2.12.6"
+    version = "2.13.0"
     homepage = "http://xmlsoft.org"
     description = "XML C parser and toolkit"
     license = "MIT"
@@ -34,7 +34,7 @@ class ConanRecipe(ConanFile):
         v = Version(self.version)
         get(
             self,
-            sha256="889c593a881a3db5fdd96cc9318c87df34eb648edfc458272ad46fd607353fbb",
+            sha256="d5a2f36bea96e1fb8297c6046fb02016c152d81ed58e65f3d20477de85291bc9",
             url=f"https://download.gnome.org/sources/libxml2/{v.major}.{v.minor}/libxml2-{self.version}.tar.xz",
             strip_root=True,
         )

@@ -10,7 +10,7 @@ required_conan_version = ">=2.0.7"
 class ConanRecipe(ConanFile):
     name = "mesa"
     display_name = "Mesa"
-    version = "24.0.4"
+    version = "24.0.9"
     homepage = "https://mesa3d.org"
     description = "an open source software implementation of OpenGL, Vulkan, and other graphics API specifications"
     license = "MIT"
@@ -67,7 +67,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="90febd30a098cbcd97ff62ecc3dcf5c93d76f7fa314de944cfce81951ba745f0",
+            sha256="51aa686ca4060e38711a9e8f60c8f1efaa516baf411946ed7f2c265cd582ca4c",
             url=f"https://mesa.freedesktop.org/archive/mesa-{self.version}.tar.xz",
             strip_root=True,
         )

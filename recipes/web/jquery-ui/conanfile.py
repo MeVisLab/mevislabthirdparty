@@ -6,28 +6,27 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "jquery-ui"
-    version = "1.13.2"
+    version = "1.13.3"
     homepage = "https://jqueryui.com"
     description = "A curated set of user interface interactions, effects, widgets, and themes built on top of the jQuery JavaScript Library"
     package_type = "build-scripts"
     license = "MIT"
     settings = None
 
-    mlab_hooks = {
-        'test_package.skip': True,
-        'folders.skip': True
-    }
+    mlab_hooks = {"test_package.skip": True, "folders.skip": True}
 
     def source(self):
-        get(self,
-            sha256="f73762976d178159a1592a643f297609f2cf4a2af2d2d90068086f2cbdbe5777",
+        get(
+            self,
+            sha256="c0aca08c5dd54095d80869cf63f0178e7f1840910867634c66a6b237bb5ad2b7",
             url=f"https://jqueryui.com/resources/download/jquery-ui-{self.version}.zip",
-            strip_root=True
+            strip_root=True,
         )
-        get(self,
-            sha256="60a08a7f7d71db54796e82ed4cfafbbaa96ca8635fe3da331867d1061ae2e1f2",
+        get(
+            self,
+            sha256="134653ced831789abe0d819376e87fea4028b0d1628f0dd040434a86a705e5b9",
             url=f"https://jqueryui.com/resources/download/jquery-ui-themes-{self.version}.zip",
-            strip_root=True
+            strip_root=True,
         )
 
     def package(self):

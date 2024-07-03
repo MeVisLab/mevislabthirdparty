@@ -1,0 +1,12 @@
+diff --git a/cmake/QtAutoDetectHelpers.cmake b/cmake/QtAutoDetectHelpers.cmake
+index 01234567..89abcdef 100644
+--- a/cmake/QtAutoDetectHelpers.cmake
++++ b/cmake/QtAutoDetectHelpers.cmake
+@@ -124,6 +124,7 @@ function(qt_auto_detect_android)
+     if(DEFINED CMAKE_TOOLCHAIN_FILE AND NOT DEFINED QT_AUTODETECT_ANDROID)
+         # Peek into the toolchain file and check if it looks like an Android one.
+         if(NOT android_detected)
++            file(REAL_PATH ${CMAKE_TOOLCHAIN_FILE} CMAKE_TOOLCHAIN_FILE BASE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+             file(READ ${CMAKE_TOOLCHAIN_FILE} toolchain_file_content OFFSET 0 LIMIT 80)
+             string(FIND "${toolchain_file_content}" "The Android Open Source Project"
+                 find_result REVERSE)

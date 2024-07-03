@@ -1,0 +1,1371 @@
+diff --git a/dcmjpeg/libijg12/jchuff12.h b/dcmjpeg/libijg12/jchuff12.h
+index addfb3f..e827058 100644
+--- a/dcmjpeg/libijg12/jchuff12.h
++++ b/dcmjpeg/libijg12/jchuff12.h
+@@ -40,8 +40,8 @@ typedef struct {
+ /* Short forms of external names for systems with brain-damaged linkers. */
+ 
+ #ifdef NEED_SHORT_EXTERNAL_NAMES
+-#define jpeg_make_c_derived_tbl		jpeg12_make_c_derived_tbl
+-#define jpeg_gen_optimal_table		jpeg12_gen_optimal_table
++#define jpeg_make_c_derived_tbl		dcmtk_jpeg12_make_c_derived_tbl
++#define jpeg_gen_optimal_table		dcmtk_jpeg12_gen_optimal_table
+ #endif /* NEED_SHORT_EXTERNAL_NAMES */
+ 
+ /* Expand a Huffman table definition into the derived format */
+diff --git a/dcmjpeg/libijg12/jdct12.h b/dcmjpeg/libijg12/jdct12.h
+index 4eb9b0a..04442c8 100644
+--- a/dcmjpeg/libijg12/jdct12.h
++++ b/dcmjpeg/libijg12/jdct12.h
+@@ -81,15 +81,15 @@ typedef FAST_FLOAT FLOAT_MULT_TYPE; /* preferred floating type */
+ /* Short forms of external names for systems with brain-damaged linkers. */
+ 
+ #ifdef NEED_SHORT_EXTERNAL_NAMES
+-#define jpeg_fdct_islow		jpeg12_fdct_islow
+-#define jpeg_fdct_ifast		jpeg12_fdct_ifast
+-#define jpeg_fdct_float		jpeg12_fdct_float
+-#define jpeg_idct_islow		jpeg12_idct_islow
+-#define jpeg_idct_ifast		jpeg12_idct_ifast
+-#define jpeg_idct_float		jpeg12_idct_float
+-#define jpeg_idct_4x4		jpeg12_idct_4x4
+-#define jpeg_idct_2x2		jpeg12_idct_2x2
+-#define jpeg_idct_1x1		jpeg12_idct_1x1
++#define jpeg_fdct_islow		dcmtk_jpeg12_fdct_islow
++#define jpeg_fdct_ifast		dcmtk_jpeg12_fdct_ifast
++#define jpeg_fdct_float		dcmtk_jpeg12_fdct_float
++#define jpeg_idct_islow		dcmtk_jpeg12_idct_islow
++#define jpeg_idct_ifast		dcmtk_jpeg12_idct_ifast
++#define jpeg_idct_float		dcmtk_jpeg12_idct_float
++#define jpeg_idct_4x4		dcmtk_jpeg12_idct_4x4
++#define jpeg_idct_2x2		dcmtk_jpeg12_idct_2x2
++#define jpeg_idct_1x1		dcmtk_jpeg12_idct_1x1
+ #endif /* NEED_SHORT_EXTERNAL_NAMES */
+ 
+ /* Extern declarations for the forward and inverse DCT routines. */
+diff --git a/dcmjpeg/libijg12/jdhuff12.h b/dcmjpeg/libijg12/jdhuff12.h
+index b84c092..f64331f 100644
+--- a/dcmjpeg/libijg12/jdhuff12.h
++++ b/dcmjpeg/libijg12/jdhuff12.h
+@@ -14,9 +14,9 @@
+ /* Short forms of external names for systems with brain-damaged linkers. */
+ 
+ #ifdef NEED_SHORT_EXTERNAL_NAMES
+-#define jpeg_make_d_derived_tbl		jpeg12_make_d_derived_tbl
+-#define jpeg_fill_bit_buffer		jpeg12_fill_bit_buffer
+-#define jpeg_huff_decode		jpeg12_huff_decode
++#define jpeg_make_d_derived_tbl		dcmtk_jpeg12_make_d_derived_tbl
++#define jpeg_fill_bit_buffer		dcmtk_jpeg12_fill_bit_buffer
++#define jpeg_huff_decode		dcmtk_jpeg12_huff_decode
+ #endif /* NEED_SHORT_EXTERNAL_NAMES */
+ 
+ 
+diff --git a/dcmjpeg/libijg12/jerror.c b/dcmjpeg/libijg12/jerror.c
+index da5c14d..0bfe3b0 100644
+--- a/dcmjpeg/libijg12/jerror.c
++++ b/dcmjpeg/libijg12/jerror.c
+@@ -43,7 +43,7 @@
+  */
+ 
+ #ifdef NEED_SHORT_EXTERNAL_NAMES
+-#define jpeg_std_message_table		jpeg12_std_message_table
++#define jpeg_std_message_table		dcmtk_jpeg12_std_message_table
+ #endif
+ 
+ #define JMESSAGE(code,string)	string ,
+diff --git a/dcmjpeg/libijg12/jmemsys12.h b/dcmjpeg/libijg12/jmemsys12.h
+index 0e8daca..c10d90e 100644
+--- a/dcmjpeg/libijg12/jmemsys12.h
++++ b/dcmjpeg/libijg12/jmemsys12.h
+@@ -22,14 +22,14 @@
+ /* Short forms of external names for systems with brain-damaged linkers. */
+ 
+ #ifdef NEED_SHORT_EXTERNAL_NAMES
+-#define jpeg_get_small		jpeg12_get_small
+-#define jpeg_free_small		jpeg12_free_small
+-#define jpeg_get_large		jpeg12_get_large
+-#define jpeg_free_large		jpeg12_free_large
+-#define jpeg_mem_available		jpeg12_mem_available
+-#define jpeg_open_backing_store		jpeg12_open_backing_store
+-#define jpeg_mem_init		jpeg12_mem_init
+-#define jpeg_mem_term		jpeg12_mem_term
++#define jpeg_get_small		dcmtk_jpeg12_get_small
++#define jpeg_free_small		dcmtk_jpeg12_free_small
++#define jpeg_get_large		dcmtk_jpeg12_get_large
++#define jpeg_free_large		dcmtk_jpeg12_free_large
++#define jpeg_mem_available		dcmtk_jpeg12_mem_available
++#define jpeg_open_backing_store		dcmtk_jpeg12_open_backing_store
++#define jpeg_mem_init		dcmtk_jpeg12_mem_init
++#define jpeg_mem_term		dcmtk_jpeg12_mem_term
+ #endif /* NEED_SHORT_EXTERNAL_NAMES */
+ 
+ 
+diff --git a/dcmjpeg/libijg12/jpegint12.h b/dcmjpeg/libijg12/jpegint12.h
+index d47b326..22bb19c 100644
+--- a/dcmjpeg/libijg12/jpegint12.h
++++ b/dcmjpeg/libijg12/jpegint12.h
+@@ -256,56 +256,56 @@ struct jpeg_color_quantizer {
+ /* Short forms of external names for systems with brain-damaged linkers. */
+ 
+ #ifdef NEED_SHORT_EXTERNAL_NAMES
+-#define jinit_c_codec		jinit12_c_codec
+-#define jinit_c_diff_controller		jinit12_c_diff_controller
+-#define jinit_lossy_c_codec		jinit12_lossy_c_codec
+-#define jinit_lossless_c_codec		jinit12_lossless_c_codec
+-#define jinit_compress_master		jinit12_compress_master
+-#define jinit_c_master_control		jinit12_c_master_control
+-#define jinit_c_main_controller		jinit12_c_main_controller
+-#define jinit_c_prep_controller		jinit12_c_prep_controller
+-#define jinit_c_coef_controller		jinit12_c_coef_controller
+-#define jinit_color_converter		jinit12_color_converter
+-#define jinit_downsampler		jinit12_downsampler
+-#define jinit_forward_dct		jinit12_forward_dct
+-#define jinit_shuff_encoder		jinit12_shuff_encoder
+-#define jinit_phuff_encoder		jinit12_phuff_encoder
++#define jinit_c_codec		dcmtk_jinit12_c_codec
++#define jinit_c_diff_controller		dcmtk_jinit12_c_diff_controller
++#define jinit_lossy_c_codec		dcmtk_jinit12_lossy_c_codec
++#define jinit_lossless_c_codec		dcmtk_jinit12_lossless_c_codec
++#define jinit_compress_master		dcmtk_jinit12_compress_master
++#define jinit_c_master_control		dcmtk_jinit12_c_master_control
++#define jinit_c_main_controller		dcmtk_jinit12_c_main_controller
++#define jinit_c_prep_controller		dcmtk_jinit12_c_prep_controller
++#define jinit_c_coef_controller		dcmtk_jinit12_c_coef_controller
++#define jinit_color_converter		dcmtk_jinit12_color_converter
++#define jinit_downsampler		dcmtk_jinit12_downsampler
++#define jinit_forward_dct		dcmtk_jinit12_forward_dct
++#define jinit_shuff_encoder		dcmtk_jinit12_shuff_encoder
++#define jinit_phuff_encoder		dcmtk_jinit12_phuff_encoder
+ #ifdef WITH_ARITHMETIC_PATCH
+-#define jinit_arith_encoder		jinit12_arith_encoder
++#define jinit_arith_encoder		dcmtk_jinit12_arith_encoder
+ #endif
+-#define jinit_marker_writer		jinit12_marker_writer
+-#define jinit_d_codec		jinit12_d_codec
+-#define jinit_lossy_d_codec		jinit12_lossy_d_codec
+-#define jinit_lossless_d_codec		jinit12_lossless_d_codec
+-#define jinit_master_decompress		jinit12_master_decompress
+-#define jinit_d_main_controller		jinit12_d_main_controller
+-#define jinit_d_coef_controller		jinit12_d_coef_controller
+-#define jinit_d_diff_controller		jinit12_d_diff_controller
+-#define jinit_d_post_controller		jinit12_d_post_controller
+-#define jinit_input_controller		jinit12_input_controller
+-#define jinit_marker_reader		jinit12_marker_reader
+-#define jinit_shuff_decoder		jinit12_shuff_decoder
+-#define jinit_phuff_decoder		jinit12_phuff_decoder
++#define jinit_marker_writer		dcmtk_jinit12_marker_writer
++#define jinit_d_codec		dcmtk_jinit12_d_codec
++#define jinit_lossy_d_codec		dcmtk_jinit12_lossy_d_codec
++#define jinit_lossless_d_codec		dcmtk_jinit12_lossless_d_codec
++#define jinit_master_decompress		dcmtk_jinit12_master_decompress
++#define jinit_d_main_controller		dcmtk_jinit12_d_main_controller
++#define jinit_d_coef_controller		dcmtk_jinit12_d_coef_controller
++#define jinit_d_diff_controller		dcmtk_jinit12_d_diff_controller
++#define jinit_d_post_controller		dcmtk_jinit12_d_post_controller
++#define jinit_input_controller		dcmtk_jinit12_input_controller
++#define jinit_marker_reader		dcmtk_jinit12_marker_reader
++#define jinit_shuff_decoder		dcmtk_jinit12_shuff_decoder
++#define jinit_phuff_decoder		dcmtk_jinit12_phuff_decoder
+ #ifdef WITH_ARITHMETIC_PATCH
+-#define jinit_arith_decoder		jinit12_arith_decoder
++#define jinit_arith_decoder		dcmtk_jinit12_arith_decoder
+ #endif
+-#define jinit_lhuff_decoder		jinit12_lhuff_decoder
+-#define jinit_undifferencer		jinit12_undifferencer
+-#define jinit_d_scaler		jinit12_d_scaler
+-#define jinit_inverse_dct		jinit12_inverse_dct
+-#define jinit_upsampler		jinit12_upsampler
+-#define jinit_color_deconverter		jinit12_color_deconverter
+-#define jinit_1pass_quantizer		jinit12_1pass_quantizer
+-#define jinit_2pass_quantizer		jinit12_2pass_quantizer
+-#define jinit_merged_upsampler		jinit12_merged_upsampler
+-#define jinit_memory_mgr		jinit12_memory_mgr
+-#define jdiv_round_up		jdiv12_round_up
+-#define jround_up		jround12_up
+-#define jcopy_sample_rows		jcopy12_sample_rows
+-#define jcopy_block_row		jcopy12_block_row
+-#define jzero_far		jzero12_far
+-#define jpeg_zigzag_order		jpeg12_zigzag_order
+-#define jpeg_natural_order		jpeg12_natural_order
++#define jinit_lhuff_decoder		dcmtk_jinit12_lhuff_decoder
++#define jinit_undifferencer		dcmtk_jinit12_undifferencer
++#define jinit_d_scaler		dcmtk_jinit12_d_scaler
++#define jinit_inverse_dct		dcmtk_jinit12_inverse_dct
++#define jinit_upsampler		dcmtk_jinit12_upsampler
++#define jinit_color_deconverter		dcmtk_jinit12_color_deconverter
++#define jinit_1pass_quantizer		dcmtk_jinit12_1pass_quantizer
++#define jinit_2pass_quantizer		dcmtk_jinit12_2pass_quantizer
++#define jinit_merged_upsampler		dcmtk_jinit12_merged_upsampler
++#define jinit_memory_mgr		dcmtk_jinit12_memory_mgr
++#define jdiv_round_up		dcmtk_jdiv12_round_up
++#define jround_up		dcmtk_jround12_up
++#define jcopy_sample_rows		dcmtk_jcopy12_sample_rows
++#define jcopy_block_row		dcmtk_jcopy12_block_row
++#define jzero_far		dcmtk_jzero12_far
++#define jpeg_zigzag_order		dcmtk_jpeg12_zigzag_order
++#define jpeg_natural_order		dcmtk_jpeg12_natural_order
+ #endif /* NEED_SHORT_EXTERNAL_NAMES */
+ 
+ 
+diff --git a/dcmjpeg/libijg12/jpeglib12.h b/dcmjpeg/libijg12/jpeglib12.h
+index d7cf442..bce827b 100644
+--- a/dcmjpeg/libijg12/jpeglib12.h
++++ b/dcmjpeg/libijg12/jpeglib12.h
+@@ -860,125 +860,125 @@ typedef JMETHOD(boolean, jpeg_marker_parser_method, (j_decompress_ptr cinfo));
+ /* MAKE SURE THAT ALL FUNCTIONS DECLARED GLOBAL() ARE RE-DEFINED HERE! */
+ 
+ #ifdef NEED_SHORT_EXTERNAL_NAMES
+-#define jcopy_block_row                jcopy12_block_row
+-#define jcopy_sample_rows              jcopy12_sample_rows
+-#define jdiv_round_up                  jdiv12_round_up
+-#define jinit_1pass_quantizer          jinit12_1pass_quantizer
+-#define jinit_2pass_quantizer          jinit12_2pass_quantizer
+-#define jinit_arith_decoder            jinit12_arith_decoder
+-#define jinit_arith_encoder            jinit12_arith_encoder
+-#define jinit_c_codec                  jinit12_c_codec
+-#define jinit_c_coef_controller        jinit12_c_coef_controller
+-#define jinit_c_diff_controller        jinit12_c_diff_controller
+-#define jinit_c_main_controller        jinit12_c_main_controller
+-#define jinit_c_master_control         jinit12_c_master_control
+-#define jinit_c_prep_controller        jinit12_c_prep_controller
+-#define jinit_c_scaler                 jinit12_c_scaler
+-#define jinit_color_converter          jinit12_color_converter
+-#define jinit_color_deconverter        jinit12_color_deconverter
+-#define jinit_compress_master          jinit12_compress_master
+-#define jinit_d_codec                  jinit12_d_codec
+-#define jinit_d_coef_controller        jinit12_d_coef_controller
+-#define jinit_d_diff_controller        jinit12_d_diff_controller
+-#define jinit_d_main_controller        jinit12_d_main_controller
+-#define jinit_d_post_controller        jinit12_d_post_controller
+-#define jinit_d_post_controller        jinit12_d_post_controller
+-#define jinit_d_scaler                 jinit12_d_scaler
+-#define jinit_differencer              jinit12_differencer
+-#define jinit_downsampler              jinit12_downsampler
+-#define jinit_forward_dct              jinit12_forward_dct
+-#define jinit_input_controller         jinit12_input_controller
+-#define jinit_inverse_dct              jinit12_inverse_dct
+-#define jinit_lhuff_decoder            jinit12_lhuff_decoder
+-#define jinit_lhuff_encoder            jinit12_lhuff_encoder
+-#define jinit_lossless_c_codec         jinit12_lossless_c_codec
+-#define jinit_lossless_d_codec         jinit12_lossless_d_codec
+-#define jinit_lossy_c_codec            jinit12_lossy_c_codec
+-#define jinit_lossy_d_codec            jinit12_lossy_d_codec
+-#define jinit_marker_reader            jinit12_marker_reader
+-#define jinit_marker_writer            jinit12_marker_writer
+-#define jinit_master_decompress        jinit12_master_decompress
+-#define jinit_memory_mgr               jinit12_memory_mgr
+-#define jinit_merged_upsampler         jinit12_merged_upsampler
+-#define jinit_phuff_decoder            jinit12_phuff_decoder
+-#define jinit_phuff_encoder            jinit12_phuff_encoder
+-#define jinit_shuff_decoder            jinit12_shuff_decoder
+-#define jinit_shuff_encoder            jinit12_shuff_encoder
+-#define jinit_undifferencer            jinit12_undifferencer
+-#define jinit_upsampler                jinit12_upsampler
+-#define jpeg_CreateCompress            jpeg12_CreateCompress
+-#define jpeg_CreateDecompress          jpeg12_CreateDecompress
+-#define jpeg_abort                     jpeg12_abort
+-#define jpeg_abort_compress            jpeg12_abort_compress
+-#define jpeg_abort_decompress          jpeg12_abort_decompress
+-#define jpeg_add_quant_table           jpeg12_add_quant_table
+-#define jpeg_alloc_huff_table          jpeg12_alloc_huff_table
+-#define jpeg_alloc_quant_table         jpeg12_alloc_quant_table
+-#define jpeg_calc_output_dimensions    jpeg12_calc_output_dimensions
+-#define jpeg_consume_input             jpeg12_consume_input
+-#define jpeg_copy_critical_parameters  jpeg12_copy_critical_parameters
+-#define jpeg_default_colorspace        jpeg12_default_colorspace
+-#define jpeg_destroy                   jpeg12_destroy
+-#define jpeg_destroy_compress          jpeg12_destroy_compress
+-#define jpeg_destroy_decompress        jpeg12_destroy_decompress
+-#define jpeg_fdct_float                jpeg12_fdct_float
+-#define jpeg_fdct_ifast                jpeg12_fdct_ifast
+-#define jpeg_fdct_islow                jpeg12_fdct_islow
+-#define jpeg_fill_bit_buffer           jpeg12_fill_bit_buffer
+-#define jpeg_finish_compress           jpeg12_finish_compress
+-#define jpeg_finish_decompress         jpeg12_finish_decompress
+-#define jpeg_finish_output             jpeg12_finish_output
+-#define jpeg_free_large                jpeg12_free_large
+-#define jpeg_free_small                jpeg12_free_small
+-#define jpeg_gen_optimal_table         jpeg12_gen_optimal_table
+-#define jpeg_get_large                 jpeg12_get_large
+-#define jpeg_get_small                 jpeg12_get_small
+-#define jpeg_has_multiple_scans        jpeg12_has_multiple_scans
+-#define jpeg_huff_decode               jpeg12_huff_decode
+-#define jpeg_idct_1x1                  jpeg12_idct_1x1
+-#define jpeg_idct_2x2                  jpeg12_idct_2x2
+-#define jpeg_idct_4x4                  jpeg12_idct_4x4
+-#define jpeg_idct_float                jpeg12_idct_float
+-#define jpeg_idct_ifast                jpeg12_idct_ifast
+-#define jpeg_idct_islow                jpeg12_idct_islow
+-#define jpeg_input_complete            jpeg12_input_complete
+-#define jpeg_make_c_derived_tbl        jpeg12_make_c_derived_tbl
+-#define jpeg_make_d_derived_tbl        jpeg12_make_d_derived_tbl
+-#define jpeg_mem_available             jpeg12_mem_available
+-#define jpeg_mem_init                  jpeg12_mem_init
+-#define jpeg_mem_term                  jpeg12_mem_term
+-#define jpeg_new_colormap              jpeg12_new_colormap
+-#define jpeg_open_backing_store        jpeg12_open_backing_store
+-#define jpeg_quality_scaling           jpeg12_quality_scaling
+-#define jpeg_read_coefficients         jpeg12_read_coefficients
+-#define jpeg_read_header               jpeg12_read_header
+-#define jpeg_read_raw_data             jpeg12_read_raw_data
+-#define jpeg_read_scanlines            jpeg12_read_scanlines
+-#define jpeg_resync_to_restart         jpeg12_resync_to_restart
+-#define jpeg_save_markers              jpeg12_save_markers
+-#define jpeg_set_colorspace            jpeg12_set_colorspace
+-#define jpeg_set_defaults              jpeg12_set_defaults
+-#define jpeg_set_linear_quality        jpeg12_set_linear_quality
+-#define jpeg_set_marker_processor      jpeg12_set_marker_processor
+-#define jpeg_set_quality               jpeg12_set_quality
+-#define jpeg_simple_lossless           jpeg12_simple_lossless
+-#define jpeg_simple_progression        jpeg12_simple_progression
+-#define jpeg_start_compress            jpeg12_start_compress
+-#define jpeg_start_decompress          jpeg12_start_decompress
+-#define jpeg_start_output              jpeg12_start_output
+-#define jpeg_std_error                 jpeg12_std_error
+-#define jpeg_stdio_dest                jpeg12_stdio_dest
+-#define jpeg_stdio_src                 jpeg12_stdio_src
+-#define jpeg_suppress_tables           jpeg12_suppress_tables
+-#define jpeg_write_coefficients        jpeg12_write_coefficients
+-#define jpeg_write_m_byte              jpeg12_write_m_byte
+-#define jpeg_write_m_header            jpeg12_write_m_header
+-#define jpeg_write_marker              jpeg12_write_marker
+-#define jpeg_write_raw_data            jpeg12_write_raw_data
+-#define jpeg_write_scanlines           jpeg12_write_scanlines
+-#define jpeg_write_tables              jpeg12_write_tables
+-#define jround_up                      jround12_up
+-#define jzero_far                      jzero12_far
++#define jcopy_block_row                dcmtk_jcopy12_block_row
++#define jcopy_sample_rows              dcmtk_jcopy12_sample_rows
++#define jdiv_round_up                  dcmtk_jdiv12_round_up
++#define jinit_1pass_quantizer          dcmtk_jinit12_1pass_quantizer
++#define jinit_2pass_quantizer          dcmtk_jinit12_2pass_quantizer
++#define jinit_arith_decoder            dcmtk_jinit12_arith_decoder
++#define jinit_arith_encoder            dcmtk_jinit12_arith_encoder
++#define jinit_c_codec                  dcmtk_jinit12_c_codec
++#define jinit_c_coef_controller        dcmtk_jinit12_c_coef_controller
++#define jinit_c_diff_controller        dcmtk_jinit12_c_diff_controller
++#define jinit_c_main_controller        dcmtk_jinit12_c_main_controller
++#define jinit_c_master_control         dcmtk_jinit12_c_master_control
++#define jinit_c_prep_controller        dcmtk_jinit12_c_prep_controller
++#define jinit_c_scaler                 dcmtk_jinit12_c_scaler
++#define jinit_color_converter          dcmtk_jinit12_color_converter
++#define jinit_color_deconverter        dcmtk_jinit12_color_deconverter
++#define jinit_compress_master          dcmtk_jinit12_compress_master
++#define jinit_d_codec                  dcmtk_jinit12_d_codec
++#define jinit_d_coef_controller        dcmtk_jinit12_d_coef_controller
++#define jinit_d_diff_controller        dcmtk_jinit12_d_diff_controller
++#define jinit_d_main_controller        dcmtk_jinit12_d_main_controller
++#define jinit_d_post_controller        dcmtk_jinit12_d_post_controller
++#define jinit_d_post_controller        dcmtk_jinit12_d_post_controller
++#define jinit_d_scaler                 dcmtk_jinit12_d_scaler
++#define jinit_differencer              dcmtk_jinit12_differencer
++#define jinit_downsampler              dcmtk_jinit12_downsampler
++#define jinit_forward_dct              dcmtk_jinit12_forward_dct
++#define jinit_input_controller         dcmtk_jinit12_input_controller
++#define jinit_inverse_dct              dcmtk_jinit12_inverse_dct
++#define jinit_lhuff_decoder            dcmtk_jinit12_lhuff_decoder
++#define jinit_lhuff_encoder            dcmtk_jinit12_lhuff_encoder
++#define jinit_lossless_c_codec         dcmtk_jinit12_lossless_c_codec
++#define jinit_lossless_d_codec         dcmtk_jinit12_lossless_d_codec
++#define jinit_lossy_c_codec            dcmtk_jinit12_lossy_c_codec
++#define jinit_lossy_d_codec            dcmtk_jinit12_lossy_d_codec
++#define jinit_marker_reader            dcmtk_jinit12_marker_reader
++#define jinit_marker_writer            dcmtk_jinit12_marker_writer
++#define jinit_master_decompress        dcmtk_jinit12_master_decompress
++#define jinit_memory_mgr               dcmtk_jinit12_memory_mgr
++#define jinit_merged_upsampler         dcmtk_jinit12_merged_upsampler
++#define jinit_phuff_decoder            dcmtk_jinit12_phuff_decoder
++#define jinit_phuff_encoder            dcmtk_jinit12_phuff_encoder
++#define jinit_shuff_decoder            dcmtk_jinit12_shuff_decoder
++#define jinit_shuff_encoder            dcmtk_jinit12_shuff_encoder
++#define jinit_undifferencer            dcmtk_jinit12_undifferencer
++#define jinit_upsampler                dcmtk_jinit12_upsampler
++#define jpeg_CreateCompress            dcmtk_jpeg12_CreateCompress
++#define jpeg_CreateDecompress          dcmtk_jpeg12_CreateDecompress
++#define jpeg_abort                     dcmtk_jpeg12_abort
++#define jpeg_abort_compress            dcmtk_jpeg12_abort_compress
++#define jpeg_abort_decompress          dcmtk_jpeg12_abort_decompress
++#define jpeg_add_quant_table           dcmtk_jpeg12_add_quant_table
++#define jpeg_alloc_huff_table          dcmtk_jpeg12_alloc_huff_table
++#define jpeg_alloc_quant_table         dcmtk_jpeg12_alloc_quant_table
++#define jpeg_calc_output_dimensions    dcmtk_jpeg12_calc_output_dimensions
++#define jpeg_consume_input             dcmtk_jpeg12_consume_input
++#define jpeg_copy_critical_parameters  dcmtk_jpeg12_copy_critical_parameters
++#define jpeg_default_colorspace        dcmtk_jpeg12_default_colorspace
++#define jpeg_destroy                   dcmtk_jpeg12_destroy
++#define jpeg_destroy_compress          dcmtk_jpeg12_destroy_compress
++#define jpeg_destroy_decompress        dcmtk_jpeg12_destroy_decompress
++#define jpeg_fdct_float                dcmtk_jpeg12_fdct_float
++#define jpeg_fdct_ifast                dcmtk_jpeg12_fdct_ifast
++#define jpeg_fdct_islow                dcmtk_jpeg12_fdct_islow
++#define jpeg_fill_bit_buffer           dcmtk_jpeg12_fill_bit_buffer
++#define jpeg_finish_compress           dcmtk_jpeg12_finish_compress
++#define jpeg_finish_decompress         dcmtk_jpeg12_finish_decompress
++#define jpeg_finish_output             dcmtk_jpeg12_finish_output
++#define jpeg_free_large                dcmtk_jpeg12_free_large
++#define jpeg_free_small                dcmtk_jpeg12_free_small
++#define jpeg_gen_optimal_table         dcmtk_jpeg12_gen_optimal_table
++#define jpeg_get_large                 dcmtk_jpeg12_get_large
++#define jpeg_get_small                 dcmtk_jpeg12_get_small
++#define jpeg_has_multiple_scans        dcmtk_jpeg12_has_multiple_scans
++#define jpeg_huff_decode               dcmtk_jpeg12_huff_decode
++#define jpeg_idct_1x1                  dcmtk_jpeg12_idct_1x1
++#define jpeg_idct_2x2                  dcmtk_jpeg12_idct_2x2
++#define jpeg_idct_4x4                  dcmtk_jpeg12_idct_4x4
++#define jpeg_idct_float                dcmtk_jpeg12_idct_float
++#define jpeg_idct_ifast                dcmtk_jpeg12_idct_ifast
++#define jpeg_idct_islow                dcmtk_jpeg12_idct_islow
++#define jpeg_input_complete            dcmtk_jpeg12_input_complete
++#define jpeg_make_c_derived_tbl        dcmtk_jpeg12_make_c_derived_tbl
++#define jpeg_make_d_derived_tbl        dcmtk_jpeg12_make_d_derived_tbl
++#define jpeg_mem_available             dcmtk_jpeg12_mem_available
++#define jpeg_mem_init                  dcmtk_jpeg12_mem_init
++#define jpeg_mem_term                  dcmtk_jpeg12_mem_term
++#define jpeg_new_colormap              dcmtk_jpeg12_new_colormap
++#define jpeg_open_backing_store        dcmtk_jpeg12_open_backing_store
++#define jpeg_quality_scaling           dcmtk_jpeg12_quality_scaling
++#define jpeg_read_coefficients         dcmtk_jpeg12_read_coefficients
++#define jpeg_read_header               dcmtk_jpeg12_read_header
++#define jpeg_read_raw_data             dcmtk_jpeg12_read_raw_data
++#define jpeg_read_scanlines            dcmtk_jpeg12_read_scanlines
++#define jpeg_resync_to_restart         dcmtk_jpeg12_resync_to_restart
++#define jpeg_save_markers              dcmtk_jpeg12_save_markers
++#define jpeg_set_colorspace            dcmtk_jpeg12_set_colorspace
++#define jpeg_set_defaults              dcmtk_jpeg12_set_defaults
++#define jpeg_set_linear_quality        dcmtk_jpeg12_set_linear_quality
++#define jpeg_set_marker_processor      dcmtk_jpeg12_set_marker_processor
++#define jpeg_set_quality               dcmtk_jpeg12_set_quality
++#define jpeg_simple_lossless           dcmtk_jpeg12_simple_lossless
++#define jpeg_simple_progression        dcmtk_jpeg12_simple_progression
++#define jpeg_start_compress            dcmtk_jpeg12_start_compress
++#define jpeg_start_decompress          dcmtk_jpeg12_start_decompress
++#define jpeg_start_output              dcmtk_jpeg12_start_output
++#define jpeg_std_error                 dcmtk_jpeg12_std_error
++#define jpeg_stdio_dest                dcmtk_jpeg12_stdio_dest
++#define jpeg_stdio_src                 dcmtk_jpeg12_stdio_src
++#define jpeg_suppress_tables           dcmtk_jpeg12_suppress_tables
++#define jpeg_write_coefficients        dcmtk_jpeg12_write_coefficients
++#define jpeg_write_m_byte              dcmtk_jpeg12_write_m_byte
++#define jpeg_write_m_header            dcmtk_jpeg12_write_m_header
++#define jpeg_write_marker              dcmtk_jpeg12_write_marker
++#define jpeg_write_raw_data            dcmtk_jpeg12_write_raw_data
++#define jpeg_write_scanlines           dcmtk_jpeg12_write_scanlines
++#define jpeg_write_tables              dcmtk_jpeg12_write_tables
++#define jround_up                      dcmtk_jround12_up
++#define jzero_far                      dcmtk_jzero12_far
+ #endif /* NEED_SHORT_EXTERNAL_NAMES */
+ 
+ 
+diff --git a/dcmjpeg/libijg16/jchuff16.h b/dcmjpeg/libijg16/jchuff16.h
+index ae20505..490a640 100644
+--- a/dcmjpeg/libijg16/jchuff16.h
++++ b/dcmjpeg/libijg16/jchuff16.h
+@@ -40,8 +40,8 @@ typedef struct {
+ /* Short forms of external names for systems with brain-damaged linkers. */
+ 
+ #ifdef NEED_SHORT_EXTERNAL_NAMES
+-#define jpeg_make_c_derived_tbl		jpeg16_make_c_derived_tbl
+-#define jpeg_gen_optimal_table		jpeg16_gen_optimal_table
++#define jpeg_make_c_derived_tbl		dcmtk_jpeg16_make_c_derived_tbl
++#define jpeg_gen_optimal_table		dcmtk_jpeg16_gen_optimal_table
+ #endif /* NEED_SHORT_EXTERNAL_NAMES */
+ 
+ /* Expand a Huffman table definition into the derived format */
+diff --git a/dcmjpeg/libijg16/jdct16.h b/dcmjpeg/libijg16/jdct16.h
+index 447f331..97b0735 100644
+--- a/dcmjpeg/libijg16/jdct16.h
++++ b/dcmjpeg/libijg16/jdct16.h
+@@ -81,15 +81,15 @@ typedef FAST_FLOAT FLOAT_MULT_TYPE; /* preferred floating type */
+ /* Short forms of external names for systems with brain-damaged linkers. */
+ 
+ #ifdef NEED_SHORT_EXTERNAL_NAMES
+-#define jpeg_fdct_islow		jpeg16_fdct_islow
+-#define jpeg_fdct_ifast		jpeg16_fdct_ifast
+-#define jpeg_fdct_float		jpeg16_fdct_float
+-#define jpeg_idct_islow		jpeg16_idct_islow
+-#define jpeg_idct_ifast		jpeg16_idct_ifast
+-#define jpeg_idct_float		jpeg16_idct_float
+-#define jpeg_idct_4x4		jpeg16_idct_4x4
+-#define jpeg_idct_2x2		jpeg16_idct_2x2
+-#define jpeg_idct_1x1		jpeg16_idct_1x1
++#define jpeg_fdct_islow		dcmtk_jpeg16_fdct_islow
++#define jpeg_fdct_ifast		dcmtk_jpeg16_fdct_ifast
++#define jpeg_fdct_float		dcmtk_jpeg16_fdct_float
++#define jpeg_idct_islow		dcmtk_jpeg16_idct_islow
++#define jpeg_idct_ifast		dcmtk_jpeg16_idct_ifast
++#define jpeg_idct_float		dcmtk_jpeg16_idct_float
++#define jpeg_idct_4x4		dcmtk_jpeg16_idct_4x4
++#define jpeg_idct_2x2		dcmtk_jpeg16_idct_2x2
++#define jpeg_idct_1x1		dcmtk_jpeg16_idct_1x1
+ #endif /* NEED_SHORT_EXTERNAL_NAMES */
+ 
+ /* Extern declarations for the forward and inverse DCT routines. */
+diff --git a/dcmjpeg/libijg16/jdhuff16.h b/dcmjpeg/libijg16/jdhuff16.h
+index ad63671..704af43 100644
+--- a/dcmjpeg/libijg16/jdhuff16.h
++++ b/dcmjpeg/libijg16/jdhuff16.h
+@@ -14,9 +14,9 @@
+ /* Short forms of external names for systems with brain-damaged linkers. */
+ 
+ #ifdef NEED_SHORT_EXTERNAL_NAMES
+-#define jpeg_make_d_derived_tbl     jpeg16_make_d_derived_tbl
+-#define jpeg_fill_bit_buffer        jpeg16_fill_bit_buffer
+-#define jpeg_huff_decode        jpeg16_huff_decode
++#define jpeg_make_d_derived_tbl     dcmtk_jpeg16_make_d_derived_tbl
++#define jpeg_fill_bit_buffer        dcmtk_jpeg16_fill_bit_buffer
++#define jpeg_huff_decode        dcmtk_jpeg16_huff_decode
+ #endif /* NEED_SHORT_EXTERNAL_NAMES */
+ 
+ 
+diff --git a/dcmjpeg/libijg16/jerror.c b/dcmjpeg/libijg16/jerror.c
+index 6b2f29d..f22b66c 100644
+--- a/dcmjpeg/libijg16/jerror.c
++++ b/dcmjpeg/libijg16/jerror.c
+@@ -43,7 +43,7 @@
+  */
+ 
+ #ifdef NEED_SHORT_EXTERNAL_NAMES
+-#define jpeg_std_message_table		jpeg16_std_message_table
++#define jpeg_std_message_table		dcmtk_jpeg16_std_message_table
+ #endif
+ 
+ #define JMESSAGE(code,string)	string ,
+diff --git a/dcmjpeg/libijg16/jmemsys16.h b/dcmjpeg/libijg16/jmemsys16.h
+index 3a7a215..8891d01 100644
+--- a/dcmjpeg/libijg16/jmemsys16.h
++++ b/dcmjpeg/libijg16/jmemsys16.h
+@@ -22,14 +22,14 @@
+ /* Short forms of external names for systems with brain-damaged linkers. */
+ 
+ #ifdef NEED_SHORT_EXTERNAL_NAMES
+-#define jpeg_get_small		jpeg16_get_small
+-#define jpeg_free_small		jpeg16_free_small
+-#define jpeg_get_large		jpeg16_get_large
+-#define jpeg_free_large		jpeg16_free_large
+-#define jpeg_mem_available		jpeg16_mem_available
+-#define jpeg_open_backing_store		jpeg16_open_backing_store
+-#define jpeg_mem_init		jpeg16_mem_init
+-#define jpeg_mem_term		jpeg16_mem_term
++#define jpeg_get_small		dcmtk_jpeg16_get_small
++#define jpeg_free_small		dcmtk_jpeg16_free_small
++#define jpeg_get_large		dcmtk_jpeg16_get_large
++#define jpeg_free_large		dcmtk_jpeg16_free_large
++#define jpeg_mem_available		dcmtk_jpeg16_mem_available
++#define jpeg_open_backing_store		dcmtk_jpeg16_open_backing_store
++#define jpeg_mem_init		dcmtk_jpeg16_mem_init
++#define jpeg_mem_term		dcmtk_jpeg16_mem_term
+ #endif /* NEED_SHORT_EXTERNAL_NAMES */
+ 
+ 
+diff --git a/dcmjpeg/libijg16/jpegint16.h b/dcmjpeg/libijg16/jpegint16.h
+index c50fa8a..03f56b9 100644
+--- a/dcmjpeg/libijg16/jpegint16.h
++++ b/dcmjpeg/libijg16/jpegint16.h
+@@ -256,56 +256,56 @@ struct jpeg_color_quantizer {
+ /* Short forms of external names for systems with brain-damaged linkers. */
+ 
+ #ifdef NEED_SHORT_EXTERNAL_NAMES
+-#define jinit_c_codec		jinit16_c_codec
+-#define jinit_c_diff_controller		jinit16_c_diff_controller
+-#define jinit_lossy_c_codec		jinit16_lossy_c_codec
+-#define jinit_lossless_c_codec		jinit16_lossless_c_codec
+-#define jinit_compress_master		jinit16_compress_master
+-#define jinit_c_master_control		jinit16_c_master_control
+-#define jinit_c_main_controller		jinit16_c_main_controller
+-#define jinit_c_prep_controller		jinit16_c_prep_controller
+-#define jinit_c_coef_controller		jinit16_c_coef_controller
+-#define jinit_color_converter		jinit16_color_converter
+-#define jinit_downsampler		jinit16_downsampler
+-#define jinit_forward_dct		jinit16_forward_dct
+-#define jinit_shuff_encoder		jinit16_shuff_encoder
+-#define jinit_phuff_encoder		jinit16_phuff_encoder
++#define jinit_c_codec		dcmtk_jinit16_c_codec
++#define jinit_c_diff_controller		dcmtk_jinit16_c_diff_controller
++#define jinit_lossy_c_codec		dcmtk_jinit16_lossy_c_codec
++#define jinit_lossless_c_codec		dcmtk_jinit16_lossless_c_codec
++#define jinit_compress_master		dcmtk_jinit16_compress_master
++#define jinit_c_master_control		dcmtk_jinit16_c_master_control
++#define jinit_c_main_controller		dcmtk_jinit16_c_main_controller
++#define jinit_c_prep_controller		dcmtk_jinit16_c_prep_controller
++#define jinit_c_coef_controller		dcmtk_jinit16_c_coef_controller
++#define jinit_color_converter		dcmtk_jinit16_color_converter
++#define jinit_downsampler		dcmtk_jinit16_downsampler
++#define jinit_forward_dct		dcmtk_jinit16_forward_dct
++#define jinit_shuff_encoder		dcmtk_jinit16_shuff_encoder
++#define jinit_phuff_encoder		dcmtk_jinit16_phuff_encoder
+ #ifdef WITH_ARITHMETIC_PATCH
+-#define jinit_arith_encoder		jinit16_arith_encoder
++#define jinit_arith_encoder		dcmtk_jinit16_arith_encoder
+ #endif
+-#define jinit_marker_writer		jinit16_marker_writer
+-#define jinit_d_codec		jinit16_d_codec
+-#define jinit_lossy_d_codec		jinit16_lossy_d_codec
+-#define jinit_lossless_d_codec		jinit16_lossless_d_codec
+-#define jinit_master_decompress		jinit16_master_decompress
+-#define jinit_d_main_controller		jinit16_d_main_controller
+-#define jinit_d_coef_controller		jinit16_d_coef_controller
+-#define jinit_d_diff_controller		jinit16_d_diff_controller
+-#define jinit_d_post_controller		jinit16_d_post_controller
+-#define jinit_input_controller		jinit16_input_controller
+-#define jinit_marker_reader		jinit16_marker_reader
+-#define jinit_shuff_decoder		jinit16_shuff_decoder
+-#define jinit_phuff_decoder		jinit16_phuff_decoder
++#define jinit_marker_writer		dcmtk_jinit16_marker_writer
++#define jinit_d_codec		dcmtk_jinit16_d_codec
++#define jinit_lossy_d_codec		dcmtk_jinit16_lossy_d_codec
++#define jinit_lossless_d_codec		dcmtk_jinit16_lossless_d_codec
++#define jinit_master_decompress		dcmtk_jinit16_master_decompress
++#define jinit_d_main_controller		dcmtk_jinit16_d_main_controller
++#define jinit_d_coef_controller		dcmtk_jinit16_d_coef_controller
++#define jinit_d_diff_controller		dcmtk_jinit16_d_diff_controller
++#define jinit_d_post_controller		dcmtk_jinit16_d_post_controller
++#define jinit_input_controller		dcmtk_jinit16_input_controller
++#define jinit_marker_reader		dcmtk_jinit16_marker_reader
++#define jinit_shuff_decoder		dcmtk_jinit16_shuff_decoder
++#define jinit_phuff_decoder		dcmtk_jinit16_phuff_decoder
+ #ifdef WITH_ARITHMETIC_PATCH
+-#define jinit_arith_decoder		jinit16_arith_decoder
++#define jinit_arith_decoder		dcmtk_jinit16_arith_decoder
+ #endif
+-#define jinit_lhuff_decoder		jinit16_lhuff_decoder
+-#define jinit_undifferencer		jinit16_undifferencer
+-#define jinit_d_scaler		jinit16_d_scaler
+-#define jinit_inverse_dct		jinit16_inverse_dct
+-#define jinit_upsampler		jinit16_upsampler
+-#define jinit_color_deconverter		jinit16_color_deconverter
+-#define jinit_1pass_quantizer		jinit16_1pass_quantizer
+-#define jinit_2pass_quantizer		jinit16_2pass_quantizer
+-#define jinit_merged_upsampler		jinit16_merged_upsampler
+-#define jinit_memory_mgr		jinit16_memory_mgr
+-#define jdiv_round_up		jdiv16_round_up
+-#define jround_up		jround16_up
+-#define jcopy_sample_rows		jcopy16_sample_rows
+-#define jcopy_block_row		jcopy16_block_row
+-#define jzero_far		jzero16_far
+-#define jpeg_zigzag_order		jpeg16_zigzag_order
+-#define jpeg_natural_order		jpeg16_natural_order
++#define jinit_lhuff_decoder		dcmtk_jinit16_lhuff_decoder
++#define jinit_undifferencer		dcmtk_jinit16_undifferencer
++#define jinit_d_scaler		dcmtk_jinit16_d_scaler
++#define jinit_inverse_dct		dcmtk_jinit16_inverse_dct
++#define jinit_upsampler		dcmtk_jinit16_upsampler
++#define jinit_color_deconverter		dcmtk_jinit16_color_deconverter
++#define jinit_1pass_quantizer		dcmtk_jinit16_1pass_quantizer
++#define jinit_2pass_quantizer		dcmtk_jinit16_2pass_quantizer
++#define jinit_merged_upsampler		dcmtk_jinit16_merged_upsampler
++#define jinit_memory_mgr		dcmtk_jinit16_memory_mgr
++#define jdiv_round_up		dcmtk_jdiv16_round_up
++#define jround_up		dcmtk_jround16_up
++#define jcopy_sample_rows		dcmtk_jcopy16_sample_rows
++#define jcopy_block_row		dcmtk_jcopy16_block_row
++#define jzero_far		dcmtk_jzero16_far
++#define jpeg_zigzag_order		dcmtk_jpeg16_zigzag_order
++#define jpeg_natural_order		dcmtk_jpeg16_natural_order
+ #endif /* NEED_SHORT_EXTERNAL_NAMES */
+ 
+ 
+diff --git a/dcmjpeg/libijg16/jpeglib16.h b/dcmjpeg/libijg16/jpeglib16.h
+index 7546e7e..559a2d5 100644
+--- a/dcmjpeg/libijg16/jpeglib16.h
++++ b/dcmjpeg/libijg16/jpeglib16.h
+@@ -864,125 +864,125 @@ typedef JMETHOD(boolean, jpeg_marker_parser_method, (j_decompress_ptr cinfo));
+ /* MAKE SURE THAT ALL FUNCTIONS DECLARED GLOBAL() ARE RE-DEFINED HERE! */
+ 
+ #ifdef NEED_SHORT_EXTERNAL_NAMES
+-#define jcopy_block_row                jcopy16_block_row
+-#define jcopy_sample_rows              jcopy16_sample_rows
+-#define jdiv_round_up                  jdiv16_round_up
+-#define jinit_1pass_quantizer          jinit16_1pass_quantizer
+-#define jinit_2pass_quantizer          jinit16_2pass_quantizer
+-#define jinit_arith_decoder            jinit16_arith_decoder
+-#define jinit_arith_encoder            jinit16_arith_encoder
+-#define jinit_c_codec                  jinit16_c_codec
+-#define jinit_c_coef_controller        jinit16_c_coef_controller
+-#define jinit_c_diff_controller        jinit16_c_diff_controller
+-#define jinit_c_main_controller        jinit16_c_main_controller
+-#define jinit_c_master_control         jinit16_c_master_control
+-#define jinit_c_prep_controller        jinit16_c_prep_controller
+-#define jinit_c_scaler                 jinit16_c_scaler
+-#define jinit_color_converter          jinit16_color_converter
+-#define jinit_color_deconverter        jinit16_color_deconverter
+-#define jinit_compress_master          jinit16_compress_master
+-#define jinit_d_codec                  jinit16_d_codec
+-#define jinit_d_coef_controller        jinit16_d_coef_controller
+-#define jinit_d_diff_controller        jinit16_d_diff_controller
+-#define jinit_d_main_controller        jinit16_d_main_controller
+-#define jinit_d_post_controller        jinit16_d_post_controller
+-#define jinit_d_post_controller        jinit16_d_post_controller
+-#define jinit_d_scaler                 jinit16_d_scaler
+-#define jinit_differencer              jinit16_differencer
+-#define jinit_downsampler              jinit16_downsampler
+-#define jinit_forward_dct              jinit16_forward_dct
+-#define jinit_input_controller         jinit16_input_controller
+-#define jinit_inverse_dct              jinit16_inverse_dct
+-#define jinit_lhuff_decoder            jinit16_lhuff_decoder
+-#define jinit_lhuff_encoder            jinit16_lhuff_encoder
+-#define jinit_lossless_c_codec         jinit16_lossless_c_codec
+-#define jinit_lossless_d_codec         jinit16_lossless_d_codec
+-#define jinit_lossy_c_codec            jinit16_lossy_c_codec
+-#define jinit_lossy_d_codec            jinit16_lossy_d_codec
+-#define jinit_marker_reader            jinit16_marker_reader
+-#define jinit_marker_writer            jinit16_marker_writer
+-#define jinit_master_decompress        jinit16_master_decompress
+-#define jinit_memory_mgr               jinit16_memory_mgr
+-#define jinit_merged_upsampler         jinit16_merged_upsampler
+-#define jinit_phuff_decoder            jinit16_phuff_decoder
+-#define jinit_phuff_encoder            jinit16_phuff_encoder
+-#define jinit_shuff_decoder            jinit16_shuff_decoder
+-#define jinit_shuff_encoder            jinit16_shuff_encoder
+-#define jinit_undifferencer            jinit16_undifferencer
+-#define jinit_upsampler                jinit16_upsampler
+-#define jpeg_CreateCompress            jpeg16_CreateCompress
+-#define jpeg_CreateDecompress          jpeg16_CreateDecompress
+-#define jpeg_abort                     jpeg16_abort
+-#define jpeg_abort_compress            jpeg16_abort_compress
+-#define jpeg_abort_decompress          jpeg16_abort_decompress
+-#define jpeg_add_quant_table           jpeg16_add_quant_table
+-#define jpeg_alloc_huff_table          jpeg16_alloc_huff_table
+-#define jpeg_alloc_quant_table         jpeg16_alloc_quant_table
+-#define jpeg_calc_output_dimensions    jpeg16_calc_output_dimensions
+-#define jpeg_consume_input             jpeg16_consume_input
+-#define jpeg_copy_critical_parameters  jpeg16_copy_critical_parameters
+-#define jpeg_default_colorspace        jpeg16_default_colorspace
+-#define jpeg_destroy                   jpeg16_destroy
+-#define jpeg_destroy_compress          jpeg16_destroy_compress
+-#define jpeg_destroy_decompress        jpeg16_destroy_decompress
+-#define jpeg_fdct_float                jpeg16_fdct_float
+-#define jpeg_fdct_ifast                jpeg16_fdct_ifast
+-#define jpeg_fdct_islow                jpeg16_fdct_islow
+-#define jpeg_fill_bit_buffer           jpeg16_fill_bit_buffer
+-#define jpeg_finish_compress           jpeg16_finish_compress
+-#define jpeg_finish_decompress         jpeg16_finish_decompress
+-#define jpeg_finish_output             jpeg16_finish_output
+-#define jpeg_free_large                jpeg16_free_large
+-#define jpeg_free_small                jpeg16_free_small
+-#define jpeg_gen_optimal_table         jpeg16_gen_optimal_table
+-#define jpeg_get_large                 jpeg16_get_large
+-#define jpeg_get_small                 jpeg16_get_small
+-#define jpeg_has_multiple_scans        jpeg16_has_multiple_scans
+-#define jpeg_huff_decode               jpeg16_huff_decode
+-#define jpeg_idct_1x1                  jpeg16_idct_1x1
+-#define jpeg_idct_2x2                  jpeg16_idct_2x2
+-#define jpeg_idct_4x4                  jpeg16_idct_4x4
+-#define jpeg_idct_float                jpeg16_idct_float
+-#define jpeg_idct_ifast                jpeg16_idct_ifast
+-#define jpeg_idct_islow                jpeg16_idct_islow
+-#define jpeg_input_complete            jpeg16_input_complete
+-#define jpeg_make_c_derived_tbl        jpeg16_make_c_derived_tbl
+-#define jpeg_make_d_derived_tbl        jpeg16_make_d_derived_tbl
+-#define jpeg_mem_available             jpeg16_mem_available
+-#define jpeg_mem_init                  jpeg16_mem_init
+-#define jpeg_mem_term                  jpeg16_mem_term
+-#define jpeg_new_colormap              jpeg16_new_colormap
+-#define jpeg_open_backing_store        jpeg16_open_backing_store
+-#define jpeg_quality_scaling           jpeg16_quality_scaling
+-#define jpeg_read_coefficients         jpeg16_read_coefficients
+-#define jpeg_read_header               jpeg16_read_header
+-#define jpeg_read_raw_data             jpeg16_read_raw_data
+-#define jpeg_read_scanlines            jpeg16_read_scanlines
+-#define jpeg_resync_to_restart         jpeg16_resync_to_restart
+-#define jpeg_save_markers              jpeg16_save_markers
+-#define jpeg_set_colorspace            jpeg16_set_colorspace
+-#define jpeg_set_defaults              jpeg16_set_defaults
+-#define jpeg_set_linear_quality        jpeg16_set_linear_quality
+-#define jpeg_set_marker_processor      jpeg16_set_marker_processor
+-#define jpeg_set_quality               jpeg16_set_quality
+-#define jpeg_simple_lossless           jpeg16_simple_lossless
+-#define jpeg_simple_progression        jpeg16_simple_progression
+-#define jpeg_start_compress            jpeg16_start_compress
+-#define jpeg_start_decompress          jpeg16_start_decompress
+-#define jpeg_start_output              jpeg16_start_output
+-#define jpeg_std_error                 jpeg16_std_error
+-#define jpeg_stdio_dest                jpeg16_stdio_dest
+-#define jpeg_stdio_src                 jpeg16_stdio_src
+-#define jpeg_suppress_tables           jpeg16_suppress_tables
+-#define jpeg_write_coefficients        jpeg16_write_coefficients
+-#define jpeg_write_m_byte              jpeg16_write_m_byte
+-#define jpeg_write_m_header            jpeg16_write_m_header
+-#define jpeg_write_marker              jpeg16_write_marker
+-#define jpeg_write_raw_data            jpeg16_write_raw_data
+-#define jpeg_write_scanlines           jpeg16_write_scanlines
+-#define jpeg_write_tables              jpeg16_write_tables
+-#define jround_up                      jround16_up
+-#define jzero_far                      jzero16_far
++#define jcopy_block_row                dcmtk_jcopy16_block_row
++#define jcopy_sample_rows              dcmtk_jcopy16_sample_rows
++#define jdiv_round_up                  dcmtk_jdiv16_round_up
++#define jinit_1pass_quantizer          dcmtk_jinit16_1pass_quantizer
++#define jinit_2pass_quantizer          dcmtk_jinit16_2pass_quantizer
++#define jinit_arith_decoder            dcmtk_jinit16_arith_decoder
++#define jinit_arith_encoder            dcmtk_jinit16_arith_encoder
++#define jinit_c_codec                  dcmtk_jinit16_c_codec
++#define jinit_c_coef_controller        dcmtk_jinit16_c_coef_controller
++#define jinit_c_diff_controller        dcmtk_jinit16_c_diff_controller
++#define jinit_c_main_controller        dcmtk_jinit16_c_main_controller
++#define jinit_c_master_control         dcmtk_jinit16_c_master_control
++#define jinit_c_prep_controller        dcmtk_jinit16_c_prep_controller
++#define jinit_c_scaler                 dcmtk_jinit16_c_scaler
++#define jinit_color_converter          dcmtk_jinit16_color_converter
++#define jinit_color_deconverter        dcmtk_jinit16_color_deconverter
++#define jinit_compress_master          dcmtk_jinit16_compress_master
++#define jinit_d_codec                  dcmtk_jinit16_d_codec
++#define jinit_d_coef_controller        dcmtk_jinit16_d_coef_controller
++#define jinit_d_diff_controller        dcmtk_jinit16_d_diff_controller
++#define jinit_d_main_controller        dcmtk_jinit16_d_main_controller
++#define jinit_d_post_controller        dcmtk_jinit16_d_post_controller
++#define jinit_d_post_controller        dcmtk_jinit16_d_post_controller
++#define jinit_d_scaler                 dcmtk_jinit16_d_scaler
++#define jinit_differencer              dcmtk_jinit16_differencer
++#define jinit_downsampler              dcmtk_jinit16_downsampler
++#define jinit_forward_dct              dcmtk_jinit16_forward_dct
++#define jinit_input_controller         dcmtk_jinit16_input_controller
++#define jinit_inverse_dct              dcmtk_jinit16_inverse_dct
++#define jinit_lhuff_decoder            dcmtk_jinit16_lhuff_decoder
++#define jinit_lhuff_encoder            dcmtk_jinit16_lhuff_encoder
++#define jinit_lossless_c_codec         dcmtk_jinit16_lossless_c_codec
++#define jinit_lossless_d_codec         dcmtk_jinit16_lossless_d_codec
++#define jinit_lossy_c_codec            dcmtk_jinit16_lossy_c_codec
++#define jinit_lossy_d_codec            dcmtk_jinit16_lossy_d_codec
++#define jinit_marker_reader            dcmtk_jinit16_marker_reader
++#define jinit_marker_writer            dcmtk_jinit16_marker_writer
++#define jinit_master_decompress        dcmtk_jinit16_master_decompress
++#define jinit_memory_mgr               dcmtk_jinit16_memory_mgr
++#define jinit_merged_upsampler         dcmtk_jinit16_merged_upsampler
++#define jinit_phuff_decoder            dcmtk_jinit16_phuff_decoder
++#define jinit_phuff_encoder            dcmtk_jinit16_phuff_encoder
++#define jinit_shuff_decoder            dcmtk_jinit16_shuff_decoder
++#define jinit_shuff_encoder            dcmtk_jinit16_shuff_encoder
++#define jinit_undifferencer            dcmtk_jinit16_undifferencer
++#define jinit_upsampler                dcmtk_jinit16_upsampler
++#define jpeg_CreateCompress            dcmtk_jpeg16_CreateCompress
++#define jpeg_CreateDecompress          dcmtk_jpeg16_CreateDecompress
++#define jpeg_abort                     dcmtk_jpeg16_abort
++#define jpeg_abort_compress            dcmtk_jpeg16_abort_compress
++#define jpeg_abort_decompress          dcmtk_jpeg16_abort_decompress
++#define jpeg_add_quant_table           dcmtk_jpeg16_add_quant_table
++#define jpeg_alloc_huff_table          dcmtk_jpeg16_alloc_huff_table
++#define jpeg_alloc_quant_table         dcmtk_jpeg16_alloc_quant_table
++#define jpeg_calc_output_dimensions    dcmtk_jpeg16_calc_output_dimensions
++#define jpeg_consume_input             dcmtk_jpeg16_consume_input
++#define jpeg_copy_critical_parameters  dcmtk_jpeg16_copy_critical_parameters
++#define jpeg_default_colorspace        dcmtk_jpeg16_default_colorspace
++#define jpeg_destroy                   dcmtk_jpeg16_destroy
++#define jpeg_destroy_compress          dcmtk_jpeg16_destroy_compress
++#define jpeg_destroy_decompress        dcmtk_jpeg16_destroy_decompress
++#define jpeg_fdct_float                dcmtk_jpeg16_fdct_float
++#define jpeg_fdct_ifast                dcmtk_jpeg16_fdct_ifast
++#define jpeg_fdct_islow                dcmtk_jpeg16_fdct_islow
++#define jpeg_fill_bit_buffer           dcmtk_jpeg16_fill_bit_buffer
++#define jpeg_finish_compress           dcmtk_jpeg16_finish_compress
++#define jpeg_finish_decompress         dcmtk_jpeg16_finish_decompress
++#define jpeg_finish_output             dcmtk_jpeg16_finish_output
++#define jpeg_free_large                dcmtk_jpeg16_free_large
++#define jpeg_free_small                dcmtk_jpeg16_free_small
++#define jpeg_gen_optimal_table         dcmtk_jpeg16_gen_optimal_table
++#define jpeg_get_large                 dcmtk_jpeg16_get_large
++#define jpeg_get_small                 dcmtk_jpeg16_get_small
++#define jpeg_has_multiple_scans        dcmtk_jpeg16_has_multiple_scans
++#define jpeg_huff_decode               dcmtk_jpeg16_huff_decode
++#define jpeg_idct_1x1                  dcmtk_jpeg16_idct_1x1
++#define jpeg_idct_2x2                  dcmtk_jpeg16_idct_2x2
++#define jpeg_idct_4x4                  dcmtk_jpeg16_idct_4x4
++#define jpeg_idct_float                dcmtk_jpeg16_idct_float
++#define jpeg_idct_ifast                dcmtk_jpeg16_idct_ifast
++#define jpeg_idct_islow                dcmtk_jpeg16_idct_islow
++#define jpeg_input_complete            dcmtk_jpeg16_input_complete
++#define jpeg_make_c_derived_tbl        dcmtk_jpeg16_make_c_derived_tbl
++#define jpeg_make_d_derived_tbl        dcmtk_jpeg16_make_d_derived_tbl
++#define jpeg_mem_available             dcmtk_jpeg16_mem_available
++#define jpeg_mem_init                  dcmtk_jpeg16_mem_init
++#define jpeg_mem_term                  dcmtk_jpeg16_mem_term
++#define jpeg_new_colormap              dcmtk_jpeg16_new_colormap
++#define jpeg_open_backing_store        dcmtk_jpeg16_open_backing_store
++#define jpeg_quality_scaling           dcmtk_jpeg16_quality_scaling
++#define jpeg_read_coefficients         dcmtk_jpeg16_read_coefficients
++#define jpeg_read_header               dcmtk_jpeg16_read_header
++#define jpeg_read_raw_data             dcmtk_jpeg16_read_raw_data
++#define jpeg_read_scanlines            dcmtk_jpeg16_read_scanlines
++#define jpeg_resync_to_restart         dcmtk_jpeg16_resync_to_restart
++#define jpeg_save_markers              dcmtk_jpeg16_save_markers
++#define jpeg_set_colorspace            dcmtk_jpeg16_set_colorspace
++#define jpeg_set_defaults              dcmtk_jpeg16_set_defaults
++#define jpeg_set_linear_quality        dcmtk_jpeg16_set_linear_quality
++#define jpeg_set_marker_processor      dcmtk_jpeg16_set_marker_processor
++#define jpeg_set_quality               dcmtk_jpeg16_set_quality
++#define jpeg_simple_lossless           dcmtk_jpeg16_simple_lossless
++#define jpeg_simple_progression        dcmtk_jpeg16_simple_progression
++#define jpeg_start_compress            dcmtk_jpeg16_start_compress
++#define jpeg_start_decompress          dcmtk_jpeg16_start_decompress
++#define jpeg_start_output              dcmtk_jpeg16_start_output
++#define jpeg_std_error                 dcmtk_jpeg16_std_error
++#define jpeg_stdio_dest                dcmtk_jpeg16_stdio_dest
++#define jpeg_stdio_src                 dcmtk_jpeg16_stdio_src
++#define jpeg_suppress_tables           dcmtk_jpeg16_suppress_tables
++#define jpeg_write_coefficients        dcmtk_jpeg16_write_coefficients
++#define jpeg_write_m_byte              dcmtk_jpeg16_write_m_byte
++#define jpeg_write_m_header            dcmtk_jpeg16_write_m_header
++#define jpeg_write_marker              dcmtk_jpeg16_write_marker
++#define jpeg_write_raw_data            dcmtk_jpeg16_write_raw_data
++#define jpeg_write_scanlines           dcmtk_jpeg16_write_scanlines
++#define jpeg_write_tables              dcmtk_jpeg16_write_tables
++#define jround_up                      dcmtk_jround16_up
++#define jzero_far                      dcmtk_jzero16_far
+ #endif /* NEED_SHORT_EXTERNAL_NAMES */
+ 
+ 
+diff --git a/dcmjpeg/libijg8/jchuff8.h b/dcmjpeg/libijg8/jchuff8.h
+index cb088c2..2b91810 100644
+--- a/dcmjpeg/libijg8/jchuff8.h
++++ b/dcmjpeg/libijg8/jchuff8.h
+@@ -40,8 +40,8 @@ typedef struct {
+ /* Short forms of external names for systems with brain-damaged linkers. */
+ 
+ #ifdef NEED_SHORT_EXTERNAL_NAMES
+-#define jpeg_make_c_derived_tbl		jpeg8_make_c_derived_tbl
+-#define jpeg_gen_optimal_table		jpeg8_gen_optimal_table
++#define jpeg_make_c_derived_tbl		dcmtk_jpeg8_make_c_derived_tbl
++#define jpeg_gen_optimal_table		dcmtk_jpeg8_gen_optimal_table
+ #endif /* NEED_SHORT_EXTERNAL_NAMES */
+ 
+ /* Expand a Huffman table definition into the derived format */
+diff --git a/dcmjpeg/libijg8/jdct8.h b/dcmjpeg/libijg8/jdct8.h
+index c509bfb..d875e28 100644
+--- a/dcmjpeg/libijg8/jdct8.h
++++ b/dcmjpeg/libijg8/jdct8.h
+@@ -81,15 +81,15 @@ typedef FAST_FLOAT FLOAT_MULT_TYPE; /* preferred floating type */
+ /* Short forms of external names for systems with brain-damaged linkers. */
+ 
+ #ifdef NEED_SHORT_EXTERNAL_NAMES
+-#define jpeg_fdct_islow		jpeg8_fdct_islow
+-#define jpeg_fdct_ifast		jpeg8_fdct_ifast
+-#define jpeg_fdct_float		jpeg8_fdct_float
+-#define jpeg_idct_islow		jpeg8_idct_islow
+-#define jpeg_idct_ifast		jpeg8_idct_ifast
+-#define jpeg_idct_float		jpeg8_idct_float
+-#define jpeg_idct_4x4		jpeg8_idct_4x4
+-#define jpeg_idct_2x2		jpeg8_idct_2x2
+-#define jpeg_idct_1x1		jpeg8_idct_1x1
++#define jpeg_fdct_islow		dcmtk_jpeg8_fdct_islow
++#define jpeg_fdct_ifast		dcmtk_jpeg8_fdct_ifast
++#define jpeg_fdct_float		dcmtk_jpeg8_fdct_float
++#define jpeg_idct_islow		dcmtk_jpeg8_idct_islow
++#define jpeg_idct_ifast		dcmtk_jpeg8_idct_ifast
++#define jpeg_idct_float		dcmtk_jpeg8_idct_float
++#define jpeg_idct_4x4		dcmtk_jpeg8_idct_4x4
++#define jpeg_idct_2x2		dcmtk_jpeg8_idct_2x2
++#define jpeg_idct_1x1		dcmtk_jpeg8_idct_1x1
+ #endif /* NEED_SHORT_EXTERNAL_NAMES */
+ 
+ /* Extern declarations for the forward and inverse DCT routines. */
+diff --git a/dcmjpeg/libijg8/jdhuff8.h b/dcmjpeg/libijg8/jdhuff8.h
+index e61f681..116aff2 100644
+--- a/dcmjpeg/libijg8/jdhuff8.h
++++ b/dcmjpeg/libijg8/jdhuff8.h
+@@ -14,9 +14,9 @@
+ /* Short forms of external names for systems with brain-damaged linkers. */
+ 
+ #ifdef NEED_SHORT_EXTERNAL_NAMES
+-#define jpeg_make_d_derived_tbl		jpeg8_make_d_derived_tbl
+-#define jpeg_fill_bit_buffer		jpeg8_fill_bit_buffer
+-#define jpeg_huff_decode		jpeg8_huff_decode
++#define jpeg_make_d_derived_tbl		dcmtk_jpeg8_make_d_derived_tbl
++#define jpeg_fill_bit_buffer		dcmtk_jpeg8_fill_bit_buffer
++#define jpeg_huff_decode		dcmtk_jpeg8_huff_decode
+ #endif /* NEED_SHORT_EXTERNAL_NAMES */
+ 
+ 
+diff --git a/dcmjpeg/libijg8/jerror.c b/dcmjpeg/libijg8/jerror.c
+index f6595ec..fc55ca4 100644
+--- a/dcmjpeg/libijg8/jerror.c
++++ b/dcmjpeg/libijg8/jerror.c
+@@ -43,7 +43,7 @@
+  */
+ 
+ #ifdef NEED_SHORT_EXTERNAL_NAMES
+-#define jpeg_std_message_table		jpeg8_std_message_table
++#define jpeg_std_message_table		dcmtk_jpeg8_std_message_table
+ #endif
+ 
+ #define JMESSAGE(code,string)	string ,
+diff --git a/dcmjpeg/libijg8/jmemsys8.h b/dcmjpeg/libijg8/jmemsys8.h
+index fc59f42..ba9000b 100644
+--- a/dcmjpeg/libijg8/jmemsys8.h
++++ b/dcmjpeg/libijg8/jmemsys8.h
+@@ -22,14 +22,14 @@
+ /* Short forms of external names for systems with brain-damaged linkers. */
+ 
+ #ifdef NEED_SHORT_EXTERNAL_NAMES
+-#define jpeg_get_small		jpeg8_get_small
+-#define jpeg_free_small		jpeg8_free_small
+-#define jpeg_get_large		jpeg8_get_large
+-#define jpeg_free_large		jpeg8_free_large
+-#define jpeg_mem_available		jpeg8_mem_available
+-#define jpeg_open_backing_store		jpeg8_open_backing_store
+-#define jpeg_mem_init		jpeg8_mem_init
+-#define jpeg_mem_term		jpeg8_mem_term
++#define jpeg_get_small		dcmtk_jpeg8_get_small
++#define jpeg_free_small		dcmtk_jpeg8_free_small
++#define jpeg_get_large		dcmtk_jpeg8_get_large
++#define jpeg_free_large		dcmtk_jpeg8_free_large
++#define jpeg_mem_available		dcmtk_jpeg8_mem_available
++#define jpeg_open_backing_store		dcmtk_jpeg8_open_backing_store
++#define jpeg_mem_init		dcmtk_jpeg8_mem_init
++#define jpeg_mem_term		dcmtk_jpeg8_mem_term
+ #endif /* NEED_SHORT_EXTERNAL_NAMES */
+ 
+ 
+diff --git a/dcmjpeg/libijg8/jpegint8.h b/dcmjpeg/libijg8/jpegint8.h
+index 0218018..36ceece 100644
+--- a/dcmjpeg/libijg8/jpegint8.h
++++ b/dcmjpeg/libijg8/jpegint8.h
+@@ -256,56 +256,56 @@ struct jpeg_color_quantizer {
+ /* Short forms of external names for systems with brain-damaged linkers. */
+ 
+ #ifdef NEED_SHORT_EXTERNAL_NAMES
+-#define jinit_c_codec		jinit8_c_codec
+-#define jinit_c_diff_controller		jinit8_c_diff_controller
+-#define jinit_lossy_c_codec		jinit8_lossy_c_codec
+-#define jinit_lossless_c_codec		jinit8_lossless_c_codec
+-#define jinit_compress_master		jinit8_compress_master
+-#define jinit_c_master_control		jinit8_c_master_control
+-#define jinit_c_main_controller		jinit8_c_main_controller
+-#define jinit_c_prep_controller		jinit8_c_prep_controller
+-#define jinit_c_coef_controller		jinit8_c_coef_controller
+-#define jinit_color_converter		jinit8_color_converter
+-#define jinit_downsampler		jinit8_downsampler
+-#define jinit_forward_dct		jinit8_forward_dct
+-#define jinit_shuff_encoder		jinit8_shuff_encoder
+-#define jinit_phuff_encoder		jinit8_phuff_encoder
++#define jinit_c_codec		dcmtk_jinit8_c_codec
++#define jinit_c_diff_controller		dcmtk_jinit8_c_diff_controller
++#define jinit_lossy_c_codec		dcmtk_jinit8_lossy_c_codec
++#define jinit_lossless_c_codec		dcmtk_jinit8_lossless_c_codec
++#define jinit_compress_master		dcmtk_jinit8_compress_master
++#define jinit_c_master_control		dcmtk_jinit8_c_master_control
++#define jinit_c_main_controller		dcmtk_jinit8_c_main_controller
++#define jinit_c_prep_controller		dcmtk_jinit8_c_prep_controller
++#define jinit_c_coef_controller		dcmtk_jinit8_c_coef_controller
++#define jinit_color_converter		dcmtk_jinit8_color_converter
++#define jinit_downsampler		dcmtk_jinit8_downsampler
++#define jinit_forward_dct		dcmtk_jinit8_forward_dct
++#define jinit_shuff_encoder		dcmtk_jinit8_shuff_encoder
++#define jinit_phuff_encoder		dcmtk_jinit8_phuff_encoder
+ #ifdef WITH_ARITHMETIC_PATCH
+-#define jinit_arith_encoder		jinit8_arith_encoder
++#define jinit_arith_encoder		dcmtk_jinit8_arith_encoder
+ #endif
+-#define jinit_marker_writer		jinit8_marker_writer
+-#define jinit_d_codec		jinit8_d_codec
+-#define jinit_lossy_d_codec		jinit8_lossy_d_codec
+-#define jinit_lossless_d_codec		jinit8_lossless_d_codec
+-#define jinit_master_decompress		jinit8_master_decompress
+-#define jinit_d_main_controller		jinit8_d_main_controller
+-#define jinit_d_coef_controller		jinit8_d_coef_controller
+-#define jinit_d_diff_controller		jinit8_d_diff_controller
+-#define jinit_d_post_controller		jinit8_d_post_controller
+-#define jinit_input_controller		jinit8_input_controller
+-#define jinit_marker_reader		jinit8_marker_reader
+-#define jinit_shuff_decoder		jinit8_shuff_decoder
+-#define jinit_phuff_decoder		jinit8_phuff_decoder
++#define jinit_marker_writer		dcmtk_jinit8_marker_writer
++#define jinit_d_codec		dcmtk_jinit8_d_codec
++#define jinit_lossy_d_codec		dcmtk_jinit8_lossy_d_codec
++#define jinit_lossless_d_codec		dcmtk_jinit8_lossless_d_codec
++#define jinit_master_decompress		dcmtk_jinit8_master_decompress
++#define jinit_d_main_controller		dcmtk_jinit8_d_main_controller
++#define jinit_d_coef_controller		dcmtk_jinit8_d_coef_controller
++#define jinit_d_diff_controller		dcmtk_jinit8_d_diff_controller
++#define jinit_d_post_controller		dcmtk_jinit8_d_post_controller
++#define jinit_input_controller		dcmtk_jinit8_input_controller
++#define jinit_marker_reader		dcmtk_jinit8_marker_reader
++#define jinit_shuff_decoder		dcmtk_jinit8_shuff_decoder
++#define jinit_phuff_decoder		dcmtk_jinit8_phuff_decoder
+ #ifdef WITH_ARITHMETIC_PATCH
+-#define jinit_arith_decoder		jinit8_arith_decoder
++#define jinit_arith_decoder		dcmtk_jinit8_arith_decoder
+ #endif
+-#define jinit_lhuff_decoder		jinit8_lhuff_decoder
+-#define jinit_undifferencer		jinit8_undifferencer
+-#define jinit_d_scaler		jinit8_d_scaler
+-#define jinit_inverse_dct		jinit8_inverse_dct
+-#define jinit_upsampler		jinit8_upsampler
+-#define jinit_color_deconverter		jinit8_color_deconverter
+-#define jinit_1pass_quantizer		jinit8_1pass_quantizer
+-#define jinit_2pass_quantizer		jinit8_2pass_quantizer
+-#define jinit_merged_upsampler		jinit8_merged_upsampler
+-#define jinit_memory_mgr		jinit8_memory_mgr
+-#define jdiv_round_up		jdiv8_round_up
+-#define jround_up		jround8_up
+-#define jcopy_sample_rows		jcopy8_sample_rows
+-#define jcopy_block_row		jcopy8_block_row
+-#define jzero_far		jzero8_far
+-#define jpeg_zigzag_order		jpeg8_zigzag_order
+-#define jpeg_natural_order		jpeg8_natural_order
++#define jinit_lhuff_decoder		dcmtk_jinit8_lhuff_decoder
++#define jinit_undifferencer		dcmtk_jinit8_undifferencer
++#define jinit_d_scaler		dcmtk_jinit8_d_scaler
++#define jinit_inverse_dct		dcmtk_jinit8_inverse_dct
++#define jinit_upsampler		dcmtk_jinit8_upsampler
++#define jinit_color_deconverter		dcmtk_jinit8_color_deconverter
++#define jinit_1pass_quantizer		dcmtk_jinit8_1pass_quantizer
++#define jinit_2pass_quantizer		dcmtk_jinit8_2pass_quantizer
++#define jinit_merged_upsampler		dcmtk_jinit8_merged_upsampler
++#define jinit_memory_mgr		dcmtk_jinit8_memory_mgr
++#define jdiv_round_up		dcmtk_jdiv8_round_up
++#define jround_up		dcmtk_jround8_up
++#define jcopy_sample_rows		dcmtk_jcopy8_sample_rows
++#define jcopy_block_row		dcmtk_jcopy8_block_row
++#define jzero_far		dcmtk_jzero8_far
++#define jpeg_zigzag_order		dcmtk_jpeg8_zigzag_order
++#define jpeg_natural_order		dcmtk_jpeg8_natural_order
+ #endif /* NEED_SHORT_EXTERNAL_NAMES */
+ 
+ 
+diff --git a/dcmjpeg/libijg8/jpeglib8.h b/dcmjpeg/libijg8/jpeglib8.h
+index c0bbe91..ffe457a 100644
+--- a/dcmjpeg/libijg8/jpeglib8.h
++++ b/dcmjpeg/libijg8/jpeglib8.h
+@@ -861,125 +861,125 @@ typedef JMETHOD(boolean, jpeg_marker_parser_method, (j_decompress_ptr cinfo));
+ /* MAKE SURE THAT ALL FUNCTIONS DECLARED GLOBAL() ARE RE-DEFINED HERE! */
+   
+ #ifdef NEED_SHORT_EXTERNAL_NAMES
+-#define jcopy_block_row                jcopy8_block_row
+-#define jcopy_sample_rows              jcopy8_sample_rows
+-#define jdiv_round_up                  jdiv8_round_up
+-#define jinit_1pass_quantizer          jinit8_1pass_quantizer
+-#define jinit_2pass_quantizer          jinit8_2pass_quantizer
+-#define jinit_arith_decoder            jinit8_arith_decoder
+-#define jinit_arith_encoder            jinit8_arith_encoder
+-#define jinit_c_codec                  jinit8_c_codec
+-#define jinit_c_coef_controller        jinit8_c_coef_controller
+-#define jinit_c_diff_controller        jinit8_c_diff_controller
+-#define jinit_c_main_controller        jinit8_c_main_controller
+-#define jinit_c_master_control         jinit8_c_master_control
+-#define jinit_c_prep_controller        jinit8_c_prep_controller
+-#define jinit_c_scaler                 jinit8_c_scaler
+-#define jinit_color_converter          jinit8_color_converter
+-#define jinit_color_deconverter        jinit8_color_deconverter
+-#define jinit_compress_master          jinit8_compress_master
+-#define jinit_d_codec                  jinit8_d_codec
+-#define jinit_d_coef_controller        jinit8_d_coef_controller
+-#define jinit_d_diff_controller        jinit8_d_diff_controller
+-#define jinit_d_main_controller        jinit8_d_main_controller
+-#define jinit_d_post_controller        jinit8_d_post_controller
+-#define jinit_d_post_controller        jinit8_d_post_controller
+-#define jinit_d_scaler                 jinit8_d_scaler
+-#define jinit_differencer              jinit8_differencer
+-#define jinit_downsampler              jinit8_downsampler
+-#define jinit_forward_dct              jinit8_forward_dct
+-#define jinit_input_controller         jinit8_input_controller
+-#define jinit_inverse_dct              jinit8_inverse_dct
+-#define jinit_lhuff_decoder            jinit8_lhuff_decoder
+-#define jinit_lhuff_encoder            jinit8_lhuff_encoder
+-#define jinit_lossless_c_codec         jinit8_lossless_c_codec
+-#define jinit_lossless_d_codec         jinit8_lossless_d_codec
+-#define jinit_lossy_c_codec            jinit8_lossy_c_codec
+-#define jinit_lossy_d_codec            jinit8_lossy_d_codec
+-#define jinit_marker_reader            jinit8_marker_reader
+-#define jinit_marker_writer            jinit8_marker_writer
+-#define jinit_master_decompress        jinit8_master_decompress
+-#define jinit_memory_mgr               jinit8_memory_mgr
+-#define jinit_merged_upsampler         jinit8_merged_upsampler
+-#define jinit_phuff_decoder            jinit8_phuff_decoder
+-#define jinit_phuff_encoder            jinit8_phuff_encoder
+-#define jinit_shuff_decoder            jinit8_shuff_decoder
+-#define jinit_shuff_encoder            jinit8_shuff_encoder
+-#define jinit_undifferencer            jinit8_undifferencer
+-#define jinit_upsampler                jinit8_upsampler
+-#define jpeg_CreateCompress            jpeg8_CreateCompress
+-#define jpeg_CreateDecompress          jpeg8_CreateDecompress
+-#define jpeg_abort                     jpeg8_abort
+-#define jpeg_abort_compress            jpeg8_abort_compress
+-#define jpeg_abort_decompress          jpeg8_abort_decompress
+-#define jpeg_add_quant_table           jpeg8_add_quant_table
+-#define jpeg_alloc_huff_table          jpeg8_alloc_huff_table
+-#define jpeg_alloc_quant_table         jpeg8_alloc_quant_table
+-#define jpeg_calc_output_dimensions    jpeg8_calc_output_dimensions
+-#define jpeg_consume_input             jpeg8_consume_input
+-#define jpeg_copy_critical_parameters  jpeg8_copy_critical_parameters
+-#define jpeg_default_colorspace        jpeg8_default_colorspace
+-#define jpeg_destroy                   jpeg8_destroy
+-#define jpeg_destroy_compress          jpeg8_destroy_compress
+-#define jpeg_destroy_decompress        jpeg8_destroy_decompress
+-#define jpeg_fdct_float                jpeg8_fdct_float
+-#define jpeg_fdct_ifast                jpeg8_fdct_ifast
+-#define jpeg_fdct_islow                jpeg8_fdct_islow
+-#define jpeg_fill_bit_buffer           jpeg8_fill_bit_buffer
+-#define jpeg_finish_compress           jpeg8_finish_compress
+-#define jpeg_finish_decompress         jpeg8_finish_decompress
+-#define jpeg_finish_output             jpeg8_finish_output
+-#define jpeg_free_large                jpeg8_free_large
+-#define jpeg_free_small                jpeg8_free_small
+-#define jpeg_gen_optimal_table         jpeg8_gen_optimal_table
+-#define jpeg_get_large                 jpeg8_get_large
+-#define jpeg_get_small                 jpeg8_get_small
+-#define jpeg_has_multiple_scans        jpeg8_has_multiple_scans
+-#define jpeg_huff_decode               jpeg8_huff_decode
+-#define jpeg_idct_1x1                  jpeg8_idct_1x1
+-#define jpeg_idct_2x2                  jpeg8_idct_2x2
+-#define jpeg_idct_4x4                  jpeg8_idct_4x4
+-#define jpeg_idct_float                jpeg8_idct_float
+-#define jpeg_idct_ifast                jpeg8_idct_ifast
+-#define jpeg_idct_islow                jpeg8_idct_islow
+-#define jpeg_input_complete            jpeg8_input_complete
+-#define jpeg_make_c_derived_tbl        jpeg8_make_c_derived_tbl
+-#define jpeg_make_d_derived_tbl        jpeg8_make_d_derived_tbl
+-#define jpeg_mem_available             jpeg8_mem_available
+-#define jpeg_mem_init                  jpeg8_mem_init
+-#define jpeg_mem_term                  jpeg8_mem_term
+-#define jpeg_new_colormap              jpeg8_new_colormap
+-#define jpeg_open_backing_store        jpeg8_open_backing_store
+-#define jpeg_quality_scaling           jpeg8_quality_scaling
+-#define jpeg_read_coefficients         jpeg8_read_coefficients
+-#define jpeg_read_header               jpeg8_read_header
+-#define jpeg_read_raw_data             jpeg8_read_raw_data
+-#define jpeg_read_scanlines            jpeg8_read_scanlines
+-#define jpeg_resync_to_restart         jpeg8_resync_to_restart
+-#define jpeg_save_markers              jpeg8_save_markers
+-#define jpeg_set_colorspace            jpeg8_set_colorspace
+-#define jpeg_set_defaults              jpeg8_set_defaults
+-#define jpeg_set_linear_quality        jpeg8_set_linear_quality
+-#define jpeg_set_marker_processor      jpeg8_set_marker_processor
+-#define jpeg_set_quality               jpeg8_set_quality
+-#define jpeg_simple_lossless           jpeg8_simple_lossless
+-#define jpeg_simple_progression        jpeg8_simple_progression
+-#define jpeg_start_compress            jpeg8_start_compress
+-#define jpeg_start_decompress          jpeg8_start_decompress
+-#define jpeg_start_output              jpeg8_start_output
+-#define jpeg_std_error                 jpeg8_std_error
+-#define jpeg_stdio_dest                jpeg8_stdio_dest
+-#define jpeg_stdio_src                 jpeg8_stdio_src
+-#define jpeg_suppress_tables           jpeg8_suppress_tables
+-#define jpeg_write_coefficients        jpeg8_write_coefficients
+-#define jpeg_write_m_byte              jpeg8_write_m_byte
+-#define jpeg_write_m_header            jpeg8_write_m_header
+-#define jpeg_write_marker              jpeg8_write_marker
+-#define jpeg_write_raw_data            jpeg8_write_raw_data
+-#define jpeg_write_scanlines           jpeg8_write_scanlines
+-#define jpeg_write_tables              jpeg8_write_tables
+-#define jround_up                      jround8_up
+-#define jzero_far                      jzero8_far
++#define jcopy_block_row                dcmtk_jcopy8_block_row
++#define jcopy_sample_rows              dcmtk_jcopy8_sample_rows
++#define jdiv_round_up                  dcmtk_jdiv8_round_up
++#define jinit_1pass_quantizer          dcmtk_jinit8_1pass_quantizer
++#define jinit_2pass_quantizer          dcmtk_jinit8_2pass_quantizer
++#define jinit_arith_decoder            dcmtk_jinit8_arith_decoder
++#define jinit_arith_encoder            dcmtk_jinit8_arith_encoder
++#define jinit_c_codec                  dcmtk_jinit8_c_codec
++#define jinit_c_coef_controller        dcmtk_jinit8_c_coef_controller
++#define jinit_c_diff_controller        dcmtk_jinit8_c_diff_controller
++#define jinit_c_main_controller        dcmtk_jinit8_c_main_controller
++#define jinit_c_master_control         dcmtk_jinit8_c_master_control
++#define jinit_c_prep_controller        dcmtk_jinit8_c_prep_controller
++#define jinit_c_scaler                 dcmtk_jinit8_c_scaler
++#define jinit_color_converter          dcmtk_jinit8_color_converter
++#define jinit_color_deconverter        dcmtk_jinit8_color_deconverter
++#define jinit_compress_master          dcmtk_jinit8_compress_master
++#define jinit_d_codec                  dcmtk_jinit8_d_codec
++#define jinit_d_coef_controller        dcmtk_jinit8_d_coef_controller
++#define jinit_d_diff_controller        dcmtk_jinit8_d_diff_controller
++#define jinit_d_main_controller        dcmtk_jinit8_d_main_controller
++#define jinit_d_post_controller        dcmtk_jinit8_d_post_controller
++#define jinit_d_post_controller        dcmtk_jinit8_d_post_controller
++#define jinit_d_scaler                 dcmtk_jinit8_d_scaler
++#define jinit_differencer              dcmtk_jinit8_differencer
++#define jinit_downsampler              dcmtk_jinit8_downsampler
++#define jinit_forward_dct              dcmtk_jinit8_forward_dct
++#define jinit_input_controller         dcmtk_jinit8_input_controller
++#define jinit_inverse_dct              dcmtk_jinit8_inverse_dct
++#define jinit_lhuff_decoder            dcmtk_jinit8_lhuff_decoder
++#define jinit_lhuff_encoder            dcmtk_jinit8_lhuff_encoder
++#define jinit_lossless_c_codec         dcmtk_jinit8_lossless_c_codec
++#define jinit_lossless_d_codec         dcmtk_jinit8_lossless_d_codec
++#define jinit_lossy_c_codec            dcmtk_jinit8_lossy_c_codec
++#define jinit_lossy_d_codec            dcmtk_jinit8_lossy_d_codec
++#define jinit_marker_reader            dcmtk_jinit8_marker_reader
++#define jinit_marker_writer            dcmtk_jinit8_marker_writer
++#define jinit_master_decompress        dcmtk_jinit8_master_decompress
++#define jinit_memory_mgr               dcmtk_jinit8_memory_mgr
++#define jinit_merged_upsampler         dcmtk_jinit8_merged_upsampler
++#define jinit_phuff_decoder            dcmtk_jinit8_phuff_decoder
++#define jinit_phuff_encoder            dcmtk_jinit8_phuff_encoder
++#define jinit_shuff_decoder            dcmtk_jinit8_shuff_decoder
++#define jinit_shuff_encoder            dcmtk_jinit8_shuff_encoder
++#define jinit_undifferencer            dcmtk_jinit8_undifferencer
++#define jinit_upsampler                dcmtk_jinit8_upsampler
++#define jpeg_CreateCompress            dcmtk_jpeg8_CreateCompress
++#define jpeg_CreateDecompress          dcmtk_jpeg8_CreateDecompress
++#define jpeg_abort                     dcmtk_jpeg8_abort
++#define jpeg_abort_compress            dcmtk_jpeg8_abort_compress
++#define jpeg_abort_decompress          dcmtk_jpeg8_abort_decompress
++#define jpeg_add_quant_table           dcmtk_jpeg8_add_quant_table
++#define jpeg_alloc_huff_table          dcmtk_jpeg8_alloc_huff_table
++#define jpeg_alloc_quant_table         dcmtk_jpeg8_alloc_quant_table
++#define jpeg_calc_output_dimensions    dcmtk_jpeg8_calc_output_dimensions
++#define jpeg_consume_input             dcmtk_jpeg8_consume_input
++#define jpeg_copy_critical_parameters  dcmtk_jpeg8_copy_critical_parameters
++#define jpeg_default_colorspace        dcmtk_jpeg8_default_colorspace
++#define jpeg_destroy                   dcmtk_jpeg8_destroy
++#define jpeg_destroy_compress          dcmtk_jpeg8_destroy_compress
++#define jpeg_destroy_decompress        dcmtk_jpeg8_destroy_decompress
++#define jpeg_fdct_float                dcmtk_jpeg8_fdct_float
++#define jpeg_fdct_ifast                dcmtk_jpeg8_fdct_ifast
++#define jpeg_fdct_islow                dcmtk_jpeg8_fdct_islow
++#define jpeg_fill_bit_buffer           dcmtk_jpeg8_fill_bit_buffer
++#define jpeg_finish_compress           dcmtk_jpeg8_finish_compress
++#define jpeg_finish_decompress         dcmtk_jpeg8_finish_decompress
++#define jpeg_finish_output             dcmtk_jpeg8_finish_output
++#define jpeg_free_large                dcmtk_jpeg8_free_large
++#define jpeg_free_small                dcmtk_jpeg8_free_small
++#define jpeg_gen_optimal_table         dcmtk_jpeg8_gen_optimal_table
++#define jpeg_get_large                 dcmtk_jpeg8_get_large
++#define jpeg_get_small                 dcmtk_jpeg8_get_small
++#define jpeg_has_multiple_scans        dcmtk_jpeg8_has_multiple_scans
++#define jpeg_huff_decode               dcmtk_jpeg8_huff_decode
++#define jpeg_idct_1x1                  dcmtk_jpeg8_idct_1x1
++#define jpeg_idct_2x2                  dcmtk_jpeg8_idct_2x2
++#define jpeg_idct_4x4                  dcmtk_jpeg8_idct_4x4
++#define jpeg_idct_float                dcmtk_jpeg8_idct_float
++#define jpeg_idct_ifast                dcmtk_jpeg8_idct_ifast
++#define jpeg_idct_islow                dcmtk_jpeg8_idct_islow
++#define jpeg_input_complete            dcmtk_jpeg8_input_complete
++#define jpeg_make_c_derived_tbl        dcmtk_jpeg8_make_c_derived_tbl
++#define jpeg_make_d_derived_tbl        dcmtk_jpeg8_make_d_derived_tbl
++#define jpeg_mem_available             dcmtk_jpeg8_mem_available
++#define jpeg_mem_init                  dcmtk_jpeg8_mem_init
++#define jpeg_mem_term                  dcmtk_jpeg8_mem_term
++#define jpeg_new_colormap              dcmtk_jpeg8_new_colormap
++#define jpeg_open_backing_store        dcmtk_jpeg8_open_backing_store
++#define jpeg_quality_scaling           dcmtk_jpeg8_quality_scaling
++#define jpeg_read_coefficients         dcmtk_jpeg8_read_coefficients
++#define jpeg_read_header               dcmtk_jpeg8_read_header
++#define jpeg_read_raw_data             dcmtk_jpeg8_read_raw_data
++#define jpeg_read_scanlines            dcmtk_jpeg8_read_scanlines
++#define jpeg_resync_to_restart         dcmtk_jpeg8_resync_to_restart
++#define jpeg_save_markers              dcmtk_jpeg8_save_markers
++#define jpeg_set_colorspace            dcmtk_jpeg8_set_colorspace
++#define jpeg_set_defaults              dcmtk_jpeg8_set_defaults
++#define jpeg_set_linear_quality        dcmtk_jpeg8_set_linear_quality
++#define jpeg_set_marker_processor      dcmtk_jpeg8_set_marker_processor
++#define jpeg_set_quality               dcmtk_jpeg8_set_quality
++#define jpeg_simple_lossless           dcmtk_jpeg8_simple_lossless
++#define jpeg_simple_progression        dcmtk_jpeg8_simple_progression
++#define jpeg_start_compress            dcmtk_jpeg8_start_compress
++#define jpeg_start_decompress          dcmtk_jpeg8_start_decompress
++#define jpeg_start_output              dcmtk_jpeg8_start_output
++#define jpeg_std_error                 dcmtk_jpeg8_std_error
++#define jpeg_stdio_dest                dcmtk_jpeg8_stdio_dest
++#define jpeg_stdio_src                 dcmtk_jpeg8_stdio_src
++#define jpeg_suppress_tables           dcmtk_jpeg8_suppress_tables
++#define jpeg_write_coefficients        dcmtk_jpeg8_write_coefficients
++#define jpeg_write_m_byte              dcmtk_jpeg8_write_m_byte
++#define jpeg_write_m_header            dcmtk_jpeg8_write_m_header
++#define jpeg_write_marker              dcmtk_jpeg8_write_marker
++#define jpeg_write_raw_data            dcmtk_jpeg8_write_raw_data
++#define jpeg_write_scanlines           dcmtk_jpeg8_write_scanlines
++#define jpeg_write_tables              dcmtk_jpeg8_write_tables
++#define jround_up                      dcmtk_jround8_up
++#define jzero_far                      dcmtk_jzero8_far
+ #endif /* NEED_SHORT_EXTERNAL_NAMES */
+ 
+ 

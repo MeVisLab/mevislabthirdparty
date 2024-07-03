@@ -9,7 +9,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "libxslt"
-    version = "1.1.39"
+    version = "1.1.40"
     homepage = "http://xmlsoft.org"
     description = "libxslt is a software library implementing XSLT processor, based on libxml2"
     license = "MIT"
@@ -30,13 +30,13 @@ class ConanRecipe(ConanFile):
 
     def source(self):
         v = Version(self.version)
-        get(self,
-            sha256="2a20ad621148339b0759c4d4e96719362dee64c9a096dbba625ba053846349f0",
+        get(
+            self,
+            sha256="194715db023035f65fb566402f2ad2b5eab4c29d541f511305c40b29b1f48d13",
             url=f"https://download.gnome.org/sources/libxslt/{v.major}.{v.minor}/libxslt-{self.version}.tar.xz",
-            strip_root=True
+            strip_root=True,
         )
         patch(self, patch_file="patches/001-debug_postfix.patch")
-
 
     def generate(self):
         tc = CMakeToolchain(self)
@@ -62,9 +62,7 @@ class ConanRecipe(ConanFile):
         rmdir(self, self.package_path / "lib" / "pkgconfig")
         rmdir(self, self.package_path / "share")
         if self.settings.os == "Windows":
-            copy(self, "libpng*.pdb",
-                 src=self.build_path / "bin",
-                 dst=self.package_path / "bin")
+            copy(self, "libpng*.pdb", src=self.build_path / "bin", dst=self.package_path / "bin")
 
     def package_info(self):
         self.cpp_info.set_property("cmake_find_mode", "both")
@@ -73,6 +71,6 @@ class ConanRecipe(ConanFile):
         self.cpp_info.libs = collect_libs(self)
 
         if self.settings.os == "Windows":
-            self.cpp_info.system_libs.append('ws2_32')
+            self.cpp_info.system_libs.append("ws2_32")
         else:
             self.cpp_info.system_libs.append("m")

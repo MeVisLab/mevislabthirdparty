@@ -1,8 +1,8 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 93d61ec..521713d 100644
+index a18f740..d02804b 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -247,24 +247,24 @@ set_target_properties(
+@@ -246,25 +246,6 @@ set_target_properties(
  	SOVERSION ${LIBXSLT_MAJOR_VERSION}
  )
  
@@ -24,28 +24,11 @@ index 93d61ec..521713d 100644
 -		)
 -	endif()
 -endif()
-+# if(MSVC)
-+# 	if(BUILD_SHARED_LIBS)
-+# 		set_target_properties(
-+# 			LibXslt
-+# 			PROPERTIES
-+# 			DEBUG_POSTFIX d
-+# 		)
-+# 	else()
-+# 		set_target_properties(
-+# 			LibXslt
-+# 			PROPERTIES
-+# 			DEBUG_POSTFIX sd
-+# 			MINSIZEREL_POSTFIX s
-+# 			RELEASE_POSTFIX s
-+# 			RELWITHDEBINFO_POSTFIX s
-+# 		)
-+# 	endif()
-+# endif()
- 
+-
  install(FILES ${LIBXSLT_HDRS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/libxslt COMPONENT development)
  
-@@ -340,24 +340,24 @@ set_target_properties(
+ install(
+@@ -339,25 +320,6 @@ set_target_properties(
  	SOVERSION ${LIBEXSLT_MAJOR_VERSION}
  )
  
@@ -67,24 +50,7 @@ index 93d61ec..521713d 100644
 -		)
 -	endif()
 -endif()
-+# if(MSVC)
-+# 	if(BUILD_SHARED_LIBS)
-+# 		set_target_properties(
-+# 			LibExslt
-+# 			PROPERTIES
-+# 			DEBUG_POSTFIX d
-+# 		)
-+# 	else()
-+# 		set_target_properties(
-+# 			LibExslt
-+# 			PROPERTIES
-+# 			DEBUG_POSTFIX sd
-+# 			MINSIZEREL_POSTFIX s
-+# 			RELEASE_POSTFIX s
-+# 			RELWITHDEBINFO_POSTFIX s
-+# 		)
-+# 	endif()
-+# endif()
- 
+-
  install(FILES ${LIBEXSLT_HDRS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/libexslt COMPONENT development)
  
+ install(

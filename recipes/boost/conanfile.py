@@ -9,7 +9,7 @@ from shutil import which
 from conan import ConanFile
 from conan.tools.build.flags import cppstd_flag
 from conan.tools.env import Environment
-from conan.tools.files import get, copy, collect_libs, files
+from conan.tools.files import get, copy, collect_libs, files, patch
 from conan.tools.microsoft import is_msvc
 from conan.tools.layout import basic_layout
 from conan.tools.microsoft.visual import msvc_version_to_toolset_version
@@ -21,7 +21,7 @@ class ConanRecipe(ConanFile):
     name = "boost"
     display_name = "Boost"
     mli_name = "None"
-    version = "1.84.0"
+    version = "1.85.0"
     homepage = "https://www.boost.org"
     description = "Boost provides free peer-reviewed portable C++ source libraries"
     license = "BSL-1.0"
@@ -68,11 +68,16 @@ class ConanRecipe(ConanFile):
         basic_layout(self, src_folder="src")
 
     def source(self):
-        major, minor, patch = self.version.split(".")[:3]
-        get(self,
-            sha256="cc4b893acf645c9d4b698e9a0f08ca8846aa5d6c68275c14c3e7949c24109454",
-            url=f"https://boostorg.jfrog.io/artifactory/main/release/{self.version}/source/boost_{major}_{minor}_{patch}.tar.bz2",
-            strip_root=True
+        get(
+            self,
+            sha256="7009fe1faa1697476bdc7027703a2badb84e849b7b0baad5086b087b971f8617",
+            url=f"https://boostorg.jfrog.io/artifactory/main/release/{self.version}/source/boost_{self.version.replace('.','_')}.tar.bz2",
+            strip_root=True,
+        )
+        patch(
+            self,
+            patch_file="patches/001-b2_update.patch",
+            patch_description="Update b2 to v5.2.1 for Boost 1.85.0 to fix build issues with newer MSVC versions",
         )
 
     def build(self):
@@ -81,12 +86,14 @@ class ConanRecipe(ConanFile):
         flags = self._get_build_flags()
         b2dir = self.source_path / "tools" / "build"
         b2exe = b2dir / ("b2.exe" if self.settings.os == "Windows" else "b2")
-        b2 = (f'{b2exe} {" ".join(flags)} '
-              f'-j{os.cpu_count()} '
-              f'--abbreviate-paths '
-              f'--debug-configuration '
-              f'--disable-icu '
-              f'--build-dir="{self.build_folder}"')
+        b2 = (
+            f'{b2exe} {" ".join(flags)} '
+            f"-j{os.cpu_count()} "
+            f"--abbreviate-paths "
+            f"--debug-configuration "
+            f"--disable-icu "
+            f'--build-dir="{self.build_folder}"'
+        )
 
         # to locate user config jam (BOOST_BUILD_PATH)
         with files.chdir(self, self.source_folder):
@@ -96,8 +103,7 @@ class ConanRecipe(ConanFile):
                 self.run(b2)
 
     def package(self):
-        copy(self, pattern="*", src=self.source_path / "boost",
-             dst=self.package_path / "include" / "boost", excludes="*/CMakeLists.txt")
+        copy(self, pattern="*", src=self.source_path / "boost", dst=self.package_path / "include" / "boost", excludes="*/CMakeLists.txt")
         copy(self, "LICENSE_1_0.txt", src=self.source_path, dst=self.package_path / "licenses")
 
         out_lib_dir = self.source_path / "stage" / "lib"
@@ -134,8 +140,7 @@ class ConanRecipe(ConanFile):
 
         self.cpp_info.components["diagnostic_definitions"].libs = []
         self.cpp_info.components["diagnostic_definitions"].defines = ["BOOST_LIB_DIAGNOSTIC"]
-        self.cpp_info.components["diagnostic_definitions"].set_property(
-            "cmake_target_name", f"Boost::diagnostic_definitions")
+        self.cpp_info.components["diagnostic_definitions"].set_property("cmake_target_name", f"Boost::diagnostic_definitions")
 
         # A target defined by CMake's original Boost find package and used by openvdb
         self.cpp_info.components["disable_autolinking"].libs = []
@@ -144,7 +149,7 @@ class ConanRecipe(ConanFile):
 
         for lib in collect_libs(self):
             # remove boost_ prefix and any suffix
-            comp = lib[lib.index("_") + 1:].split('-')[0]
+            comp = lib[lib.index("_") + 1 :].split("-")[0]
 
             self.output.info(f"creating component {comp}")
 
@@ -242,9 +247,9 @@ class ConanRecipe(ConanFile):
         zlib_info = self.dependencies["zlib"].cpp_info
         zlib_name = "zlib" if self.settings.os == "Windows" else "z"
         debug_suffix = "_d" if self.settings.build_type == "Debug" else ""
-        flags.append('-sZLIB_INCLUDE="%s"' % zlib_info.includedirs[0].replace('\\', '/'))
-        flags.append('-sZLIB_LIBPATH="%s"' % zlib_info.libdirs[0].replace('\\', '/'))
-        flags.append(f'-sZLIB_BINARY={zlib_name}{debug_suffix}')
+        flags.append('-sZLIB_INCLUDE="%s"' % zlib_info.includedirs[0].replace("\\", "/"))
+        flags.append('-sZLIB_LIBPATH="%s"' % zlib_info.libdirs[0].replace("\\", "/"))
+        flags.append(f"-sZLIB_BINARY={zlib_name}{debug_suffix}")
 
         flags.append("boost.locale.iconv=on")
         flags.append("boost.locale.icu=off")

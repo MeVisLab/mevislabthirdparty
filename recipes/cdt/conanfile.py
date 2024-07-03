@@ -4,9 +4,10 @@ from conan.tools.layout import basic_layout
 
 required_conan_version = ">=2.2.2"
 
+
 class ConanRecipe(ConanFile):
     name = "cdt"
-    version = "1.4.0"
+    version = "1.4.1"
     homepage = "https://github.com/artem-ogre/CDT/"
     description = "CDT: Constrained Delaunay Triangulation."
     license = "MPL-2.0"
@@ -17,10 +18,11 @@ class ConanRecipe(ConanFile):
         basic_layout(self, src_folder="src")
 
     def source(self):
-        get(self,
-            sha256="cb5a95a39b417f5a4d170c7ebe97232d0ed36ea64069339b14964dd52dea95ab",
+        get(
+            self,
+            sha256="86df99eb5f02a73eeb8c6ea45765eed0d7f206e8d4d9f6479f77e3c590ae5bb3",
             url=f"https://github.com/artem-ogre/CDT/archive/refs/tags/{self.version}.tar.gz",
-            strip_root=True
+            strip_root=True,
         )
 
     def package(self):

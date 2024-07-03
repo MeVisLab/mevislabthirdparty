@@ -31,7 +31,7 @@ class MeVisMSBuild(MSBuild):
 
 class ConanRecipe(ConanFile):
     name = "icu"
-    version = "74.1"
+    version = "75.1"
     homepage = "https://icu.unicode.org/"
     description = "Unicode support, software internationalization, and software globalization"
     license = "Unicode-3.0"
@@ -40,18 +40,20 @@ class ConanRecipe(ConanFile):
     exports_sources = "patches/*.patch"
 
     mlab_hooks = {
-        "debug_suffix.exclude": ['icu*.dll', 'icu*.lib', 'libicu*.so*', 'testplugd.dll'],  # TODO testplug needed?
-        "split_debug.exclude": ["lib/libicudata*.so.*"]                                    # libicudata can't be stripped
+        "debug_suffix.exclude": ["icu*.dll", "icu*.lib", "libicu*.so*", "testplugd.dll"],  # TODO testplug needed?
+        "split_debug.exclude": ["lib/libicudata*.so.*"],  # libicudata can't be stripped
     }
 
     def layout(self):
         basic_layout(self, src_folder="src")
 
     def source(self):
-        get(self,
-            sha256="86ce8e60681972e60e4dcb2490c697463fcec60dd400a5f9bffba26d0b52b8d0",
+        get(
+            self,
+            sha256="cb968df3e4d2e87e8b11c49a5d01c787bd13b9545280fc6642f826527618caef",
             url=f"https://github.com/unicode-org/icu/releases/download/release-{self.version.replace('.', '-')}/icu4c-{self.version.replace('.', '_')}-src.tgz",
-            strip_root=True)
+            strip_root=True,
+        )
         patch(self, patch_file="patches/001-disable_renaming_by_default.patch")
 
     def generate(self):
@@ -62,7 +64,7 @@ class ConanRecipe(ConanFile):
             tc = MSBuildToolchain(self)
             tc.configuration = "Debug" if self.settings.build_type == "Debug" else "Release"
             # Note: The .props output of MSBuildToolchain is currently ignored
-            tc.properties['SkipUWP'] = "true"
+            tc.properties["SkipUWP"] = "true"
             tc.generate()
         else:
             tc = AutotoolsToolchain(self)
@@ -72,19 +74,21 @@ class ConanRecipe(ConanFile):
             if is_apple_os(self):
                 tc.extra_defines.append("_DARWIN_C_SOURCE")
 
-            tc.configure_args.extend([
-                "--with-data-packaging=library",
-                "--with-library-bits=64",
-                # "--enable-dyload",
-                # "--enable-icuio",
-                "--disable-samples",
-                "--disable-tests",
-                "--disable-renaming",
-                "--disable-layout",
-                "--disable-layoutex",
-                "--disable-extras",
-                "--with-library-bits=64"
-            ])
+            tc.configure_args.extend(
+                [
+                    "--with-data-packaging=library",
+                    "--with-library-bits=64",
+                    # "--enable-dyload",
+                    # "--enable-icuio",
+                    "--disable-samples",
+                    "--disable-tests",
+                    "--disable-renaming",
+                    "--disable-layout",
+                    "--disable-layoutex",
+                    "--disable-extras",
+                    "--with-library-bits=64",
+                ]
+            )
 
             if self.settings.build_type == "Debug":
                 tc.configure_args.extend(["--disable-release", "--enable-debug", "--with-library-suffix=d"])
@@ -94,10 +98,10 @@ class ConanRecipe(ConanFile):
 
     def build(self):
         if is_msvc(self):
-            proj_dir = self.source_path / 'source' / 'allinone'
+            proj_dir = self.source_path / "source" / "allinone"
             msbuild = MeVisMSBuild(self)
             msbuild.build_type = "Debug" if self.settings.build_type == "Debug" else "Release"
-            msbuild.properties['SkipUWP'] = 'true'
+            msbuild.properties["SkipUWP"] = "true"
             msbuild.build(proj_dir / "allinone.sln")
         else:
             autotools = Autotools(self)
@@ -108,21 +112,11 @@ class ConanRecipe(ConanFile):
         copy(self, "LICENSE", src=self.source_path, dst=self.package_path / "licenses")
         if is_msvc(self):
             # Note: build results are located in the source folder
-            copy(self, pattern="*",
-                 src=self.source_path / "include",
-                 dst=self.package_path / "include")
-            copy(self, pattern="*.lib",
-                 src=self.source_path / "lib64",
-                 dst=self.package_path / "lib")
-            copy(self, pattern="*.pdb",
-                 src=self.source_path / "lib64",
-                 dst=self.package_path / "bin")
-            copy(self, pattern="*.exe",
-                 src=self.source_path / "bin64",
-                 dst=self.package_path / "bin")
-            copy(self, pattern="*.dll",
-                 src=self.source_path / "bin64",
-                 dst=self.package_path / "bin")
+            copy(self, pattern="*", src=self.source_path / "include", dst=self.package_path / "include")
+            copy(self, pattern="*.lib", src=self.source_path / "lib64", dst=self.package_path / "lib")
+            copy(self, pattern="*.pdb", src=self.source_path / "lib64", dst=self.package_path / "bin")
+            copy(self, pattern="*.exe", src=self.source_path / "bin64", dst=self.package_path / "bin")
+            copy(self, pattern="*.dll", src=self.source_path / "bin64", dst=self.package_path / "bin")
         else:
             autotools = Autotools(self)
             autotools.install()
@@ -142,7 +136,7 @@ class ConanRecipe(ConanFile):
             # change rpath of binaries
             patchelf = shutil.which("patchelf")
             with chdir(self, self.package_path / "bin"):
-                for binary in ['derb', 'genbrk', 'gencfu', 'gencnval', 'gendict', 'genrb', 'icuinfo', 'makeconv', 'pkgdata']:
+                for binary in ["derb", "genbrk", "gencfu", "gencnval", "gendict", "genrb", "icuinfo", "makeconv", "pkgdata"]:
                     self.run(f"{patchelf} --set-rpath '$ORIGIN/../lib' {binary}")
             for lib in (self.package_path / "lib").glob("*.so"):
                 self.run(f"{patchelf} --set-rpath '$ORIGIN/../lib' {lib}")

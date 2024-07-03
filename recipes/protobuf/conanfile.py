@@ -9,7 +9,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "protobuf"
-    version = "26.1"
+    version = "27.1"
     homepage = "https://developers.google.com/protocol-buffers"
     description = "Google's Protocol Buffers are a language-neutral, platform-neutral extensible mechanism for serializing structured data"
     license = "BSD-3-Clause"
@@ -34,7 +34,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="4fc5ff1b2c339fb86cd3a25f0b5311478ab081e65ad258c6789359cd84d421f8",
+            sha256="6fbe2e6f703bcd3a246529c2cab586ca12a98c4e641f5f71d51fde09eb48e9e7",
             url=f"https://github.com/protocolbuffers/protobuf/releases/download/v{self.version}/protobuf-{self.version}.tar.gz",
             strip_root=True,
         )

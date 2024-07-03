@@ -106,9 +106,15 @@ class ConanRecipe(ConanFile):
         patch(self, patch_file="patches/015-disable_nsl_test.patch", patch_description="disable test for nsl socket")
         patch(
             self,
-            patch_file="patches/015-jpeg_symbols_conflicts.patch",
+            patch_file="patches/016-jpeg_symbols_conflicts.patch",
             patch_type="bugfix",
             patch_description="see https://support.dcmtk.org/redmine/issues/1103",
+        )
+        patch(
+            self,
+            patch_file="patches/017-resolve_ambiguous_vr.patch",
+            patch_type="bugfix",
+            patch_description="see https://forum.dcmtk.org/viewtopic.php?p=22231",
         )
 
     def generate(self):

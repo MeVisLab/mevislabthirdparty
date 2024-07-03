@@ -3,7 +3,7 @@ import json
 import os
 
 from conan import ConanFile
-from conan.tools.build import check_min_cppstd, can_run, build_jobs
+from conan.tools.build import check_min_cppstd, can_run
 from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
 from conan.tools.env import Environment, VirtualRunEnv
 from conan.tools.files import load, save, copy, get, patch
@@ -82,20 +82,15 @@ class QtPackage:
 
     def requirements(self):
         if self.name != "qtbase":
-            self.requires(f'qtbase/{self.version}')
+            self.requires(f"qtbase/{self.version}")
 
-        for d in self._qtdata['modules'][self.name]['dependencies']:
+        for d in self._qtdata["modules"][self.name]["dependencies"]:
             if d != "qtbase":
-                self.requires(f'{d}/{self.version}')
+                self.requires(f"{d}/{self.version}")
 
     def source(self: ConanFile):
-        get(self,
-            sha256=self._qtdata['modules'][self.name]['sha256'],
-            url=self._qtdata['modules'][self.name]['url'],
-            strip_root=True
-            )
-        patches = (self.export_sources_path / "patches").glob("*.patch") if (
-                    self.export_sources_path / "patches").exists() else []
+        get(self, sha256=self._qtdata["modules"][self.name]["sha256"], url=self._qtdata["modules"][self.name]["url"], strip_root=True)
+        patches = (self.export_sources_path / "patches").glob("*.patch") if (self.export_sources_path / "patches").exists() else []
         for p in sorted(patches):
             self.output.info(f"Apply patch: {p}")
             patch(self, patch_file=p)
@@ -108,19 +103,6 @@ class QtPackage:
 
         env = Environment()
         env.prepend_path("PKG_CONFIG_PATH", self.generators_folder)
-
-        jobs: int = build_jobs(self)
-        self.output.info(f"parallel builds jobs detected: {jobs}")
-        try:
-            limit = int(os.getenv("DOCKER_CPU_LIMIT", jobs))
-            self.output.info(f"DOCKER_CPU_LIMIT set to: {limit}")
-            jobs = jobs if limit > jobs else limit
-        except:
-            pass
-        self.output.info(f"parallel builds jobs limited to: {jobs}")
-        env.define("MAKEOPTS", f"--jobs {jobs} --load-average {jobs}")
-        env.define("CMAKE_BUILD_PARALLEL_LEVEL", f"{jobs}")
-
         env.vars(self).save_script("buildenv_pkg_config_path")
 
         tc = CMakeToolchain(self, generator="Ninja")
@@ -129,7 +111,7 @@ class QtPackage:
 
         tc.variables["OpenGL_GL_PREFERENCE"] = "LEGACY"
 
-        tc.variables["FEATURE_separate_debug_info"] = self.settings.build_type == 'Debug' and not is_msvc(self)
+        tc.variables["FEATURE_separate_debug_info"] = self.settings.build_type == "Debug" and not is_msvc(self)
         # tc.variables["FEATURE_cxx20"] = False
         tc.variables["FEATURE_c11"] = True
 
@@ -148,7 +130,7 @@ class QtPackage:
                     tc.variables[f"QT_FEATURE_{key}"] = str(value)
 
         if is_msvc(self):
-            tc.cache_variables["CMAKE_INSTALL_LIBDIR"] = 'lib'  # TODO stb: really needed?
+            tc.cache_variables["CMAKE_INSTALL_LIBDIR"] = "lib"  # TODO stb: really needed?
             # TODO: needed until this is fixed: https://github.com/conan-io/conan/issues/12012
             tc.cache_variables["CMAKE_TRY_COMPILE_CONFIGURATION"] = str(self.settings.build_type)
 

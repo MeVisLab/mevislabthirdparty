@@ -1,8 +1,8 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 75b160c..c253f36 100644
+index f1e2d2d..d01a0fc 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -524,12 +524,12 @@ ENDIF()
+@@ -526,12 +526,12 @@ ENDIF()
  
  IF( NOT IOS )
    IF( NOT ASSIMP_BUILD_MINIZIP )

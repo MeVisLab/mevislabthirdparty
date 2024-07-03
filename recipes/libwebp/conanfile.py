@@ -4,9 +4,10 @@ from conan.tools.files import copy, get, rmdir
 
 required_conan_version = ">=2.2.2"
 
+
 class ConanRecipe(ConanFile):
     name = "libwebp"
-    version = "1.3.2"
+    version = "1.4.0"
     description = "Library to encode and decode images in WebP format"
     homepage = "https://chromium.googlesource.com/webm/libwebp"
     license = "BSD-3-Clause"
@@ -21,10 +22,11 @@ class ConanRecipe(ConanFile):
         cmake_layout(self, src_folder="src")
 
     def source(self):
-        get(self,
-            sha256="2a499607df669e40258e53d0ade8035ba4ec0175244869d1025d460562aa09b4",
+        get(
+            self,
+            sha256="61f873ec69e3be1b99535634340d5bde750b2e4447caa1db9f61be3fd49ab1e5",
             url=f"https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-{self.version}.tar.gz",
-            strip_root=True
+            strip_root=True,
         )
 
     def generate(self):
@@ -44,11 +46,11 @@ class ConanRecipe(ConanFile):
         tc.variables["WEBP_BUILD_WEBP_JS"] = False
         tc.variables["WEBP_NEAR_LOSSLESS"] = True
         tc.variables["WEBP_BUILD_LIBWEBPMUX"] = True
-        tc.variables['CMAKE_DISABLE_FIND_PACKAGE_GIF'] = True
-        tc.variables['CMAKE_DISABLE_FIND_PACKAGE_PNG'] = True
-        tc.variables['CMAKE_DISABLE_FIND_PACKAGE_TIFF'] = True
-        tc.variables['CMAKE_DISABLE_FIND_PACKAGE_JPEG'] = True
-        tc.variables['CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS'] = True
+        tc.variables["CMAKE_DISABLE_FIND_PACKAGE_GIF"] = True
+        tc.variables["CMAKE_DISABLE_FIND_PACKAGE_PNG"] = True
+        tc.variables["CMAKE_DISABLE_FIND_PACKAGE_TIFF"] = True
+        tc.variables["CMAKE_DISABLE_FIND_PACKAGE_JPEG"] = True
+        tc.variables["CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS"] = True
         tc.variables["CMAKE_INSTALL_RPATH"] = "$ORIGIN;$ORIGIN/../lib"
         tc.generate()
 
@@ -66,8 +68,9 @@ class ConanRecipe(ConanFile):
         rmdir(self, self.package_path / "share")
 
     def package_info(self):
-        libname = (lambda name: ("lib" if self.settings.os == "Windows" else "")
-                   + (name + "_d" if self.settings.build_type == 'Debug' else name))
+        libname = lambda name: ("lib" if self.settings.os == "Windows" else "") + (
+            name + "_d" if self.settings.build_type == "Debug" else name
+        )
 
         self.cpp_info.set_property("cmake_file_name", "WebP")
         self.cpp_info.set_property("pkg_config_name", "libwebp-all-do-not-use")

@@ -8,7 +8,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "assimp"
-    version = "5.3.1"
+    version = "5.4.1"
     homepage = "https://www.assimp.org"
     description = "library to import and export various 3d-model-formats including scene-post-processing to generate missing render data"
     license = "BSD-3-Clause"
@@ -23,10 +23,11 @@ class ConanRecipe(ConanFile):
         self.requires("zlib/[>=1.2.13]")
 
     def source(self):
-        get(self,
-            sha256="f4020735fe4601de9d85cb335115568cce0e027a65e546dd8895081696d624bd",
+        get(
+            self,
+            sha256="08837ee7c50b98ca72d2c9e66510ca6640681db8800aa2d3b1fcd61ccc615113",
             url=f"https://github.com/assimp/assimp/archive/v{self.version}.zip",
-            strip_root=True
+            strip_root=True,
         )
         patch(self, patch_file="patches/001-no_pkgconfig_minizip.patch")
         patch(self, patch_file="patches/002-zlib_names.patch")
@@ -51,7 +52,7 @@ class ConanRecipe(ConanFile):
 
         if self.settings.os == "Windows":
             tc.preprocessor_definitions["NOMINMAX"] = 1
-        tc.cache_variables["CMAKE_POLICY_DEFAULT_CMP0077"] = "NEW" # to avoid warnings
+        tc.cache_variables["CMAKE_POLICY_DEFAULT_CMP0077"] = "NEW"  # to avoid warnings
 
         tc.generate()
 

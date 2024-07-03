@@ -13,7 +13,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "opencv"
-    version = "4.9.0"
+    version = "4.10.0"
     homepage = "https://opencv.org"
     description = "OpenCV is an open source computer vision and machine learning software library"
     license = "Apache-2.0"
@@ -59,7 +59,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="ddf76f9dffd322c7c3cb1f721d0887f62d747b82059342213138dc190f28bc6c",
+            sha256="b2171af5be6b26f7a06b1229948bbb2bdaa74fcf5cd097e0af6378fce50a6eb9",
             url=f"https://github.com/opencv/opencv/archive/{self.version}.tar.gz",
             strip_root=True,
         )

@@ -11,7 +11,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "libpq"
-    version = "16.2"
+    version = "16.3"
     homepage = "https://www.postgresql.org/docs/current/static/libpq.html"
     description = "The library used by all the standard PostgreSQL tools."
     license = "PostgreSQL"
@@ -29,7 +29,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="446e88294dbc2c9085ab4b7061a646fa604b4bec03521d5ea671c2e5ad9b2952",
+            sha256="331963d5d3dc4caf4216a049fa40b66d6bcb8c730615859411b9518764e60585",
             url=f"https://ftp.postgresql.org/pub/source/v{self.version}/postgresql-{self.version}.tar.bz2",
             strip_root=True,
         )

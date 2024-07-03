@@ -10,7 +10,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "harfbuzz"
-    version = "8.3.0"
+    version = "8.5.0"
     homepage = "http://harfbuzz.org"
     description = "An OpenType text shaping engine"
     license = "MIT"
@@ -22,31 +22,34 @@ class ConanRecipe(ConanFile):
         basic_layout(self, src_folder="src")
 
     def source(self):
-        get(self,
-            sha256="109501eaeb8bde3eadb25fab4164e993fbace29c3d775bcaa1c1e58e2f15f847",
+        get(
+            self,
+            sha256="77e4f7f98f3d86bf8788b53e6832fb96279956e1c3961988ea3d4b7ca41ddc27",
             url=f"https://github.com/harfbuzz/harfbuzz/releases/download/{self.version}/harfbuzz-{self.version}.tar.xz",
-            strip_root=True
-            )
+            strip_root=True,
+        )
         patch(self, patch_file="patches/001-debug_suffix.patch")
 
     def generate(self):
         VirtualBuildEnv(self).generate()
         tc = MesonToolchain(self)
-        tc.project_options.update({
-            "glib": "disabled",
-            "icu": "disabled",
-            "freetype": "disabled",
-            "gdi": "enabled",
-            "directwrite": "disabled",
-            "gobject": "disabled",
-            "introspection": "disabled",
-            "cairo": "disabled",
-            "tests": "disabled",
-            "docs": "disabled",
-            "benchmark": "disabled",
-            "icu_builtin": "false",
-            "utilities": "disabled"
-        })
+        tc.project_options.update(
+            {
+                "glib": "disabled",
+                "icu": "disabled",
+                "freetype": "disabled",
+                "gdi": "enabled",
+                "directwrite": "disabled",
+                "gobject": "disabled",
+                "introspection": "disabled",
+                "cairo": "disabled",
+                "tests": "disabled",
+                "docs": "disabled",
+                "benchmark": "disabled",
+                "icu_builtin": "false",
+                "utilities": "disabled",
+            }
+        )
 
         if is_msvc(self):
             tc.cpp_args.append("/bigobj")

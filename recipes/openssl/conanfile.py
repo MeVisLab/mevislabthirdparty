@@ -21,7 +21,7 @@ required_conan_version = ">=2.2.2"
 
 class OpenSSLConan(ConanFile):
     name = "openssl"
-    version = "3.2.1"
+    version = "3.2.2"
     homepage = "https://www.openssl.org"
     license = "Apache-2.0"
     description = "full-strength general purpose cryptography library (including SSL and TLS)"
@@ -48,7 +48,7 @@ class OpenSSLConan(ConanFile):
     def source(self):
         get(
             self,
-            sha256="83c7329fe52c850677d75e5d0b0ca245309b97e8ecbcfdc1dfdc4ab9fac35b39",
+            sha256="197149c18d9e9f292c43f0400acaba12e5f52cacfe050f3d199277ea738ec2e7",
             url=f"https://www.openssl.org/source/openssl-{self.version}.tar.gz",
             destination=self.source_folder,
             strip_root=True,
@@ -182,13 +182,14 @@ class OpenSSLConan(ConanFile):
 
     def package(self):
         copy(self, "*LICENSE*", src=self.source_path, dst=self.package_path / "licenses")
+
         self._make_install()
         if is_apple_os(self):
             fix_apple_shared_install_name(self)
 
         for root, _, files in os.walk(self.package_folder):
             for filename in files:
-                if fnmatch.fnmatch(filename, "*.pdb"):
+                if fnmatch.fnmatch(filename, "*.pdb") or fnmatch.fnmatch(filename, "*.cmake"):
                     os.unlink(os.path.join(self.package_folder, root, filename))
         # if is_msvc(self):
         #    if self.settings.build_type == "Debug":
