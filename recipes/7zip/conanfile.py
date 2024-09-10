@@ -3,14 +3,15 @@ from conan.tools.files import copy, get, replace_in_file
 from conan.tools.layout import basic_layout
 from conan.tools.microsoft import NMakeToolchain
 from conans.errors import ConanInvalidConfiguration
+import os
 
 required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
     name = "7zip"
-    version = "24.06"
-    license = ("LGPL-2.1-or-later", "BSD-3-Clause")
+    version = "24.08"
+    license = "LGPL-2.1-or-later AND BSD-3-Clause"
     homepage = "https://www.7-zip.org"
     description = "7-Zip is a file archiver with a high compression ratio"
     settings = "os", "arch", "compiler", "build_type"
@@ -39,7 +40,7 @@ class ConanRecipe(ConanFile):
         version = "".join(self.version.split("."))
         get(
             self,
-            sha256="2aa1660c773525b2ed84d6cd7ff0680c786ec0893b87e4db44654dcb7f5ac8b5",
+            sha256="aa04aac906a04df59e7301f4c69e9f48808e6c8ecae4eb697703a47bfb0ac042",
             url=f"https://sourceforge.net/projects/sevenzip/files/7-Zip/{self.version}/7z{version}-src.tar.xz",
         )
 
@@ -48,17 +49,29 @@ class ConanRecipe(ConanFile):
         tc.generate()
 
     def build(self):
-        make_file = self.source_path / "CPP" / "Build.mak"
-        make_file.chmod(0o644)
+        make_file = os.path.join(self.source_folder, "CPP", "Build.mak")
+        os.chmod(make_file, 0o644)
         replace_in_file(self, make_file, "-MT", f"-{self.settings.compiler.runtime}")
         replace_in_file(self, make_file, "-MD", f"-{self.settings.compiler.runtime}")
-        self.run(f"nmake /f makefile PLATFORM=x64", cwd=self.source_path / "CPP" / "7zip")
+        self.run(f"nmake /f makefile PLATFORM=x64", cwd=os.path.join(self.source_folder, "CPP", "7zip"))
 
     def package(self):
-        copy(self, "License.txt", dst=self.package_path / "licenses", src=self.source_path / "DOC")
-        copy(self, "unRarLicense.txt", dst=self.package_path / "licenses", src=self.source_path / "DOC")
-        copy(self, "*/7z.exe", dst=self.package_path / "bin", src=self.source_path / "CPP" / "7zip", keep_path=False)
-        copy(self, "*/7z.dll", dst=self.package_path / "bin", src=self.source_path / "CPP" / "7zip", keep_path=False)
+        copy(self, "License.txt", dst=os.path.join(self.package_folder, "licenses"), src=os.path.join(self.source_folder, "DOC"))
+        copy(self, "unRarLicense.txt", dst=os.path.join(self.package_folder, "licenses"), src=os.path.join(self.source_folder, "DOC"))
+        copy(
+            self,
+            "*/7z.exe",
+            dst=os.path.join(self.package_folder, "bin"),
+            src=os.path.join(self.source_folder, "CPP", "7zip"),
+            keep_path=False,
+        )
+        copy(
+            self,
+            "*/7z.dll",
+            dst=os.path.join(self.package_folder, "bin"),
+            src=os.path.join(self.source_folder, "CPP", "7zip"),
+            keep_path=False,
+        )
 
     def package_info(self):
         self.cpp_info.includedirs.clear()

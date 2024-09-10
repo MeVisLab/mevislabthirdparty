@@ -9,7 +9,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "protobuf"
-    version = "27.1"
+    version = "27.3"
     homepage = "https://developers.google.com/protocol-buffers"
     description = "Google's Protocol Buffers are a language-neutral, platform-neutral extensible mechanism for serializing structured data"
     license = "BSD-3-Clause"
@@ -34,11 +34,13 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="6fbe2e6f703bcd3a246529c2cab586ca12a98c4e641f5f71d51fde09eb48e9e7",
+            sha256="1535151efbc7893f38b0578e83cac584f2819974f065698976989ec71c1af84a",
             url=f"https://github.com/protocolbuffers/protobuf/releases/download/v{self.version}/protobuf-{self.version}.tar.gz",
             strip_root=True,
         )
-        replace_in_file(self, self.source_path / "CMakeLists.txt", 'set(protobuf_DEBUG_POSTFIX "d"', 'set(protobuf_DEBUG_POSTFIX "_d"')
+        replace_in_file(
+            self, os.path.join(self.source_folder, "CMakeLists.txt"), 'set(protobuf_DEBUG_POSTFIX "d"', 'set(protobuf_DEBUG_POSTFIX "_d"'
+        )
 
     def generate(self):
         cd = CMakeDeps(self)
@@ -63,10 +65,10 @@ class ConanRecipe(ConanFile):
         cmake.build()
 
     def package(self):
-        copy(self, "LICENSE", src=self.source_path, dst=self.package_path / "licenses")
+        copy(self, "LICENSE", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
         cmake = CMake(self)
         cmake.install()
-        rmdir(self, self.package_path / "lib" / "pkgconfig")
+        rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
 
     def package_info(self):
         # https://github.com/protocolbuffers/protobuf/issues/14576

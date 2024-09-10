@@ -19,25 +19,13 @@ SoIndexedFaceSet::
     if (vpCache.getNumNormals() > 0)
         vpCache.sendNormal(vpCache.getNormals(0));
 @?}
-    const char *vertexPtr = vpCache.getVertices(0);
-    const unsigned int vertexStride = vpCache.getVertexStride();
-    SoVPCacheFunc *const vertexFunc = vpCache.vertexFunc;
 @?{ Fm | Vm
-    const char *colorPtr = vpCache.getColors(0);
-    const unsigned int colorStride = vpCache.getColorStride();
-    SoVPCacheFunc *const colorFunc = vpCache.colorFunc;
     const int32_t *const colorIndx = getColorIndices();
 @?}
 @?{ Fn | Vn
-    const char *normalPtr = vpCache.getNormals(0);
-    const unsigned int normalStride = vpCache.getNormalStride();
-    SoVPCacheFunc *const normalFunc = vpCache.normalFunc;
     const int32_t *const normalIndx = getNormalIndices();
 @?}
 @?{ T
-    const char *texCoordPtr = vpCache.getTexCoords(0);
-    const unsigned int texCoordStride = vpCache.getTexCoordStride();
-    SoVPCacheFunc *const texCoordFunc = vpCache.texCoordFunc;
     const int32_t *const tCoordIndx = getTexCoordIndices();
 @?}
 
@@ -45,44 +33,44 @@ SoIndexedFaceSet::
     int vtxCtr = 0;
     for (int tri = 0; tri < numTris; tri++) {
 @?{ Fm
-        (*colorFunc)(colorPtr+colorStride*colorIndx[tri]);
+        vpCache.sendColorAtIndex(colorIndx[tri]);
 @?}
 @?{ Fn
-        (*normalFunc)(normalPtr+normalStride*normalIndx[tri]);
+        vpCache.sendNormalAtIndex(normalIndx[tri]);
 @?}
 
 @?{ Vm
-        (*colorFunc)(colorPtr+colorStride*colorIndx[vtxCtr]);
+        vpCache.sendColorAtIndex(colorIndx[vtxCtr]);
 @?}
 @?{ Vn
-        (*normalFunc)(normalPtr+normalStride*normalIndx[vtxCtr]);
+        vpCache.sendNormalAtIndex(normalIndx[vtxCtr]);
 @?}
 @?{ T
-        (*texCoordFunc)(texCoordPtr+texCoordStride*tCoordIndx[vtxCtr]);
+        vpCache.sendTexCoordAtIndex(tCoordIndx[vtxCtr]);
 @?}
-        (*vertexFunc)(vertexPtr+vertexStride*vertexIndex[vtxCtr]);
+        vpCache.sendVertexAtIndex(vertexIndex[vtxCtr]);
 
 @?{ Vm
-        (*colorFunc)(colorPtr+colorStride*colorIndx[vtxCtr+1]);
+        vpCache.sendColorAtIndex(colorIndx[vtxCtr+1]);
 @?}
 @?{ Vn
-        (*normalFunc)(normalPtr+normalStride*normalIndx[vtxCtr+1]);
+        vpCache.sendNormalAtIndex(normalIndx[vtxCtr+1]);
 @?}
 @?{ T
-        (*texCoordFunc)(texCoordPtr+texCoordStride*tCoordIndx[vtxCtr+1]);
+        vpCache.sendTexCoordAtIndex(tCoordIndx[vtxCtr+1]);
 @?}
-        (*vertexFunc)(vertexPtr+vertexStride*vertexIndex[vtxCtr+1]);
+        vpCache.sendVertexAtIndex(vertexIndex[vtxCtr+1]);
 
 @?{ Vm
-        (*colorFunc)(colorPtr+colorStride*colorIndx[vtxCtr+2]);
+        vpCache.sendColorAtIndex(colorIndx[vtxCtr+2]);
 @?}
 @?{ Vn
-        (*normalFunc)(normalPtr+normalStride*normalIndx[vtxCtr+2]);
+        vpCache.sendNormalAtIndex(normalIndx[vtxCtr+2]);
 @?}
 @?{ T
-        (*texCoordFunc)(texCoordPtr+texCoordStride*tCoordIndx[vtxCtr+2]);
+        vpCache.sendTexCoordAtIndex(tCoordIndx[vtxCtr+2]);
 @?}
-        (*vertexFunc)(vertexPtr+vertexStride*vertexIndex[vtxCtr+2]);
+        vpCache.sendVertexAtIndex(vertexIndex[vtxCtr+2]);
         vtxCtr += 4; // Skip past END_OF_FACE_INDEX
     }
     glEnd();
@@ -104,25 +92,13 @@ SoIndexedFaceSet::
     if (vpCache.getNumNormals() > 0)
         vpCache.sendNormal(vpCache.getNormals(0));
 @?}
-    const char *vertexPtr = vpCache.getVertices(0);
-    const unsigned int vertexStride = vpCache.getVertexStride();
-    SoVPCacheFunc *const vertexFunc = vpCache.vertexFunc;
 @?{ Fm | Vm
-    const char *colorPtr = vpCache.getColors(0);
-    const unsigned int colorStride = vpCache.getColorStride();
-    SoVPCacheFunc *const colorFunc = vpCache.colorFunc;
     const int32_t *const colorIndx = getColorIndices();
 @?}
 @?{ Fn | Vn
-    const char *normalPtr = vpCache.getNormals(0);
-    const unsigned int normalStride = vpCache.getNormalStride();
-    SoVPCacheFunc *const normalFunc = vpCache.normalFunc;
     const int32_t *const normalIndx = getNormalIndices();
 @?}
 @?{ T
-    const char *texCoordPtr = vpCache.getTexCoords(0);
-    const unsigned int texCoordStride = vpCache.getTexCoordStride();
-    SoVPCacheFunc *const texCoordFunc = vpCache.texCoordFunc;
     const int32_t *const tCoordIndx = getTexCoordIndices();
 @?}
 
@@ -133,58 +109,58 @@ SoIndexedFaceSet::
 @?}     
     for (int quad = 0; quad < numQuads; quad++) {
 @?{ Fm
-        (*colorFunc)(colorPtr+colorStride*colorIndx[faceCtr]);
+        vpCache.sendColorAtIndex(colorIndx[faceCtr]);
 @?}
 @?{ Fn
-        (*normalFunc)(normalPtr+normalStride*normalIndx[faceCtr]);
+        vpCache.sendNormalAtIndex(normalIndx[faceCtr]);
 @?}
 @?{ Fn | Fm
         ++faceCtr;
 @?}     
 
 @?{ Vm
-        (*colorFunc)(colorPtr+colorStride*colorIndx[vtxCtr]);
+        vpCache.sendColorAtIndex(colorIndx[vtxCtr]);
 @?}
 @?{ Vn
-        (*normalFunc)(normalPtr+normalStride*normalIndx[vtxCtr]);
+        vpCache.sendNormalAtIndex(normalIndx[vtxCtr]);
 @?}
 @?{ T
-        (*texCoordFunc)(texCoordPtr+texCoordStride*tCoordIndx[vtxCtr]);
+        vpCache.sendTexCoordAtIndex(tCoordIndx[vtxCtr]);
 @?}
-        (*vertexFunc)(vertexPtr+vertexStride*vertexIndex[vtxCtr]);
+        vpCache.sendVertexAtIndex(vertexIndex[vtxCtr]);
 
 @?{ Vm
-        (*colorFunc)(colorPtr+colorStride*colorIndx[vtxCtr+1]);
+        vpCache.sendColorAtIndex(colorIndx[vtxCtr+1]);
 @?}
 @?{ Vn
-        (*normalFunc)(normalPtr+normalStride*normalIndx[vtxCtr+1]);
+        vpCache.sendNormalAtIndex(normalIndx[vtxCtr+1]);
 @?}
 @?{ T
-        (*texCoordFunc)(texCoordPtr+texCoordStride*tCoordIndx[vtxCtr+1]);
+        vpCache.sendTexCoordAtIndex(tCoordIndx[vtxCtr+1]);
 @?}
-        (*vertexFunc)(vertexPtr+vertexStride*vertexIndex[vtxCtr+1]);
+        vpCache.sendVertexAtIndex(vertexIndex[vtxCtr+1]);
 
 @?{ Vm
-        (*colorFunc)(colorPtr+colorStride*colorIndx[vtxCtr+2]);
+        vpCache.sendColorAtIndex(colorIndx[vtxCtr+2]);
 @?}
 @?{ Vn
-        (*normalFunc)(normalPtr+normalStride*normalIndx[vtxCtr+2]);
+        vpCache.sendNormalAtIndex(normalIndx[vtxCtr+2]);
 @?}
 @?{ T
-        (*texCoordFunc)(texCoordPtr+texCoordStride*tCoordIndx[vtxCtr+2]);
+        vpCache.sendTexCoordAtIndex(tCoordIndx[vtxCtr]+2);
 @?}
-        (*vertexFunc)(vertexPtr+vertexStride*vertexIndex[vtxCtr+2]);
+        vpCache.sendVertexAtIndex(vertexIndex[vtxCtr+2]);
 
 @?{ Vm
-        (*colorFunc)(colorPtr+colorStride*colorIndx[vtxCtr+3]);
+        vpCache.sendColorAtIndex(colorIndx[vtxCtr+3]);
 @?}
 @?{ Vn
-        (*normalFunc)(normalPtr+normalStride*normalIndx[vtxCtr+3]);
+        vpCache.sendNormalAtIndex(normalIndx[vtxCtr+3]);
 @?}
 @?{ T
-        (*texCoordFunc)(texCoordPtr+texCoordStride*tCoordIndx[vtxCtr+3]);
+        vpCache.sendTexCoordAtIndex(tCoordIndx[vtxCtr+3]);
 @?}
-        (*vertexFunc)(vertexPtr+vertexStride*vertexIndex[vtxCtr+3]);
+        vpCache.sendVertexAtIndex(vertexIndex[vtxCtr+3]);
         vtxCtr += 5; // Skip past END_OF_FACE_INDEX
     }
     glEnd();
@@ -208,25 +184,13 @@ SoIndexedFaceSet::
     if (vpCache.getNumNormals() > 0)
         vpCache.sendNormal(vpCache.getNormals(0));
 @?}
-    const char *vertexPtr = vpCache.getVertices(0);
-    const unsigned int vertexStride = vpCache.getVertexStride();
-    SoVPCacheFunc *const vertexFunc = vpCache.vertexFunc;
 @?{ Fm | Vm
-    const char *colorPtr = vpCache.getColors(0);
-    const unsigned int colorStride = vpCache.getColorStride();
-    SoVPCacheFunc *const colorFunc = vpCache.colorFunc;
     const int32_t *const colorIndx = getColorIndices();
 @?}
 @?{ Fn | Vn
-    const char *normalPtr = vpCache.getNormals(0);
-    const unsigned int normalStride = vpCache.getNormalStride();
-    SoVPCacheFunc *const normalFunc = vpCache.normalFunc;
     const int32_t *const normalIndx = getNormalIndices();
 @?}
 @?{ T
-    const char *texCoordPtr = vpCache.getTexCoords(0);
-    const unsigned int texCoordStride = vpCache.getTexCoordStride();
-    SoVPCacheFunc *const texCoordFunc = vpCache.texCoordFunc;
     const int32_t *const tCoordIndx = getTexCoordIndices();
 @?}
     int vtxCtr = numQuads*5 + numTris*4;
@@ -235,10 +199,10 @@ SoIndexedFaceSet::
 @?}
     while (vtxCtr < numVI) {
 @?{ Fm
-        (*colorFunc)(colorPtr+colorStride*colorIndx[faceCtr]);
+        vpCache.sendColorAtIndex(colorIndx[faceCtr]);
 @?}
 @?{ Fn
-        (*normalFunc)(normalPtr+normalStride*normalIndx[faceCtr]);
+        vpCache.sendNormalAtIndex(normalIndx[faceCtr]);
 @?}
 @?{ Fn | Fm
         ++faceCtr;
@@ -247,15 +211,15 @@ SoIndexedFaceSet::
         while (vtxCtr < numVI &&
                (vertexIndex[vtxCtr] != SO_END_FACE_INDEX)) {
 @?{ Vm
-            (*colorFunc)(colorPtr+colorStride*colorIndx[vtxCtr]);
+            vpCache.sendColorAtIndex(colorIndx[vtxCtr]);
 @?}
 @?{ Vn
-            (*normalFunc)(normalPtr+normalStride*normalIndx[vtxCtr]);
+        vpCache.sendNormalAtIndex(normalIndx[vtxCtr]);
 @?}
 @?{ T
-            (*texCoordFunc)(texCoordPtr+texCoordStride*tCoordIndx[vtxCtr]);
+            vpCache.sendTexCoordAtIndex(tCoordIndx[vtxCtr]);
 @?}
-            (*vertexFunc)(vertexPtr+vertexStride*vertexIndex[vtxCtr]);
+            vpCache.sendVertexAtIndex(vertexIndex[vtxCtr]);
             vtxCtr++;
         }
         vtxCtr++; // Skip over END_FACE_INDEX

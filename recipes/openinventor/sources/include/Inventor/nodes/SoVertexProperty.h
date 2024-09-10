@@ -328,6 +328,11 @@ SoEXTENDER class INVENTOR_API SoVertexPropertyCache {
 
     void        invalidate() { needFromState = ALL_FROM_STATE_BITS; }
 
+    void sendVertexAtIndex(const int32_t index);
+    void sendNormalAtIndex(const int32_t index);
+    void sendColorAtIndex(const int32_t index);
+    void sendTexCoordAtIndex(const int32_t index);
+
     //! Constructor.   Initializes everything.
     SoVertexPropertyCache();
     

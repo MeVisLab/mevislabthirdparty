@@ -12,7 +12,7 @@ class ConanRecipe(ConanFile):
     provides = "libjpeg"
     version = "3.0.3"
     description = "SIMD-accelerated libjpeg-compatible JPEG codec library"
-    license = ("BSD-3-Clause", "IJG", "Zlib")
+    license = "BSD-3-Clause AND IJG AND Zlib"
     homepage = "https://libjpeg-turbo.org"
     package_type = "shared-library"
     settings = "os", "arch", "compiler", "build_type"

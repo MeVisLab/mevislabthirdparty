@@ -10,7 +10,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "pythonqt"
-    version = "3.5.3"
+    version = "3.5.4"
     homepage = "https://mevislab.github.io/pythonqt"
     description = "PythonQt is a dynamic Python binding for Qt"
     license = "LGPL-2.1-only"
@@ -29,7 +29,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="969e42cd4ffd6aa56ca07ea4d80a206d4a3402ed1f3203ad9a66d9ca04c32411",
+            sha256="0031e564c5f9c01b4141978dc857cf3bc744b9d43575cd18cc8e84db934cc8c6",
             url=f"https://github.com/MeVisLab/pythonqt/archive/refs/tags/v{self.version}.zip",
             strip_root=True
         )

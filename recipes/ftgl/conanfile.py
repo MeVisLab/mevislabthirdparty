@@ -1,8 +1,10 @@
+import os
 from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps, cmake_layout
 from conan.tools.files import copy, get, patch, collect_libs
 
 required_conan_version = ">=2.2.2"
+
 
 class ConanRecipe(ConanFile):
     name = "ftgl"
@@ -15,25 +17,25 @@ class ConanRecipe(ConanFile):
     exports_sources = ["patches/*", "CMakeLists.txt"]
 
     mlab_hooks = {
-        'dependencies.system_libs': [
-            'libfreetype.so.6',
-            'libGLU.so.1'
-        ],
+        "dependencies.system_libs": ["libfreetype.so.6", "libGLU.so.1"],
     }
 
+    def layout(self):
+        cmake_layout(self)
+
     def source(self):
-        get(self,
+        get(
+            self,
             url=f"https://sourceforge.net/projects/ftgl/files/FTGL Source/{self.version}/ftgl-{self.version}.tar.gz",
             sha256="2759cbd5fac0b631e8b012923cd0d2add320f6e541b399a7cda37163ad034075",
-            strip_root=True)
-        patch(self, patch_file="patches/001-mevis.patch")
+            destination="src",
+            strip_root=True,
+        )
+        patch(self, base_path="src", patch_file="patches/001-mevis.patch")
 
     def requirements(self):
         if self.settings.os != "Linux":
             self.requires("freetype/[>=2.10.4]", transitive_headers=True)
-
-    def layout(self):
-        cmake_layout(self)
 
     def generate(self):
         tc = CMakeToolchain(self)
@@ -54,8 +56,8 @@ class ConanRecipe(ConanFile):
     def package(self):
         cmake = CMake(self)
         cmake.install()
-        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False, excludes="*vc???.pdb")
-        copy(self, "license.txt", src=self.source_path, dst=self.package_path / "licenses")
+        copy(self, "*.pdb", src=self.build_folder, dst=os.path.join(self.package_folder, "bin"), keep_path=False, excludes="*vc???.pdb")
+        copy(self, "license.txt", src=os.path.join(self.source_folder, "src"), dst=os.path.join(self.package_folder, "licenses"))
 
     def package_info(self):
         self.cpp_info.includedirs.append("include/FTGL")

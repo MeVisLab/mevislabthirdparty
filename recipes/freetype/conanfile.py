@@ -4,7 +4,7 @@ licensed under the MIT License.
 """
 
 import re
-
+import os
 from conan import ConanFile
 from conan.errors import ConanInvalidConfiguration
 from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
@@ -15,7 +15,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "freetype"
-    version = "2.13.2"
+    version = "2.13.3"
     homepage = "http://www.freetype.org"
     description = "A high-quality and portable font engine"
     license = "FTL"
@@ -28,8 +28,7 @@ class ConanRecipe(ConanFile):
 
     def validate(self):
         if self.settings.os == "Linux":
-            raise ConanInvalidConfiguration(
-                f"{self.name} is not supported on Linux. Please use the one provided by the system.")
+            raise ConanInvalidConfiguration(f"{self.name} is not supported on Linux. Please use the one provided by the system.")
 
     def layout(self):
         cmake_layout(self, src_folder="src")
@@ -41,17 +40,21 @@ class ConanRecipe(ConanFile):
         self.requires("brotli/[>=1.0.9]")
 
     def source(self):
-        get(self,
-            sha256="1ac27e16c134a7f2ccea177faba19801131116fd682efc1f5737037c5db224b5",
+        get(
+            self,
+            sha256="5c3a8e78f7b24c20b25b54ee575d6daa40007a5f4eea2845861c3409b3021747",
             url=f"https://download.savannah.gnu.org/releases/freetype/freetype-{self.version}.tar.gz",
-            strip_root=True
+            strip_root=True,
         )
-        replace_in_file(self, self.source_path / "CMakeLists.txt",
-                        'if ("${CMAKE_BINARY_DIR}" STREQUAL "${CMAKE_SOURCE_DIR}")', 'if (0)')
-        replace_in_file(self, self.source_path / "CMakeLists.txt", "find_package(BrotliDec REQUIRED)",
-                                  "find_package(Brotli REQUIRED)\n"
-                                  "set(BROTLIDEC_FOUND 1)\n"
-                                  "set(BROTLIDEC_LIBRARIES \"brotli::brotli\")")
+        replace_in_file(
+            self, os.path.join(self.source_folder, "CMakeLists.txt"), 'if ("${CMAKE_BINARY_DIR}" STREQUAL "${CMAKE_SOURCE_DIR}")', "if (0)"
+        )
+        replace_in_file(
+            self,
+            os.path.join(self.source_folder, "CMakeLists.txt"),
+            "find_package(BrotliDec REQUIRED)",
+            "find_package(Brotli REQUIRED)\n" "set(BROTLIDEC_FOUND 1)\n" 'set(BROTLIDEC_LIBRARIES "brotli::brotli")',
+        )
 
     def generate(self):
         tc = CMakeToolchain(self)
@@ -88,22 +91,22 @@ class ConanRecipe(ConanFile):
         cmake.build()
 
     def _extract_libtool_version(self):
-        conf_raw = load(self, self.source_path / "builds" / "unix" / "configure.raw")
+        conf_raw = load(self, os.path.join(self.source_folder, "builds", "unix", "configure.raw"))
         return next(re.finditer(r"^version_info='([0-9:]+)'", conf_raw, flags=re.M)).group(1).replace(":", ".")
 
     @property
     def _libtool_version_txt(self):
-        return self.package_path / "config" / "freetype-libtool-version.txt"
+        return os.path.join(self.package_folder, "config", "freetype-libtool-version.txt")
 
     def package(self):
         cmake = CMake(self)
         cmake.install()
         libtool_version = self._extract_libtool_version()
         save(self, self._libtool_version_txt, libtool_version)
-        copy(self, "FTL.TXT", src=self.source_path / "docs", dst=self.package_path / "licenses")
-        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False, excludes="*vc???.pdb")
-        rmdir(self, self.package_path / "lib" / "cmake")
-        rmdir(self, self.package_path / "lib" / "pkgconfig")
+        copy(self, "FTL.TXT", src=os.path.join(self.source_folder, "docs"), dst=os.path.join(self.package_folder, "licenses"))
+        copy(self, "*.pdb", src=self.build_folder, dst=os.path.join(self.package_folder, "bin"), keep_path=False, excludes="*vc???.pdb")
+        rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
 
     def package_info(self):
         self.cpp_info.set_property("cmake_find_mode", "both")

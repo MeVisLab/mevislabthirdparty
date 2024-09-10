@@ -2,6 +2,8 @@ from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
 from conan.tools.files import collect_libs, copy, get, rmdir
 from conan.tools.microsoft import is_msvc
+import pathlib
+import os
 
 required_conan_version = ">=2.2.2"
 
@@ -9,7 +11,7 @@ required_conan_version = ">=2.2.2"
 class ConanRecipe(ConanFile):
     name = "gtest"
     display_name = "GTest"
-    version = "1.14.0"
+    version = "1.15.2"
     homepage = "https://github.com/google/googletest"
     description = "Google Testing and Mocking Framework"
     license = "BSD-3-Clause"
@@ -20,17 +22,19 @@ class ConanRecipe(ConanFile):
         cmake_layout(self, src_folder="src")
 
     def source(self):
-        get(self,
+        get(
+            self,
+            sha256="7b42b4d6ed48810c5362c265a17faebe90dc2373c885e5216439d37927f02926",
             url=f"https://github.com/google/googletest/archive/refs/tags/v{self.version}.tar.gz",
-            sha256="8ad598c73ad796e0d8280b082cebd82a630d73e73cd3c70057938a6501bba5d7",
             destination=self.source_folder,
-            strip_root=True)
+            strip_root=True,
+        )
 
     def generate(self):
         tc = CMakeToolchain(self)
         if is_msvc(self) and "MD" in str(self.settings.compiler.runtime):
             tc.variables["gtest_force_shared_crt"] = "ON"
-        tc.variables["CMAKE_DEBUG_POSTFIX"] = '_d'
+        tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
         tc.variables["BUILD_SHARED_LIBS"] = True
         tc.variables["CMAKE_POSITION_INDEPENDENT_CODE"] = True
         tc.generate()
@@ -41,13 +45,13 @@ class ConanRecipe(ConanFile):
         cmake.build()
 
     def package(self):
-        copy(self, "LICENSE", src=self.source_path, dst=self.package_path / "licenses")
-        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False)
+        copy(self, "LICENSE", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
+        copy(self, "*.pdb", src=self.build_folder, dst=os.path.join(self.package_folder, "bin"), keep_path=False)
         cmake = CMake(self)
         cmake.install()
-        rmdir(self, self.package_path / "lib" / "pkgconfig")
-        rmdir(self, self.package_path / "lib" / "cmake")
-        for pdb in (self.package_path / "lib").glob("*.pdb"):
+        rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))
+        for pdb in pathlib.Path(os.path.join(self.package_folder, "lib")).glob("*.pdb"):
             pdb.unlink()
 
     def package_info(self):

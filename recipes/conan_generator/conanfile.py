@@ -104,20 +104,47 @@ class _ThirdPartyInformationBase:
         self.conanfile = conanfile
 
     def _get_licenses_of_dependency(self, dependency):
-        # support several licenses:
-        licenses = dependency.license
-        if not isinstance(licenses, (list, tuple)):
-            licenses = [licenses]
-        license_names = []
-        for license_id in licenses:
-            lic = spdx_licenses.get(license_id.lower(), other_licenses.get(license_id.lower()))
-            if not lic:
-                self.conanfile.output.info("\n\n")
-                self.conanfile.output.error(f"Invalid license: '{license_id}'")
-                self.conanfile.output.info("Please use a SPDX license identifier (https://spdx.org/licenses/).")
+    
+        def partition_all(s: str, separators: tuple[str]):
+            if separators:
+                before, sep, after = s.partition(separators[0])
+                if sep:
+                    # separator occurred in sub-string, also separate strings left and right of it
+                    return partition_all(before, separators[1:]) + [sep] + partition_all(after, separators)
+                else:
+                    # separator didn't occur, try next separator
+                    return partition_all(s, separators[1:])
+            elif s:
+                return [s]
             else:
+                return []
+    
+        separators = (" ", "(", ")")
+        non_parts = separators + ("AND", "OR")
+        licenses = dependency.license
+        if isinstance(licenses, (list, tuple)):
+            # support license lists:
+            license_list = licenses
+            licenses = " AND ".join(licenses)
+        else:
+            # split potential SPDX license expression
+            license_list = partition_all(licenses, separators)
+        license_names = []
+        for license_id in license_list:
+            if license_id in non_parts:
+                # license_names.append(license_id)  # should we retain the license expression???
+                continue
+            lic = spdx_licenses.get(license_id.lower(), other_licenses.get(license_id.lower()))
+            if lic:
                 license_names.append(lic['name'])
-        return licenses, license_names
+            else:
+                # use license id unchanged
+                license_names.append(license_id)
+                if not license_id.lower().startswith("licenseref-"):
+                    self.conanfile.output.info("\n\n")
+                    self.conanfile.output.error(f"Invalid license: '{license_id}' in {dependency.ref.name}")
+                    self.conanfile.output.info("Please use a SPDX license identifier (https://spdx.org/licenses/).")
+        return licenses, ", ".join(license_names)
 
 
 class ThirdPartyInformationDeps(_ThirdPartyInformationBase):
@@ -140,8 +167,8 @@ class ThirdPartyInformationDeps(_ThirdPartyInformationBase):
                 "id": pkg_name.lower(),
                 "name": get_display_name(dependency),
                 "version": str(dependency.ref.version),
-                "license": ", ".join(licenses),
-                "license_name": ", ".join(license_names),
+                "license": licenses,
+                "license_name": license_names,
                 "homepage": dependency.homepage,
                 "description": dependency.description,
                 # TODO MeVisLab shows all licenses anyway.
@@ -236,7 +263,7 @@ class ThirdPartyDocBookDeps(_ThirdPartyInformationBase):
                 "cpp_info": dependency.cpp_info,
                 "name": get_display_name(dependency),
                 "version": str(dependency.ref.version),
-                "license": ", ".join(licenses),
+                "license": licenses,
                 "public_sdk_only": public_sdk_only,
                 "description": dependency.description,
                 "homepage": dependency.homepage,

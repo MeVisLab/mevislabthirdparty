@@ -1,8 +1,8 @@
 diff --git a/Rendering/OpenGL2/vtkOpenGLRenderWindow.cxx b/Rendering/OpenGL2/vtkOpenGLRenderWindow.cxx
-index 519c327b..c297f636 100644
+index 1a6b8e7d..b0442d2a 100644
 --- a/Rendering/OpenGL2/vtkOpenGLRenderWindow.cxx
 +++ b/Rendering/OpenGL2/vtkOpenGLRenderWindow.cxx
-@@ -1362,9 +1362,9 @@ void vtkOpenGLRenderWindow::Frame()
+@@ -1361,9 +1361,9 @@ void vtkOpenGLRenderWindow::Frame()
        {
          this->BlitDisplayFramebuffersToHardware();
        }
@@ -14,7 +14,7 @@ index 519c327b..c297f636 100644
        }
      }
    }
-@@ -1545,10 +1545,10 @@ void vtkOpenGLRenderWindow::BlitDisplayFramebuffersToHardware()
+@@ -1544,10 +1544,10 @@ void vtkOpenGLRenderWindow::BlitDisplayFramebuffersToHardware()
    this->GetState()->PopFramebufferBindings();
  }
  

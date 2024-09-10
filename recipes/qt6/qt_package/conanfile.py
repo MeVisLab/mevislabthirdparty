@@ -6,7 +6,8 @@ from conan import ConanFile
 from conan.tools.build import check_min_cppstd, can_run
 from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
 from conan.tools.env import Environment, VirtualRunEnv
-from conan.tools.files import load, save, copy, get, patch
+from conan.tools.files import load, save, copy, get, patch, rmdir
+
 from conan.tools.gnu import PkgConfigDeps
 from conan.tools.microsoft import is_msvc
 
@@ -159,6 +160,10 @@ class QtPackage:
         cmake = CMake(self)
         cmake.install()
         copy(self, pattern="*.txt", src=self.source_path / "LICENSES", dst=self.package_path / "licenses")
+        if self.settings.os == "Windows":
+            # In Qt6.6.1 we found a directory objects-Debug/Release in lib that clearly
+            # doesn't belong there - seems to be a bug in the CMake files:
+            rmdir(self, self.package_path / "lib" / f"objects-{self.settings.build_type}")
 
     def package_info(self):
         self.cpp_info.set_property("cmake_find_mode", "both")

@@ -1,3 +1,4 @@
+import os
 from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
 from conan.tools.files import copy, get, rmdir, collect_libs
@@ -7,7 +8,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "c-blosc"
-    version = "1.21.5"
+    version = "1.21.6"
     homepage = "https://www.blosc.org"
     description = "An extremely fast, multi-threaded, meta-compressor library"
     license = "BSD-3-Clause"
@@ -30,7 +31,7 @@ class ConanRecipe(ConanFile):
 
     def source(self):
         get(self,
-            sha256="32e61961bbf81ffea6ff30e9d70fca36c86178afd3e3cfa13376adec8c687509",
+            sha256="9fcd60301aae28f97f1301b735f966cc19e7c49b6b4321b839b4579a0c156f38",
             url=f"https://github.com/Blosc/c-blosc/archive/refs/tags/v{self.version}.tar.gz",
             strip_root=True
         )
@@ -87,11 +88,11 @@ class ConanRecipe(ConanFile):
         cmake.build()
 
     def package(self):
-        copy(self, "LICENSE.txt", src=self.source_path, dst=self.package_path / "licenses")
-        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False, excludes="*vc???.pdb")
+        copy(self, "LICENSE.txt", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
+        copy(self, "*.pdb", src=self.build_folder, dst=os.path.join(self.package_folder, "bin"), keep_path=False, excludes="*vc???.pdb")
         cmake = CMake(self)
         cmake.install()
-        rmdir(self, self.package_path / "lib" / "pkgconfig")
+        rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
 
     def package_info(self):
         self.cpp_info.set_property("pkg_config_name", "blosc")

@@ -3,13 +3,14 @@ from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
 from conan.tools.files import collect_libs
 from conan.tools.files import get, copy, rmdir, patch
 from conan.tools.scm import Version
+import os
 
 required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
     name = "libxslt"
-    version = "1.1.40"
+    version = "1.1.42"
     homepage = "http://xmlsoft.org"
     description = "libxslt is a software library implementing XSLT processor, based on libxml2"
     license = "MIT"
@@ -32,7 +33,7 @@ class ConanRecipe(ConanFile):
         v = Version(self.version)
         get(
             self,
-            sha256="194715db023035f65fb566402f2ad2b5eab4c29d541f511305c40b29b1f48d13",
+            sha256="85ca62cac0d41fc77d3f6033da9df6fd73d20ea2fc18b0a3609ffb4110e1baeb",
             url=f"https://download.gnome.org/sources/libxslt/{v.major}.{v.minor}/libxslt-{self.version}.tar.xz",
             strip_root=True,
         )
@@ -57,12 +58,12 @@ class ConanRecipe(ConanFile):
     def package(self):
         cmake = CMake(self)
         cmake.install()
-        copy(self, "COPYING", src=self.source_path, dst=self.package_path / "licenses")
-        rmdir(self, self.package_path / "lib" / "cmake")
-        rmdir(self, self.package_path / "lib" / "pkgconfig")
-        rmdir(self, self.package_path / "share")
+        copy(self, "COPYING", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
+        rmdir(self, os.path.join(self.package_folder, "share"))
         if self.settings.os == "Windows":
-            copy(self, "libpng*.pdb", src=self.build_path / "bin", dst=self.package_path / "bin")
+            copy(self, "libpng*.pdb", src=os.path.join(self.build_folder, "bin"), dst=os.path.join(self.package_folder, "bin"))
 
     def package_info(self):
         self.cpp_info.set_property("cmake_find_mode", "both")

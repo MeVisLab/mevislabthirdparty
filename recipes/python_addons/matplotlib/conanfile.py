@@ -1,3 +1,4 @@
+import os
 from conan import ConanFile
 from conan.tools.env import Environment
 from conan.tools.files import get, patch, replace_in_file
@@ -60,7 +61,7 @@ class ConanRecipe(ConanFile):
         get(
             self,
             url="https://jqueryui.com/resources/download/jquery-ui-1.12.1.zip",
-            destination=self.source_path / "lib/matplotlib/backends/web_backend",
+            destination=os.path.join(self.source_folder, "lib", "matplotlib", "backends", "web_backend"),
             sha256="f8233674366ab36b2c34c577ec77a3d70cac75d2e387d8587f3836345c0f624d",
         )
 
@@ -75,22 +76,23 @@ class ConanRecipe(ConanFile):
         patch(self, patch_file="patches/003-optimize_colors_to_rgba.patch")
         # Do necessary changes for Qt6 (the bare minimum):
         patch(self, patch_file="patches/004-adapt_to_Qt6.patch")
-        
-        replace_in_file(self, self.source_path / "setupext.py", 'ext.extra_link_args.extend(["-mwindows"])', "")
+        patch(self, patch_file="patches/005-fix_invalid_conversion.patch")
+
+        replace_in_file(self, os.path.join(self.source_folder, "setupext.py"), 'ext.extra_link_args.extend(["-mwindows"])', "")
         # Conan currently uses the library version for the pkg-config, but freetype should use the libtool version:
-        replace_in_file(self, self.source_path / "setupext.py", "atleast_version='9.11.3',", "atleast_version='2.3.0',")
+        replace_in_file(self, os.path.join(self.source_folder, "setupext.py"), "atleast_version='9.11.3',", "atleast_version='2.3.0',")
 
     def build(self):
         d_suffix = "_d" if self.settings.build_type == "Debug" else ""
         replace_in_file(
             self,
-            self.source_path / "setupext.py",
+            os.path.join(self.source_folder, "setupext.py"),
             "['png', 'z'] if os.name == 'posix' else",
             f"['libpng16{d_suffix}', 'zlib{d_suffix}'] if os.name == 'posix' else",
         )
         replace_in_file(
             self,
-            self.source_path / "setupext.py",
+            os.path.join(self.source_folder, "setupext.py"),
             "[deplib('libpng16'), deplib('z')] if os.name == 'nt' else",
             f"['libpng16{d_suffix}', 'zlib{d_suffix}'] if os.name == 'nt' else",
         )
@@ -98,14 +100,14 @@ class ConanRecipe(ConanFile):
         if self.settings.os == "Linux":
             replace_in_file(
                 self,
-                self.source_path / "setupext.py",
+                os.path.join(self.source_folder, "setupext.py"),
                 "default_libraries=['freetype', deplib('z')])",
                 f"default_libraries=['freetype', 'zlib{d_suffix}', 'libpng16{d_suffix}'])",
             )
         else:
             replace_in_file(
                 self,
-                self.source_path / "setupext.py",
+                os.path.join(self.source_folder, "setupext.py"),
                 "default_libraries=['freetype', deplib('z')])",
                 f"default_libraries=['freetype{d_suffix}', 'zlib{d_suffix}', 'libpng16{d_suffix}'])",
             )

@@ -2,13 +2,14 @@ from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
 from conan.tools.files import patch, collect_libs, copy, get, rmdir
 from conan.tools.microsoft import is_msvc
+import os
 
 required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
     name = "assimp"
-    version = "5.4.1"
+    version = "5.4.2"
     homepage = "https://www.assimp.org"
     description = "library to import and export various 3d-model-formats including scene-post-processing to generate missing render data"
     license = "BSD-3-Clause"
@@ -25,7 +26,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="08837ee7c50b98ca72d2c9e66510ca6640681db8800aa2d3b1fcd61ccc615113",
+            sha256="03e38d123f6bf19a48658d197fd09c9a69db88c076b56a476ab2da9f5eb87dcc",
             url=f"https://github.com/assimp/assimp/archive/v{self.version}.zip",
             strip_root=True,
         )
@@ -65,12 +66,12 @@ class ConanRecipe(ConanFile):
         cmake.build()
 
     def package(self):
-        copy(self, "LICENSE", src=self.source_path, dst=self.package_path / "licenses")
-        copy(self, "*.pdb", src=self.build_path / "bin", dst=self.package_path / "bin", keep_path=False)
+        copy(self, "LICENSE", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
+        copy(self, "*.pdb", src=os.path.join(self.build_folder, "bin"), dst=os.path.join(self.package_folder, "bin"), keep_path=False)
         cmake = CMake(self)
         cmake.install()
-        rmdir(self, self.package_path / "lib" / "cmake")
-        rmdir(self, self.package_path / "lib" / "pkgconfig")
+        rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
 
     def package_info(self):
         self.cpp_info.set_property("cmake_file_name", "assimp")

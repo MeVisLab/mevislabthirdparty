@@ -1,8 +1,8 @@
 diff --git a/src/meson.build b/src/meson.build
-index 8e4cea6..9fe91c3 100644
+index c6eae1d..d3ad540 100644
 --- a/src/meson.build
 +++ b/src/meson.build
-@@ -583,7 +583,12 @@ endif
+@@ -588,7 +588,12 @@ endif
  
  darwin_versions = [hb_version_int, '@0@.0.0'.format(hb_version_int)]
  
@@ -16,7 +16,7 @@ index 8e4cea6..9fe91c3 100644
    include_directories: incconfig,
    dependencies: harfbuzz_deps,
    cpp_args: cpp_args + extra_hb_cpp_args,
-@@ -607,7 +612,7 @@ harfbuzz_subset_def = custom_target('harfbuzz-subset.def',
+@@ -612,7 +617,7 @@ harfbuzz_subset_def = custom_target('harfbuzz-subset.def',
      output: 'harfbuzz-subset.def')
  defs_list += [harfbuzz_subset_def]
  
@@ -25,7 +25,7 @@ index 8e4cea6..9fe91c3 100644
    include_directories: incconfig,
    dependencies: [m_dep],
    link_with: [libharfbuzz],
-@@ -647,7 +652,7 @@ if conf.get('HAVE_CAIRO', 0) == 1
+@@ -652,7 +657,7 @@ if conf.get('HAVE_CAIRO', 0) == 1
  
    cairo_dep = dependency('cairo')
  
@@ -34,7 +34,7 @@ index 8e4cea6..9fe91c3 100644
      include_directories: incconfig,
      dependencies: [m_dep, cairo_dep],
      link_with: [libharfbuzz],
-@@ -765,7 +770,7 @@ if have_icu and not have_icu_builtin
+@@ -770,7 +775,7 @@ if have_icu and not have_icu_builtin
      output: 'harfbuzz-icu.def')
    defs_list += [harfbuzz_icu_def]
  
@@ -43,7 +43,7 @@ index 8e4cea6..9fe91c3 100644
      include_directories: incconfig,
      dependencies: icu_dep,
      link_with: [libharfbuzz],
-@@ -933,7 +938,7 @@ if have_gobject
+@@ -938,7 +943,7 @@ if have_gobject
      output: 'harfbuzz-gobject.def')
    defs_list += [harfbuzz_gobject_def]
  

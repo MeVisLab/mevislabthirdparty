@@ -3,4 +3,4 @@ packaging==24.1
 setuptools_scm==8.1.0
 tomli==2.0.1
 typing-extensions==4.12.2
-wheel==0.43.0
+wheel==0.44.0

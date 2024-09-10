@@ -1,8 +1,8 @@
 diff --git a/src/openglwidgets/qopenglwidget.cpp b/src/openglwidgets/qopenglwidget.cpp
-index c1640164..d654a336 100644
+index 71e42733..7fe0a7ab 100644
 --- a/src/openglwidgets/qopenglwidget.cpp
 +++ b/src/openglwidgets/qopenglwidget.cpp
-@@ -738,6 +738,12 @@ void QOpenGLWidgetPrivate::recreateFbos()
+@@ -743,6 +743,12 @@ void QOpenGLWidgetPrivate::recreateFbos()
      format.setSamples(samples);
      if (textureFormat)
          format.setInternalTextureFormat(textureFormat);
@@ -15,7 +15,7 @@ index c1640164..d654a336 100644
  
      const QSize deviceSize = q->size() * q->devicePixelRatio();
      fbos[QOpenGLWidget::LeftBuffer] = new QOpenGLFramebufferObject(deviceSize, format);
-@@ -756,12 +762,20 @@ void QOpenGLWidgetPrivate::recreateFbos()
+@@ -761,12 +767,20 @@ void QOpenGLWidgetPrivate::recreateFbos()
  
      currentTargetBuffer = QOpenGLWidget::LeftBuffer;
      fbos[currentTargetBuffer]->bind();
@@ -36,7 +36,7 @@ index c1640164..d654a336 100644
          context->functions()->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
          ensureRhiDependentResources();
          currentTargetBuffer = QOpenGLWidget::LeftBuffer;
-@@ -1046,7 +1060,9 @@ QImage QOpenGLWidgetPrivate::grabFramebuffer(QOpenGLWidget::TargetBuffer targetB
+@@ -1073,7 +1087,9 @@ QImage QOpenGLWidgetPrivate::grabFramebuffer(QOpenGLWidget::TargetBuffer targetB
          resolvedFbos[targetBuffer]->bind();
      }
  

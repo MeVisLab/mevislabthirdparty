@@ -68,6 +68,16 @@
  */
 
 /*
+ * Defines for the various data formats
+ */
+
+#define DGL_LITTLE_ENDIAN 1             /* integer formats              */
+#define DGL_BIG_ENDIAN 2
+
+#define DGL_BIG_IEEE 1                  /* floating point formats       */
+#define DGL_NON_IEEE 3
+
+/*
  * Win32 machine dependent setup
  */
 
@@ -114,16 +124,6 @@
  */
 
 #define M_SIZEOF(x) sizeof(x)
-
-/*
- * Defines for the various data formats
- */
-
-#define DGL_LITTLE_ENDIAN 1             /* integer formats              */
-#define DGL_BIG_ENDIAN 2
-
-#define DGL_BIG_IEEE 1                  /* floating point formats       */
-#define DGL_NON_IEEE 3
 
 
 /*
@@ -187,7 +187,7 @@
  */
 
 #if MACHINE_FLOAT_FORMAT == DGL_NON_IEEE
-#if __i386__ || __x86_64__ || _M_X64 || __ia64__ || __arm__ || __arm64__ || __arch64__
+#if __i386__ || __x86_64__ || _M_X64 || __ia64__ || __arm__ || __arm64__ || __aarch64__
 void mem_hton_float(float *t, float *f);
 void mem_ntoh_float(float *t, float *f);
 void mem_hton_double(double *t, double *f);

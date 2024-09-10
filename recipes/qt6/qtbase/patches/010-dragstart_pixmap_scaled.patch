@@ -1,8 +1,8 @@
 diff --git a/src/plugins/platforms/windows/qwindowsdrag.cpp b/src/plugins/platforms/windows/qwindowsdrag.cpp
-index b797217c..7a74beec 100644
+index c6f55c35..c4b4441d 100644
 --- a/src/plugins/platforms/windows/qwindowsdrag.cpp
 +++ b/src/plugins/platforms/windows/qwindowsdrag.cpp
-@@ -270,11 +270,15 @@ void QWindowsOleDropSource::createCursors()
+@@ -272,11 +272,15 @@ void QWindowsOleDropSource::createCursors()
          hotSpotScaleFactor = QHighDpiScaling::factor(platformScreen);
          pixmapScaleFactor = hotSpotScaleFactor / pixmap.devicePixelRatio();
      }

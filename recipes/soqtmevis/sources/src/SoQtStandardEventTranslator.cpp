@@ -81,13 +81,13 @@ SoQtStandardEventTranslator::translateEvent(QEvent *anyEvent, const SbVec2s& vie
       anyEvent->type() == QEvent::MouseMove ||
       anyEvent->type() == locationRefreshEventType()) {
     QMouseEvent *me = static_cast<QMouseEvent *>(anyEvent);
-    mouseEvent = new QMouseEvent(anyEvent->type(), me->pos() * devicePixelRatio, me->button(), me->buttons(), me->modifiers());
+    mouseEvent = new QMouseEvent(anyEvent->type(), me->pos() * devicePixelRatio, me->button(), me->buttons(), me->modifiers(), me->pointingDevice());
   }
   else if (anyEvent->type() == QEvent::Wheel) {
     QWheelEvent* we = static_cast<QWheelEvent *>(anyEvent);
     wheelEvent = new QWheelEvent(we->position() * devicePixelRatio, we->globalPosition(), we->pixelDelta() * devicePixelRatio,
       we->angleDelta(), we->buttons(), we->modifiers(),
-      we->phase(), we->source());
+      we->phase(), we->inverted(), we->source(), we->pointingDevice());
   }
 
   if (anyEvent->type() == locationRefreshEventType()) {

@@ -12,7 +12,7 @@ class ConanRecipe(ConanFile):
     version = "2.2.0"
     homepage = "http://github.com/nigels-com/glew"
     description = "The OpenGL Extension Wrangler Library"
-    license = "MIT", "BSD-3-Clause"
+    license = "MIT AND BSD-3-Clause"
     package_type = "shared-library"
     settings = "os", "arch", "compiler", "build_type"
     exports_sources = "patches/*.patch"

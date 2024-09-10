@@ -11,7 +11,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "python_binding_qt"
-    version = "6.6.3"  # corresponds to the Qt version which is used for code generation
+    version = "6.7.2"  # corresponds to the Qt version which is used for code generation
     homepage = "https://mevislab.de"
     description = "Python binding into Qt"
     license = "LGPL-2.1-only"
@@ -20,10 +20,10 @@ class ConanRecipe(ConanFile):
     exports_sources = "sources/*", "LICENSE"
 
     def requirements(self):
-        self.requires("qtdeclarative/[>=6.6]")
-        self.requires("qtmultimedia/[>=6.6]")
-        self.requires("qtwebengine/[>=6.6]")
-        self.requires("qtwebview/[>=6.6]")
+        self.requires("qtdeclarative/[>=6.7]")
+        self.requires("qtmultimedia/[>=6.7]")
+        self.requires("qtwebengine/[>=6.7]")
+        self.requires("qtwebview/[>=6.7]")
         self.requires("pcre2/[>=10.34]")
         self.requires("python/[>=3.11]")
         self.requires("pythonqt/[>=3.5.0]")

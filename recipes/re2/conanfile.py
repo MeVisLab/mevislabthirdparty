@@ -1,13 +1,14 @@
 from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
 from conan.tools.files import copy, get, rmdir, collect_libs
+import os
 
 required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
     name = "re2"
-    version = "20240601"
+    version = "20240702"
     homepage = "https://github.com/google/re2"
     description = "Fast, safe, thread-friendly regular expression library"
     license = "BSD-3-Clause"
@@ -24,7 +25,7 @@ class ConanRecipe(ConanFile):
         year, month, day = self.version[0:4], self.version[4:6], self.version[6:]
         get(
             self,
-            sha256="7326c74cddaa90b12090fcfc915fe7b4655723893c960ee3c2c66e85c5504b6c",
+            sha256="eb2df807c781601c14a260a507a5bb4509be1ee626024cb45acbd57cb9d4032b",
             url=f"https://github.com/google/re2/archive/{year}-{month}-{day}.tar.gz",
             strip_root=True,
         )
@@ -43,12 +44,12 @@ class ConanRecipe(ConanFile):
         cmake.build()
 
     def package(self):
-        copy(self, "LICENSE", src=self.source_path, dst=self.package_path / "licenses")
-        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False)
+        copy(self, "LICENSE", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
+        copy(self, "*.pdb", src=self.build_folder, dst=os.path.join(self.package_folder, "bin"), keep_path=False)
         cmake = CMake(self)
         cmake.install()
-        rmdir(self, self.package_path / "lib" / "cmake")
-        rmdir(self, self.package_path / "lib" / "pkgconfig")
+        rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
 
     def package_info(self):
         self.cpp_info.set_property("cmake_file_name", "re2")

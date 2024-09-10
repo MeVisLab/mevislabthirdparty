@@ -551,6 +551,30 @@ SoVertexPropertyCache::fillInCache(const SoVertexProperty *vp,
     }    
 }
 
+void SoVertexPropertyCache::sendVertexAtIndex(const int32_t index)
+{
+  const unsigned int strideVertex = (index >= 0 && index < numVerts) ? vertexStride * index : 0;
+  (*vertexFunc)(vertexPtr + strideVertex);
+}
+
+void SoVertexPropertyCache::sendNormalAtIndex(const int32_t index)
+{
+  const unsigned int strideNormal = (index >= 0 && index < numNorms) ? normalStride * index : 0;
+  (*normalFunc)(normalPtr + strideNormal);
+}
+
+void SoVertexPropertyCache::sendColorAtIndex(const int32_t index)
+{
+  const unsigned int strideColor = (index >= 0 && index < numColors) ? colorStride * index : 0;
+  (*colorFunc)(colorPtr + strideColor);
+}
+
+void SoVertexPropertyCache::sendTexCoordAtIndex(const int32_t index)
+{
+  const unsigned int strideTexCoord = (index >= 0 && index < numTexCoords) ? texCoordStride * index : 0;
+  (*texCoordFunc)(texCoordPtr + strideTexCoord);
+}
+
 SoVertexPropertyCache::SoVertexPropertyCache()
 {
     vertexFunc = normalFunc = colorFunc = texCoordFunc = NULL;

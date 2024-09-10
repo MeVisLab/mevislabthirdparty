@@ -2,13 +2,14 @@ from conan import ConanFile
 from conan.errors import ConanInvalidConfiguration
 from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
 from conan.tools.files import copy, rmdir, get, collect_libs
+import os
 
 required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
     name = "llvm"
-    version = "18.1.7"
+    version = "18.1.8"
     license = "Apache-2.0"
     homepage = "https://llvm.org"
     description = "Low Level Virtual Machine"
@@ -35,7 +36,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="74446ab6943f686391954cbda0d77ae92e8a60c432eff437b8666e121d748ec4",
+            sha256="0b58557a6d32ceee97c8d533a59b9212d87e0fc4d2833924eb6c611247db2f2a",
             url=f"https://github.com/llvm/llvm-project/releases/download/llvmorg-{self.version}/llvm-project-{self.version}.src.tar.xz",
             strip_root=True,
         )
@@ -79,11 +80,11 @@ class ConanRecipe(ConanFile):
         cmake.build()
 
     def package(self):
-        copy(self, "LICENSE.TXT", src=self.source_path, dst=self.package_path / "licenses", keep_path=False)
+        copy(self, "LICENSE.TXT", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"), keep_path=False)
         cmake = CMake(self)
         cmake.install()
-        rmdir(self, self.package_path / "share")
-        rmdir(self, self.package_path / "lib" / "cmake")
+        rmdir(self, os.path.join(self.package_folder, "share"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))
 
     def package_info(self):
         self.cpp_info.set_property("cmake_find_mode", "both")

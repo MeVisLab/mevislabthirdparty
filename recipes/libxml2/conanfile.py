@@ -11,7 +11,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "libxml2"
-    version = "2.13.0"
+    version = "2.13.3"
     homepage = "http://xmlsoft.org"
     description = "XML C parser and toolkit"
     license = "MIT"
@@ -34,7 +34,7 @@ class ConanRecipe(ConanFile):
         v = Version(self.version)
         get(
             self,
-            sha256="d5a2f36bea96e1fb8297c6046fb02016c152d81ed58e65f3d20477de85291bc9",
+            sha256="0805d7c180cf09caad71666c7a458a74f041561a532902454da5047d83948138",
             url=f"https://download.gnome.org/sources/libxml2/{v.major}.{v.minor}/libxml2-{self.version}.tar.xz",
             strip_root=True,
         )
@@ -64,10 +64,10 @@ class ConanRecipe(ConanFile):
     def package(self):
         cmake = CMake(self)
         cmake.install()
-        copy(self, "Copyright", src=self.source_path, dst=self.package_path / "licenses")
-        rmdir(self, self.package_path / "lib" / "cmake")
-        rmdir(self, self.package_path / "lib" / "pkgconfig")
-        rmdir(self, self.package_path / "share")
+        copy(self, "Copyright", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
+        rmdir(self, os.path.join(self.package_folder, "share"))
         self._cmake_module_file_write()
 
     def package_info(self):
@@ -91,7 +91,7 @@ class ConanRecipe(ConanFile):
         return os.path.join("lib", "cmake", f"{self.name}-variables.cmake")
 
     def _cmake_module_file_write(self):
-        file = self.package_path / self._cmake_module_file
+        file = os.path.join(self.package_folder, self._cmake_module_file)
         content = textwrap.dedent(
             f"""\
             set(LIBXML2_FOUND TRUE)

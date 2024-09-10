@@ -2,13 +2,14 @@ from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
 from conan.tools.files import get, load, save, copy, collect_libs
 from conan.tools.scm import Version
+import os
 
 required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
     name = "sqlite3"
-    version = "3.46.0"
+    version = "3.46.1"
     description = "Self-contained, serverless, in-process SQL database engine."
     license = "Unlicense"
     homepage = "https://www.sqlite.org"
@@ -30,7 +31,7 @@ class ConanRecipe(ConanFile):
         v = Version(self.version)
         get(
             self,
-            sha256="712a7d09d2a22652fb06a49af516e051979a3984adb067da86760e60ed51a7f5",
+            sha256="77823cb110929c2bcb0f5d48e4833b5c59a8a6e40cdea3936b99e199dbbe5784",
             url=f"https://www.sqlite.org/2024/sqlite-amalgamation-{v.major}{str(v.minor).zfill(2)}{str(v.patch).zfill(2)}00.zip",
             strip_root=True,
         )
@@ -48,11 +49,11 @@ class ConanRecipe(ConanFile):
 
     def build(self):
         cmake = CMake(self)
-        cmake.configure(build_script_folder=self.source_path.parent)
+        cmake.configure(build_script_folder=os.path.join(self.source_folder, ".."))
         cmake.build()
 
     def _extract_license(self):
-        header = load(self, self.source_path / "sqlite3.h")
+        header = load(self, os.path.join(self.source_folder, "sqlite3.h"))
         license_content = header[3 : header.find("***", 1)]
         return license_content
 

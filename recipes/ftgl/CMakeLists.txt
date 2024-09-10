@@ -8,64 +8,64 @@ find_package(OpenGL REQUIRED)
 find_package(Freetype REQUIRED)
 
 set(HEADERS
-    include/FTBBox.h
-    include/FTBitmapGlyph.h
-    include/FTCharmap.h
-    include/FTCharToGlyphIndexMap.h
-    include/FTContour.h
-    include/FTExtrdGlyph.h
-    include/FTFace.h
-    include/FTFont.h
-    include/FTGL.h
-    include/FTGLBitmapFont.h
-    include/FTGLExtrdFont.h
-    include/FTGLOutlineFont.h
-    include/FTGLPixmapFont.h
-    include/FTGLPolygonFont.h
-    include/FTGLTextureFont.h
-    include/FTGlyph.h
-    include/FTGlyphContainer.h
-    include/FTLibrary.h
-    include/FTList.h
-    include/FTOutlineGlyph.h
-    include/FTPixmapGlyph.h
-    include/FTPoint.h
-    include/FTPolyGlyph.h
-    include/FTSize.h
-    include/FTTextureGlyph.h
-    include/FTVector.h
-    include/FTVectoriser.h
+    src/include/FTBBox.h
+    src/include/FTBitmapGlyph.h
+    src/include/FTCharmap.h
+    src/include/FTCharToGlyphIndexMap.h
+    src/include/FTContour.h
+    src/include/FTExtrdGlyph.h
+    src/include/FTFace.h
+    src/include/FTFont.h
+    src/include/FTGL.h
+    src/include/FTGLBitmapFont.h
+    src/include/FTGLExtrdFont.h
+    src/include/FTGLOutlineFont.h
+    src/include/FTGLPixmapFont.h
+    src/include/FTGLPolygonFont.h
+    src/include/FTGLTextureFont.h
+    src/include/FTGlyph.h
+    src/include/FTGlyphContainer.h
+    src/include/FTLibrary.h
+    src/include/FTList.h
+    src/include/FTOutlineGlyph.h
+    src/include/FTPixmapGlyph.h
+    src/include/FTPoint.h
+    src/include/FTPolyGlyph.h
+    src/include/FTSize.h
+    src/include/FTTextureGlyph.h
+    src/include/FTVector.h
+    src/include/FTVectoriser.h
 )
 
 add_library(FTGL "")
 target_sources(FTGL PRIVATE ${HEADERS})
 target_sources(FTGL PRIVATE
-    src/FTBitmapGlyph.cpp
-    src/FTCharmap.cpp
-    src/FTContour.cpp
-    src/FTExtrdGlyph.cpp
-    src/FTFace.cpp
-    src/FTFont.cpp
-    src/FTGLBitmapFont.cpp
-    src/FTGLExtrdFont.cpp
-    src/FTGLOutlineFont.cpp
-    src/FTGLPixmapFont.cpp
-    src/FTGLPolygonFont.cpp
-    src/FTGLTextureFont.cpp
-    src/FTGlyph.cpp
-    src/FTGlyphContainer.cpp
-    src/FTLibrary.cpp
-    src/FTOutlineGlyph.cpp
-    src/FTPixmapGlyph.cpp
-    src/FTPoint.cpp
-    src/FTPolyGlyph.cpp
-    src/FTSize.cpp
-    src/FTTextureGlyph.cpp
-    src/FTVectoriser.cpp
+    src/src/FTBitmapGlyph.cpp
+    src/src/FTCharmap.cpp
+    src/src/FTContour.cpp
+    src/src/FTExtrdGlyph.cpp
+    src/src/FTFace.cpp
+    src/src/FTFont.cpp
+    src/src/FTGLBitmapFont.cpp
+    src/src/FTGLExtrdFont.cpp
+    src/src/FTGLOutlineFont.cpp
+    src/src/FTGLPixmapFont.cpp
+    src/src/FTGLPolygonFont.cpp
+    src/src/FTGLTextureFont.cpp
+    src/src/FTGlyph.cpp
+    src/src/FTGlyphContainer.cpp
+    src/src/FTLibrary.cpp
+    src/src/FTOutlineGlyph.cpp
+    src/src/FTPixmapGlyph.cpp
+    src/src/FTPoint.cpp
+    src/src/FTPolyGlyph.cpp
+    src/src/FTSize.cpp
+    src/src/FTTextureGlyph.cpp
+    src/src/FTVectoriser.cpp
 )
 
 target_compile_definitions(FTGL PRIVATE FTGL_LIBRARY)
-target_include_directories(FTGL PRIVATE include)
+target_include_directories(FTGL PRIVATE src/include)
 target_link_libraries(FTGL PUBLIC OpenGL::GL OpenGL::GLU)
 target_link_libraries(FTGL PUBLIC Freetype::Freetype)
 

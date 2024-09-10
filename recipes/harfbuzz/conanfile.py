@@ -10,7 +10,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "harfbuzz"
-    version = "8.5.0"
+    version = "9.0.0"
     homepage = "http://harfbuzz.org"
     description = "An OpenType text shaping engine"
     license = "MIT"
@@ -18,13 +18,19 @@ class ConanRecipe(ConanFile):
     settings = "os", "arch", "compiler", "build_type"
     exports_sources = ["patches/*.patch"]
 
+    mlab_hooks = {
+        "dependencies.system_libs": [
+            "libfreetype.so.6",  # freetype
+        ]
+    }
+
     def layout(self):
         basic_layout(self, src_folder="src")
 
     def source(self):
         get(
             self,
-            sha256="77e4f7f98f3d86bf8788b53e6832fb96279956e1c3961988ea3d4b7ca41ddc27",
+            sha256="a41b272ceeb920c57263ec851604542d9ec85ee3030506d94662067c7b6ab89e",
             url=f"https://github.com/harfbuzz/harfbuzz/releases/download/{self.version}/harfbuzz-{self.version}.tar.xz",
             strip_root=True,
         )
@@ -37,7 +43,6 @@ class ConanRecipe(ConanFile):
             {
                 "glib": "disabled",
                 "icu": "disabled",
-                "freetype": "disabled",
                 "gdi": "enabled",
                 "directwrite": "disabled",
                 "gobject": "disabled",

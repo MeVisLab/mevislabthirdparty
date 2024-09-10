@@ -67,6 +67,8 @@ class OpenSSLConan(ConanFile):
         if self.settings.os == "Windows":
             return "VC-WIN64A-masm"
         elif self.settings.os == "Linux":
+            if self.settings.arch == "armv8":
+                return "linux-aarch64"
             return "linux-x86_64"
         else:
             raise ConanInvalidConfiguration(f"Unsupported platform ({self.settings.os}).\n")

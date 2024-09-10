@@ -1,8 +1,8 @@
 diff --git a/src/corelib/kernel/qobject.cpp b/src/corelib/kernel/qobject.cpp
-index 7a96918f..4d324a38 100644
+index b4bbace8..7a2327ca 100644
 --- a/src/corelib/kernel/qobject.cpp
 +++ b/src/corelib/kernel/qobject.cpp
-@@ -655,6 +655,58 @@ void QMetaCallEvent::placeMetaCall(QObject *object)
+@@ -660,6 +660,58 @@ void QMetaCallEvent::placeMetaCall(QObject *object)
      }
  }
  
@@ -62,12 +62,12 @@ index 7a96918f..4d324a38 100644
                                              const QObject *sender, int signal_index,
                                              size_t argc, const void* const argp[],
 diff --git a/src/corelib/kernel/qobject.h b/src/corelib/kernel/qobject.h
-index f6a3ebc5..7fcfd932 100644
+index 6fe575f2..d3158cc1 100644
 --- a/src/corelib/kernel/qobject.h
 +++ b/src/corelib/kernel/qobject.h
-@@ -51,6 +51,12 @@ Q_CORE_EXPORT void qt_qFindChildren_helper(const QObject *parent, const QRegular
-                                            const QMetaObject &mo, QList<void *> *list, Qt::FindChildOptions options);
- Q_CORE_EXPORT QObject *qt_qFindChild_helper(const QObject *parent, const QString &name, const QMetaObject &mo, Qt::FindChildOptions options);
+@@ -62,6 +62,12 @@ Q_CORE_EXPORT QObject *qt_qFindChild_helper(const QObject *parent, const QString
+ Q_CORE_EXPORT QObject *qt_qFindChild_helper(const QObject *parent, QAnyStringView name,
+                                             const QMetaObject &mo, Qt::FindChildOptions options);
  
 +// MEVIS BEGIN
 +// Method added for MeVisLab to allow to clone and clear a QMetaCallEvent, which is private in Qt
@@ -79,10 +79,10 @@ index f6a3ebc5..7fcfd932 100644
  {
      Q_DISABLE_COPY(QObjectData)
 diff --git a/src/corelib/kernel/qobject_p.h b/src/corelib/kernel/qobject_p.h
-index 41f1c2f8..2ab68070 100644
+index f7886c7c..e102c6f3 100644
 --- a/src/corelib/kernel/qobject_p.h
 +++ b/src/corelib/kernel/qobject_p.h
-@@ -359,6 +359,7 @@ public:
+@@ -358,6 +358,7 @@ public:
  private:
      int signalId_;
      const QObject *sender_;
@@ -90,7 +90,7 @@ index 41f1c2f8..2ab68070 100644
  #if QT_CONFIG(thread)
      QSemaphore *semaphore_;
  #endif
-@@ -420,6 +421,12 @@ public:
+@@ -419,6 +420,12 @@ public:
  
      virtual void placeMetaCall(QObject *object) override;
  

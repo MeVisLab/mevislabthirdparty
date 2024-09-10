@@ -1,8 +1,8 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index a18f740..d02804b 100644
+index fb35247..0df2698 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -246,25 +246,6 @@ set_target_properties(
+@@ -247,25 +247,6 @@ set_target_properties(
  	SOVERSION ${LIBXSLT_MAJOR_VERSION}
  )
  
@@ -28,7 +28,7 @@ index a18f740..d02804b 100644
  install(FILES ${LIBXSLT_HDRS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/libxslt COMPONENT development)
  
  install(
-@@ -339,25 +320,6 @@ set_target_properties(
+@@ -340,25 +321,6 @@ set_target_properties(
  	SOVERSION ${LIBEXSLT_MAJOR_VERSION}
  )
  

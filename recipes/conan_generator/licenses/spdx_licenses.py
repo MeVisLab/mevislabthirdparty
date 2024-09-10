@@ -1,20 +1,29 @@
 # -*- coding: utf-8 -*-
-# Generated on 13/03/2024 for SPDX version v3.23
+# Generated on 18/08/2024 for SPDX version v3.24.0
 
 
 spdx_licenses = {
     "0bsd": {
         "id": "0BSD",
-        "ref": 78,
+        "ref": 537,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
         "name": """BSD Zero Clause License""",
         "details_url": "https://spdx.org/licenses/0BSD.json",
     },
+    "3d-slicer-1.0": {
+        "id": "3D-Slicer-1.0",
+        "ref": 200,
+        "deprecated": False,
+        "osi_approved": False,
+        "fsf_libre": False,
+        "name": """3D Slicer License v1.0""",
+        "details_url": "https://spdx.org/licenses/3D-Slicer-1.0.json",
+    },
     "aal": {
         "id": "AAL",
-        "ref": 433,
+        "ref": 406,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -23,7 +32,7 @@ spdx_licenses = {
     },
     "adsl": {
         "id": "ADSL",
-        "ref": 498,
+        "ref": 463,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -32,7 +41,7 @@ spdx_licenses = {
     },
     "afl-1.1": {
         "id": "AFL-1.1",
-        "ref": 106,
+        "ref": 601,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -41,7 +50,7 @@ spdx_licenses = {
     },
     "afl-1.2": {
         "id": "AFL-1.2",
-        "ref": 628,
+        "ref": 72,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -50,7 +59,7 @@ spdx_licenses = {
     },
     "afl-2.0": {
         "id": "AFL-2.0",
-        "ref": 366,
+        "ref": 187,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -59,7 +68,7 @@ spdx_licenses = {
     },
     "afl-2.1": {
         "id": "AFL-2.1",
-        "ref": 220,
+        "ref": 383,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -68,7 +77,7 @@ spdx_licenses = {
     },
     "afl-3.0": {
         "id": "AFL-3.0",
-        "ref": 599,
+        "ref": 369,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -77,7 +86,7 @@ spdx_licenses = {
     },
     "agpl-1.0": {
         "id": "AGPL-1.0",
-        "ref": 374,
+        "ref": 221,
         "deprecated": True,
         "osi_approved": False,
         "fsf_libre": True,
@@ -86,7 +95,7 @@ spdx_licenses = {
     },
     "agpl-1.0-only": {
         "id": "AGPL-1.0-only",
-        "ref": 310,
+        "ref": 334,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -95,7 +104,7 @@ spdx_licenses = {
     },
     "agpl-1.0-or-later": {
         "id": "AGPL-1.0-or-later",
-        "ref": 418,
+        "ref": 527,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -104,7 +113,7 @@ spdx_licenses = {
     },
     "agpl-3.0": {
         "id": "AGPL-3.0",
-        "ref": 631,
+        "ref": 394,
         "deprecated": True,
         "osi_approved": True,
         "fsf_libre": True,
@@ -113,7 +122,7 @@ spdx_licenses = {
     },
     "agpl-3.0-only": {
         "id": "AGPL-3.0-only",
-        "ref": 495,
+        "ref": 123,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -122,16 +131,25 @@ spdx_licenses = {
     },
     "agpl-3.0-or-later": {
         "id": "AGPL-3.0-or-later",
-        "ref": 228,
+        "ref": 105,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
         "name": """GNU Affero General Public License v3.0 or later""",
         "details_url": "https://spdx.org/licenses/AGPL-3.0-or-later.json",
     },
+    "amd-newlib": {
+        "id": "AMD-newlib",
+        "ref": 222,
+        "deprecated": False,
+        "osi_approved": False,
+        "fsf_libre": False,
+        "name": """AMD newlib License""",
+        "details_url": "https://spdx.org/licenses/AMD-newlib.json",
+    },
     "amdplpa": {
         "id": "AMDPLPA",
-        "ref": 100,
+        "ref": 149,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -140,7 +158,7 @@ spdx_licenses = {
     },
     "aml": {
         "id": "AML",
-        "ref": 2,
+        "ref": 13,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -149,7 +167,7 @@ spdx_licenses = {
     },
     "aml-glslang": {
         "id": "AML-glslang",
-        "ref": 370,
+        "ref": 1,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -158,7 +176,7 @@ spdx_licenses = {
     },
     "ampas": {
         "id": "AMPAS",
-        "ref": 267,
+        "ref": 420,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -167,7 +185,7 @@ spdx_licenses = {
     },
     "antlr-pd": {
         "id": "ANTLR-PD",
-        "ref": 586,
+        "ref": 576,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -176,7 +194,7 @@ spdx_licenses = {
     },
     "antlr-pd-fallback": {
         "id": "ANTLR-PD-fallback",
-        "ref": 133,
+        "ref": 194,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -185,7 +203,7 @@ spdx_licenses = {
     },
     "apafml": {
         "id": "APAFML",
-        "ref": 376,
+        "ref": 136,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -194,7 +212,7 @@ spdx_licenses = {
     },
     "apl-1.0": {
         "id": "APL-1.0",
-        "ref": 226,
+        "ref": 515,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -203,7 +221,7 @@ spdx_licenses = {
     },
     "apsl-1.0": {
         "id": "APSL-1.0",
-        "ref": 536,
+        "ref": 39,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -212,7 +230,7 @@ spdx_licenses = {
     },
     "apsl-1.1": {
         "id": "APSL-1.1",
-        "ref": 475,
+        "ref": 582,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -221,7 +239,7 @@ spdx_licenses = {
     },
     "apsl-1.2": {
         "id": "APSL-1.2",
-        "ref": 547,
+        "ref": 628,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -230,7 +248,7 @@ spdx_licenses = {
     },
     "apsl-2.0": {
         "id": "APSL-2.0",
-        "ref": 147,
+        "ref": 144,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -239,7 +257,7 @@ spdx_licenses = {
     },
     "aswf-digital-assets-1.0": {
         "id": "ASWF-Digital-Assets-1.0",
-        "ref": 64,
+        "ref": 330,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -248,7 +266,7 @@ spdx_licenses = {
     },
     "aswf-digital-assets-1.1": {
         "id": "ASWF-Digital-Assets-1.1",
-        "ref": 8,
+        "ref": 447,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -257,7 +275,7 @@ spdx_licenses = {
     },
     "abstyles": {
         "id": "Abstyles",
-        "ref": 395,
+        "ref": 526,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -266,7 +284,7 @@ spdx_licenses = {
     },
     "adacore-doc": {
         "id": "AdaCore-doc",
-        "ref": 108,
+        "ref": 382,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -275,7 +293,7 @@ spdx_licenses = {
     },
     "adobe-2006": {
         "id": "Adobe-2006",
-        "ref": 358,
+        "ref": 558,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -284,7 +302,7 @@ spdx_licenses = {
     },
     "adobe-display-postscript": {
         "id": "Adobe-Display-PostScript",
-        "ref": 272,
+        "ref": 431,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -302,7 +320,7 @@ spdx_licenses = {
     },
     "adobe-utopia": {
         "id": "Adobe-Utopia",
-        "ref": 311,
+        "ref": 532,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -311,7 +329,7 @@ spdx_licenses = {
     },
     "afmparse": {
         "id": "Afmparse",
-        "ref": 172,
+        "ref": 345,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -320,7 +338,7 @@ spdx_licenses = {
     },
     "aladdin": {
         "id": "Aladdin",
-        "ref": 35,
+        "ref": 168,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -329,7 +347,7 @@ spdx_licenses = {
     },
     "apache-1.0": {
         "id": "Apache-1.0",
-        "ref": 463,
+        "ref": 616,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -338,7 +356,7 @@ spdx_licenses = {
     },
     "apache-1.1": {
         "id": "Apache-1.1",
-        "ref": 627,
+        "ref": 313,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -347,7 +365,7 @@ spdx_licenses = {
     },
     "apache-2.0": {
         "id": "Apache-2.0",
-        "ref": 501,
+        "ref": 564,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -356,7 +374,7 @@ spdx_licenses = {
     },
     "app-s2p": {
         "id": "App-s2p",
-        "ref": 123,
+        "ref": 470,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -365,7 +383,7 @@ spdx_licenses = {
     },
     "arphic-1999": {
         "id": "Arphic-1999",
-        "ref": 326,
+        "ref": 131,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -374,7 +392,7 @@ spdx_licenses = {
     },
     "artistic-1.0": {
         "id": "Artistic-1.0",
-        "ref": 278,
+        "ref": 388,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -383,7 +401,7 @@ spdx_licenses = {
     },
     "artistic-1.0-perl": {
         "id": "Artistic-1.0-Perl",
-        "ref": 634,
+        "ref": 652,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -392,7 +410,7 @@ spdx_licenses = {
     },
     "artistic-1.0-cl8": {
         "id": "Artistic-1.0-cl8",
-        "ref": 234,
+        "ref": 321,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -401,7 +419,7 @@ spdx_licenses = {
     },
     "artistic-2.0": {
         "id": "Artistic-2.0",
-        "ref": 222,
+        "ref": 355,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -410,7 +428,7 @@ spdx_licenses = {
     },
     "bsd-1-clause": {
         "id": "BSD-1-Clause",
-        "ref": 308,
+        "ref": 567,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -419,7 +437,7 @@ spdx_licenses = {
     },
     "bsd-2-clause": {
         "id": "BSD-2-Clause",
-        "ref": 232,
+        "ref": 264,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -428,7 +446,7 @@ spdx_licenses = {
     },
     "bsd-2-clause-darwin": {
         "id": "BSD-2-Clause-Darwin",
-        "ref": 555,
+        "ref": 231,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -437,7 +455,7 @@ spdx_licenses = {
     },
     "bsd-2-clause-freebsd": {
         "id": "BSD-2-Clause-FreeBSD",
-        "ref": 56,
+        "ref": 192,
         "deprecated": True,
         "osi_approved": False,
         "fsf_libre": True,
@@ -446,7 +464,7 @@ spdx_licenses = {
     },
     "bsd-2-clause-netbsd": {
         "id": "BSD-2-Clause-NetBSD",
-        "ref": 530,
+        "ref": 449,
         "deprecated": True,
         "osi_approved": False,
         "fsf_libre": True,
@@ -455,7 +473,7 @@ spdx_licenses = {
     },
     "bsd-2-clause-patent": {
         "id": "BSD-2-Clause-Patent",
-        "ref": 200,
+        "ref": 612,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -464,16 +482,25 @@ spdx_licenses = {
     },
     "bsd-2-clause-views": {
         "id": "BSD-2-Clause-Views",
-        "ref": 539,
+        "ref": 657,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
         "name": """BSD 2-Clause with views sentence""",
         "details_url": "https://spdx.org/licenses/BSD-2-Clause-Views.json",
     },
+    "bsd-2-clause-first-lines": {
+        "id": "BSD-2-Clause-first-lines",
+        "ref": 245,
+        "deprecated": False,
+        "osi_approved": False,
+        "fsf_libre": False,
+        "name": """BSD 2-Clause - first lines requirement""",
+        "details_url": "https://spdx.org/licenses/BSD-2-Clause-first-lines.json",
+    },
     "bsd-3-clause": {
         "id": "BSD-3-Clause",
-        "ref": 409,
+        "ref": 216,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -482,7 +509,7 @@ spdx_licenses = {
     },
     "bsd-3-clause-attribution": {
         "id": "BSD-3-Clause-Attribution",
-        "ref": 127,
+        "ref": 14,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -491,7 +518,7 @@ spdx_licenses = {
     },
     "bsd-3-clause-clear": {
         "id": "BSD-3-Clause-Clear",
-        "ref": 251,
+        "ref": 347,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -500,7 +527,7 @@ spdx_licenses = {
     },
     "bsd-3-clause-hp": {
         "id": "BSD-3-Clause-HP",
-        "ref": 189,
+        "ref": 210,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -509,7 +536,7 @@ spdx_licenses = {
     },
     "bsd-3-clause-lbnl": {
         "id": "BSD-3-Clause-LBNL",
-        "ref": 377,
+        "ref": 597,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -518,7 +545,7 @@ spdx_licenses = {
     },
     "bsd-3-clause-modification": {
         "id": "BSD-3-Clause-Modification",
-        "ref": 89,
+        "ref": 364,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -527,7 +554,7 @@ spdx_licenses = {
     },
     "bsd-3-clause-no-military-license": {
         "id": "BSD-3-Clause-No-Military-License",
-        "ref": 216,
+        "ref": 30,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -536,7 +563,7 @@ spdx_licenses = {
     },
     "bsd-3-clause-no-nuclear-license": {
         "id": "BSD-3-Clause-No-Nuclear-License",
-        "ref": 192,
+        "ref": 21,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -545,7 +572,7 @@ spdx_licenses = {
     },
     "bsd-3-clause-no-nuclear-license-2014": {
         "id": "BSD-3-Clause-No-Nuclear-License-2014",
-        "ref": 249,
+        "ref": 543,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -554,7 +581,7 @@ spdx_licenses = {
     },
     "bsd-3-clause-no-nuclear-warranty": {
         "id": "BSD-3-Clause-No-Nuclear-Warranty",
-        "ref": 437,
+        "ref": 402,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -563,7 +590,7 @@ spdx_licenses = {
     },
     "bsd-3-clause-open-mpi": {
         "id": "BSD-3-Clause-Open-MPI",
-        "ref": 424,
+        "ref": 376,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -572,7 +599,7 @@ spdx_licenses = {
     },
     "bsd-3-clause-sun": {
         "id": "BSD-3-Clause-Sun",
-        "ref": 596,
+        "ref": 554,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -581,7 +608,7 @@ spdx_licenses = {
     },
     "bsd-3-clause-acpica": {
         "id": "BSD-3-Clause-acpica",
-        "ref": 306,
+        "ref": 408,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -590,7 +617,7 @@ spdx_licenses = {
     },
     "bsd-3-clause-flex": {
         "id": "BSD-3-Clause-flex",
-        "ref": 388,
+        "ref": 211,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -599,7 +626,7 @@ spdx_licenses = {
     },
     "bsd-4-clause": {
         "id": "BSD-4-Clause",
-        "ref": 453,
+        "ref": 650,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -608,7 +635,7 @@ spdx_licenses = {
     },
     "bsd-4-clause-shortened": {
         "id": "BSD-4-Clause-Shortened",
-        "ref": 46,
+        "ref": 252,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -617,7 +644,7 @@ spdx_licenses = {
     },
     "bsd-4-clause-uc": {
         "id": "BSD-4-Clause-UC",
-        "ref": 350,
+        "ref": 117,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -626,7 +653,7 @@ spdx_licenses = {
     },
     "bsd-4.3reno": {
         "id": "BSD-4.3RENO",
-        "ref": 558,
+        "ref": 298,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -635,7 +662,7 @@ spdx_licenses = {
     },
     "bsd-4.3tahoe": {
         "id": "BSD-4.3TAHOE",
-        "ref": 372,
+        "ref": 0,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -644,7 +671,7 @@ spdx_licenses = {
     },
     "bsd-advertising-acknowledgement": {
         "id": "BSD-Advertising-Acknowledgement",
-        "ref": 466,
+        "ref": 423,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -653,7 +680,7 @@ spdx_licenses = {
     },
     "bsd-attribution-hpnd-disclaimer": {
         "id": "BSD-Attribution-HPND-disclaimer",
-        "ref": 434,
+        "ref": 171,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -662,7 +689,7 @@ spdx_licenses = {
     },
     "bsd-inferno-nettverk": {
         "id": "BSD-Inferno-Nettverk",
-        "ref": 423,
+        "ref": 401,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -671,7 +698,7 @@ spdx_licenses = {
     },
     "bsd-protection": {
         "id": "BSD-Protection",
-        "ref": 569,
+        "ref": 403,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -680,7 +707,7 @@ spdx_licenses = {
     },
     "bsd-source-code": {
         "id": "BSD-Source-Code",
-        "ref": 36,
+        "ref": 22,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -689,7 +716,7 @@ spdx_licenses = {
     },
     "bsd-source-beginning-file": {
         "id": "BSD-Source-beginning-file",
-        "ref": 486,
+        "ref": 97,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -698,7 +725,7 @@ spdx_licenses = {
     },
     "bsd-systemics": {
         "id": "BSD-Systemics",
-        "ref": 260,
+        "ref": 178,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -707,7 +734,7 @@ spdx_licenses = {
     },
     "bsd-systemics-w3works": {
         "id": "BSD-Systemics-W3Works",
-        "ref": 398,
+        "ref": 350,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -716,7 +743,7 @@ spdx_licenses = {
     },
     "bsl-1.0": {
         "id": "BSL-1.0",
-        "ref": 600,
+        "ref": 514,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -725,7 +752,7 @@ spdx_licenses = {
     },
     "busl-1.1": {
         "id": "BUSL-1.1",
-        "ref": 380,
+        "ref": 549,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -734,7 +761,7 @@ spdx_licenses = {
     },
     "baekmuk": {
         "id": "Baekmuk",
-        "ref": 512,
+        "ref": 436,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -743,7 +770,7 @@ spdx_licenses = {
     },
     "bahyph": {
         "id": "Bahyph",
-        "ref": 57,
+        "ref": 494,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -752,7 +779,7 @@ spdx_licenses = {
     },
     "barr": {
         "id": "Barr",
-        "ref": 425,
+        "ref": 48,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -761,7 +788,7 @@ spdx_licenses = {
     },
     "beerware": {
         "id": "Beerware",
-        "ref": 50,
+        "ref": 143,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -770,7 +797,7 @@ spdx_licenses = {
     },
     "bittorrent-1.0": {
         "id": "BitTorrent-1.0",
-        "ref": 602,
+        "ref": 373,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -779,7 +806,7 @@ spdx_licenses = {
     },
     "bittorrent-1.1": {
         "id": "BitTorrent-1.1",
-        "ref": 161,
+        "ref": 288,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -788,7 +815,7 @@ spdx_licenses = {
     },
     "bitstream-charter": {
         "id": "Bitstream-Charter",
-        "ref": 236,
+        "ref": 560,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -797,7 +824,7 @@ spdx_licenses = {
     },
     "bitstream-vera": {
         "id": "Bitstream-Vera",
-        "ref": 421,
+        "ref": 581,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -806,7 +833,7 @@ spdx_licenses = {
     },
     "blueoak-1.0.0": {
         "id": "BlueOak-1.0.0",
-        "ref": 570,
+        "ref": 60,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -815,7 +842,7 @@ spdx_licenses = {
     },
     "boehm-gc": {
         "id": "Boehm-GC",
-        "ref": 15,
+        "ref": 322,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -824,7 +851,7 @@ spdx_licenses = {
     },
     "borceux": {
         "id": "Borceux",
-        "ref": 113,
+        "ref": 552,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -833,7 +860,7 @@ spdx_licenses = {
     },
     "brian-gladman-2-clause": {
         "id": "Brian-Gladman-2-Clause",
-        "ref": 316,
+        "ref": 457,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -842,7 +869,7 @@ spdx_licenses = {
     },
     "brian-gladman-3-clause": {
         "id": "Brian-Gladman-3-Clause",
-        "ref": 444,
+        "ref": 409,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -851,7 +878,7 @@ spdx_licenses = {
     },
     "c-uda-1.0": {
         "id": "C-UDA-1.0",
-        "ref": 551,
+        "ref": 432,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -860,7 +887,7 @@ spdx_licenses = {
     },
     "cal-1.0": {
         "id": "CAL-1.0",
-        "ref": 630,
+        "ref": 653,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -869,7 +896,7 @@ spdx_licenses = {
     },
     "cal-1.0-combined-work-exception": {
         "id": "CAL-1.0-Combined-Work-Exception",
-        "ref": 158,
+        "ref": 217,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -878,7 +905,7 @@ spdx_licenses = {
     },
     "catosl-1.1": {
         "id": "CATOSL-1.1",
-        "ref": 319,
+        "ref": 193,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -887,7 +914,7 @@ spdx_licenses = {
     },
     "cc-by-1.0": {
         "id": "CC-BY-1.0",
-        "ref": 384,
+        "ref": 37,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -896,7 +923,7 @@ spdx_licenses = {
     },
     "cc-by-2.0": {
         "id": "CC-BY-2.0",
-        "ref": 69,
+        "ref": 241,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -905,7 +932,7 @@ spdx_licenses = {
     },
     "cc-by-2.5": {
         "id": "CC-BY-2.5",
-        "ref": 482,
+        "ref": 129,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -914,7 +941,7 @@ spdx_licenses = {
     },
     "cc-by-2.5-au": {
         "id": "CC-BY-2.5-AU",
-        "ref": 348,
+        "ref": 583,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -923,7 +950,7 @@ spdx_licenses = {
     },
     "cc-by-3.0": {
         "id": "CC-BY-3.0",
-        "ref": 562,
+        "ref": 302,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -932,7 +959,7 @@ spdx_licenses = {
     },
     "cc-by-3.0-at": {
         "id": "CC-BY-3.0-AT",
-        "ref": 314,
+        "ref": 324,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -941,7 +968,7 @@ spdx_licenses = {
     },
     "cc-by-3.0-au": {
         "id": "CC-BY-3.0-AU",
-        "ref": 235,
+        "ref": 342,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -950,7 +977,7 @@ spdx_licenses = {
     },
     "cc-by-3.0-de": {
         "id": "CC-BY-3.0-DE",
-        "ref": 110,
+        "ref": 239,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -959,7 +986,7 @@ spdx_licenses = {
     },
     "cc-by-3.0-igo": {
         "id": "CC-BY-3.0-IGO",
-        "ref": 359,
+        "ref": 19,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -968,7 +995,7 @@ spdx_licenses = {
     },
     "cc-by-3.0-nl": {
         "id": "CC-BY-3.0-NL",
-        "ref": 130,
+        "ref": 501,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -977,7 +1004,7 @@ spdx_licenses = {
     },
     "cc-by-3.0-us": {
         "id": "CC-BY-3.0-US",
-        "ref": 38,
+        "ref": 569,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -986,7 +1013,7 @@ spdx_licenses = {
     },
     "cc-by-4.0": {
         "id": "CC-BY-4.0",
-        "ref": 122,
+        "ref": 265,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -995,7 +1022,7 @@ spdx_licenses = {
     },
     "cc-by-nc-1.0": {
         "id": "CC-BY-NC-1.0",
-        "ref": 29,
+        "ref": 167,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1004,7 +1031,7 @@ spdx_licenses = {
     },
     "cc-by-nc-2.0": {
         "id": "CC-BY-NC-2.0",
-        "ref": 588,
+        "ref": 92,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1013,7 +1040,7 @@ spdx_licenses = {
     },
     "cc-by-nc-2.5": {
         "id": "CC-BY-NC-2.5",
-        "ref": 400,
+        "ref": 253,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1022,7 +1049,7 @@ spdx_licenses = {
     },
     "cc-by-nc-3.0": {
         "id": "CC-BY-NC-3.0",
-        "ref": 104,
+        "ref": 199,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1031,7 +1058,7 @@ spdx_licenses = {
     },
     "cc-by-nc-3.0-de": {
         "id": "CC-BY-NC-3.0-DE",
-        "ref": 351,
+        "ref": 429,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1040,7 +1067,7 @@ spdx_licenses = {
     },
     "cc-by-nc-4.0": {
         "id": "CC-BY-NC-4.0",
-        "ref": 353,
+        "ref": 188,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1049,7 +1076,7 @@ spdx_licenses = {
     },
     "cc-by-nc-nd-1.0": {
         "id": "CC-BY-NC-ND-1.0",
-        "ref": 454,
+        "ref": 365,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1058,7 +1085,7 @@ spdx_licenses = {
     },
     "cc-by-nc-nd-2.0": {
         "id": "CC-BY-NC-ND-2.0",
-        "ref": 53,
+        "ref": 416,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1067,7 +1094,7 @@ spdx_licenses = {
     },
     "cc-by-nc-nd-2.5": {
         "id": "CC-BY-NC-ND-2.5",
-        "ref": 328,
+        "ref": 58,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1076,7 +1103,7 @@ spdx_licenses = {
     },
     "cc-by-nc-nd-3.0": {
         "id": "CC-BY-NC-ND-3.0",
-        "ref": 70,
+        "ref": 213,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1085,7 +1112,7 @@ spdx_licenses = {
     },
     "cc-by-nc-nd-3.0-de": {
         "id": "CC-BY-NC-ND-3.0-DE",
-        "ref": 47,
+        "ref": 84,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1094,7 +1121,7 @@ spdx_licenses = {
     },
     "cc-by-nc-nd-3.0-igo": {
         "id": "CC-BY-NC-ND-3.0-IGO",
-        "ref": 213,
+        "ref": 587,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1103,7 +1130,7 @@ spdx_licenses = {
     },
     "cc-by-nc-nd-4.0": {
         "id": "CC-BY-NC-ND-4.0",
-        "ref": 550,
+        "ref": 296,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1112,7 +1139,7 @@ spdx_licenses = {
     },
     "cc-by-nc-sa-1.0": {
         "id": "CC-BY-NC-SA-1.0",
-        "ref": 99,
+        "ref": 170,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1121,7 +1148,7 @@ spdx_licenses = {
     },
     "cc-by-nc-sa-2.0": {
         "id": "CC-BY-NC-SA-2.0",
-        "ref": 491,
+        "ref": 484,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1130,7 +1157,7 @@ spdx_licenses = {
     },
     "cc-by-nc-sa-2.0-de": {
         "id": "CC-BY-NC-SA-2.0-DE",
-        "ref": 246,
+        "ref": 184,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1139,7 +1166,7 @@ spdx_licenses = {
     },
     "cc-by-nc-sa-2.0-fr": {
         "id": "CC-BY-NC-SA-2.0-FR",
-        "ref": 368,
+        "ref": 116,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1148,7 +1175,7 @@ spdx_licenses = {
     },
     "cc-by-nc-sa-2.0-uk": {
         "id": "CC-BY-NC-SA-2.0-UK",
-        "ref": 451,
+        "ref": 415,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1157,7 +1184,7 @@ spdx_licenses = {
     },
     "cc-by-nc-sa-2.5": {
         "id": "CC-BY-NC-SA-2.5",
-        "ref": 352,
+        "ref": 106,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1166,7 +1193,7 @@ spdx_licenses = {
     },
     "cc-by-nc-sa-3.0": {
         "id": "CC-BY-NC-SA-3.0",
-        "ref": 41,
+        "ref": 323,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1175,7 +1202,7 @@ spdx_licenses = {
     },
     "cc-by-nc-sa-3.0-de": {
         "id": "CC-BY-NC-SA-3.0-DE",
-        "ref": 582,
+        "ref": 150,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1184,7 +1211,7 @@ spdx_licenses = {
     },
     "cc-by-nc-sa-3.0-igo": {
         "id": "CC-BY-NC-SA-3.0-IGO",
-        "ref": 205,
+        "ref": 295,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1193,7 +1220,7 @@ spdx_licenses = {
     },
     "cc-by-nc-sa-4.0": {
         "id": "CC-BY-NC-SA-4.0",
-        "ref": 610,
+        "ref": 351,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1202,7 +1229,7 @@ spdx_licenses = {
     },
     "cc-by-nd-1.0": {
         "id": "CC-BY-ND-1.0",
-        "ref": 18,
+        "ref": 56,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1211,7 +1238,7 @@ spdx_licenses = {
     },
     "cc-by-nd-2.0": {
         "id": "CC-BY-ND-2.0",
-        "ref": 614,
+        "ref": 640,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1220,7 +1247,7 @@ spdx_licenses = {
     },
     "cc-by-nd-2.5": {
         "id": "CC-BY-ND-2.5",
-        "ref": 540,
+        "ref": 276,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1229,7 +1256,7 @@ spdx_licenses = {
     },
     "cc-by-nd-3.0": {
         "id": "CC-BY-ND-3.0",
-        "ref": 544,
+        "ref": 173,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1238,7 +1265,7 @@ spdx_licenses = {
     },
     "cc-by-nd-3.0-de": {
         "id": "CC-BY-ND-3.0-DE",
-        "ref": 355,
+        "ref": 525,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1247,7 +1274,7 @@ spdx_licenses = {
     },
     "cc-by-nd-4.0": {
         "id": "CC-BY-ND-4.0",
-        "ref": 545,
+        "ref": 328,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1256,7 +1283,7 @@ spdx_licenses = {
     },
     "cc-by-sa-1.0": {
         "id": "CC-BY-SA-1.0",
-        "ref": 242,
+        "ref": 453,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1265,7 +1292,7 @@ spdx_licenses = {
     },
     "cc-by-sa-2.0": {
         "id": "CC-BY-SA-2.0",
-        "ref": 349,
+        "ref": 174,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1274,7 +1301,7 @@ spdx_licenses = {
     },
     "cc-by-sa-2.0-uk": {
         "id": "CC-BY-SA-2.0-UK",
-        "ref": 197,
+        "ref": 387,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1283,7 +1310,7 @@ spdx_licenses = {
     },
     "cc-by-sa-2.1-jp": {
         "id": "CC-BY-SA-2.1-JP",
-        "ref": 162,
+        "ref": 471,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1292,7 +1319,7 @@ spdx_licenses = {
     },
     "cc-by-sa-2.5": {
         "id": "CC-BY-SA-2.5",
-        "ref": 626,
+        "ref": 461,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1301,7 +1328,7 @@ spdx_licenses = {
     },
     "cc-by-sa-3.0": {
         "id": "CC-BY-SA-3.0",
-        "ref": 244,
+        "ref": 621,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1310,7 +1337,7 @@ spdx_licenses = {
     },
     "cc-by-sa-3.0-at": {
         "id": "CC-BY-SA-3.0-AT",
-        "ref": 292,
+        "ref": 31,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1319,7 +1346,7 @@ spdx_licenses = {
     },
     "cc-by-sa-3.0-de": {
         "id": "CC-BY-SA-3.0-DE",
-        "ref": 317,
+        "ref": 325,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1328,7 +1355,7 @@ spdx_licenses = {
     },
     "cc-by-sa-3.0-igo": {
         "id": "CC-BY-SA-3.0-IGO",
-        "ref": 139,
+        "ref": 20,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1337,7 +1364,7 @@ spdx_licenses = {
     },
     "cc-by-sa-4.0": {
         "id": "CC-BY-SA-4.0",
-        "ref": 438,
+        "ref": 155,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -1346,7 +1373,7 @@ spdx_licenses = {
     },
     "cc-pddc": {
         "id": "CC-PDDC",
-        "ref": 291,
+        "ref": 349,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1355,7 +1382,7 @@ spdx_licenses = {
     },
     "cc0-1.0": {
         "id": "CC0-1.0",
-        "ref": 285,
+        "ref": 70,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -1364,7 +1391,7 @@ spdx_licenses = {
     },
     "cddl-1.0": {
         "id": "CDDL-1.0",
-        "ref": 154,
+        "ref": 282,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -1373,7 +1400,7 @@ spdx_licenses = {
     },
     "cddl-1.1": {
         "id": "CDDL-1.1",
-        "ref": 529,
+        "ref": 130,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1382,7 +1409,7 @@ spdx_licenses = {
     },
     "cdl-1.0": {
         "id": "CDL-1.0",
-        "ref": 243,
+        "ref": 592,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1391,7 +1418,7 @@ spdx_licenses = {
     },
     "cdla-permissive-1.0": {
         "id": "CDLA-Permissive-1.0",
-        "ref": 477,
+        "ref": 551,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1400,7 +1427,7 @@ spdx_licenses = {
     },
     "cdla-permissive-2.0": {
         "id": "CDLA-Permissive-2.0",
-        "ref": 335,
+        "ref": 319,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1409,7 +1436,7 @@ spdx_licenses = {
     },
     "cdla-sharing-1.0": {
         "id": "CDLA-Sharing-1.0",
-        "ref": 548,
+        "ref": 445,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1418,7 +1445,7 @@ spdx_licenses = {
     },
     "cecill-1.0": {
         "id": "CECILL-1.0",
-        "ref": 60,
+        "ref": 219,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1427,7 +1454,7 @@ spdx_licenses = {
     },
     "cecill-1.1": {
         "id": "CECILL-1.1",
-        "ref": 344,
+        "ref": 38,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1436,7 +1463,7 @@ spdx_licenses = {
     },
     "cecill-2.0": {
         "id": "CECILL-2.0",
-        "ref": 410,
+        "ref": 73,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -1445,7 +1472,7 @@ spdx_licenses = {
     },
     "cecill-2.1": {
         "id": "CECILL-2.1",
-        "ref": 174,
+        "ref": 393,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -1454,7 +1481,7 @@ spdx_licenses = {
     },
     "cecill-b": {
         "id": "CECILL-B",
-        "ref": 256,
+        "ref": 354,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -1463,7 +1490,7 @@ spdx_licenses = {
     },
     "cecill-c": {
         "id": "CECILL-C",
-        "ref": 52,
+        "ref": 271,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -1472,7 +1499,7 @@ spdx_licenses = {
     },
     "cern-ohl-1.1": {
         "id": "CERN-OHL-1.1",
-        "ref": 615,
+        "ref": 32,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1481,7 +1508,7 @@ spdx_licenses = {
     },
     "cern-ohl-1.2": {
         "id": "CERN-OHL-1.2",
-        "ref": 324,
+        "ref": 95,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1490,7 +1517,7 @@ spdx_licenses = {
     },
     "cern-ohl-p-2.0": {
         "id": "CERN-OHL-P-2.0",
-        "ref": 402,
+        "ref": 198,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -1499,7 +1526,7 @@ spdx_licenses = {
     },
     "cern-ohl-s-2.0": {
         "id": "CERN-OHL-S-2.0",
-        "ref": 513,
+        "ref": 370,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -1508,7 +1535,7 @@ spdx_licenses = {
     },
     "cern-ohl-w-2.0": {
         "id": "CERN-OHL-W-2.0",
-        "ref": 237,
+        "ref": 82,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -1517,7 +1544,7 @@ spdx_licenses = {
     },
     "cfitsio": {
         "id": "CFITSIO",
-        "ref": 151,
+        "ref": 96,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1526,7 +1553,7 @@ spdx_licenses = {
     },
     "cmu-mach": {
         "id": "CMU-Mach",
-        "ref": 492,
+        "ref": 410,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1535,7 +1562,7 @@ spdx_licenses = {
     },
     "cmu-mach-nodoc": {
         "id": "CMU-Mach-nodoc",
-        "ref": 318,
+        "ref": 111,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1544,7 +1571,7 @@ spdx_licenses = {
     },
     "cnri-jython": {
         "id": "CNRI-Jython",
-        "ref": 203,
+        "ref": 509,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1553,7 +1580,7 @@ spdx_licenses = {
     },
     "cnri-python": {
         "id": "CNRI-Python",
-        "ref": 218,
+        "ref": 611,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -1562,7 +1589,7 @@ spdx_licenses = {
     },
     "cnri-python-gpl-compatible": {
         "id": "CNRI-Python-GPL-Compatible",
-        "ref": 391,
+        "ref": 504,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1571,7 +1598,7 @@ spdx_licenses = {
     },
     "coil-1.0": {
         "id": "COIL-1.0",
-        "ref": 375,
+        "ref": 286,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1580,7 +1607,7 @@ spdx_licenses = {
     },
     "cpal-1.0": {
         "id": "CPAL-1.0",
-        "ref": 223,
+        "ref": 315,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -1589,7 +1616,7 @@ spdx_licenses = {
     },
     "cpl-1.0": {
         "id": "CPL-1.0",
-        "ref": 181,
+        "ref": 135,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -1598,7 +1625,7 @@ spdx_licenses = {
     },
     "cpol-1.02": {
         "id": "CPOL-1.02",
-        "ref": 176,
+        "ref": 479,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1607,7 +1634,7 @@ spdx_licenses = {
     },
     "cua-opl-1.0": {
         "id": "CUA-OPL-1.0",
-        "ref": 313,
+        "ref": 553,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -1616,7 +1643,7 @@ spdx_licenses = {
     },
     "caldera": {
         "id": "Caldera",
-        "ref": 282,
+        "ref": 622,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1625,16 +1652,25 @@ spdx_licenses = {
     },
     "caldera-no-preamble": {
         "id": "Caldera-no-preamble",
-        "ref": 262,
+        "ref": 585,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
         "name": """Caldera License (without preamble)""",
         "details_url": "https://spdx.org/licenses/Caldera-no-preamble.json",
     },
+    "catharon": {
+        "id": "Catharon",
+        "ref": 45,
+        "deprecated": False,
+        "osi_approved": False,
+        "fsf_libre": False,
+        "name": """Catharon License""",
+        "details_url": "https://spdx.org/licenses/Catharon.json",
+    },
     "clartistic": {
         "id": "ClArtistic",
-        "ref": 441,
+        "ref": 66,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -1643,7 +1679,7 @@ spdx_licenses = {
     },
     "clips": {
         "id": "Clips",
-        "ref": 167,
+        "ref": 450,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1652,7 +1688,7 @@ spdx_licenses = {
     },
     "community-spec-1.0": {
         "id": "Community-Spec-1.0",
-        "ref": 357,
+        "ref": 631,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1661,7 +1697,7 @@ spdx_licenses = {
     },
     "condor-1.1": {
         "id": "Condor-1.1",
-        "ref": 385,
+        "ref": 251,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -1670,7 +1706,7 @@ spdx_licenses = {
     },
     "cornell-lossless-jpeg": {
         "id": "Cornell-Lossless-JPEG",
-        "ref": 542,
+        "ref": 632,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1679,7 +1715,7 @@ spdx_licenses = {
     },
     "cronyx": {
         "id": "Cronyx",
-        "ref": 303,
+        "ref": 377,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1688,7 +1724,7 @@ spdx_licenses = {
     },
     "crossword": {
         "id": "Crossword",
-        "ref": 304,
+        "ref": 340,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1697,7 +1733,7 @@ spdx_licenses = {
     },
     "crystalstacker": {
         "id": "CrystalStacker",
-        "ref": 522,
+        "ref": 593,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1706,7 +1742,7 @@ spdx_licenses = {
     },
     "cube": {
         "id": "Cube",
-        "ref": 126,
+        "ref": 404,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1715,7 +1751,7 @@ spdx_licenses = {
     },
     "d-fsl-1.0": {
         "id": "D-FSL-1.0",
-        "ref": 31,
+        "ref": 154,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1724,7 +1760,7 @@ spdx_licenses = {
     },
     "dec-3-clause": {
         "id": "DEC-3-Clause",
-        "ref": 620,
+        "ref": 15,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1733,7 +1769,7 @@ spdx_licenses = {
     },
     "dl-de-by-2.0": {
         "id": "DL-DE-BY-2.0",
-        "ref": 363,
+        "ref": 225,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1742,7 +1778,7 @@ spdx_licenses = {
     },
     "dl-de-zero-2.0": {
         "id": "DL-DE-ZERO-2.0",
-        "ref": 497,
+        "ref": 341,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1751,7 +1787,7 @@ spdx_licenses = {
     },
     "doc": {
         "id": "DOC",
-        "ref": 82,
+        "ref": 397,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1760,7 +1796,7 @@ spdx_licenses = {
     },
     "drl-1.0": {
         "id": "DRL-1.0",
-        "ref": 623,
+        "ref": 16,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1769,7 +1805,7 @@ spdx_licenses = {
     },
     "drl-1.1": {
         "id": "DRL-1.1",
-        "ref": 259,
+        "ref": 278,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1778,7 +1814,7 @@ spdx_licenses = {
     },
     "dsdp": {
         "id": "DSDP",
-        "ref": 549,
+        "ref": 485,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1787,7 +1823,7 @@ spdx_licenses = {
     },
     "dotseqn": {
         "id": "Dotseqn",
-        "ref": 148,
+        "ref": 132,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1796,7 +1832,7 @@ spdx_licenses = {
     },
     "ecl-1.0": {
         "id": "ECL-1.0",
-        "ref": 40,
+        "ref": 124,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -1805,7 +1841,7 @@ spdx_licenses = {
     },
     "ecl-2.0": {
         "id": "ECL-2.0",
-        "ref": 224,
+        "ref": 361,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -1814,7 +1850,7 @@ spdx_licenses = {
     },
     "efl-1.0": {
         "id": "EFL-1.0",
-        "ref": 329,
+        "ref": 335,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -1823,7 +1859,7 @@ spdx_licenses = {
     },
     "efl-2.0": {
         "id": "EFL-2.0",
-        "ref": 535,
+        "ref": 88,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -1832,7 +1868,7 @@ spdx_licenses = {
     },
     "epics": {
         "id": "EPICS",
-        "ref": 523,
+        "ref": 120,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1841,7 +1877,7 @@ spdx_licenses = {
     },
     "epl-1.0": {
         "id": "EPL-1.0",
-        "ref": 229,
+        "ref": 500,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -1850,7 +1886,7 @@ spdx_licenses = {
     },
     "epl-2.0": {
         "id": "EPL-2.0",
-        "ref": 143,
+        "ref": 407,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -1859,7 +1895,7 @@ spdx_licenses = {
     },
     "eudatagrid": {
         "id": "EUDatagrid",
-        "ref": 191,
+        "ref": 228,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -1868,7 +1904,7 @@ spdx_licenses = {
     },
     "eupl-1.0": {
         "id": "EUPL-1.0",
-        "ref": 392,
+        "ref": 227,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1877,7 +1913,7 @@ spdx_licenses = {
     },
     "eupl-1.1": {
         "id": "EUPL-1.1",
-        "ref": 26,
+        "ref": 266,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -1886,7 +1922,7 @@ spdx_licenses = {
     },
     "eupl-1.2": {
         "id": "EUPL-1.2",
-        "ref": 34,
+        "ref": 559,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -1895,7 +1931,7 @@ spdx_licenses = {
     },
     "elastic-2.0": {
         "id": "Elastic-2.0",
-        "ref": 21,
+        "ref": 147,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1904,7 +1940,7 @@ spdx_licenses = {
     },
     "entessa": {
         "id": "Entessa",
-        "ref": 87,
+        "ref": 546,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -1913,7 +1949,7 @@ spdx_licenses = {
     },
     "erlpl-1.1": {
         "id": "ErlPL-1.1",
-        "ref": 592,
+        "ref": 466,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1922,7 +1958,7 @@ spdx_licenses = {
     },
     "eurosym": {
         "id": "Eurosym",
-        "ref": 584,
+        "ref": 63,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1931,7 +1967,7 @@ spdx_licenses = {
     },
     "fbm": {
         "id": "FBM",
-        "ref": 227,
+        "ref": 175,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1940,7 +1976,7 @@ spdx_licenses = {
     },
     "fdk-aac": {
         "id": "FDK-AAC",
-        "ref": 323,
+        "ref": 49,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1949,7 +1985,7 @@ spdx_licenses = {
     },
     "fsfap": {
         "id": "FSFAP",
-        "ref": 273,
+        "ref": 36,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -1958,7 +1994,7 @@ spdx_licenses = {
     },
     "fsfap-no-warranty-disclaimer": {
         "id": "FSFAP-no-warranty-disclaimer",
-        "ref": 67,
+        "ref": 536,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1967,7 +2003,7 @@ spdx_licenses = {
     },
     "fsful": {
         "id": "FSFUL",
-        "ref": 577,
+        "ref": 454,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1976,7 +2012,7 @@ spdx_licenses = {
     },
     "fsfullr": {
         "id": "FSFULLR",
-        "ref": 96,
+        "ref": 422,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1985,7 +2021,7 @@ spdx_licenses = {
     },
     "fsfullrwd": {
         "id": "FSFULLRWD",
-        "ref": 456,
+        "ref": 197,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -1994,7 +2030,7 @@ spdx_licenses = {
     },
     "ftl": {
         "id": "FTL",
-        "ref": 519,
+        "ref": 438,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -2003,7 +2039,7 @@ spdx_licenses = {
     },
     "fair": {
         "id": "Fair",
-        "ref": 93,
+        "ref": 570,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -2012,7 +2048,7 @@ spdx_licenses = {
     },
     "ferguson-twofish": {
         "id": "Ferguson-Twofish",
-        "ref": 447,
+        "ref": 617,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2021,7 +2057,7 @@ spdx_licenses = {
     },
     "frameworx-1.0": {
         "id": "Frameworx-1.0",
-        "ref": 152,
+        "ref": 259,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -2030,7 +2066,7 @@ spdx_licenses = {
     },
     "freebsd-doc": {
         "id": "FreeBSD-DOC",
-        "ref": 73,
+        "ref": 333,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2039,7 +2075,7 @@ spdx_licenses = {
     },
     "freeimage": {
         "id": "FreeImage",
-        "ref": 131,
+        "ref": 181,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2048,7 +2084,7 @@ spdx_licenses = {
     },
     "furuseth": {
         "id": "Furuseth",
-        "ref": 604,
+        "ref": 380,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2057,7 +2093,7 @@ spdx_licenses = {
     },
     "gcr-docs": {
         "id": "GCR-docs",
-        "ref": 155,
+        "ref": 115,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2066,7 +2102,7 @@ spdx_licenses = {
     },
     "gd": {
         "id": "GD",
-        "ref": 92,
+        "ref": 291,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2075,7 +2111,7 @@ spdx_licenses = {
     },
     "gfdl-1.1": {
         "id": "GFDL-1.1",
-        "ref": 195,
+        "ref": 589,
         "deprecated": True,
         "osi_approved": False,
         "fsf_libre": True,
@@ -2084,7 +2120,7 @@ spdx_licenses = {
     },
     "gfdl-1.1-invariants-only": {
         "id": "GFDL-1.1-invariants-only",
-        "ref": 346,
+        "ref": 307,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2093,7 +2129,7 @@ spdx_licenses = {
     },
     "gfdl-1.1-invariants-or-later": {
         "id": "GFDL-1.1-invariants-or-later",
-        "ref": 269,
+        "ref": 98,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2102,7 +2138,7 @@ spdx_licenses = {
     },
     "gfdl-1.1-no-invariants-only": {
         "id": "GFDL-1.1-no-invariants-only",
-        "ref": 6,
+        "ref": 47,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2111,7 +2147,7 @@ spdx_licenses = {
     },
     "gfdl-1.1-no-invariants-or-later": {
         "id": "GFDL-1.1-no-invariants-or-later",
-        "ref": 7,
+        "ref": 273,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2120,7 +2156,7 @@ spdx_licenses = {
     },
     "gfdl-1.1-only": {
         "id": "GFDL-1.1-only",
-        "ref": 264,
+        "ref": 626,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -2129,7 +2165,7 @@ spdx_licenses = {
     },
     "gfdl-1.1-or-later": {
         "id": "GFDL-1.1-or-later",
-        "ref": 196,
+        "ref": 644,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -2138,7 +2174,7 @@ spdx_licenses = {
     },
     "gfdl-1.2": {
         "id": "GFDL-1.2",
-        "ref": 97,
+        "ref": 520,
         "deprecated": True,
         "osi_approved": False,
         "fsf_libre": True,
@@ -2147,7 +2183,7 @@ spdx_licenses = {
     },
     "gfdl-1.2-invariants-only": {
         "id": "GFDL-1.2-invariants-only",
-        "ref": 611,
+        "ref": 495,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2156,7 +2192,7 @@ spdx_licenses = {
     },
     "gfdl-1.2-invariants-or-later": {
         "id": "GFDL-1.2-invariants-or-later",
-        "ref": 464,
+        "ref": 6,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2165,7 +2201,7 @@ spdx_licenses = {
     },
     "gfdl-1.2-no-invariants-only": {
         "id": "GFDL-1.2-no-invariants-only",
-        "ref": 75,
+        "ref": 77,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2174,7 +2210,7 @@ spdx_licenses = {
     },
     "gfdl-1.2-no-invariants-or-later": {
         "id": "GFDL-1.2-no-invariants-or-later",
-        "ref": 14,
+        "ref": 279,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2183,7 +2219,7 @@ spdx_licenses = {
     },
     "gfdl-1.2-only": {
         "id": "GFDL-1.2-only",
-        "ref": 322,
+        "ref": 648,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -2192,7 +2228,7 @@ spdx_licenses = {
     },
     "gfdl-1.2-or-later": {
         "id": "GFDL-1.2-or-later",
-        "ref": 594,
+        "ref": 318,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -2201,7 +2237,7 @@ spdx_licenses = {
     },
     "gfdl-1.3": {
         "id": "GFDL-1.3",
-        "ref": 538,
+        "ref": 287,
         "deprecated": True,
         "osi_approved": False,
         "fsf_libre": True,
@@ -2210,7 +2246,7 @@ spdx_licenses = {
     },
     "gfdl-1.3-invariants-only": {
         "id": "GFDL-1.3-invariants-only",
-        "ref": 571,
+        "ref": 289,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2219,7 +2255,7 @@ spdx_licenses = {
     },
     "gfdl-1.3-invariants-or-later": {
         "id": "GFDL-1.3-invariants-or-later",
-        "ref": 300,
+        "ref": 497,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2228,7 +2264,7 @@ spdx_licenses = {
     },
     "gfdl-1.3-no-invariants-only": {
         "id": "GFDL-1.3-no-invariants-only",
-        "ref": 101,
+        "ref": 254,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2237,7 +2273,7 @@ spdx_licenses = {
     },
     "gfdl-1.3-no-invariants-or-later": {
         "id": "GFDL-1.3-no-invariants-or-later",
-        "ref": 330,
+        "ref": 207,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2246,7 +2282,7 @@ spdx_licenses = {
     },
     "gfdl-1.3-only": {
         "id": "GFDL-1.3-only",
-        "ref": 457,
+        "ref": 635,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -2255,7 +2291,7 @@ spdx_licenses = {
     },
     "gfdl-1.3-or-later": {
         "id": "GFDL-1.3-or-later",
-        "ref": 472,
+        "ref": 448,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -2264,7 +2300,7 @@ spdx_licenses = {
     },
     "gl2ps": {
         "id": "GL2PS",
-        "ref": 338,
+        "ref": 434,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2273,7 +2309,7 @@ spdx_licenses = {
     },
     "glwtpl": {
         "id": "GLWTPL",
-        "ref": 576,
+        "ref": 190,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2282,7 +2318,7 @@ spdx_licenses = {
     },
     "gpl-1.0": {
         "id": "GPL-1.0",
-        "ref": 601,
+        "ref": 630,
         "deprecated": True,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2291,7 +2327,7 @@ spdx_licenses = {
     },
     "gpl-1.0+": {
         "id": "GPL-1.0+",
-        "ref": 442,
+        "ref": 26,
         "deprecated": True,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2300,7 +2336,7 @@ spdx_licenses = {
     },
     "gpl-1.0-only": {
         "id": "GPL-1.0-only",
-        "ref": 527,
+        "ref": 12,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2309,7 +2345,7 @@ spdx_licenses = {
     },
     "gpl-1.0-or-later": {
         "id": "GPL-1.0-or-later",
-        "ref": 0,
+        "ref": 642,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2318,7 +2354,7 @@ spdx_licenses = {
     },
     "gpl-2.0": {
         "id": "GPL-2.0",
-        "ref": 473,
+        "ref": 524,
         "deprecated": True,
         "osi_approved": True,
         "fsf_libre": True,
@@ -2327,7 +2363,7 @@ spdx_licenses = {
     },
     "gpl-2.0+": {
         "id": "GPL-2.0+",
-        "ref": 502,
+        "ref": 25,
         "deprecated": True,
         "osi_approved": True,
         "fsf_libre": True,
@@ -2336,7 +2372,7 @@ spdx_licenses = {
     },
     "gpl-2.0-only": {
         "id": "GPL-2.0-only",
-        "ref": 404,
+        "ref": 618,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -2345,7 +2381,7 @@ spdx_licenses = {
     },
     "gpl-2.0-or-later": {
         "id": "GPL-2.0-or-later",
-        "ref": 389,
+        "ref": 164,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -2354,7 +2390,7 @@ spdx_licenses = {
     },
     "gpl-2.0-with-gcc-exception": {
         "id": "GPL-2.0-with-GCC-exception",
-        "ref": 54,
+        "ref": 68,
         "deprecated": True,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2363,7 +2399,7 @@ spdx_licenses = {
     },
     "gpl-2.0-with-autoconf-exception": {
         "id": "GPL-2.0-with-autoconf-exception",
-        "ref": 333,
+        "ref": 146,
         "deprecated": True,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2372,7 +2408,7 @@ spdx_licenses = {
     },
     "gpl-2.0-with-bison-exception": {
         "id": "GPL-2.0-with-bison-exception",
-        "ref": 117,
+        "ref": 374,
         "deprecated": True,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2381,7 +2417,7 @@ spdx_licenses = {
     },
     "gpl-2.0-with-classpath-exception": {
         "id": "GPL-2.0-with-classpath-exception",
-        "ref": 144,
+        "ref": 331,
         "deprecated": True,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2390,7 +2426,7 @@ spdx_licenses = {
     },
     "gpl-2.0-with-font-exception": {
         "id": "GPL-2.0-with-font-exception",
-        "ref": 286,
+        "ref": 542,
         "deprecated": True,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2399,7 +2435,7 @@ spdx_licenses = {
     },
     "gpl-3.0": {
         "id": "GPL-3.0",
-        "ref": 233,
+        "ref": 442,
         "deprecated": True,
         "osi_approved": True,
         "fsf_libre": True,
@@ -2408,7 +2444,7 @@ spdx_licenses = {
     },
     "gpl-3.0+": {
         "id": "GPL-3.0+",
-        "ref": 201,
+        "ref": 270,
         "deprecated": True,
         "osi_approved": True,
         "fsf_libre": True,
@@ -2417,7 +2453,7 @@ spdx_licenses = {
     },
     "gpl-3.0-only": {
         "id": "GPL-3.0-only",
-        "ref": 339,
+        "ref": 133,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -2426,7 +2462,7 @@ spdx_licenses = {
     },
     "gpl-3.0-or-later": {
         "id": "GPL-3.0-or-later",
-        "ref": 109,
+        "ref": 390,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -2435,7 +2471,7 @@ spdx_licenses = {
     },
     "gpl-3.0-with-gcc-exception": {
         "id": "GPL-3.0-with-GCC-exception",
-        "ref": 331,
+        "ref": 356,
         "deprecated": True,
         "osi_approved": True,
         "fsf_libre": False,
@@ -2444,7 +2480,7 @@ spdx_licenses = {
     },
     "gpl-3.0-with-autoconf-exception": {
         "id": "GPL-3.0-with-autoconf-exception",
-        "ref": 121,
+        "ref": 458,
         "deprecated": True,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2453,7 +2489,7 @@ spdx_licenses = {
     },
     "giftware": {
         "id": "Giftware",
-        "ref": 449,
+        "ref": 172,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2462,7 +2498,7 @@ spdx_licenses = {
     },
     "glide": {
         "id": "Glide",
-        "ref": 215,
+        "ref": 189,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2471,7 +2507,7 @@ spdx_licenses = {
     },
     "glulxe": {
         "id": "Glulxe",
-        "ref": 289,
+        "ref": 85,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2480,16 +2516,25 @@ spdx_licenses = {
     },
     "graphics-gems": {
         "id": "Graphics-Gems",
-        "ref": 68,
+        "ref": 574,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
         "name": """Graphics Gems License""",
         "details_url": "https://spdx.org/licenses/Graphics-Gems.json",
     },
+    "gutmann": {
+        "id": "Gutmann",
+        "ref": 441,
+        "deprecated": False,
+        "osi_approved": False,
+        "fsf_libre": False,
+        "name": """Gutmann License""",
+        "details_url": "https://spdx.org/licenses/Gutmann.json",
+    },
     "hp-1986": {
         "id": "HP-1986",
-        "ref": 39,
+        "ref": 277,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2498,7 +2543,7 @@ spdx_licenses = {
     },
     "hp-1989": {
         "id": "HP-1989",
-        "ref": 578,
+        "ref": 639,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2507,7 +2552,7 @@ spdx_licenses = {
     },
     "hpnd": {
         "id": "HPND",
-        "ref": 624,
+        "ref": 281,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -2516,7 +2561,7 @@ spdx_licenses = {
     },
     "hpnd-dec": {
         "id": "HPND-DEC",
-        "ref": 115,
+        "ref": 577,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2525,7 +2570,7 @@ spdx_licenses = {
     },
     "hpnd-fenneberg-livingston": {
         "id": "HPND-Fenneberg-Livingston",
-        "ref": 305,
+        "ref": 145,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2534,16 +2579,25 @@ spdx_licenses = {
     },
     "hpnd-inria-imag": {
         "id": "HPND-INRIA-IMAG",
-        "ref": 10,
+        "ref": 614,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
         "name": """Historical Permission Notice and Disclaimer    - INRIA-IMAG variant""",
         "details_url": "https://spdx.org/licenses/HPND-INRIA-IMAG.json",
     },
+    "hpnd-intel": {
+        "id": "HPND-Intel",
+        "ref": 195,
+        "deprecated": False,
+        "osi_approved": False,
+        "fsf_libre": False,
+        "name": """Historical Permission Notice and Disclaimer - Intel variant""",
+        "details_url": "https://spdx.org/licenses/HPND-Intel.json",
+    },
     "hpnd-kevlin-henney": {
         "id": "HPND-Kevlin-Henney",
-        "ref": 462,
+        "ref": 428,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2552,7 +2606,7 @@ spdx_licenses = {
     },
     "hpnd-mit-disclaimer": {
         "id": "HPND-MIT-disclaimer",
-        "ref": 345,
+        "ref": 185,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2561,7 +2615,7 @@ spdx_licenses = {
     },
     "hpnd-markus-kuhn": {
         "id": "HPND-Markus-Kuhn",
-        "ref": 367,
+        "ref": 8,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2570,7 +2624,7 @@ spdx_licenses = {
     },
     "hpnd-pbmplus": {
         "id": "HPND-Pbmplus",
-        "ref": 204,
+        "ref": 603,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2579,16 +2633,25 @@ spdx_licenses = {
     },
     "hpnd-uc": {
         "id": "HPND-UC",
-        "ref": 107,
+        "ref": 386,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
         "name": """Historical Permission Notice and Disclaimer - University of California variant""",
         "details_url": "https://spdx.org/licenses/HPND-UC.json",
     },
+    "hpnd-uc-export-us": {
+        "id": "HPND-UC-export-US",
+        "ref": 118,
+        "deprecated": False,
+        "osi_approved": False,
+        "fsf_libre": False,
+        "name": """Historical Permission Notice and Disclaimer - University of California, US export warning""",
+        "details_url": "https://spdx.org/licenses/HPND-UC-export-US.json",
+    },
     "hpnd-doc": {
         "id": "HPND-doc",
-        "ref": 30,
+        "ref": 391,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2597,7 +2660,7 @@ spdx_licenses = {
     },
     "hpnd-doc-sell": {
         "id": "HPND-doc-sell",
-        "ref": 184,
+        "ref": 163,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2606,25 +2669,52 @@ spdx_licenses = {
     },
     "hpnd-export-us": {
         "id": "HPND-export-US",
-        "ref": 336,
+        "ref": 214,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
         "name": """HPND with US Government export control warning""",
         "details_url": "https://spdx.org/licenses/HPND-export-US.json",
     },
+    "hpnd-export-us-acknowledgement": {
+        "id": "HPND-export-US-acknowledgement",
+        "ref": 610,
+        "deprecated": False,
+        "osi_approved": False,
+        "fsf_libre": False,
+        "name": """HPND with US Government export control warning and acknowledgment""",
+        "details_url": "https://spdx.org/licenses/HPND-export-US-acknowledgement.json",
+    },
     "hpnd-export-us-modify": {
         "id": "HPND-export-US-modify",
-        "ref": 261,
+        "ref": 498,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
         "name": """HPND with US Government export control warning and modification rqmt""",
         "details_url": "https://spdx.org/licenses/HPND-export-US-modify.json",
     },
+    "hpnd-export2-us": {
+        "id": "HPND-export2-US",
+        "ref": 33,
+        "deprecated": False,
+        "osi_approved": False,
+        "fsf_libre": False,
+        "name": """HPND with US Government export control and 2 disclaimers""",
+        "details_url": "https://spdx.org/licenses/HPND-export2-US.json",
+    },
+    "hpnd-merchantability-variant": {
+        "id": "HPND-merchantability-variant",
+        "ref": 540,
+        "deprecated": False,
+        "osi_approved": False,
+        "fsf_libre": False,
+        "name": """Historical Permission Notice and Disclaimer - merchantability variant""",
+        "details_url": "https://spdx.org/licenses/HPND-merchantability-variant.json",
+    },
     "hpnd-sell-mit-disclaimer-xserver": {
         "id": "HPND-sell-MIT-disclaimer-xserver",
-        "ref": 532,
+        "ref": 125,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2633,7 +2723,7 @@ spdx_licenses = {
     },
     "hpnd-sell-regexpr": {
         "id": "HPND-sell-regexpr",
-        "ref": 572,
+        "ref": 633,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2642,7 +2732,7 @@ spdx_licenses = {
     },
     "hpnd-sell-variant": {
         "id": "HPND-sell-variant",
-        "ref": 414,
+        "ref": 344,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2651,16 +2741,25 @@ spdx_licenses = {
     },
     "hpnd-sell-variant-mit-disclaimer": {
         "id": "HPND-sell-variant-MIT-disclaimer",
-        "ref": 51,
+        "ref": 160,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
         "name": """HPND sell variant with MIT disclaimer""",
         "details_url": "https://spdx.org/licenses/HPND-sell-variant-MIT-disclaimer.json",
     },
+    "hpnd-sell-variant-mit-disclaimer-rev": {
+        "id": "HPND-sell-variant-MIT-disclaimer-rev",
+        "ref": 609,
+        "deprecated": False,
+        "osi_approved": False,
+        "fsf_libre": False,
+        "name": """HPND sell variant with MIT disclaimer - reverse""",
+        "details_url": "https://spdx.org/licenses/HPND-sell-variant-MIT-disclaimer-rev.json",
+    },
     "htmltidy": {
         "id": "HTMLTIDY",
-        "ref": 474,
+        "ref": 134,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2669,7 +2768,7 @@ spdx_licenses = {
     },
     "haskellreport": {
         "id": "HaskellReport",
-        "ref": 138,
+        "ref": 625,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2678,7 +2777,7 @@ spdx_licenses = {
     },
     "hippocratic-2.1": {
         "id": "Hippocratic-2.1",
-        "ref": 609,
+        "ref": 299,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2687,7 +2786,7 @@ spdx_licenses = {
     },
     "ibm-pibs": {
         "id": "IBM-pibs",
-        "ref": 417,
+        "ref": 102,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2696,7 +2795,7 @@ spdx_licenses = {
     },
     "icu": {
         "id": "ICU",
-        "ref": 153,
+        "ref": 67,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -2705,7 +2804,7 @@ spdx_licenses = {
     },
     "iec-code-components-eula": {
         "id": "IEC-Code-Components-EULA",
-        "ref": 481,
+        "ref": 359,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2714,7 +2813,7 @@ spdx_licenses = {
     },
     "ijg": {
         "id": "IJG",
-        "ref": 90,
+        "ref": 641,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -2723,7 +2822,7 @@ spdx_licenses = {
     },
     "ijg-short": {
         "id": "IJG-short",
-        "ref": 520,
+        "ref": 615,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2732,7 +2831,7 @@ spdx_licenses = {
     },
     "ipa": {
         "id": "IPA",
-        "ref": 411,
+        "ref": 94,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -2741,7 +2840,7 @@ spdx_licenses = {
     },
     "ipl-1.0": {
         "id": "IPL-1.0",
-        "ref": 508,
+        "ref": 332,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -2750,7 +2849,7 @@ spdx_licenses = {
     },
     "isc": {
         "id": "ISC",
-        "ref": 483,
+        "ref": 488,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -2759,7 +2858,7 @@ spdx_licenses = {
     },
     "isc-veillard": {
         "id": "ISC-Veillard",
-        "ref": 446,
+        "ref": 513,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2768,7 +2867,7 @@ spdx_licenses = {
     },
     "imagemagick": {
         "id": "ImageMagick",
-        "ref": 557,
+        "ref": 478,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2777,7 +2876,7 @@ spdx_licenses = {
     },
     "imlib2": {
         "id": "Imlib2",
-        "ref": 280,
+        "ref": 169,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -2786,7 +2885,7 @@ spdx_licenses = {
     },
     "info-zip": {
         "id": "Info-ZIP",
-        "ref": 136,
+        "ref": 269,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2795,7 +2894,7 @@ spdx_licenses = {
     },
     "inner-net-2.0": {
         "id": "Inner-Net-2.0",
-        "ref": 277,
+        "ref": 572,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2804,7 +2903,7 @@ spdx_licenses = {
     },
     "intel": {
         "id": "Intel",
-        "ref": 187,
+        "ref": 623,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -2813,7 +2912,7 @@ spdx_licenses = {
     },
     "intel-acpi": {
         "id": "Intel-ACPI",
-        "ref": 554,
+        "ref": 571,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2822,7 +2921,7 @@ spdx_licenses = {
     },
     "interbase-1.0": {
         "id": "Interbase-1.0",
-        "ref": 632,
+        "ref": 654,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2831,7 +2930,7 @@ spdx_licenses = {
     },
     "jpl-image": {
         "id": "JPL-image",
-        "ref": 379,
+        "ref": 363,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2840,7 +2939,7 @@ spdx_licenses = {
     },
     "jpnic": {
         "id": "JPNIC",
-        "ref": 103,
+        "ref": 83,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2849,7 +2948,7 @@ spdx_licenses = {
     },
     "json": {
         "id": "JSON",
-        "ref": 219,
+        "ref": 65,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2858,7 +2957,7 @@ spdx_licenses = {
     },
     "jam": {
         "id": "Jam",
-        "ref": 4,
+        "ref": 108,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -2867,7 +2966,7 @@ spdx_licenses = {
     },
     "jasper-2.0": {
         "id": "JasPer-2.0",
-        "ref": 593,
+        "ref": 487,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2876,7 +2975,7 @@ spdx_licenses = {
     },
     "kastrup": {
         "id": "Kastrup",
-        "ref": 406,
+        "ref": 226,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2885,7 +2984,7 @@ spdx_licenses = {
     },
     "kazlib": {
         "id": "Kazlib",
-        "ref": 257,
+        "ref": 232,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2894,7 +2993,7 @@ spdx_licenses = {
     },
     "knuth-ctan": {
         "id": "Knuth-CTAN",
-        "ref": 514,
+        "ref": 290,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2903,7 +3002,7 @@ spdx_licenses = {
     },
     "lal-1.2": {
         "id": "LAL-1.2",
-        "ref": 621,
+        "ref": 165,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2912,7 +3011,7 @@ spdx_licenses = {
     },
     "lal-1.3": {
         "id": "LAL-1.3",
-        "ref": 182,
+        "ref": 600,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -2921,7 +3020,7 @@ spdx_licenses = {
     },
     "lgpl-2.0": {
         "id": "LGPL-2.0",
-        "ref": 452,
+        "ref": 353,
         "deprecated": True,
         "osi_approved": True,
         "fsf_libre": False,
@@ -2930,7 +3029,7 @@ spdx_licenses = {
     },
     "lgpl-2.0+": {
         "id": "LGPL-2.0+",
-        "ref": 342,
+        "ref": 62,
         "deprecated": True,
         "osi_approved": True,
         "fsf_libre": False,
@@ -2939,7 +3038,7 @@ spdx_licenses = {
     },
     "lgpl-2.0-only": {
         "id": "LGPL-2.0-only",
-        "ref": 563,
+        "ref": 519,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -2948,7 +3047,7 @@ spdx_licenses = {
     },
     "lgpl-2.0-or-later": {
         "id": "LGPL-2.0-or-later",
-        "ref": 575,
+        "ref": 366,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -2957,7 +3056,7 @@ spdx_licenses = {
     },
     "lgpl-2.1": {
         "id": "LGPL-2.1",
-        "ref": 394,
+        "ref": 656,
         "deprecated": True,
         "osi_approved": True,
         "fsf_libre": True,
@@ -2966,7 +3065,7 @@ spdx_licenses = {
     },
     "lgpl-2.1+": {
         "id": "LGPL-2.1+",
-        "ref": 12,
+        "ref": 64,
         "deprecated": True,
         "osi_approved": True,
         "fsf_libre": True,
@@ -2975,7 +3074,7 @@ spdx_licenses = {
     },
     "lgpl-2.1-only": {
         "id": "LGPL-2.1-only",
-        "ref": 180,
+        "ref": 177,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -2984,7 +3083,7 @@ spdx_licenses = {
     },
     "lgpl-2.1-or-later": {
         "id": "LGPL-2.1-or-later",
-        "ref": 422,
+        "ref": 24,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -2993,7 +3092,7 @@ spdx_licenses = {
     },
     "lgpl-3.0": {
         "id": "LGPL-3.0",
-        "ref": 636,
+        "ref": 578,
         "deprecated": True,
         "osi_approved": True,
         "fsf_libre": True,
@@ -3002,7 +3101,7 @@ spdx_licenses = {
     },
     "lgpl-3.0+": {
         "id": "LGPL-3.0+",
-        "ref": 255,
+        "ref": 233,
         "deprecated": True,
         "osi_approved": True,
         "fsf_libre": True,
@@ -3011,7 +3110,7 @@ spdx_licenses = {
     },
     "lgpl-3.0-only": {
         "id": "LGPL-3.0-only",
-        "ref": 83,
+        "ref": 3,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -3020,7 +3119,7 @@ spdx_licenses = {
     },
     "lgpl-3.0-or-later": {
         "id": "LGPL-3.0-or-later",
-        "ref": 396,
+        "ref": 262,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -3029,7 +3128,7 @@ spdx_licenses = {
     },
     "lgpllr": {
         "id": "LGPLLR",
-        "ref": 135,
+        "ref": 477,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3038,7 +3137,7 @@ spdx_licenses = {
     },
     "loop": {
         "id": "LOOP",
-        "ref": 263,
+        "ref": 607,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3047,7 +3146,7 @@ spdx_licenses = {
     },
     "lpd-document": {
         "id": "LPD-document",
-        "ref": 271,
+        "ref": 522,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3056,7 +3155,7 @@ spdx_licenses = {
     },
     "lpl-1.0": {
         "id": "LPL-1.0",
-        "ref": 468,
+        "ref": 196,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -3065,7 +3164,7 @@ spdx_licenses = {
     },
     "lpl-1.02": {
         "id": "LPL-1.02",
-        "ref": 436,
+        "ref": 69,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -3074,7 +3173,7 @@ spdx_licenses = {
     },
     "lppl-1.0": {
         "id": "LPPL-1.0",
-        "ref": 112,
+        "ref": 215,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3083,7 +3182,7 @@ spdx_licenses = {
     },
     "lppl-1.1": {
         "id": "LPPL-1.1",
-        "ref": 386,
+        "ref": 114,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3092,7 +3191,7 @@ spdx_licenses = {
     },
     "lppl-1.2": {
         "id": "LPPL-1.2",
-        "ref": 517,
+        "ref": 435,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -3101,7 +3200,7 @@ spdx_licenses = {
     },
     "lppl-1.3a": {
         "id": "LPPL-1.3a",
-        "ref": 478,
+        "ref": 18,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -3110,7 +3209,7 @@ spdx_licenses = {
     },
     "lppl-1.3c": {
         "id": "LPPL-1.3c",
-        "ref": 85,
+        "ref": 240,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -3119,7 +3218,7 @@ spdx_licenses = {
     },
     "lzma-sdk-9.11-to-9.20": {
         "id": "LZMA-SDK-9.11-to-9.20",
-        "ref": 378,
+        "ref": 430,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3128,7 +3227,7 @@ spdx_licenses = {
     },
     "lzma-sdk-9.22": {
         "id": "LZMA-SDK-9.22",
-        "ref": 253,
+        "ref": 244,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3137,7 +3236,7 @@ spdx_licenses = {
     },
     "latex2e": {
         "id": "Latex2e",
-        "ref": 254,
+        "ref": 439,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3146,7 +3245,7 @@ spdx_licenses = {
     },
     "latex2e-translated-notice": {
         "id": "Latex2e-translated-notice",
-        "ref": 435,
+        "ref": 620,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3155,7 +3254,7 @@ spdx_licenses = {
     },
     "leptonica": {
         "id": "Leptonica",
-        "ref": 294,
+        "ref": 103,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3164,7 +3263,7 @@ spdx_licenses = {
     },
     "liliq-p-1.1": {
         "id": "LiLiQ-P-1.1",
-        "ref": 534,
+        "ref": 43,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -3173,7 +3272,7 @@ spdx_licenses = {
     },
     "liliq-r-1.1": {
         "id": "LiLiQ-R-1.1",
-        "ref": 65,
+        "ref": 74,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -3182,7 +3281,7 @@ spdx_licenses = {
     },
     "liliq-rplus-1.1": {
         "id": "LiLiQ-Rplus-1.1",
-        "ref": 500,
+        "ref": 40,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -3191,7 +3290,7 @@ spdx_licenses = {
     },
     "libpng": {
         "id": "Libpng",
-        "ref": 140,
+        "ref": 186,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3200,7 +3299,7 @@ spdx_licenses = {
     },
     "linux-openib": {
         "id": "Linux-OpenIB",
-        "ref": 487,
+        "ref": 613,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3209,7 +3308,7 @@ spdx_licenses = {
     },
     "linux-man-pages-1-para": {
         "id": "Linux-man-pages-1-para",
-        "ref": 188,
+        "ref": 339,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3218,7 +3317,7 @@ spdx_licenses = {
     },
     "linux-man-pages-copyleft": {
         "id": "Linux-man-pages-copyleft",
-        "ref": 496,
+        "ref": 590,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3227,7 +3326,7 @@ spdx_licenses = {
     },
     "linux-man-pages-copyleft-2-para": {
         "id": "Linux-man-pages-copyleft-2-para",
-        "ref": 460,
+        "ref": 86,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3236,7 +3335,7 @@ spdx_licenses = {
     },
     "linux-man-pages-copyleft-var": {
         "id": "Linux-man-pages-copyleft-var",
-        "ref": 105,
+        "ref": 337,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3245,7 +3344,7 @@ spdx_licenses = {
     },
     "lucida-bitmap-fonts": {
         "id": "Lucida-Bitmap-Fonts",
-        "ref": 62,
+        "ref": 399,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3254,7 +3353,7 @@ spdx_licenses = {
     },
     "mit": {
         "id": "MIT",
-        "ref": 124,
+        "ref": 608,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -3263,7 +3362,7 @@ spdx_licenses = {
     },
     "mit-0": {
         "id": "MIT-0",
-        "ref": 238,
+        "ref": 395,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -3272,7 +3371,7 @@ spdx_licenses = {
     },
     "mit-cmu": {
         "id": "MIT-CMU",
-        "ref": 415,
+        "ref": 575,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3281,16 +3380,25 @@ spdx_licenses = {
     },
     "mit-festival": {
         "id": "MIT-Festival",
-        "ref": 595,
+        "ref": 317,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
         "name": """MIT Festival Variant""",
         "details_url": "https://spdx.org/licenses/MIT-Festival.json",
     },
+    "mit-khronos-old": {
+        "id": "MIT-Khronos-old",
+        "ref": 249,
+        "deprecated": False,
+        "osi_approved": False,
+        "fsf_libre": False,
+        "name": """MIT Khronos - old variant""",
+        "details_url": "https://spdx.org/licenses/MIT-Khronos-old.json",
+    },
     "mit-modern-variant": {
         "id": "MIT-Modern-Variant",
-        "ref": 44,
+        "ref": 424,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -3299,7 +3407,7 @@ spdx_licenses = {
     },
     "mit-wu": {
         "id": "MIT-Wu",
-        "ref": 608,
+        "ref": 459,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3308,7 +3416,7 @@ spdx_licenses = {
     },
     "mit-advertising": {
         "id": "MIT-advertising",
-        "ref": 77,
+        "ref": 293,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3317,7 +3425,7 @@ spdx_licenses = {
     },
     "mit-enna": {
         "id": "MIT-enna",
-        "ref": 129,
+        "ref": 638,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3326,7 +3434,7 @@ spdx_licenses = {
     },
     "mit-feh": {
         "id": "MIT-feh",
-        "ref": 37,
+        "ref": 53,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3335,7 +3443,7 @@ spdx_licenses = {
     },
     "mit-open-group": {
         "id": "MIT-open-group",
-        "ref": 543,
+        "ref": 283,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3344,7 +3452,7 @@ spdx_licenses = {
     },
     "mit-testregex": {
         "id": "MIT-testregex",
-        "ref": 250,
+        "ref": 427,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3353,7 +3461,7 @@ spdx_licenses = {
     },
     "mitnfa": {
         "id": "MITNFA",
-        "ref": 526,
+        "ref": 157,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3362,7 +3470,7 @@ spdx_licenses = {
     },
     "mmixware": {
         "id": "MMIXware",
-        "ref": 252,
+        "ref": 474,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3371,7 +3479,7 @@ spdx_licenses = {
     },
     "mpeg-ssg": {
         "id": "MPEG-SSG",
-        "ref": 202,
+        "ref": 417,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3380,7 +3488,7 @@ spdx_licenses = {
     },
     "mpl-1.0": {
         "id": "MPL-1.0",
-        "ref": 499,
+        "ref": 28,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -3389,7 +3497,7 @@ spdx_licenses = {
     },
     "mpl-1.1": {
         "id": "MPL-1.1",
-        "ref": 183,
+        "ref": 619,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -3398,7 +3506,7 @@ spdx_licenses = {
     },
     "mpl-2.0": {
         "id": "MPL-2.0",
-        "ref": 573,
+        "ref": 263,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -3407,7 +3515,7 @@ spdx_licenses = {
     },
     "mpl-2.0-no-copyleft-exception": {
         "id": "MPL-2.0-no-copyleft-exception",
-        "ref": 397,
+        "ref": 455,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -3416,7 +3524,7 @@ spdx_licenses = {
     },
     "ms-lpl": {
         "id": "MS-LPL",
-        "ref": 199,
+        "ref": 528,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3425,7 +3533,7 @@ spdx_licenses = {
     },
     "ms-pl": {
         "id": "MS-PL",
-        "ref": 485,
+        "ref": 499,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -3434,7 +3542,7 @@ spdx_licenses = {
     },
     "ms-rl": {
         "id": "MS-RL",
-        "ref": 284,
+        "ref": 343,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -3443,7 +3551,7 @@ spdx_licenses = {
     },
     "mtll": {
         "id": "MTLL",
-        "ref": 387,
+        "ref": 137,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3452,7 +3560,7 @@ spdx_licenses = {
     },
     "mackerras-3-clause": {
         "id": "Mackerras-3-Clause",
-        "ref": 42,
+        "ref": 59,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3461,7 +3569,7 @@ spdx_licenses = {
     },
     "mackerras-3-clause-acknowledgment": {
         "id": "Mackerras-3-Clause-acknowledgment",
-        "ref": 605,
+        "ref": 598,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3470,7 +3578,7 @@ spdx_licenses = {
     },
     "makeindex": {
         "id": "MakeIndex",
-        "ref": 22,
+        "ref": 206,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3479,7 +3587,7 @@ spdx_licenses = {
     },
     "martin-birgmeier": {
         "id": "Martin-Birgmeier",
-        "ref": 382,
+        "ref": 535,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3488,7 +3596,7 @@ spdx_licenses = {
     },
     "mcphee-slideshow": {
         "id": "McPhee-slideshow",
-        "ref": 288,
+        "ref": 492,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3497,7 +3605,7 @@ spdx_licenses = {
     },
     "minpack": {
         "id": "Minpack",
-        "ref": 179,
+        "ref": 512,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3506,7 +3614,7 @@ spdx_licenses = {
     },
     "miros": {
         "id": "MirOS",
-        "ref": 23,
+        "ref": 183,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -3515,7 +3623,7 @@ spdx_licenses = {
     },
     "motosoto": {
         "id": "Motosoto",
-        "ref": 448,
+        "ref": 627,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -3524,7 +3632,7 @@ spdx_licenses = {
     },
     "mulanpsl-1.0": {
         "id": "MulanPSL-1.0",
-        "ref": 407,
+        "ref": 107,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3533,7 +3641,7 @@ spdx_licenses = {
     },
     "mulanpsl-2.0": {
         "id": "MulanPSL-2.0",
-        "ref": 439,
+        "ref": 490,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -3542,7 +3650,7 @@ spdx_licenses = {
     },
     "multics": {
         "id": "Multics",
-        "ref": 465,
+        "ref": 573,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -3551,7 +3659,7 @@ spdx_licenses = {
     },
     "mup": {
         "id": "Mup",
-        "ref": 607,
+        "ref": 440,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3560,7 +3668,7 @@ spdx_licenses = {
     },
     "naist-2003": {
         "id": "NAIST-2003",
-        "ref": 265,
+        "ref": 104,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3569,7 +3677,7 @@ spdx_licenses = {
     },
     "nasa-1.3": {
         "id": "NASA-1.3",
-        "ref": 507,
+        "ref": 127,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -3578,25 +3686,43 @@ spdx_licenses = {
     },
     "nbpl-1.0": {
         "id": "NBPL-1.0",
-        "ref": 61,
+        "ref": 41,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
         "name": """Net Boolean Public License v1""",
         "details_url": "https://spdx.org/licenses/NBPL-1.0.json",
     },
+    "ncbi-pd": {
+        "id": "NCBI-PD",
+        "ref": 362,
+        "deprecated": False,
+        "osi_approved": False,
+        "fsf_libre": False,
+        "name": """NCBI Public Domain Notice""",
+        "details_url": "https://spdx.org/licenses/NCBI-PD.json",
+    },
     "ncgl-uk-2.0": {
         "id": "NCGL-UK-2.0",
-        "ref": 443,
+        "ref": 320,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
         "name": """Non-Commercial Government Licence""",
         "details_url": "https://spdx.org/licenses/NCGL-UK-2.0.json",
     },
+    "ncl": {
+        "id": "NCL",
+        "ref": 153,
+        "deprecated": False,
+        "osi_approved": False,
+        "fsf_libre": False,
+        "name": """NCL Source Code License""",
+        "details_url": "https://spdx.org/licenses/NCL.json",
+    },
     "ncsa": {
         "id": "NCSA",
-        "ref": 45,
+        "ref": 557,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -3605,7 +3731,7 @@ spdx_licenses = {
     },
     "ngpl": {
         "id": "NGPL",
-        "ref": 248,
+        "ref": 275,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -3614,7 +3740,7 @@ spdx_licenses = {
     },
     "nicta-1.0": {
         "id": "NICTA-1.0",
-        "ref": 48,
+        "ref": 311,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3623,7 +3749,7 @@ spdx_licenses = {
     },
     "nist-pd": {
         "id": "NIST-PD",
-        "ref": 209,
+        "ref": 309,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3632,7 +3758,7 @@ spdx_licenses = {
     },
     "nist-pd-fallback": {
         "id": "NIST-PD-fallback",
-        "ref": 49,
+        "ref": 34,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3641,7 +3767,7 @@ spdx_licenses = {
     },
     "nist-software": {
         "id": "NIST-Software",
-        "ref": 94,
+        "ref": 76,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3650,7 +3776,7 @@ spdx_licenses = {
     },
     "nlod-1.0": {
         "id": "NLOD-1.0",
-        "ref": 217,
+        "ref": 565,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3659,7 +3785,7 @@ spdx_licenses = {
     },
     "nlod-2.0": {
         "id": "NLOD-2.0",
-        "ref": 373,
+        "ref": 483,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3668,7 +3794,7 @@ spdx_licenses = {
     },
     "nlpl": {
         "id": "NLPL",
-        "ref": 66,
+        "ref": 71,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3677,7 +3803,7 @@ spdx_licenses = {
     },
     "nosl": {
         "id": "NOSL",
-        "ref": 1,
+        "ref": 126,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -3686,7 +3812,7 @@ spdx_licenses = {
     },
     "npl-1.0": {
         "id": "NPL-1.0",
-        "ref": 210,
+        "ref": 346,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -3695,7 +3821,7 @@ spdx_licenses = {
     },
     "npl-1.1": {
         "id": "NPL-1.1",
-        "ref": 337,
+        "ref": 418,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -3704,7 +3830,7 @@ spdx_licenses = {
     },
     "nposl-3.0": {
         "id": "NPOSL-3.0",
-        "ref": 635,
+        "ref": 579,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -3713,7 +3839,7 @@ spdx_licenses = {
     },
     "nrl": {
         "id": "NRL",
-        "ref": 369,
+        "ref": 230,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3722,7 +3848,7 @@ spdx_licenses = {
     },
     "ntp": {
         "id": "NTP",
-        "ref": 470,
+        "ref": 547,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -3731,7 +3857,7 @@ spdx_licenses = {
     },
     "ntp-0": {
         "id": "NTP-0",
-        "ref": 186,
+        "ref": 460,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3740,7 +3866,7 @@ spdx_licenses = {
     },
     "naumen": {
         "id": "Naumen",
-        "ref": 221,
+        "ref": 128,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -3749,7 +3875,7 @@ spdx_licenses = {
     },
     "net-snmp": {
         "id": "Net-SNMP",
-        "ref": 71,
+        "ref": 234,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3758,7 +3884,7 @@ spdx_licenses = {
     },
     "netcdf": {
         "id": "NetCDF",
-        "ref": 119,
+        "ref": 503,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3767,7 +3893,7 @@ spdx_licenses = {
     },
     "newsletr": {
         "id": "Newsletr",
-        "ref": 616,
+        "ref": 412,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3776,7 +3902,7 @@ spdx_licenses = {
     },
     "nokia": {
         "id": "Nokia",
-        "ref": 128,
+        "ref": 44,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -3785,7 +3911,7 @@ spdx_licenses = {
     },
     "noweb": {
         "id": "Noweb",
-        "ref": 476,
+        "ref": 534,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3794,7 +3920,7 @@ spdx_licenses = {
     },
     "nunit": {
         "id": "Nunit",
-        "ref": 471,
+        "ref": 634,
         "deprecated": True,
         "osi_approved": False,
         "fsf_libre": True,
@@ -3803,16 +3929,25 @@ spdx_licenses = {
     },
     "o-uda-1.0": {
         "id": "O-UDA-1.0",
-        "ref": 118,
+        "ref": 191,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
         "name": """Open Use of Data Agreement v1.0""",
         "details_url": "https://spdx.org/licenses/O-UDA-1.0.json",
     },
+    "oar": {
+        "id": "OAR",
+        "ref": 4,
+        "deprecated": False,
+        "osi_approved": False,
+        "fsf_libre": False,
+        "name": """OAR License""",
+        "details_url": "https://spdx.org/licenses/OAR.json",
+    },
     "occt-pl": {
         "id": "OCCT-PL",
-        "ref": 521,
+        "ref": 596,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3821,7 +3956,7 @@ spdx_licenses = {
     },
     "oclc-2.0": {
         "id": "OCLC-2.0",
-        "ref": 566,
+        "ref": 308,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -3830,7 +3965,7 @@ spdx_licenses = {
     },
     "odc-by-1.0": {
         "id": "ODC-By-1.0",
-        "ref": 141,
+        "ref": 7,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3839,7 +3974,7 @@ spdx_licenses = {
     },
     "odbl-1.0": {
         "id": "ODbL-1.0",
-        "ref": 589,
+        "ref": 243,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -3848,7 +3983,7 @@ spdx_licenses = {
     },
     "offis": {
         "id": "OFFIS",
-        "ref": 603,
+        "ref": 238,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3857,7 +3992,7 @@ spdx_licenses = {
     },
     "ofl-1.0": {
         "id": "OFL-1.0",
-        "ref": 91,
+        "ref": 475,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -3866,7 +4001,7 @@ spdx_licenses = {
     },
     "ofl-1.0-rfn": {
         "id": "OFL-1.0-RFN",
-        "ref": 568,
+        "ref": 11,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3875,7 +4010,7 @@ spdx_licenses = {
     },
     "ofl-1.0-no-rfn": {
         "id": "OFL-1.0-no-RFN",
-        "ref": 149,
+        "ref": 23,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3884,7 +4019,7 @@ spdx_licenses = {
     },
     "ofl-1.1": {
         "id": "OFL-1.1",
-        "ref": 163,
+        "ref": 248,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -3893,7 +4028,7 @@ spdx_licenses = {
     },
     "ofl-1.1-rfn": {
         "id": "OFL-1.1-RFN",
-        "ref": 80,
+        "ref": 507,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -3902,7 +4037,7 @@ spdx_licenses = {
     },
     "ofl-1.1-no-rfn": {
         "id": "OFL-1.1-no-RFN",
-        "ref": 270,
+        "ref": 550,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -3911,7 +4046,7 @@ spdx_licenses = {
     },
     "ogc-1.0": {
         "id": "OGC-1.0",
-        "ref": 86,
+        "ref": 166,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3920,7 +4055,7 @@ spdx_licenses = {
     },
     "ogdl-taiwan-1.0": {
         "id": "OGDL-Taiwan-1.0",
-        "ref": 347,
+        "ref": 468,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3929,7 +4064,7 @@ spdx_licenses = {
     },
     "ogl-canada-2.0": {
         "id": "OGL-Canada-2.0",
-        "ref": 506,
+        "ref": 464,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3938,7 +4073,7 @@ spdx_licenses = {
     },
     "ogl-uk-1.0": {
         "id": "OGL-UK-1.0",
-        "ref": 245,
+        "ref": 489,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3947,7 +4082,7 @@ spdx_licenses = {
     },
     "ogl-uk-2.0": {
         "id": "OGL-UK-2.0",
-        "ref": 399,
+        "ref": 467,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3956,7 +4091,7 @@ spdx_licenses = {
     },
     "ogl-uk-3.0": {
         "id": "OGL-UK-3.0",
-        "ref": 142,
+        "ref": 151,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3965,7 +4100,7 @@ spdx_licenses = {
     },
     "ogtsl": {
         "id": "OGTSL",
-        "ref": 214,
+        "ref": 367,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -3974,7 +4109,7 @@ spdx_licenses = {
     },
     "oldap-1.1": {
         "id": "OLDAP-1.1",
-        "ref": 565,
+        "ref": 180,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3983,7 +4118,7 @@ spdx_licenses = {
     },
     "oldap-1.2": {
         "id": "OLDAP-1.2",
-        "ref": 321,
+        "ref": 229,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -3992,7 +4127,7 @@ spdx_licenses = {
     },
     "oldap-1.3": {
         "id": "OLDAP-1.3",
-        "ref": 312,
+        "ref": 224,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4001,7 +4136,7 @@ spdx_licenses = {
     },
     "oldap-1.4": {
         "id": "OLDAP-1.4",
-        "ref": 120,
+        "ref": 255,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4010,7 +4145,7 @@ spdx_licenses = {
     },
     "oldap-2.0": {
         "id": "OLDAP-2.0",
-        "ref": 450,
+        "ref": 208,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4019,7 +4154,7 @@ spdx_licenses = {
     },
     "oldap-2.0.1": {
         "id": "OLDAP-2.0.1",
-        "ref": 59,
+        "ref": 79,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4028,7 +4163,7 @@ spdx_licenses = {
     },
     "oldap-2.1": {
         "id": "OLDAP-2.1",
-        "ref": 458,
+        "ref": 360,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4037,7 +4172,7 @@ spdx_licenses = {
     },
     "oldap-2.2": {
         "id": "OLDAP-2.2",
-        "ref": 175,
+        "ref": 316,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4046,7 +4181,7 @@ spdx_licenses = {
     },
     "oldap-2.2.1": {
         "id": "OLDAP-2.2.1",
-        "ref": 32,
+        "ref": 426,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4055,7 +4190,7 @@ spdx_licenses = {
     },
     "oldap-2.2.2": {
         "id": "OLDAP-2.2.2",
-        "ref": 293,
+        "ref": 384,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4064,7 +4199,7 @@ spdx_licenses = {
     },
     "oldap-2.3": {
         "id": "OLDAP-2.3",
-        "ref": 405,
+        "ref": 381,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -4073,7 +4208,7 @@ spdx_licenses = {
     },
     "oldap-2.4": {
         "id": "OLDAP-2.4",
-        "ref": 619,
+        "ref": 93,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4082,7 +4217,7 @@ spdx_licenses = {
     },
     "oldap-2.5": {
         "id": "OLDAP-2.5",
-        "ref": 426,
+        "ref": 651,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4091,7 +4226,7 @@ spdx_licenses = {
     },
     "oldap-2.6": {
         "id": "OLDAP-2.6",
-        "ref": 9,
+        "ref": 568,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4100,7 +4235,7 @@ spdx_licenses = {
     },
     "oldap-2.7": {
         "id": "OLDAP-2.7",
-        "ref": 178,
+        "ref": 220,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -4109,7 +4244,7 @@ spdx_licenses = {
     },
     "oldap-2.8": {
         "id": "OLDAP-2.8",
-        "ref": 132,
+        "ref": 5,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -4118,7 +4253,7 @@ spdx_licenses = {
     },
     "olfl-1.3": {
         "id": "OLFL-1.3",
-        "ref": 556,
+        "ref": 142,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -4127,7 +4262,7 @@ spdx_licenses = {
     },
     "oml": {
         "id": "OML",
-        "ref": 325,
+        "ref": 375,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4136,7 +4271,7 @@ spdx_licenses = {
     },
     "opl-1.0": {
         "id": "OPL-1.0",
-        "ref": 116,
+        "ref": 91,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4145,7 +4280,7 @@ spdx_licenses = {
     },
     "opl-uk-3.0": {
         "id": "OPL-UK-3.0",
-        "ref": 276,
+        "ref": 480,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4154,7 +4289,7 @@ spdx_licenses = {
     },
     "opubl-1.0": {
         "id": "OPUBL-1.0",
-        "ref": 479,
+        "ref": 329,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4163,7 +4298,7 @@ spdx_licenses = {
     },
     "oset-pl-2.1": {
         "id": "OSET-PL-2.1",
-        "ref": 19,
+        "ref": 517,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -4172,7 +4307,7 @@ spdx_licenses = {
     },
     "osl-1.0": {
         "id": "OSL-1.0",
-        "ref": 511,
+        "ref": 162,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -4181,7 +4316,7 @@ spdx_licenses = {
     },
     "osl-1.1": {
         "id": "OSL-1.1",
-        "ref": 327,
+        "ref": 586,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -4190,7 +4325,7 @@ spdx_licenses = {
     },
     "osl-2.0": {
         "id": "OSL-2.0",
-        "ref": 579,
+        "ref": 531,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -4199,7 +4334,7 @@ spdx_licenses = {
     },
     "osl-2.1": {
         "id": "OSL-2.1",
-        "ref": 480,
+        "ref": 138,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -4208,7 +4343,7 @@ spdx_licenses = {
     },
     "osl-3.0": {
         "id": "OSL-3.0",
-        "ref": 72,
+        "ref": 300,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -4217,7 +4352,7 @@ spdx_licenses = {
     },
     "openpbs-2.3": {
         "id": "OpenPBS-2.3",
-        "ref": 490,
+        "ref": 314,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4226,7 +4361,7 @@ spdx_licenses = {
     },
     "openssl": {
         "id": "OpenSSL",
-        "ref": 564,
+        "ref": 303,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -4235,7 +4370,7 @@ spdx_licenses = {
     },
     "openssl-standalone": {
         "id": "OpenSSL-standalone",
-        "ref": 597,
+        "ref": 602,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4244,7 +4379,7 @@ spdx_licenses = {
     },
     "openvision": {
         "id": "OpenVision",
-        "ref": 590,
+        "ref": 588,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4253,7 +4388,7 @@ spdx_licenses = {
     },
     "padl": {
         "id": "PADL",
-        "ref": 145,
+        "ref": 113,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4262,7 +4397,7 @@ spdx_licenses = {
     },
     "pddl-1.0": {
         "id": "PDDL-1.0",
-        "ref": 231,
+        "ref": 493,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4271,7 +4406,7 @@ spdx_licenses = {
     },
     "php-3.0": {
         "id": "PHP-3.0",
-        "ref": 622,
+        "ref": 584,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -4280,16 +4415,25 @@ spdx_licenses = {
     },
     "php-3.01": {
         "id": "PHP-3.01",
-        "ref": 11,
+        "ref": 538,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
         "name": """PHP License v3.01""",
         "details_url": "https://spdx.org/licenses/PHP-3.01.json",
     },
+    "ppl": {
+        "id": "PPL",
+        "ref": 580,
+        "deprecated": False,
+        "osi_approved": False,
+        "fsf_libre": False,
+        "name": """Peer Production License""",
+        "details_url": "https://spdx.org/licenses/PPL.json",
+    },
     "psf-2.0": {
         "id": "PSF-2.0",
-        "ref": 381,
+        "ref": 55,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4298,7 +4442,7 @@ spdx_licenses = {
     },
     "parity-6.0.0": {
         "id": "Parity-6.0.0",
-        "ref": 546,
+        "ref": 246,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4307,7 +4451,7 @@ spdx_licenses = {
     },
     "parity-7.0.0": {
         "id": "Parity-7.0.0",
-        "ref": 281,
+        "ref": 212,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4316,7 +4460,7 @@ spdx_licenses = {
     },
     "pixar": {
         "id": "Pixar",
-        "ref": 240,
+        "ref": 204,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4325,7 +4469,7 @@ spdx_licenses = {
     },
     "plexus": {
         "id": "Plexus",
-        "ref": 354,
+        "ref": 141,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4334,7 +4478,7 @@ spdx_licenses = {
     },
     "polyform-noncommercial-1.0.0": {
         "id": "PolyForm-Noncommercial-1.0.0",
-        "ref": 343,
+        "ref": 54,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4343,7 +4487,7 @@ spdx_licenses = {
     },
     "polyform-small-business-1.0.0": {
         "id": "PolyForm-Small-Business-1.0.0",
-        "ref": 455,
+        "ref": 594,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4352,7 +4496,7 @@ spdx_licenses = {
     },
     "postgresql": {
         "id": "PostgreSQL",
-        "ref": 390,
+        "ref": 643,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -4361,7 +4505,7 @@ spdx_licenses = {
     },
     "python-2.0": {
         "id": "Python-2.0",
-        "ref": 383,
+        "ref": 285,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -4370,7 +4514,7 @@ spdx_licenses = {
     },
     "python-2.0.1": {
         "id": "Python-2.0.1",
-        "ref": 559,
+        "ref": 201,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4379,7 +4523,7 @@ spdx_licenses = {
     },
     "qpl-1.0": {
         "id": "QPL-1.0",
-        "ref": 459,
+        "ref": 413,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -4388,7 +4532,7 @@ spdx_licenses = {
     },
     "qpl-1.0-inria-2004": {
         "id": "QPL-1.0-INRIA-2004",
-        "ref": 537,
+        "ref": 486,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4397,7 +4541,7 @@ spdx_licenses = {
     },
     "qhull": {
         "id": "Qhull",
-        "ref": 241,
+        "ref": 326,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4406,7 +4550,7 @@ spdx_licenses = {
     },
     "rhecos-1.1": {
         "id": "RHeCos-1.1",
-        "ref": 484,
+        "ref": 99,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4415,7 +4559,7 @@ spdx_licenses = {
     },
     "rpl-1.1": {
         "id": "RPL-1.1",
-        "ref": 613,
+        "ref": 205,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -4424,7 +4568,7 @@ spdx_licenses = {
     },
     "rpl-1.5": {
         "id": "RPL-1.5",
-        "ref": 531,
+        "ref": 52,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -4433,7 +4577,7 @@ spdx_licenses = {
     },
     "rpsl-1.0": {
         "id": "RPSL-1.0",
-        "ref": 168,
+        "ref": 637,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -4442,7 +4586,7 @@ spdx_licenses = {
     },
     "rsa-md": {
         "id": "RSA-MD",
-        "ref": 515,
+        "ref": 496,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4451,7 +4595,7 @@ spdx_licenses = {
     },
     "rscpl": {
         "id": "RSCPL",
-        "ref": 580,
+        "ref": 235,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -4460,7 +4604,7 @@ spdx_licenses = {
     },
     "rdisc": {
         "id": "Rdisc",
-        "ref": 591,
+        "ref": 50,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4469,7 +4613,7 @@ spdx_licenses = {
     },
     "ruby": {
         "id": "Ruby",
-        "ref": 528,
+        "ref": 223,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -4478,7 +4622,7 @@ spdx_licenses = {
     },
     "sax-pd": {
         "id": "SAX-PD",
-        "ref": 169,
+        "ref": 301,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4487,7 +4631,7 @@ spdx_licenses = {
     },
     "sax-pd-2.0": {
         "id": "SAX-PD-2.0",
-        "ref": 585,
+        "ref": 561,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4496,7 +4640,7 @@ spdx_licenses = {
     },
     "scea": {
         "id": "SCEA",
-        "ref": 230,
+        "ref": 35,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4505,7 +4649,7 @@ spdx_licenses = {
     },
     "sgi-b-1.0": {
         "id": "SGI-B-1.0",
-        "ref": 25,
+        "ref": 476,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4514,7 +4658,7 @@ spdx_licenses = {
     },
     "sgi-b-1.1": {
         "id": "SGI-B-1.1",
-        "ref": 16,
+        "ref": 456,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4523,7 +4667,7 @@ spdx_licenses = {
     },
     "sgi-b-2.0": {
         "id": "SGI-B-2.0",
-        "ref": 431,
+        "ref": 405,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -4532,7 +4676,7 @@ spdx_licenses = {
     },
     "sgi-opengl": {
         "id": "SGI-OpenGL",
-        "ref": 408,
+        "ref": 629,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4541,7 +4685,7 @@ spdx_licenses = {
     },
     "sgp4": {
         "id": "SGP4",
-        "ref": 461,
+        "ref": 336,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4550,7 +4694,7 @@ spdx_licenses = {
     },
     "shl-0.5": {
         "id": "SHL-0.5",
-        "ref": 298,
+        "ref": 338,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4559,7 +4703,7 @@ spdx_licenses = {
     },
     "shl-0.51": {
         "id": "SHL-0.51",
-        "ref": 504,
+        "ref": 29,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4568,7 +4712,7 @@ spdx_licenses = {
     },
     "sissl": {
         "id": "SISSL",
-        "ref": 525,
+        "ref": 268,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -4577,7 +4721,7 @@ spdx_licenses = {
     },
     "sissl-1.2": {
         "id": "SISSL-1.2",
-        "ref": 493,
+        "ref": 502,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4586,7 +4730,7 @@ spdx_licenses = {
     },
     "sl": {
         "id": "SL",
-        "ref": 190,
+        "ref": 645,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4595,7 +4739,7 @@ spdx_licenses = {
     },
     "smlnj": {
         "id": "SMLNJ",
-        "ref": 63,
+        "ref": 148,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -4604,7 +4748,7 @@ spdx_licenses = {
     },
     "smppl": {
         "id": "SMPPL",
-        "ref": 193,
+        "ref": 250,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4613,7 +4757,7 @@ spdx_licenses = {
     },
     "snia": {
         "id": "SNIA",
-        "ref": 211,
+        "ref": 518,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4622,7 +4766,7 @@ spdx_licenses = {
     },
     "spl-1.0": {
         "id": "SPL-1.0",
-        "ref": 3,
+        "ref": 280,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -4631,7 +4775,7 @@ spdx_licenses = {
     },
     "ssh-openssh": {
         "id": "SSH-OpenSSH",
-        "ref": 364,
+        "ref": 506,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4640,7 +4784,7 @@ spdx_licenses = {
     },
     "ssh-short": {
         "id": "SSH-short",
-        "ref": 428,
+        "ref": 563,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4649,7 +4793,7 @@ spdx_licenses = {
     },
     "ssleay-standalone": {
         "id": "SSLeay-standalone",
-        "ref": 419,
+        "ref": 591,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4658,7 +4802,7 @@ spdx_licenses = {
     },
     "sspl-1.0": {
         "id": "SSPL-1.0",
-        "ref": 156,
+        "ref": 17,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4667,7 +4811,7 @@ spdx_licenses = {
     },
     "swl": {
         "id": "SWL",
-        "ref": 360,
+        "ref": 649,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4676,7 +4820,7 @@ spdx_licenses = {
     },
     "saxpath": {
         "id": "Saxpath",
-        "ref": 430,
+        "ref": 109,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4685,7 +4829,7 @@ spdx_licenses = {
     },
     "schemereport": {
         "id": "SchemeReport",
-        "ref": 552,
+        "ref": 425,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4694,7 +4838,7 @@ spdx_licenses = {
     },
     "sendmail": {
         "id": "Sendmail",
-        "ref": 427,
+        "ref": 274,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4703,7 +4847,7 @@ spdx_licenses = {
     },
     "sendmail-8.23": {
         "id": "Sendmail-8.23",
-        "ref": 24,
+        "ref": 247,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4712,7 +4856,7 @@ spdx_licenses = {
     },
     "simpl-2.0": {
         "id": "SimPL-2.0",
-        "ref": 617,
+        "ref": 444,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -4721,7 +4865,7 @@ spdx_licenses = {
     },
     "sleepycat": {
         "id": "Sleepycat",
-        "ref": 239,
+        "ref": 182,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -4730,7 +4874,7 @@ spdx_licenses = {
     },
     "soundex": {
         "id": "Soundex",
-        "ref": 43,
+        "ref": 368,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4739,7 +4883,7 @@ spdx_licenses = {
     },
     "spencer-86": {
         "id": "Spencer-86",
-        "ref": 469,
+        "ref": 472,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4748,7 +4892,7 @@ spdx_licenses = {
     },
     "spencer-94": {
         "id": "Spencer-94",
-        "ref": 583,
+        "ref": 378,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4757,7 +4901,7 @@ spdx_licenses = {
     },
     "spencer-99": {
         "id": "Spencer-99",
-        "ref": 420,
+        "ref": 139,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4766,7 +4910,7 @@ spdx_licenses = {
     },
     "standardml-nj": {
         "id": "StandardML-NJ",
-        "ref": 510,
+        "ref": 658,
         "deprecated": True,
         "osi_approved": False,
         "fsf_libre": True,
@@ -4775,7 +4919,7 @@ spdx_licenses = {
     },
     "sugarcrm-1.1.3": {
         "id": "SugarCRM-1.1.3",
-        "ref": 33,
+        "ref": 42,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4784,16 +4928,25 @@ spdx_licenses = {
     },
     "sun-ppp": {
         "id": "Sun-PPP",
-        "ref": 598,
+        "ref": 385,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
         "name": """Sun PPP License""",
         "details_url": "https://spdx.org/licenses/Sun-PPP.json",
     },
+    "sun-ppp-2000": {
+        "id": "Sun-PPP-2000",
+        "ref": 310,
+        "deprecated": False,
+        "osi_approved": False,
+        "fsf_libre": False,
+        "name": """Sun PPP License (2000)""",
+        "details_url": "https://spdx.org/licenses/Sun-PPP-2000.json",
+    },
     "sunpro": {
         "id": "SunPro",
-        "ref": 95,
+        "ref": 57,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4802,7 +4955,7 @@ spdx_licenses = {
     },
     "symlinks": {
         "id": "Symlinks",
-        "ref": 488,
+        "ref": 414,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4811,7 +4964,7 @@ spdx_licenses = {
     },
     "tapr-ohl-1.0": {
         "id": "TAPR-OHL-1.0",
-        "ref": 403,
+        "ref": 242,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4820,7 +4973,7 @@ spdx_licenses = {
     },
     "tcl": {
         "id": "TCL",
-        "ref": 494,
+        "ref": 2,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4829,7 +4982,7 @@ spdx_licenses = {
     },
     "tcp-wrappers": {
         "id": "TCP-wrappers",
-        "ref": 194,
+        "ref": 9,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4838,7 +4991,7 @@ spdx_licenses = {
     },
     "tgppl-1.0": {
         "id": "TGPPL-1.0",
-        "ref": 208,
+        "ref": 101,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4847,7 +5000,7 @@ spdx_licenses = {
     },
     "tmate": {
         "id": "TMate",
-        "ref": 541,
+        "ref": 539,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4856,7 +5009,7 @@ spdx_licenses = {
     },
     "torque-1.1": {
         "id": "TORQUE-1.1",
-        "ref": 332,
+        "ref": 61,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4865,7 +5018,7 @@ spdx_licenses = {
     },
     "tosl": {
         "id": "TOSL",
-        "ref": 574,
+        "ref": 267,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4874,7 +5027,7 @@ spdx_licenses = {
     },
     "tpdl": {
         "id": "TPDL",
-        "ref": 302,
+        "ref": 75,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4883,7 +5036,7 @@ spdx_licenses = {
     },
     "tpl-1.0": {
         "id": "TPL-1.0",
-        "ref": 134,
+        "ref": 508,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4892,7 +5045,7 @@ spdx_licenses = {
     },
     "ttwl": {
         "id": "TTWL",
-        "ref": 28,
+        "ref": 87,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4901,7 +5054,7 @@ spdx_licenses = {
     },
     "ttyp0": {
         "id": "TTYP0",
-        "ref": 207,
+        "ref": 451,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4910,7 +5063,7 @@ spdx_licenses = {
     },
     "tu-berlin-1.0": {
         "id": "TU-Berlin-1.0",
-        "ref": 98,
+        "ref": 159,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4919,7 +5072,7 @@ spdx_licenses = {
     },
     "tu-berlin-2.0": {
         "id": "TU-Berlin-2.0",
-        "ref": 533,
+        "ref": 624,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4928,7 +5081,7 @@ spdx_licenses = {
     },
     "termreadkey": {
         "id": "TermReadKey",
-        "ref": 412,
+        "ref": 256,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4937,7 +5090,7 @@ spdx_licenses = {
     },
     "ucar": {
         "id": "UCAR",
-        "ref": 371,
+        "ref": 78,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4946,7 +5099,7 @@ spdx_licenses = {
     },
     "ucl-1.0": {
         "id": "UCL-1.0",
-        "ref": 88,
+        "ref": 646,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -4955,7 +5108,7 @@ spdx_licenses = {
     },
     "umich-merit": {
         "id": "UMich-Merit",
-        "ref": 413,
+        "ref": 505,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4964,7 +5117,7 @@ spdx_licenses = {
     },
     "upl-1.0": {
         "id": "UPL-1.0",
-        "ref": 165,
+        "ref": 511,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -4973,7 +5126,7 @@ spdx_licenses = {
     },
     "urt-rle": {
         "id": "URT-RLE",
-        "ref": 416,
+        "ref": 443,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -4982,7 +5135,7 @@ spdx_licenses = {
     },
     "unicode-3.0": {
         "id": "Unicode-3.0",
-        "ref": 287,
+        "ref": 46,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -4991,7 +5144,7 @@ spdx_licenses = {
     },
     "unicode-dfs-2015": {
         "id": "Unicode-DFS-2015",
-        "ref": 137,
+        "ref": 647,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5000,7 +5153,7 @@ spdx_licenses = {
     },
     "unicode-dfs-2016": {
         "id": "Unicode-DFS-2016",
-        "ref": 295,
+        "ref": 152,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -5009,7 +5162,7 @@ spdx_licenses = {
     },
     "unicode-tou": {
         "id": "Unicode-TOU",
-        "ref": 432,
+        "ref": 606,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5018,7 +5171,7 @@ spdx_licenses = {
     },
     "unixcrypt": {
         "id": "UnixCrypt",
-        "ref": 275,
+        "ref": 462,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5027,7 +5180,7 @@ spdx_licenses = {
     },
     "unlicense": {
         "id": "Unlicense",
-        "ref": 58,
+        "ref": 411,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -5036,7 +5189,7 @@ spdx_licenses = {
     },
     "vostrom": {
         "id": "VOSTROM",
-        "ref": 516,
+        "ref": 122,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5045,7 +5198,7 @@ spdx_licenses = {
     },
     "vsl-1.0": {
         "id": "VSL-1.0",
-        "ref": 440,
+        "ref": 510,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -5054,7 +5207,7 @@ spdx_licenses = {
     },
     "vim": {
         "id": "Vim",
-        "ref": 296,
+        "ref": 371,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -5063,7 +5216,7 @@ spdx_licenses = {
     },
     "w3c": {
         "id": "W3C",
-        "ref": 13,
+        "ref": 284,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -5072,7 +5225,7 @@ spdx_licenses = {
     },
     "w3c-19980720": {
         "id": "W3C-19980720",
-        "ref": 625,
+        "ref": 156,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5081,7 +5234,7 @@ spdx_licenses = {
     },
     "w3c-20150513": {
         "id": "W3C-20150513",
-        "ref": 524,
+        "ref": 452,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5090,7 +5243,7 @@ spdx_licenses = {
     },
     "wtfpl": {
         "id": "WTFPL",
-        "ref": 315,
+        "ref": 176,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -5099,7 +5252,7 @@ spdx_licenses = {
     },
     "watcom-1.0": {
         "id": "Watcom-1.0",
-        "ref": 81,
+        "ref": 533,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -5108,7 +5261,7 @@ spdx_licenses = {
     },
     "widget-workshop": {
         "id": "Widget-Workshop",
-        "ref": 503,
+        "ref": 548,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5117,7 +5270,7 @@ spdx_licenses = {
     },
     "wsuipa": {
         "id": "Wsuipa",
-        "ref": 612,
+        "ref": 305,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5126,7 +5279,7 @@ spdx_licenses = {
     },
     "x11": {
         "id": "X11",
-        "ref": 518,
+        "ref": 203,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -5135,7 +5288,7 @@ spdx_licenses = {
     },
     "x11-distribute-modifications-variant": {
         "id": "X11-distribute-modifications-variant",
-        "ref": 587,
+        "ref": 112,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5144,7 +5297,7 @@ spdx_licenses = {
     },
     "xfree86-1.1": {
         "id": "XFree86-1.1",
-        "ref": 247,
+        "ref": 562,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -5153,7 +5306,7 @@ spdx_licenses = {
     },
     "xskat": {
         "id": "XSkat",
-        "ref": 356,
+        "ref": 544,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5162,7 +5315,7 @@ spdx_licenses = {
     },
     "xdebug-1.03": {
         "id": "Xdebug-1.03",
-        "ref": 198,
+        "ref": 10,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5171,7 +5324,7 @@ spdx_licenses = {
     },
     "xerox": {
         "id": "Xerox",
-        "ref": 320,
+        "ref": 595,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5180,7 +5333,7 @@ spdx_licenses = {
     },
     "xfig": {
         "id": "Xfig",
-        "ref": 171,
+        "ref": 89,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5189,7 +5342,7 @@ spdx_licenses = {
     },
     "xnet": {
         "id": "Xnet",
-        "ref": 125,
+        "ref": 236,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": False,
@@ -5198,7 +5351,7 @@ spdx_licenses = {
     },
     "ypl-1.0": {
         "id": "YPL-1.0",
-        "ref": 27,
+        "ref": 491,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5207,7 +5360,7 @@ spdx_licenses = {
     },
     "ypl-1.1": {
         "id": "YPL-1.1",
-        "ref": 170,
+        "ref": 473,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -5216,7 +5369,7 @@ spdx_licenses = {
     },
     "zpl-1.1": {
         "id": "ZPL-1.1",
-        "ref": 79,
+        "ref": 545,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5225,7 +5378,7 @@ spdx_licenses = {
     },
     "zpl-2.0": {
         "id": "ZPL-2.0",
-        "ref": 629,
+        "ref": 51,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -5234,7 +5387,7 @@ spdx_licenses = {
     },
     "zpl-2.1": {
         "id": "ZPL-2.1",
-        "ref": 301,
+        "ref": 352,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
@@ -5243,7 +5396,7 @@ spdx_licenses = {
     },
     "zed": {
         "id": "Zed",
-        "ref": 505,
+        "ref": 599,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5252,7 +5405,7 @@ spdx_licenses = {
     },
     "zeeff": {
         "id": "Zeeff",
-        "ref": 177,
+        "ref": 218,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5261,7 +5414,7 @@ spdx_licenses = {
     },
     "zend-2.0": {
         "id": "Zend-2.0",
-        "ref": 290,
+        "ref": 481,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -5270,7 +5423,7 @@ spdx_licenses = {
     },
     "zimbra-1.3": {
         "id": "Zimbra-1.3",
-        "ref": 561,
+        "ref": 379,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -5279,7 +5432,7 @@ spdx_licenses = {
     },
     "zimbra-1.4": {
         "id": "Zimbra-1.4",
-        "ref": 185,
+        "ref": 304,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5288,16 +5441,25 @@ spdx_licenses = {
     },
     "zlib": {
         "id": "Zlib",
-        "ref": 606,
+        "ref": 209,
         "deprecated": False,
         "osi_approved": True,
         "fsf_libre": True,
         "name": """zlib License""",
         "details_url": "https://spdx.org/licenses/Zlib.json",
     },
+    "any-osi": {
+        "id": "any-OSI",
+        "ref": 121,
+        "deprecated": False,
+        "osi_approved": False,
+        "fsf_libre": False,
+        "name": """Any OSI License""",
+        "details_url": "https://spdx.org/licenses/any-OSI.json",
+    },
     "bcrypt-solar-designer": {
         "id": "bcrypt-Solar-Designer",
-        "ref": 166,
+        "ref": 27,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5306,7 +5468,7 @@ spdx_licenses = {
     },
     "blessing": {
         "id": "blessing",
-        "ref": 618,
+        "ref": 469,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5315,7 +5477,7 @@ spdx_licenses = {
     },
     "bzip2-1.0.5": {
         "id": "bzip2-1.0.5",
-        "ref": 283,
+        "ref": 419,
         "deprecated": True,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5324,7 +5486,7 @@ spdx_licenses = {
     },
     "bzip2-1.0.6": {
         "id": "bzip2-1.0.6",
-        "ref": 206,
+        "ref": 396,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5333,7 +5495,7 @@ spdx_licenses = {
     },
     "check-cvs": {
         "id": "check-cvs",
-        "ref": 334,
+        "ref": 521,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5342,7 +5504,7 @@ spdx_licenses = {
     },
     "checkmk": {
         "id": "checkmk",
-        "ref": 111,
+        "ref": 272,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5351,7 +5513,7 @@ spdx_licenses = {
     },
     "copyleft-next-0.3.0": {
         "id": "copyleft-next-0.3.0",
-        "ref": 340,
+        "ref": 421,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5360,7 +5522,7 @@ spdx_licenses = {
     },
     "copyleft-next-0.3.1": {
         "id": "copyleft-next-0.3.1",
-        "ref": 553,
+        "ref": 119,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5369,16 +5531,25 @@ spdx_licenses = {
     },
     "curl": {
         "id": "curl",
-        "ref": 429,
+        "ref": 604,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
         "name": """curl License""",
         "details_url": "https://spdx.org/licenses/curl.json",
     },
+    "cve-tou": {
+        "id": "cve-tou",
+        "ref": 306,
+        "deprecated": False,
+        "osi_approved": False,
+        "fsf_libre": False,
+        "name": """Common Vulnerability Enumeration ToU License""",
+        "details_url": "https://spdx.org/licenses/cve-tou.json",
+    },
     "diffmark": {
         "id": "diffmark",
-        "ref": 365,
+        "ref": 292,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5387,7 +5558,7 @@ spdx_licenses = {
     },
     "dtoa": {
         "id": "dtoa",
-        "ref": 74,
+        "ref": 358,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5396,7 +5567,7 @@ spdx_licenses = {
     },
     "dvipdfm": {
         "id": "dvipdfm",
-        "ref": 309,
+        "ref": 100,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5405,7 +5576,7 @@ spdx_licenses = {
     },
     "ecos-2.0": {
         "id": "eCos-2.0",
-        "ref": 173,
+        "ref": 372,
         "deprecated": True,
         "osi_approved": False,
         "fsf_libre": True,
@@ -5414,7 +5585,7 @@ spdx_licenses = {
     },
     "egenix": {
         "id": "eGenix",
-        "ref": 102,
+        "ref": 261,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5423,7 +5594,7 @@ spdx_licenses = {
     },
     "etalab-2.0": {
         "id": "etalab-2.0",
-        "ref": 299,
+        "ref": 636,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5432,7 +5603,7 @@ spdx_licenses = {
     },
     "fwlw": {
         "id": "fwlw",
-        "ref": 258,
+        "ref": 529,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5441,7 +5612,7 @@ spdx_licenses = {
     },
     "gsoap-1.3b": {
         "id": "gSOAP-1.3b",
-        "ref": 633,
+        "ref": 655,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5450,7 +5621,7 @@ spdx_licenses = {
     },
     "gnuplot": {
         "id": "gnuplot",
-        "ref": 268,
+        "ref": 110,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -5459,7 +5630,7 @@ spdx_licenses = {
     },
     "gtkbook": {
         "id": "gtkbook",
-        "ref": 341,
+        "ref": 237,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5468,7 +5639,7 @@ spdx_licenses = {
     },
     "hdparm": {
         "id": "hdparm",
-        "ref": 467,
+        "ref": 81,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5477,7 +5648,7 @@ spdx_licenses = {
     },
     "imatix": {
         "id": "iMatix",
-        "ref": 307,
+        "ref": 327,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -5486,7 +5657,7 @@ spdx_licenses = {
     },
     "libpng-2.0": {
         "id": "libpng-2.0",
-        "ref": 212,
+        "ref": 257,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5495,7 +5666,7 @@ spdx_licenses = {
     },
     "libselinux-1.0": {
         "id": "libselinux-1.0",
-        "ref": 266,
+        "ref": 556,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5504,7 +5675,7 @@ spdx_licenses = {
     },
     "libtiff": {
         "id": "libtiff",
-        "ref": 20,
+        "ref": 392,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5513,7 +5684,7 @@ spdx_licenses = {
     },
     "libutil-david-nugent": {
         "id": "libutil-David-Nugent",
-        "ref": 393,
+        "ref": 400,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5522,7 +5693,7 @@ spdx_licenses = {
     },
     "lsof": {
         "id": "lsof",
-        "ref": 157,
+        "ref": 605,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5531,7 +5702,7 @@ spdx_licenses = {
     },
     "magaz": {
         "id": "magaz",
-        "ref": 279,
+        "ref": 516,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5540,7 +5711,7 @@ spdx_licenses = {
     },
     "mailprio": {
         "id": "mailprio",
-        "ref": 225,
+        "ref": 179,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5549,7 +5720,7 @@ spdx_licenses = {
     },
     "metamail": {
         "id": "metamail",
-        "ref": 567,
+        "ref": 437,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5558,7 +5729,7 @@ spdx_licenses = {
     },
     "mpi-permissive": {
         "id": "mpi-permissive",
-        "ref": 114,
+        "ref": 80,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5567,7 +5738,7 @@ spdx_licenses = {
     },
     "mpich2": {
         "id": "mpich2",
-        "ref": 164,
+        "ref": 482,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5576,16 +5747,25 @@ spdx_licenses = {
     },
     "mplus": {
         "id": "mplus",
-        "ref": 160,
+        "ref": 541,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
         "name": """mplus Font License""",
         "details_url": "https://spdx.org/licenses/mplus.json",
     },
+    "pkgconf": {
+        "id": "pkgconf",
+        "ref": 389,
+        "deprecated": False,
+        "osi_approved": False,
+        "fsf_libre": False,
+        "name": """pkgconf License""",
+        "details_url": "https://spdx.org/licenses/pkgconf.json",
+    },
     "pnmstitch": {
         "id": "pnmstitch",
-        "ref": 76,
+        "ref": 158,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5594,7 +5774,7 @@ spdx_licenses = {
     },
     "psfrag": {
         "id": "psfrag",
-        "ref": 150,
+        "ref": 555,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5603,7 +5783,7 @@ spdx_licenses = {
     },
     "psutils": {
         "id": "psutils",
-        "ref": 146,
+        "ref": 260,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5612,7 +5792,7 @@ spdx_licenses = {
     },
     "python-ldap": {
         "id": "python-ldap",
-        "ref": 581,
+        "ref": 446,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5621,7 +5801,7 @@ spdx_licenses = {
     },
     "radvd": {
         "id": "radvd",
-        "ref": 5,
+        "ref": 433,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5630,7 +5810,7 @@ spdx_licenses = {
     },
     "snprintf": {
         "id": "snprintf",
-        "ref": 159,
+        "ref": 161,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5639,7 +5819,7 @@ spdx_licenses = {
     },
     "softsurfer": {
         "id": "softSurfer",
-        "ref": 489,
+        "ref": 523,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5648,7 +5828,7 @@ spdx_licenses = {
     },
     "ssh-keyscan": {
         "id": "ssh-keyscan",
-        "ref": 84,
+        "ref": 294,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5657,16 +5837,25 @@ spdx_licenses = {
     },
     "swrule": {
         "id": "swrule",
-        "ref": 362,
+        "ref": 90,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
         "name": """swrule License""",
         "details_url": "https://spdx.org/licenses/swrule.json",
     },
+    "threeparttable": {
+        "id": "threeparttable",
+        "ref": 398,
+        "deprecated": False,
+        "osi_approved": False,
+        "fsf_libre": False,
+        "name": """threeparttable License""",
+        "details_url": "https://spdx.org/licenses/threeparttable.json",
+    },
     "ulem": {
         "id": "ulem",
-        "ref": 401,
+        "ref": 566,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5675,7 +5864,7 @@ spdx_licenses = {
     },
     "w3m": {
         "id": "w3m",
-        "ref": 509,
+        "ref": 202,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5684,7 +5873,7 @@ spdx_licenses = {
     },
     "wxwindows": {
         "id": "wxWindows",
-        "ref": 274,
+        "ref": 258,
         "deprecated": True,
         "osi_approved": True,
         "fsf_libre": False,
@@ -5693,7 +5882,7 @@ spdx_licenses = {
     },
     "xinetd": {
         "id": "xinetd",
-        "ref": 17,
+        "ref": 465,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": True,
@@ -5702,7 +5891,7 @@ spdx_licenses = {
     },
     "xkeyboard-config-zinoviev": {
         "id": "xkeyboard-config-Zinoviev",
-        "ref": 445,
+        "ref": 140,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5711,7 +5900,7 @@ spdx_licenses = {
     },
     "xlock": {
         "id": "xlock",
-        "ref": 361,
+        "ref": 357,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
@@ -5720,16 +5909,25 @@ spdx_licenses = {
     },
     "xpp": {
         "id": "xpp",
-        "ref": 55,
+        "ref": 312,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,
         "name": """XPP License""",
         "details_url": "https://spdx.org/licenses/xpp.json",
     },
+    "xzoom": {
+        "id": "xzoom",
+        "ref": 530,
+        "deprecated": False,
+        "osi_approved": False,
+        "fsf_libre": False,
+        "name": """xzoom License""",
+        "details_url": "https://spdx.org/licenses/xzoom.json",
+    },
     "zlib-acknowledgement": {
         "id": "zlib-acknowledgement",
-        "ref": 560,
+        "ref": 348,
         "deprecated": False,
         "osi_approved": False,
         "fsf_libre": False,

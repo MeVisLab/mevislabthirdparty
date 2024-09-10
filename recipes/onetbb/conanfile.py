@@ -1,5 +1,5 @@
 import re
-
+import os
 from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
 from conan.tools.files import rmdir, copy, load, get
@@ -9,7 +9,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "onetbb"
-    version = "2021.12.0"
+    version = "2021.13.0"
     license = "Apache-2.0"
     homepage = "https://oneapi-src.github.io/oneTBB/"
     description = (
@@ -26,7 +26,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="c7bb7aa69c254d91b8f0041a71c5bcc3936acb64408a1719aec0b2b7639dd84f",
+            sha256="3ad5dd08954b39d113dc5b3f8a8dc6dc1fd5250032b7c491eb07aed5c94133e1",
             url=f"https://github.com/oneapi-src/oneTBB/archive/refs/tags/v{self.version}.tar.gz",
             strip_root=True,
         )
@@ -48,12 +48,19 @@ class ConanRecipe(ConanFile):
     def package(self):
         cmake = CMake(self)
         cmake.install()
-        copy(self, "LICENSE.txt", src=self.source_path, dst=self.package_path / "licenses")
-        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False, excludes=["src/*", "CMakeFiles/*"])
-        rmdir(self, self.package_path / "share")
-        rmdir(self, self.package_path / "lib" / "cmake")
-        rmdir(self, self.package_path / "lib" / "pkgconfig")
-        rmdir(self, self.package_path / "share")
+        copy(self, "LICENSE.txt", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
+        copy(
+            self,
+            "*.pdb",
+            src=self.build_folder,
+            dst=os.path.join(self.package_folder, "bin"),
+            keep_path=False,
+            excludes=["src/*", "CMakeFiles/*"],
+        )
+        rmdir(self, os.path.join(self.package_folder, "share"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
+        rmdir(self, os.path.join(self.package_folder, "share"))
 
     def package_info(self):
         suffix = "_debug" if self.settings.build_type == "Debug" else ""
@@ -63,7 +70,7 @@ class ConanRecipe(ConanFile):
         tbb.set_property("cmake_target_name", "TBB::tbb")
         tbb.libs = [f"tbb{suffix}"]
         if self.settings.os == "Windows":
-            version_info = load(self, self.package_path / "include" / "oneapi" / "tbb" / "version.h")
+            version_info = load(self, os.path.join(self.package_folder, "include", "oneapi", "tbb", "version.h"))
             binary_version = re.sub(
                 r".*" + re.escape("#define __TBB_BINARY_VERSION ") + r"(\d+).*",
                 r"\1",
