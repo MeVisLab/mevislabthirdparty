@@ -1,0 +1,4 @@
+restricted: true
+timeout:
+  build: 240
+  upload: 20

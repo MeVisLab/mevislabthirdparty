@@ -6,7 +6,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "kiwisolver"
-    version = "1.4.5"
+    version = "1.4.6"
     homepage = "https://github.com/nucleic/kiwi"
     description = "A fast implementation of the Cassowary constraint solver"
     license = "BSD-3-Clause"
@@ -24,7 +24,14 @@ class ConanRecipe(ConanFile):
         self.settings.rm_safe("compiler.cppstd")
 
     def source(self):
-        get(self,
-            sha256="2f3df2625993276a67a3ad312959f9c8333e23dfda0b7e5464b4927d34be6faa",
+        get(
+            self,
+            sha256="ec022dbab778a3d133513ca8ff86f3fbecadc0ffdcea2f1006e51f87406076f4",
             url=f"https://github.com/nucleic/kiwi/archive/refs/tags/{self.version}.tar.gz",
-            strip_root=True)
+            strip_root=True,
+        )
+
+    def package_info(self):
+        super().package_info()
+        # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
+        self.cpp_info.set_property("base_purl", "github/nucleic/kiwi")

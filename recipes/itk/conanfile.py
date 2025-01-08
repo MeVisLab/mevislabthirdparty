@@ -123,6 +123,8 @@ class ConanRecipe(ConanFile):
         rmdir(self, self.package_path / "lib" / "cmake")
 
     def package_info(self):
+        # self.cpp_info.set_property("cpe", "")  # Not in CVE?
+        self.cpp_info.set_property("base_purl", "github/InsightSoftwareConsortium/ITK")
         self.cpp_info.set_property("cmake_file_name", "ITK")
         self.cpp_info.set_property("cmake_target_name", "ITK::ITK")
         self.cpp_info.set_property("display_name", "Insight Toolkit(ITK)")

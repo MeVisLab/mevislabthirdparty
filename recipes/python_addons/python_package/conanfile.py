@@ -10,7 +10,7 @@ required_conan_version = ">=2.0"
 class ConanRecipe(ConanFile):
     name = "python_package"
     version = "1.0.1"
-    url = "http://mms-build.mevis.lokal"
+    url = "https://github.com/MeVisLab/mevislabthirdparty"
     license = "MIT"
     package_type = "python-require"
     description = "Common recipes for Python packages"

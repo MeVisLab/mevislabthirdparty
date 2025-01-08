@@ -1,0 +1,161 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 493cbd7..0b06456 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -8,6 +8,9 @@ cmake_minimum_required(VERSION 3.12)
+ 
+ PROJECT(vigra)
+ 
++set(CMAKE_CXX_STANDARD 17)
++set(CMAKE_CXX_STANDARD_REQUIRED ON)
++
+ # read the current version from config_version.hxx
+ file(READ ${vigra_SOURCE_DIR}/include/vigra/config_version.hxx VIGRA_VERSION_FILE)
+ string(REGEX MATCH "VIGRA_VERSION_MAJOR[ \t\n]+[^ \t\n]+" VIGRA_VERSION_MAJOR ${VIGRA_VERSION_FILE})
+diff --git a/include/vigra/error.hxx b/include/vigra/error.hxx
+index 881bc46..2cbbeb6 100644
+--- a/include/vigra/error.hxx
++++ b/include/vigra/error.hxx
+@@ -140,7 +140,7 @@ class ContractViolation : public StdException
+         (*this) << "\n" << prefix << "\n" << message << "\n";
+     }
+     
+-    ~ContractViolation() throw()
++    ~ContractViolation()
+     {}
+     
+     template<class T>
+@@ -152,7 +152,7 @@ class ContractViolation : public StdException
+         return *this;
+     }
+ 
+-    virtual const char * what() const throw()
++    virtual const char * what() const noexcept
+     {
+         try
+         {
+diff --git a/include/vigra/fftw3.hxx b/include/vigra/fftw3.hxx
+index 1f216ce..03d3e29 100644
+--- a/include/vigra/fftw3.hxx
++++ b/include/vigra/fftw3.hxx
+@@ -689,11 +689,11 @@ class FFTWAllocator
+         typedef FFTWAllocator<Other> other;
+     };
+     
+-    FFTWAllocator() throw()
++    FFTWAllocator() noexcept
+     {}
+     
+     template<class Other>
+-    FFTWAllocator(const FFTWAllocator<Other>& /*right*/) throw()
++    FFTWAllocator(const FFTWAllocator<Other>& /*right*/) noexcept
+     {}
+     
+     template<class Other>
+@@ -723,7 +723,7 @@ class FFTWAllocator
+         ptr->~Ty();
+     }
+     
+-    size_type max_size() const throw()
++    size_type max_size() const noexcept
+     {
+         return NumericTraits<std::ptrdiff_t>::max() / sizeof(Ty);
+     }
+@@ -757,11 +757,11 @@ class allocator<vigra::FFTWComplex<Real> >
+         typedef allocator<Other> other;
+     };
+     
+-    allocator() throw()
++    allocator() noexcept
+     {}
+     
+     template<class Other>
+-    allocator(const allocator<Other>& /*right*/) throw()
++    allocator(const allocator<Other>& /*right*/) noexcept
+     {}
+     
+     template<class Other>
+@@ -791,7 +791,7 @@ class allocator<vigra::FFTWComplex<Real> >
+         ptr->~value_type();
+     }
+     
+-    size_type max_size() const throw()
++    size_type max_size() const noexcept
+     {
+         return vigra::NumericTraits<std::ptrdiff_t>::max() / sizeof(value_type);
+     }
+diff --git a/include/vigra/mathutil.hxx b/include/vigra/mathutil.hxx
+index f370f45..efa7ecd 100644
+--- a/include/vigra/mathutil.hxx
++++ b/include/vigra/mathutil.hxx
+@@ -1748,6 +1748,11 @@ inline bool greaterEqualAtTolerance(T1 l, T2 r)
+ #pragma GCC diagnostic ignored "-Wtype-limits"
+ #endif
+ 
++#ifdef _MSC_VER
++#pragma warning( push )
++#pragma warning(disable : 4296)
++#endif
++
+ VIGRA_MATH_FUNC_HELPER(unsigned char)
+ VIGRA_MATH_FUNC_HELPER(unsigned short)
+ VIGRA_MATH_FUNC_HELPER(unsigned int)
+@@ -1762,6 +1767,10 @@ VIGRA_MATH_FUNC_HELPER(float)
+ VIGRA_MATH_FUNC_HELPER(double)
+ VIGRA_MATH_FUNC_HELPER(long double)
+ 
++#ifdef _MSC_VER
++#pragma warning( pop )
++#endif
++
+ #ifdef __GNUC__
+ #pragma GCC diagnostic pop
+ #endif
+diff --git a/include/vigra/unittest.hxx b/include/vigra/unittest.hxx
+index df2294c..f94d7e8 100755
+--- a/include/vigra/unittest.hxx
++++ b/include/vigra/unittest.hxx
+@@ -442,11 +442,11 @@ struct unit_test_failed
+     : what_(message)
+     {}
+ 
+-    virtual ~unit_test_failed() throw()
++    virtual ~unit_test_failed()
+     {
+     }
+ 
+-    virtual const char * what() const throw()
++    virtual const char * what() noexcept const 
+     {
+         return what_.c_str();
+     }
+diff --git a/src/impex/CMakeLists.txt b/src/impex/CMakeLists.txt
+index 98a257a..93b226a 100644
+--- a/src/impex/CMakeLists.txt
++++ b/src/impex/CMakeLists.txt
+@@ -68,11 +68,11 @@ set(SOVERSION 11)  # increment this after changing the vigraimpex library
+ IF(MACOSX)
+     SET_TARGET_PROPERTIES(vigraimpex PROPERTIES VERSION ${SOVERSION}.${vigra_version}
+                           SOVERSION ${SOVERSION} INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}"
+-                          CXX_STANDARD 11)
++                          CXX_STANDARD 17)
+ ELSE()
+     SET_TARGET_PROPERTIES(vigraimpex PROPERTIES VERSION ${SOVERSION}.${vigra_version}
+                           SOVERSION ${SOVERSION}
+-                          CXX_STANDARD 11)
++                          CXX_STANDARD 17)
+ ENDIF()
+ 
+ IF(JPEG_FOUND)
+diff --git a/src/impex/tiff.cxx b/src/impex/tiff.cxx
+index 82e8bec..549e014 100644
+--- a/src/impex/tiff.cxx
++++ b/src/impex/tiff.cxx
+@@ -64,6 +64,7 @@
+ #include <iostream>
+ #include <iomanip>
+ #include <sstream>
++#include <cstdint>
+ 
+ extern "C"
+ {

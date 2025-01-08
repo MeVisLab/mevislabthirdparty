@@ -7,7 +7,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "libdeflate"
-    version = "1.21"
+    version = "1.22"
     homepage = "https://github.com/ebiggers/libdeflate"
     description = "Heavily optimized DEFLATE/zlib/gzip (de)compression"
     license = "MIT"
@@ -24,7 +24,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="7f05b533dd1d95e48a9f7d633beab67d8c6f502c01a2a5f46b204c16d1e748ad",
+            sha256="7834d9adbc9a809e0fb0d7b486060a9ae5f7819eb7f55bb8c22b10d7b3bed8da",
             url=f"https://github.com/ebiggers/libdeflate/releases/download/v{self.version}/libdeflate-{self.version}.tar.gz",
             strip_root=True,
         )
@@ -49,6 +49,8 @@ class ConanRecipe(ConanFile):
         rmdir(self, self.package_path / "lib" / "pkgconfig")
 
     def package_info(self):
+        # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
+        self.cpp_info.set_property("base_purl", "github/ebiggers/libdeflate")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "libdeflate")
         self.cpp_info.set_property("cmake_target_name", "libdeflate::libdeflate_shared")

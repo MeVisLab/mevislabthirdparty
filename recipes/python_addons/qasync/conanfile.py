@@ -37,3 +37,8 @@ class ConanRecipe(ConanFile):
         patch(self, patch_file="patches/003-fix_qsocketnotifier_signal.patch",
               patch_type="compatibility",
               patch_description="Use signal connection form supported by PythonQt")
+
+    def package_info(self):
+        super().package_info()
+        # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
+        self.cpp_info.set_property("base_purl", "github/CabbageDevelopment/qasync")

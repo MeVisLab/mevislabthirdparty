@@ -229,10 +229,10 @@ class INVENTOR_API SoAsciiText : public SoShape {
                                     SoPickedPoint *);
 
     //! Generates the fronts of the characters, by getting the outlines
-    //! and calling the glu tesselation code:
+    //! and calling the glu tessellation code:
     void generateFront(const SbString &string, float width);
     
-    //! Static callbacks invoked by the glu tesselation code:
+    //! Static callbacks invoked by the glu tessellation code:
     static void CALLBACK beginCB(GLenum primType);
     static void CALLBACK endCB();
     static void CALLBACK vtxCB(void *vertex);

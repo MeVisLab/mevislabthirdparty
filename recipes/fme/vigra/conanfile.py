@@ -1,13 +1,14 @@
 from conan import ConanFile
 from conan.tools.cmake import CMakeToolchain, CMakeDeps, CMake, cmake_layout
 from conan.tools.files import get, patch, copy, rmdir, collect_libs
+import os
 
 required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
     name = "vigra"
-    version = "1.11.2"
+    version = "1.12.1"
     homepage = "https://ukoethe.github.io/vigra"
     description = "a generic C++ library for image analysis"
     license = "MIT"
@@ -27,18 +28,25 @@ class ConanRecipe(ConanFile):
         cmake_layout(self, src_folder="src")
 
     def source(self):
-        get(self,
-            sha256="4841936f5c3c137611ec782e293d961df29d3b5b70ade8cb711374de0f4cb5d3",
+        get(
+            self,
+            sha256="8836a40a340f96ed2abf53780e883c5bf58002eb182cfccb4255b553ca48db33",
             url=f"https://github.com/ukoethe/vigra/archive/refs/tags/Version-{self.version.replace('.', '-')}.tar.gz",
-            strip_root=True
+            strip_root=True,
         )
 
-        patch(self, patch_file="patches/001-cpp_standard.patch")
+        patch(self, patch_file="patches/001-cpp17.patch")
         patch(self, patch_file="patches/002-allocator.patch")
-        patch(self, patch_file="patches/003-cpp17.patch")
+        patch(
+            self,
+            patch_file="patches/003-namespace.patch",
+            patch_description="Temporary fix for MSVC compiler bug, see "
+                              "https://developercommunity.visualstudio.com/"
+                              "t/VS-17111:-Compiler-fails-to-match-defi/10728187"
+        )
 
         # rather use conan version of this file:
-        (self.source_path / "config" / "FindHDF5.cmake").unlink()
+        os.remove(os.path.join(self.source_folder, "config", "FindHDF5.cmake"))
 
     def generate(self):
         tc = CMakeToolchain(self)
@@ -65,12 +73,14 @@ class ConanRecipe(ConanFile):
         cmake = CMake(self)
         cmake.install()
 
-        copy(self, "*.pdb", src=self.source_path, dst=self.package_path / "bin", keep_path=False, excludes="*vc???.pdb")
-        copy(self, "LICENSE.txt", src=self.source_path, dst=self.package_path / "licenses")
-        rmdir(self, self.package_path / "doc")
-        rmdir(self, self.package_path / "lib" / "vigra")
+        copy(self, "*.pdb", src=self.source_folder, dst=os.path.join(self.package_folder, "bin"), keep_path=False, excludes="*vc???.pdb")
+        copy(self, "LICENSE.txt", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
+        rmdir(self, os.path.join(self.package_folder, "doc"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "vigra"))
 
     def package_info(self):
+        # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
+        self.cpp_info.set_property("base_purl", "github/ukoethe/vigra")
         self.cpp_info.set_property("display_name", "VIGRA Computer Vision Library")
         self.cpp_info.set_property("mevislab_prosdk_exclude", True)
         self.cpp_info.defines += ["HasHDF5"]

@@ -59,6 +59,9 @@ class ConanRecipe(ConanFile):
         rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
 
     def package_info(self):
+        self.cpp_info.set_property("cpe", "cpe:2.3:a:google:brotli:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("base_purl", "github/google/brotli")
+
         incdir = os.path.join("include", "brotli")
         suffix = '_d' if self.settings.build_type == 'Debug' else ''
 

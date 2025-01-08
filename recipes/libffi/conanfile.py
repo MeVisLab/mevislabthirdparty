@@ -51,5 +51,7 @@ class ConanRecipe(ConanFile):
         cmake.install()
 
     def package_info(self):
+        self.cpp_info.set_property("cpe", "cpe:2.3:a:libffi_project:libffi:*:*:*:*:*:*:*:")
+        self.cpp_info.set_property("base_purl", "github/libffi/libffi")
         self.cpp_info.defines = ["FFI_BUILDING", "FFI_STATIC_BUILD"]
         self.cpp_info.libs = collect_libs(self)

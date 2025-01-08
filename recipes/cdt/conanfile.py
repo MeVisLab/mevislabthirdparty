@@ -29,3 +29,7 @@ class ConanRecipe(ConanFile):
         copy(self, pattern="LICENSE", src=self.source_path, dst=self.package_path / "licenses", keep_path=False)
         copy(self, pattern="*.h", src=self.source_path / "CDT" / "include", dst=self.package_path / "include" / "CDT", keep_path=False)
         copy(self, pattern="*.hpp", src=self.source_path / "CDT" / "include", dst=self.package_path / "include" / "CDT", keep_path=False)
+
+    def package_info(self):
+        # self.cpp_info.set_property("cpe", "")  # No CPE yet?
+        self.cpp_info.set_property("base_purl", "github/artem-ogre/CDT")

@@ -9,7 +9,7 @@ from shutil import which
 from conan import ConanFile
 from conan.tools.build.flags import cppstd_flag
 from conan.tools.env import Environment
-from conan.tools.files import get, copy, collect_libs, files, patch
+from conan.tools.files import get, copy, collect_libs, files
 from conan.tools.microsoft import is_msvc
 from conan.tools.layout import basic_layout
 from conan.tools.microsoft.visual import msvc_version_to_toolset_version
@@ -21,7 +21,7 @@ class ConanRecipe(ConanFile):
     name = "boost"
     display_name = "Boost"
     mli_name = "None"
-    version = "1.85.0"
+    version = "1.86.0"
     homepage = "https://www.boost.org"
     description = "Boost provides free peer-reviewed portable C++ source libraries"
     license = "BSL-1.0"
@@ -70,14 +70,9 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="7009fe1faa1697476bdc7027703a2badb84e849b7b0baad5086b087b971f8617",
-            url=f"https://boostorg.jfrog.io/artifactory/main/release/{self.version}/source/boost_{self.version.replace('.','_')}.tar.bz2",
+            sha256="1bed88e40401b2cb7a1f76d4bab499e352fa4d0c5f31c0dbae64e24d34d7513b",
+            url=f"https://archives.boost.io/release/{self.version}/source/boost_{self.version.replace('.','_')}.tar.bz2",
             strip_root=True,
-        )
-        patch(
-            self,
-            patch_file="patches/001-b2_update.patch",
-            patch_description="Update b2 to v5.2.1 for Boost 1.85.0 to fix build issues with newer MSVC versions",
         )
 
     def build(self):
@@ -116,6 +111,8 @@ class ConanRecipe(ConanFile):
         copy(self, pattern="boost*.pdb", dst=self.package_path / "bin", src=out_lib_dir, keep_path=False)
 
     def package_info(self):
+        self.cpp_info.set_property("cpe", "cpe:2.3:a:boost:boost:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("base_purl", "github/boostorg/boost")
         self.cpp_info.set_property("cmake_file_name", "Boost")
         self.cpp_info.set_property("cmake_target_name", "Boost::boost")
 

@@ -8,7 +8,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "opencl-icd-loader"
-    version = "2024.05.08"
+    version = "2024.10.24"
     homepage = "https://github.com/KhronosGroup/OpenCL-ICD-Loader"
     description = "OpenCL ICD Loader"
     license = "Apache-2.0"
@@ -31,7 +31,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="eb2c9fde125ffc58f418d62ad83131ba686cccedcb390cc7e6bb81cc5ef2bd4f",
+            sha256="95f2f0cda375b13d2760290df044ebea9c6ff954a7d7faa0867422442c9174dc",
             url=f"https://github.com/KhronosGroup/OpenCL-ICD-Loader/archive/refs/tags/v{self.version}.tar.gz",
             strip_root=True,
         )
@@ -69,6 +69,8 @@ class ConanRecipe(ConanFile):
         )
 
     def package_info(self):
+        # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
+        self.cpp_info.set_property("base_purl", "github/KhronosGroup/OpenCL-ICD-Loader")
         self.cpp_info.set_property("cmake_file_name", "OpenCLICDLoader")
         self.cpp_info.set_property("cmake_target_name", "OpenCLICDLoader::OpenCLICDLoader")
         self.cpp_info.set_property("cmake_config_version_compat", "AnyNewerVersion")

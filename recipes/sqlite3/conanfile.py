@@ -9,7 +9,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "sqlite3"
-    version = "3.46.1"
+    version = "3.47.0"
     description = "Self-contained, serverless, in-process SQL database engine."
     license = "Unlicense"
     homepage = "https://www.sqlite.org"
@@ -31,7 +31,7 @@ class ConanRecipe(ConanFile):
         v = Version(self.version)
         get(
             self,
-            sha256="77823cb110929c2bcb0f5d48e4833b5c59a8a6e40cdea3936b99e199dbbe5784",
+            sha256="2842fddbb1cc33f66c7da998a57535f14a6bfee159676a07bb4bf3e59375d93e",
             url=f"https://www.sqlite.org/2024/sqlite-amalgamation-{v.major}{str(v.minor).zfill(2)}{str(v.patch).zfill(2)}00.zip",
             strip_root=True,
         )
@@ -64,6 +64,8 @@ class ConanRecipe(ConanFile):
         cmake.install()
 
     def package_info(self):
+        self.cpp_info.set_property("cpe", "cpe:2.3:a:sqlite:sqlite:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("base_purl", "github/sqlite/sqlite")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "SQLite3")
         self.cpp_info.set_property("cmake_module_file_name", "sqlite3")

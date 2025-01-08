@@ -9,7 +9,7 @@ required_conan_version = ">=2.2.2"
 class ConanRecipe(ConanFile):
     name = "clapack"
     version = "3.2.1"
-    homepage = "http://www.netlib.org/clapack"
+    homepage = "https://www.netlib.org/clapack"
     description = "CLAPACK, a C translation of the FORTRAN77 LAPACK linear algebra libraries"
     license = "BSD-3-Clause"
     settings = "os", "arch", "compiler", "build_type"
@@ -60,6 +60,8 @@ class ConanRecipe(ConanFile):
         copy(self, pattern="*.a", src=self.build_path, dst=self.package_path / "lib", keep_path=False)
 
     def package_info(self):
+        self.cpp_info.set_property("cpe", "cpe:2.3:a:lapack_project:lapack:*:*:*:*:*:*:*:*")  # does this refer to the Fortran Lapack?
+        self.cpp_info.set_property("base_purl", "github/alphacep/clapack")  # some arbitrary mirror
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "CLAPACK")
         self.cpp_info.set_property("cmake_target_name", "CLAPACK::CLAPACK")

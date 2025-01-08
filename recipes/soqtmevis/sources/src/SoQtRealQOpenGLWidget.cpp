@@ -44,6 +44,7 @@
 #include "SoQtContextShareManager.h"
 
 #include <QEvent>
+#include <QKeyEvent>
 #include <iostream>
 
 SoQtRealQOpenGLWidget::SoQtRealQOpenGLWidget(const QSurfaceFormat& format, SoQtGLWidget* parent)
@@ -64,16 +65,29 @@ SoQtRealQOpenGLWidget::~SoQtRealQOpenGLWidget()
 {
 }
 
-bool SoQtRealQOpenGLWidget::event ( QEvent * e )
+bool SoQtRealQOpenGLWidget::event ( QEvent* e )
 {
-    if (e->type() == QEvent::Resize) {
+    if (e->type() == QEvent::Resize)
+    {
         // Don't interfere with resize event,
         // we have a separate resizeGL callback for this!
-      return QOpenGLWidget::event(e);
+        return QOpenGLWidget::event(e);
     }
-    bool ignoreEvent = !handleEvent(this, _w, e);
-    if (ignoreEvent) { return false; }
-    return e->isAccepted() || QOpenGLWidget::event(e);
+    bool wasAccepted = e->isAccepted();
+    if (!handleEvent(this, _w, e))
+    {
+        return false;
+    }
+    if (e->isAccepted())
+    {
+        return true;
+    }
+    if (e->type() == QEvent::KeyPress)
+    {
+        // Maybe this can de done for all events?
+        e->setAccepted(wasAccepted);
+    }
+    return QOpenGLWidget::event(e);
 }
 
 bool SoQtRealQOpenGLWidget::handleEvent (QWidget* self, SoQtGLWidget* w, QEvent* e)

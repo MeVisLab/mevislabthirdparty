@@ -1,12 +1,13 @@
 from conan import ConanFile
 from conan.tools.files import copy, get
+import os
 
 required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
     name = "jquery-ui"
-    version = "1.13.3"
+    version = "1.14.1"
     homepage = "https://jqueryui.com"
     description = "A curated set of user interface interactions, effects, widgets, and themes built on top of the jQuery JavaScript Library"
     package_type = "build-scripts"
@@ -18,21 +19,23 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="c0aca08c5dd54095d80869cf63f0178e7f1840910867634c66a6b237bb5ad2b7",
+            sha256="e1d2031e6b33dcdc6b09e3cf1b838d9e0dfba20862e4cb248afb614dd4f04986",
             url=f"https://jqueryui.com/resources/download/jquery-ui-{self.version}.zip",
             strip_root=True,
         )
         get(
             self,
-            sha256="134653ced831789abe0d819376e87fea4028b0d1628f0dd040434a86a705e5b9",
+            sha256="3ab9779ecfe869ffb7172f8813a2c935184fa9f18c49363e1fbce6a6b935b4a3",
             url=f"https://jqueryui.com/resources/download/jquery-ui-themes-{self.version}.zip",
             strip_root=True,
         )
 
     def package(self):
-        copy(self, "*", src=self.source_path, dst=self.package_path / f"web/{self.name}", excludes=["*conan*"])
-        copy(self, "LICENSE.txt", src=self.source_path, dst=self.package_path / "licenses")
+        copy(self, "*", src=self.source_folder, dst=os.path.join(self.package_folder, "web", self.name), excludes=["*conan*"])
+        copy(self, "LICENSE.txt", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
 
     def package_info(self):
+        self.cpp_info.set_property("cpe", "cpe:2.3:a:jqueryui:jquery_ui:*:*:*:*:*:jquery:*:*")
+        self.cpp_info.set_property("base_purl", "github/jquery/jquery-ui")
         self.cpp_info.includedirs.clear()
         self.cpp_info.set_property("cmake_find_mode", "none")

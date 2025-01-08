@@ -8,7 +8,7 @@ required_conan_version = ">=2.0.8"
 
 class ConanRecipe(ConanFile):
     name = "openvdb"
-    version = "11.0.0"
+    version = "12.0.0"
     homepage = "https://www.openvdb.org"
     description = ("A suite of tools for the efficient storage and manipulation "
                    "of sparse volumetric data discretized on three-dimensional grids")
@@ -30,7 +30,7 @@ class ConanRecipe(ConanFile):
 
     def source(self):
         get(self,
-            sha256="6314ff1db057ea90050763e7b7d7ed86d8224fcd42a82cdbb9c515e001b96c74",
+            sha256="23ceb5b18a851f45af118f718a9dd3001efaee364e3f623c37ffbdad03b8905f",
             url=f"https://github.com/AcademySoftwareFoundation/openvdb/archive/v{self.version}.tar.gz",
             strip_root=True
         )
@@ -98,6 +98,8 @@ class ConanRecipe(ConanFile):
             rmdir(self, self.package_path / "bin")
 
     def package_info(self):
+        # self.cpp_info.set_property("cpe", "")  # No CPE yet?
+        self.cpp_info.set_property("base_purl", "github/AcademySoftwareFoundation/openvdb")
         self.cpp_info.set_property("cmake_file_name", "OpenVDB")
         self.cpp_info.set_property("cmake_target_name", "OpenVDB::OpenVDB")
         self.cpp_info.defines.append("OPENVDB_DLL")

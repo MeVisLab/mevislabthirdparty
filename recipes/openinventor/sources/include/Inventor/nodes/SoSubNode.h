@@ -93,6 +93,7 @@
 #ifndef  _SO_SUB_NODE_
 #define  _SO_SUB_NODE_
 
+#include <memory>
 #include <stdlib.h>
 #include <Inventor/system/SbSystem.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -125,10 +126,11 @@
                            "Instance not properly constructed.\n"             \
                            "Did you forget to put SO_NODE_CONSTRUCTOR()"      \
                            " in the constructor?");                           \
-        fieldData = new                                                       \
-            SoFieldData(parentFieldData ? *parentFieldData : NULL);           \
-    }                                                                         \
-}
+        fieldDataStorage =                                                    \
+                std::make_unique<SoFieldData>(parentFieldData ? *parentFieldData : NULL);          \
+        fieldData = fieldDataStorage.get();                                   \
+        }                                                                     \
+    }
 
 #else
 #define SO__NODE_CHECK_INIT(className)  {  }
@@ -161,6 +163,7 @@
     static SoType       classTypeId;            /* Type id              */    \
     static bool         firstInstance; /* true until 2nd c'tor call */        \
     static SoFieldData          *fieldData;                                   \
+    static std::unique_ptr<SoFieldData> fieldDataStorage;                     \
     static const SoFieldData    **parentFieldData
 
 //!
@@ -185,6 +188,7 @@
 #define SO__NODE_ABSTRACT_VARS(className)                                     \
     SoType              className::classTypeId;                               \
     SoFieldData        *className::fieldData;                                 \
+    std::unique_ptr<SoFieldData> className::fieldDataStorage;                 \
     const SoFieldData **className::parentFieldData;                           \
     bool                className::firstInstance = TRUE
 
@@ -328,8 +332,11 @@
 #define SO_NODE_CONSTRUCTOR(className) {                                      \
     SO__NODE_CHECK_INIT(className);                                           \
     if (fieldData == NULL)                                                    \
-        fieldData = new SoFieldData(                                          \
-            parentFieldData ? *parentFieldData : NULL);                       \
+    {                                                                         \
+        fieldDataStorage =                                                    \
+               std::make_unique<SoFieldData>(parentFieldData ? *parentFieldData : NULL);          \
+        fieldData = fieldDataStorage.get();                                   \
+    }                                                                         \
     else                                                                      \
         firstInstance = FALSE;                                                \
     isBuiltIn = FALSE;                                                        \

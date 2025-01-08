@@ -147,11 +147,11 @@ class INVENTOR_API SoCone : public SoShape {
     //! Size in y dimension
     SoSFFloat           height;         
 
-    //! Defines how many sides are used for tesselation. If set to <= 0, the sides are
+    //! Defines how many sides are used for tessellation. If set to <= 0, the sides are
     //! calculated by the SoComplexityElement.
     SoSFInt32           sides;
 
-    //! Defines how many sections are used for tesselation. If set to <= 0, the sections are
+    //! Defines how many sections are used for tessellation. If set to <= 0, the sections are
     //! calculated by the SoComplexityElement.
     SoSFInt32           sections;
 
@@ -189,7 +189,7 @@ class INVENTOR_API SoCone : public SoShape {
     static SbVec3f      *normalsArray;  //!< Storage for base normals
     static int          maxCoords;      //!< Current max num of coords/normals
 
-    //! The state of the last cone tesselation,
+    //! The state of the last cone tessellation,
     //! so that the VBO can be reused if nothing changed.
     struct CacheState : public SimpleVertexArrayCache {
       CacheState() {

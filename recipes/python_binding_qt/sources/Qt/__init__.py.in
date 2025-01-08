@@ -3,10 +3,10 @@
 # associated_tests: PythonQtTest
 
 try:
-  import _PythonQt
+  import _PythonQt.Qt
   del _PythonQt
 except:
-  # workaround for pylint, we can't import _PythonQt, instead we load QtCore, which initializes _PythonQt
+  # workaround for pylint, we can't import _PythonQt.Qt, instead we load QtCore, which initializes _PythonQt
   from . import QtCore
 
 # import the things that MeVisLab users use most often directly into PythonQt

@@ -1,0 +1,20 @@
+diff --git a/src/tri/_tri.h b/src/tri/_tri.h
+index cfdfd82..7cc0ed9 100644
+--- a/src/tri/_tri.h
++++ b/src/tri/_tri.h
+@@ -63,6 +63,15 @@
+ #ifndef MPL_TRI_H
+ #define MPL_TRI_H
+ 
++#ifdef _DEBUG
++// Windows does not define Py_DEBUG, but pybind11.h expects it to be defined in debug mode
++// without this, it will try to link against release Python
++// see https://github.com/pybind/pybind11/issues/3403
++#ifndef Py_DEBUG
++#define Py_DEBUG
++#endif
++#endif
++
+ #include <pybind11/pybind11.h>
+ #include <pybind11/numpy.h>
+ 

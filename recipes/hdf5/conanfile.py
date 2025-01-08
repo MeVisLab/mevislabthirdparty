@@ -9,8 +9,8 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "hdf5"
-    version = "1.14.4.3"
-    homepage = "http://www.hdfgroup.org/HDF5"
+    version = "1.14.5"
+    homepage = "https://www.hdfgroup.org/solutions/hdf5/"
     description = "General purpose library and file format for storing scientific data"
     license = "BSD-3-Clause"
     package_type = "shared-library"
@@ -30,7 +30,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="019ac451d9e1cf89c0482ba2a06f07a46166caf23f60fea5ef3c37724a318e03",
+            sha256="ec2e13c52e60f9a01491bb3158cb3778c985697131fc6a342262d32a26e58e44",
             url=f"https://github.com/HDFGroup/hdf5/releases/download/hdf5_{self.version}/hdf5-{self.hdf5_version()}.tar.gz",
             strip_root=True,
         )
@@ -79,6 +79,8 @@ class ConanRecipe(ConanFile):
         rm(self, "libhdf5.settings", os.path.join(self.package_folder, "lib"))
 
     def package_info(self):
+        self.cpp_info.set_property("cpe", "cpe:2.3:a:hdfgroup:hdf5:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("base_purl", "github/HDFGroup/hdf5")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "HDF5")
         self.cpp_info.set_property("cmake_target_name", "HDF5::HDF5")

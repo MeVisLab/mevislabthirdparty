@@ -83,8 +83,8 @@ struct O_curve : public PooledObj {
 struct O_nurbscurve : public PooledObj {
     Quilt               *bezier_curves; /* array of bezier curves       */
     long                type;           /* range descriptor             */
-    REAL                tesselation;    /* tesselation tolerance        */
-    int                 method;         /* tesselation method           */
+    REAL                tesselation;    /* tessellation tolerance        */
+    int                 method;         /* tessellation method           */
     O_nurbscurve *      next;           /* next curve in list           */
     int                 used;           /* curve called in cur surf     */
     int                 save;           /* 1 if in display list         */

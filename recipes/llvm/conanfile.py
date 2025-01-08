@@ -9,7 +9,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "llvm"
-    version = "18.1.8"
+    version = "19.1.4"
     license = "Apache-2.0"
     homepage = "https://llvm.org"
     description = "Low Level Virtual Machine"
@@ -36,7 +36,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="0b58557a6d32ceee97c8d533a59b9212d87e0fc4d2833924eb6c611247db2f2a",
+            sha256="3aa2d2d2c7553164ad5c6f3b932b31816e422635e18620c9349a7da95b98d811",
             url=f"https://github.com/llvm/llvm-project/releases/download/llvmorg-{self.version}/llvm-project-{self.version}.src.tar.xz",
             strip_root=True,
         )
@@ -87,6 +87,8 @@ class ConanRecipe(ConanFile):
         rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))
 
     def package_info(self):
+        self.cpp_info.set_property("cpe", "cpe:2.3:a:llvm:llvm:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("base_purl", "github/llvm/llvm-project")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "LLVM")
         self.cpp_info.set_property("cmake_target_name", "LLVM::LLVM")

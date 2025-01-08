@@ -22,7 +22,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(self,
             sha256="6e3d2ae0f77877a2daab7946c93d45e5f2780a587dddf5db0ced5799772b1f6a",
-            url=f"http://yui.github.io/yui2/archives/yui_{self.version}.zip",
+            url=f"https://yui.github.io/yui2/archives/yui_{self.version}.zip",
             strip_root=True
             )
 
@@ -31,5 +31,7 @@ class ConanRecipe(ConanFile):
         copy(self, "LICENSE", src=self.source_path, dst=self.package_path / "licenses")
 
     def package_info(self):
+        self.cpp_info.set_property("cpe", "cpe:2.3:a:yahoo:yui:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("base_purl", "github/yui/yui2")
         self.cpp_info.includedirs.clear()
         self.cpp_info.set_property("cmake_find_mode", "none")

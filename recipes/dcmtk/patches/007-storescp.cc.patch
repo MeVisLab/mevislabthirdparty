@@ -1,5 +1,5 @@
 diff --git a/dcmnet/apps/storescp.cc b/dcmnet/apps/storescp.cc
-index 5dae4f1..744d5b0 100644
+index 5dae4f1..6e66a25 100644
 --- a/dcmnet/apps/storescp.cc
 +++ b/dcmnet/apps/storescp.cc
 @@ -116,6 +116,8 @@ enum E_SortStudyMode
@@ -249,7 +249,19 @@ index 5dae4f1..744d5b0 100644
            cond = DIMSE_BADCOMMANDTYPE;
            OFLOG_ERROR(storescpLogger, "Expected C-ECHO or C-STORE request but received DIMSE command 0x"
                 << STD_NAMESPACE hex << STD_NAMESPACE setfill('0') << STD_NAMESPACE setw(4)
-@@ -1771,7 +1911,7 @@ storeSCPCallback(
+@@ -1618,6 +1758,11 @@ processCommands(T_ASC_Association * assoc)
+           OFLOG_DEBUG(storescpLogger, DIMSE_dumpMessage(tempStr, msg, DIMSE_INCOMING, NULL, presID));
+           break;
+       }
++      if (opt_shortInfo && !loggedAssocType)
++      {
++          short_info.print();
++          loggedAssocType = true;
++      }
+     }
+   }
+   return cond;
+@@ -1771,7 +1916,7 @@ storeSCPCallback(
      // is present and the options opt_bitPreserving and opt_ignore are not set.
      if ((imageDataSet != NULL) && (*imageDataSet != NULL) && !opt_bitPreserving && !opt_ignore)
      {
@@ -258,7 +270,7 @@ index 5dae4f1..744d5b0 100644
  
        // in case one of the --sort-xxx options is set, we need to perform some particular steps to
        // determine the actual name of the output file
-@@ -1820,7 +1960,8 @@ storeSCPCallback(
+@@ -1820,7 +1965,8 @@ storeSCPCallback(
          // if this is the first DICOM object that was received or if the study instance UID in the
          // current DICOM object does not equal the last object's study instance UID we need to create
          // a new subdirectory in which the current DICOM object will be stored
@@ -268,7 +280,7 @@ index 5dae4f1..744d5b0 100644
          {
            // if lastStudyInstanceUID is non-empty, we have just completed receiving all objects for one
            // study. In such a case, we need to set a certain indicator variable (lastStudySubdirectoryPathAndName),
-@@ -1889,18 +2030,18 @@ storeSCPCallback(
+@@ -1889,18 +2035,18 @@ storeSCPCallback(
              {
                // If the subdirectory already exists, then re-use it. It might have been created by another
                // process receiving images in parallel.
@@ -290,7 +302,7 @@ index 5dae4f1..744d5b0 100644
              // all objects of a study have been received, so a new subdirectory is started.
              // ->timename counter can be reset, because the next filename can't cause a duplicate.
              // if no reset would be done, files of a new study (->new directory) would start with a counter in filename
-@@ -1913,6 +2054,13 @@ storeSCPCallback(
+@@ -1913,6 +2059,13 @@ storeSCPCallback(
          // path and file name; however, the path refers to the output directory captured in opt_outputDirectory)
          OFStandard::combineDirAndFilename(fileName, subdirectoryPathAndName, OFStandard::getFilenameFromPath(tmpStr, cbdata->imageFileName));
  
@@ -304,7 +316,7 @@ index 5dae4f1..744d5b0 100644
          // update global variable outputFileNameArray
          // (might be used in executeOnReception() and renameOnEndOfStudy)
          outputFileNameArray.push_back(tmpStr);
-@@ -1921,7 +2069,12 @@ storeSCPCallback(
+@@ -1921,7 +2074,12 @@ storeSCPCallback(
        else
        {
          fileName = cbdata->imageFileName;
@@ -318,7 +330,7 @@ index 5dae4f1..744d5b0 100644
          // update global variables outputFileNameArray
          // (might be used in executeOnReception() and renameOnEndOfStudy)
          outputFileNameArray.push_back(OFStandard::getFilenameFromPath(tmpStr, fileName));
-@@ -1949,6 +2102,14 @@ storeSCPCallback(
+@@ -1949,6 +2107,14 @@ storeSCPCallback(
          OFStandard::deleteFile(fileName);
        }
  
@@ -333,7 +345,7 @@ index 5dae4f1..744d5b0 100644
        // check the image to make sure it is consistent, i.e. that its sopClass and sopInstance correspond
        // to those mentioned in the request. If not, set the status in the response message variable.
        if (rsp->DimseStatus == STATUS_Success)
-@@ -1973,14 +2134,23 @@ storeSCPCallback(
+@@ -1973,14 +2139,23 @@ storeSCPCallback(
      // in case opt_bitPreserving is set, do some other things
      if( opt_bitPreserving )
      {
@@ -359,7 +371,7 @@ index 5dae4f1..744d5b0 100644
  static OFCondition storeSCP(
    T_ASC_Association *assoc,
    T_DIMSE_Message *msg,
-@@ -2115,7 +2285,13 @@ static OFCondition storeSCP(
+@@ -2115,7 +2290,13 @@ static OFCondition storeSCP(
    // DIMSE_storeProvider must be called with certain parameters.
    if (opt_bitPreserving)
    {

@@ -67,6 +67,11 @@
 #include <Inventor/errors/SoReadError.h>
 #include "utf8_filesupport_win32.h"
 
+#include <charconv>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+
 // Static list of directories to search in.  Allocated by SoInput::init.
 SbStringList *SoInput::directories = NULL;
 
@@ -2507,7 +2512,8 @@ SoInput::readReal(double &d)
 
     // Read from backBuf if it is not empty
     if (backBufIndex >= 0) {
-        n = sscanf(backBuf.getString(), "%lf", &d);
+        auto backBufPtr = backBuf.getString();
+        std::from_chars(backBufPtr, backBufPtr + backBuf.getLength(), d, std::chars_format::fixed);
 
         // Clear the back buffer.
         backBuf.makeEmpty();
@@ -2627,8 +2633,90 @@ SoInput::readReal(double &d)
         ret = TRUE;
     }
     else {
-        n = fscanf(curFile->fp, "%lf", &d);
-        ret =  (n == 0 || n == EOF) ? FALSE : TRUE;
+        std::ostringstream ostr;
+        enum class Stage {
+            NotStarted = 0,
+            MantissaSign,
+            MantissaDigits,
+            MantissaDot,
+            MantissaFraction,
+            ExponentMarker,
+            ExponentSign,
+            ExponentDigits
+        } stage = Stage::NotStarted;
+        int c;
+        while (1) {
+            c = fgetc(curFile->fp);
+            if (c == EOF) {
+                break;
+            }
+            if (isspace(c)) {
+                if (stage > Stage::NotStarted) {  // end of number
+                    break;
+                }
+            }
+            else if (isdigit(c)) {
+                if (stage < Stage::MantissaDot) {
+                    stage = Stage::MantissaDigits;
+                }
+                else if (stage < Stage::ExponentMarker) {
+                    stage = Stage::MantissaFraction;
+                }
+                else {
+                    stage = Stage::MantissaDigits;
+                }
+            }
+            else if (c == '+' || c == '-')
+            {
+                if (stage == Stage::NotStarted) {
+                    stage = Stage::MantissaSign;
+                }
+                else if (stage == Stage::ExponentMarker) {
+                    stage = Stage::ExponentSign;
+                }
+                else {  // invalid
+                    break;
+                }
+            }
+            else if (c == '.')
+            {
+                if (stage < Stage::MantissaDot ) {
+                    stage = Stage::MantissaDot;
+                }
+                else {  // invalid
+                    break;
+                }
+            }
+            else if (c == 'e' || c == 'E')
+            {
+                if (stage > Stage::MantissaSign && stage < Stage::ExponentMarker) {
+                    stage = Stage::ExponentMarker;
+                }
+                else {  // invalid
+                    break;
+                }
+            }
+            else {  // non-number character
+                break;
+            }
+            ostr.put(c);
+        }
+        if (c != EOF)
+        {
+            ungetc(c, curFile->fp);
+        }
+        if (ostr.tellp() == 0) {
+            ret = FALSE;
+        }
+        else {
+            try {
+                d = std::stod(ostr.str());
+                ret = TRUE;
+            }
+            catch (std::invalid_argument) {
+                ret = FALSE;
+            }
+        }
     }
 
     return ret;

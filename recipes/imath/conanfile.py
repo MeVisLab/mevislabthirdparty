@@ -8,7 +8,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "imath"
-    version = "3.1.11"
+    version = "3.1.12"
     homepage = "https://imath.readthedocs.io"
     description = "Imath is a C++ and python library of 2D and 3D vector, matrix, and math operations for computer graphics"
     license = "BSD-3-Clause"
@@ -25,7 +25,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="9057849585e49b8b85abe7cc1e76e22963b01bfdc3b6d83eac90c499cd760063",
+            sha256="8a1bc258f3149b5729c2f4f8ffd337c0e57f09096e4ba9784329f40c4a9035da",
             url=f"https://github.com/AcademySoftwareFoundation/Imath/archive/refs/tags/v{self.version}.tar.gz",
             strip_root=True,
         )
@@ -53,6 +53,8 @@ class ConanRecipe(ConanFile):
         rmdir(self, self.package_path / "lib" / "cmake")
 
     def package_info(self):
+        # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
+        self.cpp_info.set_property("base_purl", "github/AcademySoftwareFoundation/Imath")
         self.cpp_info.set_property("cmake_file_name", "Imath")
         self.cpp_info.set_property("cmake_target_name", "Imath::Imath")
         self.cpp_info.set_property("pkg_config_name", "Imath")

@@ -84,6 +84,8 @@ class ConanRecipe(ConanFile):
         rm(self, pattern="*.la", folder=self.package_path / "lib")
 
     def package_info(self):
+        # self.cpp_info.set_property("cpe", "")  # No CPE yet?
+        self.cpp_info.set_property("base_purl", "github/roboticslibrary/libiconv")  # Official repository at https://ftp.gnu.org/gnu/libiconv
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "Iconv")
         self.cpp_info.set_property("cmake_target_name", "Iconv::Iconv")

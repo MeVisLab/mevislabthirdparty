@@ -10,7 +10,7 @@ required_conan_version = ">=2.2.2"
 class ConanRecipe(ConanFile):
     name = "glew"
     version = "2.2.0"
-    homepage = "http://github.com/nigels-com/glew"
+    homepage = "https://github.com/nigels-com/glew"
     description = "The OpenGL Extension Wrangler Library"
     license = "MIT AND BSD-3-Clause"
     package_type = "shared-library"
@@ -63,6 +63,8 @@ class ConanRecipe(ConanFile):
             pdb.unlink()
 
     def package_info(self):
+        # self.cpp_info.set_property("cpe", "")  # No CPE yet?
+        self.cpp_info.set_property("base_purl", "github/nigels-com/glew")
         self.cpp_info.set_property("cmake_file_name", "GLEW")
         self.cpp_info.set_property("cmake_target_name", "GLEW::GLEW")
         self.cpp_info.set_property("cmake_target_aliases", ["GLEW::glew"])

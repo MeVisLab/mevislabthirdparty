@@ -1578,6 +1578,7 @@ void SoDragger::childStartCB(void *parentAsVoid, SoDragger *childDragger )
 
         // While the child is manipulating, we should not bother caching here.
         parent->renderCaching = OFF;
+        parent->isActive.setValue(TRUE);
         parent->startCallbacks->invokeCallbacks(parent);
     parent->setActiveChildDragger( savedChild );
         // Restore saved values of our variables
@@ -1642,6 +1643,7 @@ void SoDragger::childFinishCB(void *parentAsVoid, SoDragger *childDragger )
 
         // When child is finished manipulating, we resume caching.
         parent->renderCaching = AUTO;
+        parent->isActive.setValue(FALSE);
         parent->finishCallbacks->invokeCallbacks(parent);
     parent->setActiveChildDragger( savedChild );
         // Restore saved values of our variables

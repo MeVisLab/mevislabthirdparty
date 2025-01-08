@@ -3,7 +3,7 @@ import textwrap
 
 from conan import ConanFile
 from conan.tools.cmake import CMakeToolchain, CMake, CMakeDeps, cmake_layout
-from conan.tools.env import VirtualRunEnv
+from conan.tools.env import VirtualRunEnv, Environment
 from conan.tools.files import get, rmdir, rm, replace_in_file, copy, collect_libs, save
 from conan.tools.microsoft import is_msvc
 from conan.tools.system import package_manager
@@ -298,9 +298,13 @@ class ConanRecipe(ConanFile):
             f"os.path.join(os.path.dirname(os.path.abspath(os.path.realpath(__file__)))," f" 'python-{version.major}.{version.minor}')",
         )
 
-        cmake = CMake(self)
-        cmake.configure()
-        cmake.build()
+        # try to fix download problem
+        env = Environment()
+        env.append("CMAKE_TLS_VERIFY", "0")
+        with env.vars(self).apply():
+            cmake = CMake(self)
+            cmake.configure()
+            cmake.build()
 
     def package(self):
         cmake = CMake(self)
@@ -330,6 +334,8 @@ class ConanRecipe(ConanFile):
             setup_vars_path.unlink()
 
     def package_info(self):
+        self.cpp_info.set_property("cpe", "cpe:2.3:a:opencv:opencv:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("base_purl", "github/opencv/opencv")
         self.cpp_info.set_property("cmake_file_name", "OpenCV")
         self.cpp_info.set_property("cmake_target_name", "OpenCV::OpenCV")
 

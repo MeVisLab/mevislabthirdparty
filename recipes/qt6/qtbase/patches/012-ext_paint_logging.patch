@@ -1,0 +1,20 @@
+diff --git a/src/opengl/qopenglpaintengine.cpp b/src/opengl/qopenglpaintengine.cpp
+index 972e276..44b4fed 100644
+--- a/src/opengl/qopenglpaintengine.cpp
++++ b/src/opengl/qopenglpaintengine.cpp
+@@ -2189,7 +2189,14 @@ bool QOpenGL2PaintEngineEx::begin(QPaintDevice *pdev)
+     d->device->ensureActiveTarget();
+ 
+     if (d->device->context() != QOpenGLContext::currentContext() || !d->device->context()) {
+-        qWarning("QPainter::begin(): QOpenGLPaintDevice's context needs to be current");
++        if (!d->device->context())
++        {
++          qWarning("QOpenGL2PaintEngineEx::begin(): no device context found");
++        }
++        if (d->device->context() != QOpenGLContext::currentContext())
++        {
++          qWarning("QOpenGL2PaintEngineEx::begin(): QOpenGLPaintDevice's context needs to be current");
++        }
+         return false;
+     }
+

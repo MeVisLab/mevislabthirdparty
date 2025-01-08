@@ -9,7 +9,7 @@ required_conan_version = ">=2.2.2"
 class ConanRecipe(ConanFile):
     name = "easybmp"
     version = "1.06"
-    homepage = "http://easybmp.sourceforge.net"
+    homepage = "https://easybmp.sourceforge.net"
     description = "Cross-Platform Windows Bitmap Library"
     license = "BSD-3-Clause"
     settings = "os", "arch", "compiler", "build_type"
@@ -46,6 +46,8 @@ class ConanRecipe(ConanFile):
         cmake.install()
 
     def package_info(self):
+        # self.cpp_info.set_property("cpe", "")  # No CPE?
+        # self.cpp_info.set_property("base_purl", "")  # Real source is at sourceforge - "sourceforge/easybmp"?
         self.cpp_info.set_property("cmake_file_name", "easybmp")
         self.cpp_info.set_property("cmake_target_name", "EasyBMP::EasyBMP")
         self.cpp_info.libs = collect_libs(self)

@@ -171,6 +171,8 @@ class ThirdPartyInformationDeps(_ThirdPartyInformationBase):
                 "license_name": license_names,
                 "homepage": dependency.homepage,
                 "description": dependency.description,
+                # This package was created with conan:
+                "package_source": "conan-mevislab-MMS",
                 # TODO MeVisLab shows all licenses anyway.
                 #      However, some customers use this information for their OTS monitoring.
                 #      So when we provide that information, we have to be absolutely sure that we don't have false negatives.
@@ -179,6 +181,21 @@ class ThirdPartyInformationDeps(_ThirdPartyInformationBase):
             for key, value in info.items():
                 if not value:
                     self.conanfile.output.warning(f"Missing value for {key} in .mlinfo for {pkg_name}")
+            # cpe are IDs for CVE entries, and must be set manually on the conan recipe.
+            cpe = dependency.cpp_info.get_property("cpe")
+            if cpe:
+                info["cpe"] = cpe
+            content_dict[f"{base_path}/{pkg_name}.mlinfo"] = json.dumps(info, indent=4)
+            # purl are IDs that are used, e.g., by dependency track to determine if a newer
+            # version is available - the "pkg:" prefix and the version number should be omitted
+            purl = dependency.cpp_info.get_property("base_purl")
+            if purl:
+                info["base_purl"] = purl
+            # list dependencies:
+            dependencies = [d.ref.name.lower() for d in dependency.dependencies.host.values()]
+            if dependencies:
+                info["dependencies"] = dependencies
+            # create JSON:
             content_dict[f"{base_path}/{pkg_name}.mlinfo"] = json.dumps(info, indent=4)
 
             license_folder = dependency.package_path / "licenses"

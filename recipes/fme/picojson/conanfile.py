@@ -29,6 +29,8 @@ class ConanRecipe(ConanFile):
         copy(self, "picojson.h", src=self.source_path, dst=self.package_path / "include")
 
     def package_info(self):
+        # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
+        self.cpp_info.set_property("base_purl", "github/kazuho/picojson")
         self.cpp_info.set_property("display_name", "PicoJSON")
         self.cpp_info.set_property("mevislab_prosdk_exclude", True)
         self.cpp_info.bindirs = []

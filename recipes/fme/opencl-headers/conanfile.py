@@ -7,7 +7,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "opencl-headers"
-    version = "2024.05.08"
+    version = "2024.10.24"
     homepage = "https://github.com/KhronosGroup/OpenCL-Headers"
     description = "C language headers for the OpenCL API"
     license = "Apache-2.0"
@@ -24,7 +24,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="3c3dd236d35f4960028f4f58ce8d963fb63f3d50251d1e9854b76f1caab9a309",
+            sha256="159f2a550592bae49859fee83d372acd152328fdf95c0dcd8b9409f8fad5db93",
             url=f"https://github.com/KhronosGroup/OpenCL-Headers/archive/refs/tags/v{self.version}.tar.gz",
             strip_root=True,
         )
@@ -34,6 +34,8 @@ class ConanRecipe(ConanFile):
         copy(self, "LICENSE", src=self.source_folder, dst=Path(self.package_folder) / "licenses")
 
     def package_info(self):
+        # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
+        self.cpp_info.set_property("base_purl", "github/KhronosGroup/OpenCL-Headers")
         self.cpp_info.set_property("cmake_file_name", "OpenCL")
         self.cpp_info.set_property("cmake_target_name", "OpenCL::OpenCL")
         self.cpp_info.set_property("cmake_config_version_compat", "AnyNewerVersion")

@@ -213,6 +213,8 @@ class ConanRecipe(ConanFile):
         }
 
     def package_info(self):
+        self.cpp_info.set_property("cpe", "cpe:2.3:a:dicom:dcmtk:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("base_purl", "github/DCMTK/DCMTK")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "DCMTK")
         self.cpp_info.set_property("cmake_target_name", "DCMTK::DCMTK")

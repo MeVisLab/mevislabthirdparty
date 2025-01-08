@@ -149,7 +149,7 @@ class INVENTOR_API SoDelayQueueSensor : public SoSensor {
     //! before their callback function is triggered.
     virtual bool        isScheduled() const;
 
-    //! This method is overriden by IdleSensors to tell sensor manager
+    //! This method is overridden by IdleSensors to tell sensor manager
     //! that they should only be processed when there really is idle
     //! time (and not when the delay queue timeout expires).
     virtual bool        isIdleOnly() const;

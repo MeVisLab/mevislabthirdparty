@@ -56,6 +56,11 @@
 
 #include <Inventor/SbLinear.h>
 
+#include <stdio.h>
+#include <iomanip>
+#include <sstream>
+#include <string>
+
 // amount squared to figure if two floats are equal
 // (used for operator == right now)
 #define DELTA 1e-6
@@ -1507,11 +1512,13 @@ SbMatrix::print(FILE *fp) const
 //
 ////////////////////////////////////////////////////////////////////////
 {
-    int i, j;
-    
-    for (i = 0; i < 4; i++)
-        for (j = 0; j < 4; j++)
-            fprintf(fp, "%10.5g%c", matrix[i][j], j < 3 ? '\t' : '\n');
+    std::ostringstream ostr;
+    ostr << std::setw(10) << std::setprecision(5);
+    for (int i = 0; i < 4; i++)
+        for (int j = 0; j < 4; j++)
+            ostr << matrix[i][j] << (j < 3 ? '\t' : '\n');
+    std::string s = ostr.str();
+    std::fwrite(s.c_str(), s.size(), 1, fp);
 }
 
 ////////////////////////////////////////////

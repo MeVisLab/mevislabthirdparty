@@ -30,5 +30,7 @@ class ConanRecipe(ConanFile):
         copy(self, "LICENSE", src=self.source_path, dst=self.package_path / "licenses")
 
     def package_info(self):
+        self.cpp_info.set_property("cpe", "cpe:2.3:a:getbootstrap:bootstrap:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("base_purl", "github/twbs/bootstrap")
         self.cpp_info.includedirs.clear()
         self.cpp_info.set_property("cmake_find_mode", "none")

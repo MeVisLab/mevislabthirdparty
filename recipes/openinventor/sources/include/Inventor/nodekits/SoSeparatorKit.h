@@ -193,7 +193,7 @@ class INVENTOR_API SoSeparatorKit : public SoBaseKit {
     virtual bool setUpConnections( bool onOff, bool doItAlways = FALSE );
 
     //! Called by the SoBaseKit::write() method. Calls setDefault(TRUE)
-    //! on the topSeparator. Note that this may be overriden later by basekit
+    //! on the topSeparator. Note that this may be overridden later by basekit
     //! if, for example, topSeparator lies on a path that is being written out.
     virtual void setDefaultOnNonWritingFields();
 

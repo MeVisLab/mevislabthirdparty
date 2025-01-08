@@ -16,7 +16,7 @@ required_conan_version = ">=2.2.2"
 class ConanRecipe(ConanFile):
     name = "freetype"
     version = "2.13.3"
-    homepage = "http://www.freetype.org"
+    homepage = "https://www.freetype.org"
     description = "A high-quality and portable font engine"
     license = "FTL"
     package_type = "shared-library"
@@ -109,6 +109,8 @@ class ConanRecipe(ConanFile):
         rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
 
     def package_info(self):
+        self.cpp_info.set_property("cpe", "cpe:2.3:a:freetype:freetype:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("base_purl", "github/freetype/freetype")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "Freetype")
         self.cpp_info.set_property("cmake_target_name", "Freetype::Freetype")
@@ -116,6 +118,7 @@ class ConanRecipe(ConanFile):
         libtool_version = load(self, self._libtool_version_txt).strip()
         # In theory this should set the version of the generated pkg-config file:
         self.cpp_info.set_property("component_version", libtool_version)
+        self.cpp_info.set_property("system_package_version", libtool_version)
         self.cpp_info.libs = collect_libs(self)
         self.cpp_info.includedirs.append("include/freetype2")
 

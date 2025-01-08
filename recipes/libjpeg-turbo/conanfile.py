@@ -10,7 +10,7 @@ required_conan_version = ">=2.2.2"
 class ConanRecipe(ConanFile):
     name = "libjpeg-turbo"
     provides = "libjpeg"
-    version = "3.0.3"
+    version = "3.0.4"
     description = "SIMD-accelerated libjpeg-compatible JPEG codec library"
     license = "BSD-3-Clause AND IJG AND Zlib"
     homepage = "https://libjpeg-turbo.org"
@@ -28,7 +28,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="343e789069fc7afbcdfe44dbba7dbbf45afa98a15150e079a38e60e44578865d",
+            sha256="99130559e7d62e8d695f2c0eaeef912c5828d5b84a0537dcb24c9678c9d5b76b",
             url=f"https://github.com/libjpeg-turbo/libjpeg-turbo/releases/download/{self.version}/libjpeg-turbo-{self.version}.tar.gz",
             strip_root=True,
         )
@@ -73,6 +73,8 @@ class ConanRecipe(ConanFile):
         rmdir(self, self.package_path / "lib" / "cmake")
 
     def package_info(self):
+        self.cpp_info.set_property("cpe", "cpe:2.3:a:libjpeg-turbo:libjpeg-turbo:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("base_purl", "github/libjpeg-turbo/libjpeg-turbo")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_module_file_name", "JPEG")
         self.cpp_info.set_property("cmake_file_name", "libjpeg-turbo")

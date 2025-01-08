@@ -69,6 +69,8 @@ class ConanRecipe(ConanFile):
         copy(self, self.exports_sources, self.source_path, self.package_path / "lib")
 
     def package_info(self):
+        self.cpp_info.set_property("cpe", "cpe:2.3:a:uclouvain:openjpeg:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("base_purl", "github/uclouvain/openjpeg")
         v = Version(self.version)
         self.cpp_info.set_property("cmake_file_name", "OpenJPEG")
         self.cpp_info.set_property("cmake_target_name", "openjp2")

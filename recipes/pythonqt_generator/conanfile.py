@@ -8,7 +8,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "pythonqt_generator"
-    version = "3.5.4"
+    version = "3.5.6"
     homepage = "https://mevislab.github.io/pythonqt"
     description = "PythonQtGenerator creates source files from Qt Python binding for Qt"
     license = "LGPL-2.1-only"
@@ -26,7 +26,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="0031e564c5f9c01b4141978dc857cf3bc744b9d43575cd18cc8e84db934cc8c6",
+            sha256="8c034b9697dd9f619ff343a70485f41b409e8c52900853ab0ef6139cd01d8cfe",
             url=f"https://github.com/MeVisLab/pythonqt/archive/refs/tags/v{self.version}.zip",
             pattern="*/generator/*",
             strip_root=True
@@ -50,5 +50,7 @@ class ConanRecipe(ConanFile):
         cmake.install()
 
     def package_info(self):
+        # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
+        self.cpp_info.set_property("base_purl", "github/MeVisLab/pythonqt")
         self.cpp_info.includedirs.clear()
         self.cpp_info.set_property("cmake_find_mode", "none")

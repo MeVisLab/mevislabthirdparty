@@ -1,99 +1,56 @@
 {
-  "version": "6.7.2",
+  "version": "6.7.3",
   "modules": {
-    "qtmultimedia": {
-      "url": "https://download.qt.io/archive/qt/6.7/6.7.2/submodules/qtmultimedia-everywhere-src-6.7.2.tar.xz",
-      "dependencies": [
-        "qtbase",
-        "qtdeclarative",
-        "qtshadertools"
-      ],
-      "sha256": "8ef835115acb9a1d3d2c9f23cfacb43f2c537e3786a8ab822299a2a7765651d3"
-    },
-    "qtpositioning": {
-      "url": "https://download.qt.io/archive/qt/6.7/6.7.2/submodules/qtpositioning-everywhere-src-6.7.2.tar.xz",
-      "dependencies": [
-        "qtbase",
-        "qtdeclarative",
-        "qtserialport"
-      ],
-      "sha256": "020009f0aa8f6b1042963a45b6e19f2784cc937949cdb673f3b876153e087b1c"
-    },
-    "qtbase": {
-      "url": "https://download.qt.io/archive/qt/6.7/6.7.2/submodules/qtbase-everywhere-src-6.7.2.tar.xz",
-      "dependencies": [],
-      "sha256": "c5f22a5e10fb162895ded7de0963328e7307611c688487b5d152c9ee64767599"
-    },
-    "qtwebchannel": {
-      "url": "https://download.qt.io/archive/qt/6.7/6.7.2/submodules/qtwebchannel-everywhere-src-6.7.2.tar.xz",
-      "dependencies": [
-        "qtbase",
-        "qtdeclarative",
-        "qtwebsockets"
-      ],
-      "sha256": "ac5d96607b10e7de546eaf93bb9f65c0fd631ef9b91ef8a794e26fd57db4501c"
-    },
-    "qtconnectivity": {
-      "url": "https://download.qt.io/archive/qt/6.7/6.7.2/submodules/qtconnectivity-everywhere-src-6.7.2.tar.xz",
-      "dependencies": [
-        "qtbase",
-        "qtdeclarative"
-      ],
-      "sha256": "8ed321b242f0e956473a295fa31670271f9b3acb797508644cb740f89f6c08e8"
-    },
-    "qtserialbus": {
-      "url": "https://download.qt.io/archive/qt/6.7/6.7.2/submodules/qtserialbus-everywhere-src-6.7.2.tar.xz",
-      "dependencies": [
-        "qtbase",
-        "qtserialport"
-      ],
-      "sha256": "67641ca99b455746d7d956c516dfaa5f2c48696834c71d5720d63e736d374b2b"
-    },
-    "qtsvg": {
-      "url": "https://download.qt.io/archive/qt/6.7/6.7.2/submodules/qtsvg-everywhere-src-6.7.2.tar.xz",
+    "qtlanguageserver": {
+      "url": "https://download.qt.io/archive/qt/6.7/6.7.3/submodules/qtlanguageserver-everywhere-src-6.7.3.tar.xz",
       "dependencies": [
         "qtbase"
       ],
-      "sha256": "fb0d1286a35be3583fee34aeb5843c94719e07193bdf1d4d8b0dc14009caef01"
-    },
-    "qtsensors": {
-      "url": "https://download.qt.io/archive/qt/6.7/6.7.2/submodules/qtsensors-everywhere-src-6.7.2.tar.xz",
-      "dependencies": [
-        "qtbase",
-        "qtdeclarative"
-      ],
-      "sha256": "ead1dec787c56ed4dc02ed810af54ff1e1f6875cb5cc2506c74eeb9554e6bb59"
+      "sha256": "c56d3872428503d9e49bfc6fa1023332f035ffd711d39e904e50cd6bb1f9df8f"
     },
     "qtshadertools": {
-      "url": "https://download.qt.io/archive/qt/6.7/6.7.2/submodules/qtshadertools-everywhere-src-6.7.2.tar.xz",
+      "url": "https://download.qt.io/archive/qt/6.7/6.7.3/submodules/qtshadertools-everywhere-src-6.7.3.tar.xz",
       "dependencies": [
         "qtbase"
       ],
-      "sha256": "edfa34c0ac8c00fcaa949df1d8e7a77d89dadd6386e683ce6c3e3b117e2f7cc1"
+      "sha256": "74e512798c7ddbda354a2d8d975211454bbabb47afb7e598892067a5828c0995"
     },
-    "qtlanguageserver": {
-      "url": "https://download.qt.io/archive/qt/6.7/6.7.2/submodules/qtlanguageserver-everywhere-src-6.7.2.tar.xz",
+    "qtwebengine": {
+      "url": "https://download.qt.io/archive/qt/6.7/6.7.3/submodules/qtwebengine-everywhere-src-6.7.3.tar.xz",
       "dependencies": [
-        "qtbase"
+        "qtdeclarative",
+        "qtpositioning",
+        "qttools",
+        "qtwebchannel"
       ],
-      "sha256": "b659fe655144ffa061e3ae509eadb42ae373230517295a96935434340e101a92"
+      "sha256": "c22b159cbb80dc569ce907ea26cc53687873f5e804dab142db54662589d846db"
     },
-    "qttranslations": {
-      "url": "https://download.qt.io/archive/qt/6.7/6.7.2/submodules/qttranslations-everywhere-src-6.7.2.tar.xz",
+    "qtconnectivity": {
+      "url": "https://download.qt.io/archive/qt/6.7/6.7.3/submodules/qtconnectivity-everywhere-src-6.7.3.tar.xz",
       "dependencies": [
-        "qttools"
+        "qtbase",
+        "qtdeclarative"
       ],
-      "sha256": "9845780b5dc1b7279d57836db51aeaf2e4a1160c42be09750616f39157582ca9"
+      "sha256": "80f99b2f097b79107d4b35ed9c5c82451148364ffd814d7ae0aaf206e5b2fcc5"
     },
-    "qtserialport": {
-      "url": "https://download.qt.io/archive/qt/6.7/6.7.2/submodules/qtserialport-everywhere-src-6.7.2.tar.xz",
+    "qtwebsockets": {
+      "url": "https://download.qt.io/archive/qt/6.7/6.7.3/submodules/qtwebsockets-everywhere-src-6.7.3.tar.xz",
       "dependencies": [
-        "qtbase"
+        "qtbase",
+        "qtdeclarative"
       ],
-      "sha256": "21c34cd1161cb5197bcec662d26a17647b59b6fdff5c364576883c42dbd3b4fc"
+      "sha256": "ba03007db7ee68a5bc3e3bd1d71e11f3e1f84e470bcb8c54cd7c01bbe1c5990e"
+    },
+    "qt5compat": {
+      "url": "https://download.qt.io/archive/qt/6.7/6.7.3/submodules/qt5compat-everywhere-src-6.7.3.tar.xz",
+      "dependencies": [
+        "qtbase",
+        "qtdeclarative"
+      ],
+      "sha256": "8b6a68a3dfaa7e9d10a0dafccee594c72e8de061bc573ae86b1c081b423a53f0"
     },
     "qtdeclarative": {
-      "url": "https://download.qt.io/archive/qt/6.7/6.7.2/submodules/qtdeclarative-everywhere-src-6.7.2.tar.xz",
+      "url": "https://download.qt.io/archive/qt/6.7/6.7.3/submodules/qtdeclarative-everywhere-src-6.7.3.tar.xz",
       "dependencies": [
         "qtbase",
         "qtimageformats",
@@ -101,90 +58,125 @@
         "qtshadertools",
         "qtsvg"
       ],
-      "sha256": "4c29cba1af8c42d425d8eb6e01bad24cb80f4b983d71eef566a0542dfdb9b999"
+      "sha256": "937b70e441abf5bc4e50d44d26610e2714a28514acf3885cd36116cd610b9875"
     },
-    "qtimageformats": {
-      "url": "https://download.qt.io/archive/qt/6.7/6.7.2/submodules/qtimageformats-everywhere-src-6.7.2.tar.xz",
+    "qtremoteobjects": {
+      "url": "https://download.qt.io/archive/qt/6.7/6.7.3/submodules/qtremoteobjects-everywhere-src-6.7.3.tar.xz",
+      "dependencies": [
+        "qtbase",
+        "qtdeclarative"
+      ],
+      "sha256": "99c08aa938a64c10dac0a24e19bc1fc8ce3bb62118c834208bdd6e5c76fc91d1"
+    },
+    "qtpositioning": {
+      "url": "https://download.qt.io/archive/qt/6.7/6.7.3/submodules/qtpositioning-everywhere-src-6.7.3.tar.xz",
+      "dependencies": [
+        "qtbase",
+        "qtdeclarative",
+        "qtserialport"
+      ],
+      "sha256": "da7073754224c91fb938ff5b02ff938540640605ac9ff6526db88d799cc6661c"
+    },
+    "qtserialbus": {
+      "url": "https://download.qt.io/archive/qt/6.7/6.7.3/submodules/qtserialbus-everywhere-src-6.7.3.tar.xz",
+      "dependencies": [
+        "qtbase",
+        "qtserialport"
+      ],
+      "sha256": "55d82e9c7a827808b7383f0a57ad12c2a6fcf5b6c936b27e633155163c0a6276"
+    },
+    "qttools": {
+      "url": "https://download.qt.io/archive/qt/6.7/6.7.3/submodules/qttools-everywhere-src-6.7.3.tar.xz",
+      "dependencies": [
+        "qtbase",
+        "qtdeclarative"
+      ],
+      "sha256": "f03bb7df619cd9ac9dba110e30b7bcab5dd88eb8bdc9cc752563b4367233203f"
+    },
+    "qtsvg": {
+      "url": "https://download.qt.io/archive/qt/6.7/6.7.3/submodules/qtsvg-everywhere-src-6.7.3.tar.xz",
       "dependencies": [
         "qtbase"
       ],
-      "sha256": "e1a1d8785fae67d16ad0a443b01d5f32663a6b68d275f1806ebab257485ce5d6"
+      "sha256": "40142cb71fb1e07ad612bc361b67f5d54cd9367f9979ae6b86124a064deda06b"
     },
-    "qtwayland": {
-      "url": "https://download.qt.io/archive/qt/6.7/6.7.2/submodules/qtwayland-everywhere-src-6.7.2.tar.xz",
+    "qtbase": {
+      "url": "https://download.qt.io/archive/qt/6.7/6.7.3/submodules/qtbase-everywhere-src-6.7.3.tar.xz",
+      "dependencies": [],
+      "sha256": "8ccbb9ab055205ac76632c9eeddd1ed6fc66936fc56afc2ed0fd5d9e23da3097"
+    },
+    "qtserialport": {
+      "url": "https://download.qt.io/archive/qt/6.7/6.7.3/submodules/qtserialport-everywhere-src-6.7.3.tar.xz",
+      "dependencies": [
+        "qtbase"
+      ],
+      "sha256": "d4fa58ee809b39c9eda8d20ee4677971e918edb9a076540466693bc46db146f0"
+    },
+    "qtsensors": {
+      "url": "https://download.qt.io/archive/qt/6.7/6.7.3/submodules/qtsensors-everywhere-src-6.7.3.tar.xz",
       "dependencies": [
         "qtbase",
         "qtdeclarative"
       ],
-      "sha256": "a2a057e1dd644bd44abb9990fecc194b2e25c2e0f39e81aa9fee4c1e5e2a8a5b"
-    },
-    "qtwebsockets": {
-      "url": "https://download.qt.io/archive/qt/6.7/6.7.2/submodules/qtwebsockets-everywhere-src-6.7.2.tar.xz",
-      "dependencies": [
-        "qtbase",
-        "qtdeclarative"
-      ],
-      "sha256": "5bde4af6ec9ce8c8632b782ab77b82d910721be2c714e6d38902521bcd1d215f"
-    },
-    "qtremoteobjects": {
-      "url": "https://download.qt.io/archive/qt/6.7/6.7.2/submodules/qtremoteobjects-everywhere-src-6.7.2.tar.xz",
-      "dependencies": [
-        "qtbase",
-        "qtdeclarative"
-      ],
-      "sha256": "0b906b81aa7d6f4e47d4a298da67894433f3096a06f4c4237788c1b2cb9b7483"
-    },
-    "qtwebengine": {
-      "url": "https://download.qt.io/archive/qt/6.7/6.7.2/submodules/qtwebengine-everywhere-src-6.7.2.tar.xz",
-      "dependencies": [
-        "qtdeclarative",
-        "qtpositioning",
-        "qttools",
-        "qtwebchannel"
-      ],
-      "sha256": "c7755875594d8be382b07bf3634d44fd77012805794d8b588891709a6405ffd1"
-    },
-    "qttools": {
-      "url": "https://download.qt.io/archive/qt/6.7/6.7.2/submodules/qttools-everywhere-src-6.7.2.tar.xz",
-      "dependencies": [
-        "qtbase",
-        "qtdeclarative"
-      ],
-      "sha256": "58e855ad1b2533094726c8a425766b63a04a0eede2ed85086860e54593aa4b2a"
-    },
-    "qtscxml": {
-      "url": "https://download.qt.io/archive/qt/6.7/6.7.2/submodules/qtscxml-everywhere-src-6.7.2.tar.xz",
-      "dependencies": [
-        "qtbase",
-        "qtdeclarative"
-      ],
-      "sha256": "20ecf93506d48f27b492ad3dd9d88830e08d642faec3071ce53396a8ae05c86f"
-    },
-    "qt5compat": {
-      "url": "https://download.qt.io/archive/qt/6.7/6.7.2/submodules/qt5compat-everywhere-src-6.7.2.tar.xz",
-      "dependencies": [
-        "qtbase",
-        "qtdeclarative"
-      ],
-      "sha256": "8826b5189efc4d9bdb64fdb1aa89d0fdf4e53c60948ed7995621ed046e38c003"
+      "sha256": "c03a8d5da362ed5f3f185902def04a7c2b69be3f8a283b1389eb6c49a5f3c8fc"
     },
     "qtwebview": {
-      "url": "https://download.qt.io/archive/qt/6.7/6.7.2/submodules/qtwebview-everywhere-src-6.7.2.tar.xz",
+      "url": "https://download.qt.io/archive/qt/6.7/6.7.3/submodules/qtwebview-everywhere-src-6.7.3.tar.xz",
       "dependencies": [
         "qtdeclarative",
         "qtwebengine"
       ],
-      "sha256": "4ce1096903d4fec39bfcd95d4015acbf105eddf66a384303cb0fe899dd24e4fe"
+      "sha256": "708ae8fe44a243fe556384c4452d4592b8469ac66f3fd43876b18d425005b92d"
+    },
+    "qtimageformats": {
+      "url": "https://download.qt.io/archive/qt/6.7/6.7.3/submodules/qtimageformats-everywhere-src-6.7.3.tar.xz",
+      "dependencies": [
+        "qtbase"
+      ],
+      "sha256": "9fd58144081654c3373768dd96ead294023830927b14fe3d3c1ef641fb324753"
+    },
+    "qtscxml": {
+      "url": "https://download.qt.io/archive/qt/6.7/6.7.3/submodules/qtscxml-everywhere-src-6.7.3.tar.xz",
+      "dependencies": [
+        "qtbase",
+        "qtdeclarative"
+      ],
+      "sha256": "608febeb0dafb6fbf559e064dee779ab799441ed804267b534705ea5077eeda3"
+    },
+    "qtwebchannel": {
+      "url": "https://download.qt.io/archive/qt/6.7/6.7.3/submodules/qtwebchannel-everywhere-src-6.7.3.tar.xz",
+      "dependencies": [
+        "qtbase",
+        "qtdeclarative",
+        "qtwebsockets"
+      ],
+      "sha256": "15633fde6db09b3a06d46b5fd11221c915f1e49b8fb541f463966e17d25474b8"
+    },
+    "qttranslations": {
+      "url": "https://download.qt.io/archive/qt/6.7/6.7.3/submodules/qttranslations-everywhere-src-6.7.3.tar.xz",
+      "dependencies": [
+        "qttools"
+      ],
+      "sha256": "dcc762acac043b9bb5e4d369b6d6f53e0ecfcf76a408fe0db5f7ef071c9d6dc8"
     },
     "qt3d": {
-      "url": "https://download.qt.io/archive/qt/6.7/6.7.2/submodules/qt3d-everywhere-src-6.7.2.tar.xz",
+      "url": "https://download.qt.io/archive/qt/6.7/6.7.3/submodules/qt3d-everywhere-src-6.7.3.tar.xz",
       "dependencies": [
         "qtbase",
         "qtdeclarative",
         "qtmultimedia",
         "qtshadertools"
       ],
-      "sha256": "8bc087d904973133186e58471845c5df376bbfdcfcf079fda287e1cda27c8adf"
+      "sha256": "45d48c374a901d0ce94aa9b784cf632a4cebd14d3a14ab399d243136596bb694"
+    },
+    "qtmultimedia": {
+      "url": "https://download.qt.io/archive/qt/6.7/6.7.3/submodules/qtmultimedia-everywhere-src-6.7.3.tar.xz",
+      "dependencies": [
+        "qtbase",
+        "qtdeclarative",
+        "qtshadertools"
+      ],
+      "sha256": "304d28b8e592435293893b0110d5f3534407604d1e04d8a0b0e5b34afe577303"
     }
   }
 }

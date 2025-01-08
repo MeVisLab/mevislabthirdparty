@@ -5,7 +5,7 @@ import textwrap
 
 from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
-from conan.tools.env import VirtualBuildEnv
+from conan.tools.env import VirtualRunEnv
 from conan.tools.files import get, copy, rmdir, chdir, save, replace_in_file, patch, collect_libs
 from conan.tools.gnu import Autotools, AutotoolsToolchain, PkgConfigDeps
 from conan.tools.layout import basic_layout
@@ -17,7 +17,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "python"
-    version = "3.11.9"
+    version = "3.11.10"
     homepage = "https://www.python.org"
     description = "An interpreted, interactive, object-oriented programming language"
     license = "Python-2.0"
@@ -57,7 +57,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="e7de3240a8bc2b1e1ba5c81bf943f06861ff494b69fda990ce2722a504c6153d",
+            sha256="92f2faf242681bfa406d53a51e17d42c5373affe23a130cd9697e132ef574706",
             url=f"https://www.python.org/ftp/python/{self.version}/Python-{self.version}.tgz",
             strip_root=True,
         )
@@ -78,7 +78,7 @@ class ConanRecipe(ConanFile):
         patch(
             self,
             patch_file="patches/006-hide_own_importlib_frames.patch",
-            patch_description="suppress frames from our own injected importlib code in ImportError stacktraces"
+            patch_description="suppress frames from our own injected importlib code in ImportError stacktraces",
         )
 
     def generate(self):
@@ -90,19 +90,8 @@ class ConanRecipe(ConanFile):
             cd = CMakeDeps(self)
             cd.generate()
         else:
-            # copy dependencies
-            deps = ["zlib", "sqlite3", "xz-utils"]
-            if self.settings.os != "Linux":
-                deps += ["openssl", "bzip2"]
-            for dependency in deps:
-                lib_path = self.dependencies[dependency].cpp_info.libdirs[0]
-                for imported_lib in os.listdir(lib_path):
-                    lib_file = os.path.join(lib_path, imported_lib)
-                    if os.path.isfile(lib_file):
-                        shutil.copy(lib_file, self.build_folder)
-
-            env = VirtualBuildEnv(self)
-            env.generate()
+            env = VirtualRunEnv(self)
+            env.generate(scope="build")
             tc = AutotoolsToolchain(self, prefix=self.package_folder)
             tc.configure_args.append("--enable-shared")
             tc.configure_args.append("--with-computed-gotos")
@@ -148,7 +137,7 @@ class ConanRecipe(ConanFile):
 
     def package(self):
         copy(self, "LICENSE", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
-        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False, excludes="*vc???.pdb")
+        copy(self, "*.pdb", src=self.build_folder, dst=os.path.join(self.package_folder, "bin"), keep_path=False, excludes="*vc???.pdb")
         self._cmake_module_file_write()
         if is_msvc(self):
             cmake = CMake(self)
@@ -162,6 +151,11 @@ class ConanRecipe(ConanFile):
                 mevis_python_w = os.path.join(self.package_folder, "MeVisPythonW_d.exe")
                 for name in ["python3w_d", "python3w", "pythonw"]:
                     shutil.copy(src=mevis_python_w, dst=os.path.join(self.package_folder, f"{name}.exe"))
+                v = Version(self.version)
+                shutil.copy(
+                    src=os.path.join(self.package_folder, "libs", f"python{v.major}{v.minor}_d.lib"),
+                    dst=os.path.join(self.package_folder, "libs", f"python{v.major}{v.minor}.lib"),
+                )
             else:
                 mevis_python = os.path.join(self.package_folder, "MeVisPython.exe")
                 for name in ["python3", "python"]:
@@ -172,7 +166,7 @@ class ConanRecipe(ConanFile):
                     shutil.copy(src=mevis_python_w, dst=os.path.join(self.package_folder, f"{name}.exe"))
 
             # remove test directory
-            rmdir(self, self.package_path / "Lib" / "test")
+            rmdir(self, os.path.join(self.package_folder, "Lib", "test"))
 
         else:
             autotools = Autotools(self)
@@ -239,6 +233,8 @@ class ConanRecipe(ConanFile):
             print("Did not find 'command/build_ext.py'")
 
     def package_info(self):
+        self.cpp_info.set_property("cpe", "cpe:2.3:a:python:python:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("base_purl", "github/python/cpython")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "Python3")
         self.cpp_info.set_property("cmake_target_name", "Python3::Python")

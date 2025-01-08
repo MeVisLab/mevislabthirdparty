@@ -261,7 +261,7 @@ class INVENTOR_API SoText3 : public SoShape {
                                     SoPickedPoint *);
 
     //! Generates the fronts of the characters, by getting the outlines
-    //! and calling the glu tesselation code:
+    //! and calling the glu tessellation code:
     void generateFront(int line);
     
     //! Generates the sides (bevel) of the characters
@@ -279,7 +279,7 @@ class INVENTOR_API SoText3 : public SoShape {
                 const SbVec3f *n2, const float *sTexCoords,
                 const float *tTexCoords);
 
-    //! Static callbacks invoked by the glu tesselation code:
+    //! Static callbacks invoked by the glu tessellation code:
     static void CALLBACK beginCB(GLenum primType);
     static void CALLBACK endCB();
     static void CALLBACK vtxCB(void *vertex);

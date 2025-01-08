@@ -52,6 +52,8 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         super().package_info()
+        self.cpp_info.set_property("cpe", "cpe:2.3:a:numpy:numpy:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("base_purl", "github/numpy/numpy")
         self.cpp_info.set_property("cmake_target_aliases", ["Python3::NumPy"])  # for use by Python3Config.cmake
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("pkg_config_name", "NumPy")

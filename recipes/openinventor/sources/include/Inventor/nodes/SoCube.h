@@ -166,7 +166,7 @@ class INVENTOR_API SoCube : public SoShape {
     static SbVec3f      normals[6];     //!< Face normals
     static const SbVec3f *verts[6][4];  //!< Vertex references to coords
 
-    //! The state of the last cone tesselation,
+    //! The state of the last cone tessellation,
     //! so that the VBO can be reused if nothing changed.
     struct CacheState : public SimpleVertexArrayCache {
       CacheState() {

@@ -68,6 +68,8 @@ class ConanRecipe(ConanFile):
         self._cmake_module_file_write()
 
     def package_info(self):
+        # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
+        self.cpp_info.set_property("base_purl", "github/MathisRosenhauer/libaec")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "libaec")
         self.cpp_info.set_property("cmake_target_name", "libaec::libaec")

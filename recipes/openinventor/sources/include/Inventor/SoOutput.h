@@ -252,7 +252,7 @@ class INVENTOR_API SoOutput {
     uint32_t            annotation;     //!< annotation bit mask
     Stage               curStage;       //!< Stage of operation
     SbString            headerString;   //!< The header 
-    SbString            fmtString;      //!< Output format
+    int                 float_precision; //!< Float precision
 
     //! Writes correct file header string to current file/buffer
     void                writeHeader();

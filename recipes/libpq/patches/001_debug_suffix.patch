@@ -1,0 +1,17 @@
+diff --git a/src/interfaces/libpq/meson.build b/src/interfaces/libpq/meson.build
+index ed2a404..fc5b3e5 100644
+--- a/src/interfaces/libpq/meson.build
++++ b/src/interfaces/libpq/meson.build
+@@ -65,7 +65,11 @@ libpq_st = static_library('libpq',
+   kwargs: default_lib_args,
+ )
+ 
+-libpq_so = shared_library('libpq',
++libpq_name = 'libpq'
++if get_option('buildtype') == 'debug'
++    libpq_name = 'libpq_d'
++endif
++libpq_so = shared_library(libpq_name,
+   libpq_sources + libpq_so_sources,
+   include_directories: [libpq_inc, postgres_inc],
+   c_args: libpq_c_args,

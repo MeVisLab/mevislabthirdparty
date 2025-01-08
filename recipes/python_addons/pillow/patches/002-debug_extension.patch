@@ -1,0 +1,23 @@
+diff --git a/setup.py b/setup.py
+index 5161ef3..1dff3e4 100644
+--- a/setup.py
++++ b/setup.py
+@@ -226,9 +226,15 @@ def _find_include_file(self, include):
+ 
+ 
+ def _find_library_file(self, library):
+-    ret = self.compiler.find_library_file(
+-        self.compiler.library_dirs, library, debug=debug_build()
+-    )
++    ret = None
++    if sys.platform != "win32" and debug_build():
++        ret = self.compiler.find_library_file(
++            self.compiler.library_dirs, library + "_d", debug=True
++        )
++    if ret is None:
++        ret = self.compiler.find_library_file(
++            self.compiler.library_dirs, library, debug=debug_build()
++        )
+     if ret:
+         _dbg("Found library %s at %s", (library, ret))
+         # we are only interested in the library name including a possible debug suffix

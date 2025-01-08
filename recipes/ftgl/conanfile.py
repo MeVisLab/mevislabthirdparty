@@ -9,7 +9,7 @@ required_conan_version = ">=2.2.2"
 class ConanRecipe(ConanFile):
     name = "ftgl"
     version = "2.1.2"
-    homepage = "http://ftgl.sourceforge.net"
+    homepage = "https://sourceforge.net/projects/ftgl/"
     description = "library to use arbitrary fonts in OpenGL applications"
     license = "MIT"
     settings = "os", "compiler", "arch", "build_type"
@@ -60,6 +60,8 @@ class ConanRecipe(ConanFile):
         copy(self, "license.txt", src=os.path.join(self.source_folder, "src"), dst=os.path.join(self.package_folder, "licenses"))
 
     def package_info(self):
+        # self.cpp_info.set_property("cpe", "")  # No CPE yet?
+        # self.cpp_info.set_property("base_purl", "")  # Official source a sourceforge - "sourceforge/ftgl"?
         self.cpp_info.includedirs.append("include/FTGL")
         self.cpp_info.set_property("cmake_file_name", "FTGL")
         self.cpp_info.set_property("cmake_target_name", "FTGL::FTGL")

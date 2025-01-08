@@ -61,6 +61,8 @@ class ConanRecipe(ConanFile):
         copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False, excludes="*vc???.pdb")
 
     def package_info(self):
+        self.cpp_info.set_property("cpe", "cpe:2.3:a:zlib:zlib:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("base_purl", "github/madler/zlib")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "Minizip")
         self.cpp_info.set_property("cmake_target_name", "Minizip::Minizip")

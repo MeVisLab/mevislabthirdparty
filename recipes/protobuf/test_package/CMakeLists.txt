@@ -1,10 +1,17 @@
 cmake_minimum_required(VERSION 3.27)
 project(test_package LANGUAGES CXX)
 
-find_package(protobuf CONFIG REQUIRED)
+if(TESTPACKAGE_MODULE_MODE STREQUAL "config")
+    find_package(protobuf CONFIG REQUIRED)
+    set(test_name test_package_config)
+elseif(TESTPACKAGE_MODULE_MODE STREQUAL "module")
+    find_package(Protobuf MODULE REQUIRED)
+    set(test_name test_package_module)
+else()
+    message(FATAL_ERROR "TESTPACKAGE_MODULE_MODE must be either 'config' or 'module'")
+endif()
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
-
-add_executable(test_package test_package.cpp addressbook.proto)
-target_link_libraries(test_package PRIVATE protobuf::libprotobuf)
-protobuf_generate(TARGET test_package)
+add_executable(${test_name} test_package.cpp addressbook.proto)
+target_link_libraries(${test_name} PRIVATE protobuf::libprotobuf)
+protobuf_generate(TARGET ${test_name})

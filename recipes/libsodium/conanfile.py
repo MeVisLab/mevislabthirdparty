@@ -123,6 +123,8 @@ class ConanRecipe(ConanFile):
         self._cmake_module_file_write()
 
     def package_info(self):
+        # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
+        # self.cpp_info.set_property("base_purl", "")   # official repository is at https://download.libsodium.org
         self.cpp_info.set_property("cmake_file_name", "sodium")
         self.cpp_info.set_property("cmake_target_name", "sodium::sodium")
         self.cpp_info.set_property("pkg_config_name", "libsodium")

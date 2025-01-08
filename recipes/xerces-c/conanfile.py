@@ -9,7 +9,7 @@ required_conan_version = ">=2.2.2"
 class ConanRecipe(ConanFile):
     name = "xerces-c"
     version = "2.7.0"
-    homepage = "http://xml.apache.org/xerces-c"
+    homepage = "https://xml.apache.org/xerces-c"
     description = "A validating XML parser written in a portable subset of C++"
     license = "Apache-2.0"
     package_type = "shared-library"
@@ -48,6 +48,8 @@ class ConanRecipe(ConanFile):
         cmake.install()
 
     def package_info(self):
+        self.cpp_info.set_property("cpe", "cpe:2.3:a:apache:xerces-c:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("base_purl", "github/apache/xerces-c")
         self.cpp_info.set_property("cmake_file_name", "XercesC")
         self.cpp_info.set_property("cmake_target_name", "XercesC::XercesC")
         self.cpp_info.set_property("display_name", "Xerces-C++")

@@ -2,14 +2,15 @@ from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
 from conan.tools.files import collect_libs, replace_in_file
 from conan.tools.files import get, copy, rmdir
+import os
 
 required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
     name = "openexr"
-    version = "3.2.4"
-    homepage = "http://www.openexr.com"
+    version = "3.3.2"
+    homepage = "https://www.openexr.com"
     description = "OpenEXR is a high dynamic-range (HDR) image file format developed by Industrial Light & Magic for use in computer imaging applications"
     license = "BSD-3-Clause"
     package_type = "shared-library"
@@ -26,13 +27,13 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="81e6518f2c4656fdeaf18a018f135e96a96e7f66dbe1c1f05860dd94772176cc",
+            sha256="5013e964de7399bff1dd328cbf65d239a989a7be53255092fa10b85a8715744d",
             url=f"https://github.com/AcademySoftwareFoundation/openexr/archive/v{self.version}.tar.gz",
             strip_root=True,
         )
         replace_in_file(
             self,
-            self.source_path / "cmake" / "OpenEXRSetup.cmake",
+            os.path.join(self.source_folder, "cmake", "OpenEXRSetup.cmake"),
             "set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE",
             "set(CMAKE_INSTALL_RPATH_USE_LINK_PATH FALSE",
         )
@@ -61,19 +62,21 @@ class ConanRecipe(ConanFile):
     def package(self):
         cmake = CMake(self)
         cmake.install()
-        copy(self, "LICENSE.md", src=self.source_path, dst=self.package_path / "licenses")
+        copy(self, "LICENSE.md", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
         copy(
             self,
             "*.pdb",
-            src=self.build_path / "bin",
-            dst=self.package_path / "bin",
+            src=os.path.join(self.build_folder, "bin"),
+            dst=os.path.join(self.package_folder, "bin"),
             keep_path=False,
         )
-        rmdir(self, self.package_path / "lib" / "cmake")
-        rmdir(self, self.package_path / "lib" / "pkgconfig")
-        rmdir(self, self.package_path / "share")
+        rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
+        rmdir(self, os.path.join(self.package_folder, "share"))
 
     def package_info(self):
+        self.cpp_info.set_property("cpe", "cpe:2.3:a:openexr:openexr:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("base_purl", "github/AcademySoftwareFoundation/openexr")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "OpenEXR")
         self.cpp_info.set_property("cmake_target_name", "OpenEXR::OpenEXR")

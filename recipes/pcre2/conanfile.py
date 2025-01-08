@@ -25,7 +25,7 @@ class ConanRecipe(ConanFile):
         get(
             self,
             sha256="d34f02e113cf7193a1ebf2770d3ac527088d485d4e047ed10e5d217c6ef5de96",
-            url=f"https://github.com/PhilipHazel/pcre2/releases/download/pcre2-{self.version}/pcre2-{self.version}.tar.bz2",
+            url=f"https://github.com/PCRE2Project/pcre2/releases/download/pcre2-{self.version}/pcre2-{self.version}.tar.bz2",
             strip_root=True,
         )
         replace_in_file(self, self.source_path / "CMakeLists.txt", 'SET(CMAKE_DEBUG_POSTFIX "d")', '#SET(CMAKE_DEBUG_POSTFIX "d")')
@@ -70,6 +70,9 @@ class ConanRecipe(ConanFile):
         rmdir(self, self.package_path / "lib" / "pkgconfig")
 
     def package_info(self):
+        self.cpp_info.set_property("cpe", "cpe:2.3:a:pcre:pcre2:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("base_purl", "github/PCRE2Project/pcre2")
+
         def lib_name(name):
             return f"{name}_d" if self.settings.build_type == "Debug" else name
 

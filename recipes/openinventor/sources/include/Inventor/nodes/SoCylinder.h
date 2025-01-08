@@ -151,11 +151,11 @@ class INVENTOR_API SoCylinder : public SoShape {
     //! Size in y dimension
     SoSFFloat           height;         
 
-    //! Defines how many sides are used for tesselation. If set to <= 0, the sides are
+    //! Defines how many sides are used for tessellation. If set to <= 0, the sides are
     //! calculated by the SoComplexityElement.
     SoSFInt32           sides;
 
-    //! Defines how many sections are used for tesselation. If set to <= 0, the sections are
+    //! Defines how many sections are used for tessellation. If set to <= 0, the sections are
     //! calculated by the SoComplexityElement.
     SoSFInt32           sections;
     //@}
@@ -192,7 +192,7 @@ class INVENTOR_API SoCylinder : public SoShape {
     static SbVec2f      *coordsArray;   //!< Storage for ring coords
     static int          maxCoords;      //!< Current max num of coords
 
-    //! The state of the last cone tesselation,
+    //! The state of the last cone tessellation,
     //! so that the VBO can be reused if nothing changed.
     struct CacheState : public SimpleVertexArrayCache {
       CacheState() {

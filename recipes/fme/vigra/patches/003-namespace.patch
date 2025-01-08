@@ -1,0 +1,13 @@
+diff --git a/include/vigra/multi_array.hxx b/include/vigra/multi_array.hxx
+index d2a3d77..defb5e2 100644
+--- a/include/vigra/multi_array.hxx
++++ b/include/vigra/multi_array.hxx
+@@ -2229,7 +2229,7 @@ MultiArrayView <N, T, StrideTag>::bindInner (const TinyVector <Index, M> &d) con
+ 
+ template <unsigned int N, class T, class StrideTag>
+ template <unsigned int M>
+-MultiArrayView <N-1, T, typename detail::MaybeStrided<StrideTag, M>::type >
++MultiArrayView <N-1, T, typename vigra::detail::MaybeStrided<StrideTag, M>::type >
+ MultiArrayView <N, T, StrideTag>::bind (difference_type_1 d) const
+ {
+     static const int NNew = (N-1 == 0) ? 1 : N-1;

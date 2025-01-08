@@ -11,7 +11,7 @@ required_conan_version = ">=2.2.2"
 class ConanRecipe(ConanFile):
     name = "pyzmq"
     version = "25.1.2"
-    homepage = "http://zguide.zeromq.org/py:all"
+    homepage = "https://zguide.zeromq.org/"
     description = "Lightweight and super-fast messaging library built on top of the ZeroMQ library"
     license = ["BSD-3-Clause", "LGPL-3.0"]
     python_requires = "python_package/[>=1.0.0]"
@@ -61,3 +61,8 @@ class ConanRecipe(ConanFile):
                 raise ConanException("patchelf could not be found")
             for sofile in self.package_path.rglob('*.so'):
                 self.run(f"{patchelf} --set-rpath '$ORIGIN/../lib' {sofile}")
+
+    def package_info(self):
+        super().package_info()
+        # self.cpp_info.set_property("cpe", "")  # No own CPE, see libzmq
+        self.cpp_info.set_property("base_purl", "github/zeromq/pyzmq")

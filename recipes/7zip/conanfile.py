@@ -2,7 +2,7 @@ from conan import ConanFile
 from conan.tools.files import copy, get, replace_in_file
 from conan.tools.layout import basic_layout
 from conan.tools.microsoft import NMakeToolchain
-from conans.errors import ConanInvalidConfiguration
+from conan.errors import ConanInvalidConfiguration
 import os
 
 required_conan_version = ">=2.2.2"
@@ -74,5 +74,7 @@ class ConanRecipe(ConanFile):
         )
 
     def package_info(self):
+        self.cpp_info.set_property("cpe", "cpe:2.3:a:7-zip:7-zip:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("base_purl", "github/ip7z/7zip")
         self.cpp_info.includedirs.clear()
         self.cpp_info.libdirs.clear()

@@ -4,9 +4,10 @@ from common.python_package_base import PythonPackageBase
 from conan.tools.cmake import cmake_layout
 from conan.tools.env import Environment
 from conan.tools.files import mkdir, chdir, copy
-from conans.errors import ConanException
+from conan.errors import ConanException
 
 import tomli
+
 
 class PythonPackageRecipe(PythonPackageBase):
     url = "http://mms-build.mevis.lokal"
@@ -44,7 +45,7 @@ class PythonPackageRecipe(PythonPackageBase):
         env.define("SETUPTOOLS_SCM_PRETEND_VERSION", self.version)
 
         # prevent setuptools_scm from trying to determine the version itself, which fails
-        env.define("PKG_CONFIG_PATH", self.build_folder)
+        env.define("PKG_CONFIG_PATH",  self.folders.generators_folder)
 
         cpu_count = os.cpu_count() if self.parallel_make else 1
         env.define("MAKEFLAGS", f"-j{cpu_count}")
@@ -60,22 +61,23 @@ class PythonPackageRecipe(PythonPackageBase):
     def build(self):
         self.default_build()
 
-    def pyproject_build(self, backend, build_args, env, site_package):
+    def pyproject_build(self, backend, build_args, config_settings, env, site_package):
         if backend == "setuptools.build_meta":
             self.run(f"{self.py_command} setup.py build {' '.join(build_args)}", env=env)
-            cmd = (f"{self.py_command} -m pip install -v --no-deps --no-build-isolation "
-                   f"--target {site_package}"
-                   f" {self.source_folder}")
+            cmd = f"{self.py_command} -m pip install -v --no-deps --no-build-isolation " f"--target {site_package}" f" {self.source_folder}"
             self.run(cmd, env=env)
         else:
             # we assume Python only
-            cmd = (f"{self.py_command} -m pip install -v --no-deps --no-build-isolation "
-                   f"--target {site_package}"
-                   f" {self.source_folder}")
+            cmd = (
+                f"{self.py_command} -m pip install -v --no-deps --no-build-isolation "
+                f" {''.join(map(lambda x: ' -C ' +x, config_settings))}"
+                f" --target {site_package}"
+                f" {self.source_folder}"
+            )
             self.run(cmd, env=env)
         # the recipe needs to implement pyproject_build itself if it needs special handling
 
-    def default_build(self, args=None, env=""):
+    def default_build(self, args=None, env="", config_settings=None):
         with self.install_packages(os.path.join(os.path.dirname(self.source_folder), "requirements.txt")):
             site_package = os.path.join(self.build_folder, self.relative_site_package_folder())
             mkdir(self, site_package)
@@ -100,11 +102,18 @@ class PythonPackageRecipe(PythonPackageBase):
 
                 with self.build_environment().vars(self).apply():
                     if use_pyproject:
-                        self.pyproject_build(backend, build_args, env, site_package)
+                        if config_settings is None:
+                            config_settings = []
+                        elif not isinstance(config_settings, (tuple, list)):
+                            config_settings = [config_settings]
+                        self.pyproject_build(backend, build_args, config_settings, env, site_package)
                     else:
                         self.run(f"{self.py_command} setup.py build {' '.join(build_args)}", env=env)
-                        self.run(f'{self.py_command} setup.py install --verbose --optimize=1 '
-                                 f'--skip-build --root={os.sep} --prefix="{self.build_folder}"', env=env)
+                        self.run(
+                            f"{self.py_command} setup.py install --verbose --optimize=1 "
+                            f'--skip-build --root={os.sep} --prefix="{self.build_folder}"',
+                            env=env,
+                        )
 
     @property
     def license_path(self):
@@ -112,20 +121,14 @@ class PythonPackageRecipe(PythonPackageBase):
 
     def default_package(self):
         copy(self, "Lib/*", src=self.build_path, dst=self.package_path, excludes="*__pycache__*")
-        if not copy(self, self.license_path,
-                    src=self.source_path,
-                    dst=self.package_path / "licenses",
-                    keep_path=False):
+        if not copy(self, self.license_path, src=self.source_path, dst=self.package_path / "licenses", keep_path=False):
             raise ConanException("No license found")
         else:
             # Also copy license into .egg-info folder, so that the PythonPackageHelper tool doesn't complain
             # when creating the .mlinfo again
             egg_info_folders = list((self.package_path / self.relative_site_package_folder()).glob("*.egg-info"))
             if len(egg_info_folders) >= 1:
-                copy(self, "*",
-                     src=self.package_path / "licenses",
-                     dst=egg_info_folders[0],
-                     keep_path=False)
+                copy(self, "*", src=self.package_path / "licenses", dst=egg_info_folders[0], keep_path=False)
 
     def package(self):
         self.default_package()

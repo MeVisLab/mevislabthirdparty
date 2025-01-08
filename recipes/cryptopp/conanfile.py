@@ -9,7 +9,7 @@ required_conan_version = ">=2.2.2"
 class ConanRecipe(ConanFile):
     name = "cryptopp"
     version = "8.9.0"
-    homepage = "http://www.cryptopp.com"
+    homepage = "https://github.com/weidai11/cryptopp"
     description = "A library of cryptographic schemes"
     license = "BSL-1.0"
     package_type = "static-library"
@@ -61,6 +61,8 @@ class ConanRecipe(ConanFile):
         rmdir(self, self.package_path / "share")
 
     def package_info(self):
+        self.cpp_info.set_property("cpe", "cpe:2.3:a:cryptopp:crypto\\+\\+:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("base_purl", "github/weidai11/cryptopp")
         self.cpp_info.set_property("cmake_file_name", "CryptoPP")
         self.cpp_info.set_property("cmake_target_name", "CryptoPP::CryptoPP")
         self.cpp_info.set_property("display_name", "Crypto++")

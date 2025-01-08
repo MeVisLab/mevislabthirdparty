@@ -59,6 +59,8 @@ class ConanRecipe(ConanFile):
         copy(self, "COPYING", src=self.source_path, dst=self.package_path / "licenses")
 
     def package_info(self):
+        # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
+        self.cpp_info.set_property("base_purl", "github/wojdyr/xylib")
         self.cpp_info.set_property("cmake_file_name", "xylib")
         self.cpp_info.set_property("cmake_target_name", "xylib::xylib")
         self.cpp_info.set_property("mevislab_prosdk_exclude", True)

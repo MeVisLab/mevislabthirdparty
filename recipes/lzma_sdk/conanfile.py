@@ -1,19 +1,19 @@
-
 from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
 from conan.tools.files import get, collect_libs, load, save
 from conan.tools.scm import Version
-from conans.errors import ConanException
+from conan.errors import ConanException
+import os
 
 required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
     name = "lzma_sdk"
-    version = "19.00"
+    version = "24.08"
     description = "LZMA SDK"
     homepage = "https://7-zip.de/sdk.html"
-    license = "Unlicense"
+    license = "LZMA-SDK-9.22"
     package_type = "static-library"
     settings = "os", "arch", "compiler", "build_type"
     exports_sources = "CMakeLists.txt"
@@ -28,10 +28,11 @@ class ConanRecipe(ConanFile):
     def source(self):
         v = Version(self.version)
         minor = f"{v.minor}".zfill(2)
-        get(self,
+        get(
+            self,
+            sha256="462db3397241ac0f581db024ea9c5fd71114a0ebd3bfa9e2082f77271d0d647a",
             url=f"https://github.com/sisong/lzma/archive/refs/tags/v{v.major}.{minor}.tar.gz",
-            sha256="787787da5be160fb397b57407717686164b21ae469be51b59ce3a815ad046817",
-            strip_root=True
+            strip_root=True,
         )
 
     def generate(self):
@@ -44,7 +45,7 @@ class ConanRecipe(ConanFile):
 
     def build(self):
         cmake = CMake(self)
-        cmake.configure(build_script_folder=self.source_path.parent)
+        cmake.configure(build_script_folder=os.path.dirname(self.source_folder))
         cmake.build()
 
     def package(self):
@@ -52,20 +53,21 @@ class ConanRecipe(ConanFile):
         cmake.install()
 
         # extract license text:
-        text = load(self, self.source_path / "DOC" / "lzma-sdk.txt")
+        text = load(self, os.path.join(self.source_folder, "DOC", "lzma-sdk.txt"))
         license_pos = text.find("LICENSE")
         if license_pos == -1:
             raise ConanException("License text not found")
-        license_end = text.find("\n\n\n", license_pos) # two empty lines mark end of license
+        license_end = text.find("\n\n\n", license_pos)  # two empty lines mark end of license
         if license_end == -1:
             # try Windows line end:
             license_end = text.find("\r\n\r\n\r\n", license_pos)
         if license_end == -1:
             raise ConanException("End of license text not found")
-        save(self, self.package_path / "licenses" / "LICENSE", text[license_pos:license_end+2])
-
+        save(self, os.path.join(self.package_folder, "licenses", "LICENSE"), text[license_pos : license_end + 2])
 
     def package_info(self):
+        # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
+        # self.cpp_info.set_property("base_purl", "")  # Official repository is at https://www.7-zip.org/sdk.html
         self.cpp_info.set_property("display_name", "LZMA SDK")
         self.cpp_info.libs = collect_libs(self)
         self.cpp_info.includedirs = ["include", "include/C"]

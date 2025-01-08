@@ -21,7 +21,7 @@ required_conan_version = ">=2.2.2"
 
 class OpenSSLConan(ConanFile):
     name = "openssl"
-    version = "3.2.2"
+    version = "3.4.0"
     homepage = "https://www.openssl.org"
     license = "Apache-2.0"
     description = "full-strength general purpose cryptography library (including SSL and TLS)"
@@ -48,7 +48,7 @@ class OpenSSLConan(ConanFile):
     def source(self):
         get(
             self,
-            sha256="197149c18d9e9f292c43f0400acaba12e5f52cacfe050f3d199277ea738ec2e7",
+            sha256="e15dda82fe2fe8139dc2ac21a36d4ca01d5313c75f99f46c4e8a27709b7294bf",
             url=f"https://www.openssl.org/source/openssl-{self.version}.tar.gz",
             destination=self.source_folder,
             strip_root=True,
@@ -163,9 +163,11 @@ class OpenSSLConan(ConanFile):
 
             self.run(f"perl ./Configure {args}", env="conanbuild")
             if self.settings.os == "Windows":
-                # When `--prefix=/`, the scripts derive `\` without escaping, which
-                # causes issues on Windows
+                # replace backslashes in paths with forward slashes
                 replace_in_file(self, "Makefile", "INSTALLTOP_dir=\\", "INSTALLTOP_dir=\\\\")
+                mkinstallvars_pl = os.path.join(self.source_folder, "util", "mkinstallvars.pl")
+                replace_in_file(self, mkinstallvars_pl, "push @{$values{$k}}, $v;", """$v =~ s|\\\\|/|g; push @{$values{$k}}, $v;""")
+                replace_in_file(self, mkinstallvars_pl, "$values{$k} = $v;", """$v->[0] =~ s|\\\\|/|g; $values{$k} = $v;""")
             self._run_make()
 
     def _replace_runtime_in_file(self, filename):
@@ -274,6 +276,8 @@ class OpenSSLConan(ConanFile):
         return os.path.join(self._module_subfolder, "openssl-variables.cmake")
 
     def package_info(self):
+        self.cpp_info.set_property("cpe", "cpe:2.3:a:openssl:openssl:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("base_purl", "github/openssl/openssl")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "OpenSSL")
         # backwards compatibility with our old Conan 1 build:

@@ -66,6 +66,8 @@ class ConanRecipe(ConanFile):
             copy(self, "libpng*.pdb", src=os.path.join(self.build_folder, "bin"), dst=os.path.join(self.package_folder, "bin"))
 
     def package_info(self):
+        self.cpp_info.set_property("cpe", "cpe:2.3:a:xmlsoft:libxslt:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("base_purl", "github/GNOME/libxslt")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "LibXslt")
         self.cpp_info.set_property("cmake_target_name", "LibXslt::LibXslt")

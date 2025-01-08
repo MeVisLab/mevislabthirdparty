@@ -75,6 +75,8 @@ class ConanRecipe(ConanFile):
         self._cmake_module_file_write()
 
     def package_info(self):
+        self.cpp_info.set_property("cpe", "cpe:2.3:a:zlib:zlib:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("base_purl", "github/madler/zlib")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "ZLIB")
         self.cpp_info.set_property("cmake_target_name", "ZLIB::ZLIB")

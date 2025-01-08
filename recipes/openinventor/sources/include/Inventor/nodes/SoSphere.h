@@ -151,10 +151,10 @@ class INVENTOR_API SoSphere : public SoShape {
 
     void GLRenderVertexArray(SoGLRenderAction *action, bool sendNormals, bool doTextures);
 
-    //! Computes tesselation depth based on current complexity
+    //! Computes tessellation depth based on current complexity
     int                 computeDepth(SoAction *action);
 
-    //! The state of the last sphere tesselation,
+    //! The state of the last sphere tessellation,
     //! so that the VBO can be reused if nothing changed.
     struct CacheState : public SimpleVertexArrayCache {
       CacheState() {

@@ -1,22 +1,24 @@
+import os
 from conan import ConanFile
-from conan.tools.apple import fix_apple_shared_install_name
-from conan.tools.env import Environment, VirtualBuildEnv, VirtualRunEnv
-from conan.tools.files import chdir, copy, get, replace_in_file, rm, rmdir
-from conan.tools.gnu import Autotools, AutotoolsToolchain, AutotoolsDeps
+from conan.tools.gnu import PkgConfigDeps
+from conan.tools.meson import MesonToolchain
+from conan.tools.meson import Meson
 from conan.tools.layout import basic_layout
-from conan.tools.microsoft import is_msvc, unix_path, VCVars, MSBuild
+from conan.tools.files import get, rm, rmdir, copy, patch
+from conan.tools.microsoft import is_msvc
 
 required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
     name = "libpq"
-    version = "16.4"
+    version = "17.0"
     homepage = "https://www.postgresql.org/docs/current/static/libpq.html"
     description = "The library used by all the standard PostgreSQL tools."
     license = "PostgreSQL"
     package_type = "shared-library"
     settings = "os", "arch", "compiler", "build_type"
+    exports_sources = "patches/*.patch"
 
     def requirements(self):
         if self.settings.os != "Macos":
@@ -26,142 +28,48 @@ class ConanRecipe(ConanFile):
         self.settings.rm_safe("compiler.libcxx")
         self.settings.rm_safe("compiler.cppstd")
 
-    def source(self):
-        get(
-            self,
-            sha256="971766d645aa73e93b9ef4e3be44201b4f45b5477095b049125403f9f3386d6f",
-            url=f"https://ftp.postgresql.org/pub/source/v{self.version}/postgresql-{self.version}.tar.bz2",
-            strip_root=True,
-        )
-
     def layout(self):
         basic_layout(self, src_folder="src")
 
+    def source(self):
+        get(
+            self,
+            sha256="7e276131c0fdd6b62588dbad9b3bb24b8c3498d5009328dba59af16e819109de",
+            url=f"https://ftp.postgresql.org/pub/source/v{self.version}/postgresql-{self.version}.tar.bz2",
+            strip_root=True,
+        )
+        patch(self, patch_file="patches/001_debug_suffix.patch")
+
     def generate(self):
-        env = VirtualBuildEnv(self)
-        env.generate()
-
-        if is_msvc(self):
-            vcvars = VCVars(self)
-            vcvars.generate()
-            config = "DEBUG" if self.settings.build_type == "Debug" else "RELEASE"
-            env = Environment()
-            env.define("CONFIG", config)
-            env.vars(self).save_script("conanbuild_msvc")
-        else:
-            env = VirtualRunEnv(self)
-            env.generate(scope="build")
-
-            ad = AutotoolsDeps(self)
-            ad.generate()
-
-            if self.settings.build_type == "Debug":
-                replace_in_file(self, self.source_path / "src" / "interfaces" / "libpq" / "Makefile", "NAME= pq", "NAME= pq_d")
-            tc = AutotoolsToolchain(self)
-            tc.configure_args.append("--without-readline")
-            tc.configure_args.append("--without-zlib")
-            tc.configure_args.append("--without-icu")
-
-            if self.settings.os != "Macos":
-                tc.configure_args.append("--with-openssl")
-            if self.settings.build_type == "Debug":
-                tc.configure_args.append("--enable-debug")
-            tc.make_args.append(f"DESTDIR={unix_path(self, self.package_folder)}")
-            tc.generate()
-
-    def _build_windows(self):
-        # fix openssl
-        tools_path = self.source_path / "src" / "tools" / "msvc"
-        solution_pm = tools_path / "Solution.pm"
-        openssl = self.dependencies["openssl"]
-        openssl_components = openssl.cpp_info.components
-        for ssl in [r"VC\libssl32", r"VC\libssl64", "libssl"]:
-            replace_in_file(self, solution_pm, ssl + ".lib", openssl_components["ssl"].libs[0] + ".lib")
-        for crypto in [r"VC\libcrypto32", r"VC\libcrypto64", "libcrypto"]:
-            replace_in_file(self, solution_pm, crypto + ".lib", openssl_components["crypto"].libs[0] + ".lib")
-
-        config_default_pl = tools_path / "config_default.pl"
-        replace_in_file(self, config_default_pl, "openssl => undef,", "openssl => '%s'," % openssl.package_folder.replace("\\", "/"))
-
-        if self.settings.build_type == "Debug":
-            # adapt project and target names
-            replace_in_file(self, tools_path / "Project.pm", "name => $name", "name => $name . '_d'")
-            # adapt DLL name in generated libpqdll.def
-            replace_in_file(self, solution_pm, '"LIBPQ"', '"LIBPQ_D"')
-
-        with chdir(self, self.source_path / "src" / "tools" / "msvc"):
-            env = Environment()
-            env.append("LC_ALL", "C")
-            env.append("LANG", "C")
-            with env.vars(self).apply():
-                self.run("perl mkvcbuild.pl")
-
-        with chdir(self, self.source_folder):
-            msbuild = MSBuild(self)
-            debug_ext = "_d" if self.settings.build_type == "Debug" else ""
-            msbuild.build(f"libpq{debug_ext}.vcxproj")
+        pc = PkgConfigDeps(self)
+        pc.generate()
+        tc = MesonToolchain(self)
+        tc.project_options["auto_features"] = "disabled"
+        tc.project_options["ssl"] = "openssl"
+        tc.project_options["rpath"] = "false"
+        tc.generate()
 
     def build(self):
-        if is_msvc(self):
-            self._build_windows()
-        else:
-            autotools = Autotools(self)
-            with chdir(self, self.source_path):
-                autotools.configure()
-            with chdir(self, self.source_path / "src" / "backend"):
-                autotools.make(target="generated-headers")
-            with chdir(self, self.source_path / "src" / "common"):
-                autotools.make()
-            with chdir(self, self.source_path / "src" / "include"):
-                autotools.make()
-            with chdir(self, self.source_path / "src" / "interfaces" / "libpq"):
-                autotools.make()
-            with chdir(self, self.source_path / "src" / "port"):
-                autotools.make()
-            with chdir(self, self.source_path / "src" / "bin" / "pg_config"):
-                autotools.make()
-            for lib in (self.source_path / "src" / "interfaces" / "libpq").glob("*.so.*"):
-                self.run(f"patchelf --set-rpath '$ORIGIN/../lib' {lib}")
+        meson = Meson(self)
+        meson.configure()
+        meson.build(target="backend")
 
     def package(self):
-        copy(self, "COPYRIGHT", src=self.source_path, dst=self.package_path / "licenses")
-        if is_msvc(self):
-            for pattern in ["*postgres_ext.h", "*pg_config.h", "*pg_config_ext.h", "*libpq-fe.h", "*libpq-events.h"]:
-                copy(self, pattern=pattern, src=self.source_path, dst=self.package_path / "include", keep_path=False)
-            copy(
-                self,
-                pattern="*.h",
-                src=self.source_path / "src" / "include" / "libpq",
-                dst=self.package_path / "include" / "libpq",
-                keep_path=False,
-            )
-            for pattern in ["*genbki.h", "*pg_type.h"]:
-                copy(self, pattern=pattern, src=self.source_path, dst=self.package_path / "include" / "catalog", keep_path=False)
-            debug_ext = "_d" if self.settings.build_type == "Debug" else ""
-            copy(self, pattern=f"*libpq{debug_ext}.dll", src=self.source_path, dst=self.package_path / "bin", keep_path=False)
-            copy(self, pattern=f"*libpq{debug_ext}.pdb", src=self.source_path, dst=self.package_path / "bin", keep_path=False)
-            copy(self, pattern=f"*libpq{debug_ext}.lib", src=self.source_path, dst=self.package_path / "lib", keep_path=False)
-        else:
-            autotools = Autotools(self)
-            with chdir(self, self.source_path / "src" / "common"):
-                autotools.install()
-            with chdir(self, self.source_path / "src" / "include"):
-                autotools.install()
-            with chdir(self, self.source_path / "src" / "interfaces" / "libpq"):
-                autotools.install()
-            with chdir(self, self.source_path / "src" / "port"):
-                autotools.install()
-            with chdir(self, self.source_path / "src" / "bin" / "pg_config"):
-                autotools.install()
-            copy(self, "*.h", src=self.build_path / "src" / "include" / "catalog", dst=self.package_path / "include" / "catalog")
-            rmdir(self, self.package_path / "share")
-            rmdir(self, self.package_path / "lib" / "pkgconfig")
-            rmdir(self, self.package_path / "include" / "postgresql" / "server")
-            rm(self, "*.a", self.package_path / "lib")
-            fix_apple_shared_install_name(self)
-        copy(self, "*.h", src=self.build_path / "src" / "backend" / "catalog", dst=self.package_path / "include" / "catalog")
+        copy(self, "COPYRIGHT", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
+        meson = Meson(self)
+        meson.install()
+
+        rmdir(self, os.path.join(self.package_folder, "include", "postgresql"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "postgresql"))
+        rmdir(self, os.path.join(self.package_folder, "share"))
+
+        rm(self, "*", os.path.join(self.package_folder, "bin"), excludes=["libpq*.dll", "libpq*.pdb"])
+        rm(self, "*", os.path.join(self.package_folder, "lib"), excludes=["libpq*.so", "libpq*.so.*", "libpq*.lib"])
 
     def package_info(self):
+        self.cpp_info.set_property("cpe", "cpe:2.3:a:postgresql:postgresql:*:*:*:*:*:*:*:*")  # there seems to be no cpe that only applies to libpq
+        self.cpp_info.set_property("base_purl", "github/postgres/postgres")  # this references the whole postgres db, not just the client libpq
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "PostgreSQL")
         self.cpp_info.set_property("cmake_target_name", "PostgreSQL::PostgreSQL")

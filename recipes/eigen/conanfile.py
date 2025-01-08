@@ -8,7 +8,7 @@ required_conan_version = ">=2.2.2"
 class EigenConan(ConanFile):
     name = "eigen"
     version = "3.4.0"
-    homepage = "http://eigen.tuxfamily.org"
+    homepage = "https://eigen.tuxfamily.org"
     description = "Eigen is a C++ template library for linear algebra: matrices, vectors, numerical solvers, and related algorithms"
     license = "MPL-2.0"
     settings = "os", "arch", "compiler", "build_type"
@@ -48,6 +48,8 @@ class EigenConan(ConanFile):
         rmdir(self, self.package_path / "share")
 
     def package_info(self):
+        # self.cpp_info.set_property("cpe", "")  # No CPE yet?
+        self.cpp_info.set_property("base_purl", "gitlab/libeigen/eigen")  # gitlab really not defined per standard?
         self.cpp_info.set_property("cmake_file_name", "Eigen3")
         self.cpp_info.set_property("cmake_target_name", "Eigen3::Eigen")
         self.cpp_info.set_property("cmake_target_aliases", ["Eigen3::Eigen3"])

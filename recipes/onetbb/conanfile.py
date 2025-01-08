@@ -9,7 +9,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "onetbb"
-    version = "2021.13.0"
+    version = "2022.0.0"
     license = "Apache-2.0"
     homepage = "https://oneapi-src.github.io/oneTBB/"
     description = (
@@ -26,7 +26,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="3ad5dd08954b39d113dc5b3f8a8dc6dc1fd5250032b7c491eb07aed5c94133e1",
+            sha256="e8e89c9c345415b17b30a2db3095ba9d47647611662073f7fbf54ad48b7f3c2a",
             url=f"https://github.com/oneapi-src/oneTBB/archive/refs/tags/v{self.version}.tar.gz",
             strip_root=True,
         )
@@ -63,6 +63,8 @@ class ConanRecipe(ConanFile):
         rmdir(self, os.path.join(self.package_folder, "share"))
 
     def package_info(self):
+        self.cpp_info.set_property("cpe", "cpe:2.3:a:intel:threading_building_blocks:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("base_purl", "github/oneapi-src/oneTBB")
         suffix = "_debug" if self.settings.build_type == "Debug" else ""
         self.cpp_info.set_property("cmake_file_name", "TBB")
         self.cpp_info.set_property("cmake_config_version_compat", "AnyNewerVersion")

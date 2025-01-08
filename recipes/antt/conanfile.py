@@ -6,7 +6,7 @@ required_conan_version = ">=2.2.2"
 class ConanRecipe(ConanFile):
     name = "antt"
     version = "2.08"
-    homepage = "http://www.gust.org.pl"
+    homepage = "https://www.gust.org.pl"
     description = "antt - Antykwa Toruńska: a Type 1 family of a Polish traditional type"
     license = "LPPL-1.3a"
     package_type = "build-scripts"

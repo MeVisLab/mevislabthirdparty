@@ -1,8 +1,8 @@
 diff --git a/png.c b/png.c
-index 9ed3157..e4721b1 100644
+index 9a9fb23..8f99290 100644
 --- a/png.c
 +++ b/png.c
-@@ -2367,8 +2367,10 @@ png_compare_ICC_profile_with_sRGB(png_const_structrp png_ptr,
+@@ -2374,8 +2374,10 @@ png_compare_ICC_profile_with_sRGB(png_const_structrp png_ptr,
                        * discourage their use, skip the 'have_md5' warning below,
                        * which is made irrelevant by this error.
                        */

@@ -166,6 +166,8 @@ class QtPackage:
             rmdir(self, self.package_path / "lib" / f"objects-{self.settings.build_type}")
 
     def package_info(self):
+        self.cpp_info.set_property("cpe", "cpe:2.3:a:qt:qt:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("base_purl", f"github/qt/{self.name}")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", f"Qt6{self.name}Dummy")
         self.cpp_info.set_property("cmake_target_name", f"Qt6{self.name}Dummy")
@@ -177,7 +179,7 @@ class QtPackage:
 class ConanRecipe(ConanFile):
     name = "qt_package"
     version = "1.0.0"
-    url = "http://mms-build.mevis.lokal"
+    url = "https://github.com/MeVisLab/mevislabthirdparty"
     license = "MIT"
     description = "Common recipes for Qt packages"
     settings = None

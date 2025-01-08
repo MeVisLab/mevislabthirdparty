@@ -232,7 +232,7 @@ class INVENTOR_API SoShapeKit : public SoSeparatorKit {
   protected:
 
     //! Called by the SoBaseKit::write() method. Calls setDefault(TRUE)
-    //! on the shapeSeparator. Note that this may be overriden later by basekit
+    //! on the shapeSeparator. Note that this may be overridden later by basekit
     //! if, for example, topSeparator lies on a path that is being written out.
     virtual void setDefaultOnNonWritingFields();
 

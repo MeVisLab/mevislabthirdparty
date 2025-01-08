@@ -1,5 +1,5 @@
 from conan import ConanFile
-from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
+from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
 from conan.tools.files import copy, get, rmdir, collect_libs
 import os
 
@@ -16,7 +16,7 @@ class ConanRecipe(ConanFile):
     settings = "os", "arch", "compiler", "build_type"
 
     def requirements(self):
-        self.requires("abseil/[>=20230802.1]", transitive_headers=True, transitive_libs=True)
+        self.requires("abseil/[>=20230802.1]", transitive_headers=True)
 
     def layout(self):
         cmake_layout(self, src_folder="src")
@@ -31,6 +31,8 @@ class ConanRecipe(ConanFile):
         )
 
     def generate(self):
+        deps = CMakeDeps(self)
+        deps.generate()
         tc = CMakeToolchain(self)
         tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
         tc.variables["BUILD_SHARED_LIBS"] = True
@@ -52,6 +54,8 @@ class ConanRecipe(ConanFile):
         rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
 
     def package_info(self):
+        # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
+        self.cpp_info.set_property("base_purl", "github/google/re2")
         self.cpp_info.set_property("cmake_file_name", "re2")
         self.cpp_info.set_property("cmake_target_name", "re2::re2")
         self.cpp_info.set_property("cmake_config_version_compat", "AnyNewerVersion")

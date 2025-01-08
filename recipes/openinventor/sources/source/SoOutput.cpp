@@ -64,6 +64,11 @@
 #include <Inventor/SoOutput.h>
 #include "utf8_filesupport_win32.h"
 
+#include <stdio.h>
+#include <iomanip>
+#include <sstream>
+#include <string>
+
 static const char *defaultASCIIHeader =  "#Inventor V2.1 ascii";
 static const char *defaultBinaryHeader = "#Inventor V2.1 binary";
     
@@ -92,7 +97,7 @@ SoOutput::SoOutput()
     borrowedDict= FALSE;
     annotation  = 0;
     headerString = SbString("");
-    fmtString   = SbString("%g");
+    float_precision = 0;
 
     reset();
 }
@@ -119,7 +124,7 @@ SoOutput::SoOutput(SoOutput *dictOut)
     tmpBuffer   = NULL;
     tmpBufSize  = 0;
     annotation  = 0;
-    fmtString   = SbString("%g");
+    float_precision = 0;
 
     if (dictOut == NULL) {
         borrowedDict = FALSE;
@@ -388,14 +393,13 @@ SoOutput::setFloatPrecision(int precision)
                 "Precision (significant digits) must be between 0 "
                 "and 8 for %.xg format");
 #endif /* DEBUG */
-        fmtString = SbString("%g");
+        float_precision = 0;
     }
 
     // Build the output format string from the input parameters
     else
     {
-        sprintf(tmp, "%%.%dg", precision);
-        fmtString = SbString(tmp);
+        float_precision = precision;
     }
 }
 
@@ -660,7 +664,7 @@ SoOutput::write(const SbName &s)
 //
 ////////////////////////////////////////////////////////////////////////
 
-#define WRITE_NUM(num, formatString, dglFunc, dglType)                        \
+#define WRITE_NUM(num, precision, isHex, dglFunc, dglType)                    \
     if (! wroteHeader)                                                        \
         writeHeader();                                                        \
     if (isBinary()) {                                                         \
@@ -678,12 +682,22 @@ SoOutput::write(const SbName &s)
             fflush(fp);                                                       \
         }                                                                     \
     }                                                                         \
-    else if (! isToBuffer())                                                  \
-        fprintf(fp, formatString, num);                                       \
     else {                                                                    \
-        char    str[20];                                                      \
-        sprintf(str, formatString, num);                                      \
-        write(str);                                                           \
+        std::ostringstream ostr;                                              \
+        if (precision > 0) {                                                  \
+            ostr << std::setprecision(precision);                             \
+        }                                                                     \
+        if (isHex) {                                                          \
+            ostr << std::setbase(16) << "0x";                                 \
+        }                                                                     \
+        ostr << num;                                                          \
+        std::string s = ostr.str();                                           \
+        if (! isToBuffer()) {                                                 \
+            std::fwrite(s.c_str(), s.size(), 1, fp);                          \
+        }                                                                     \
+        else {                                                                \
+            write(ostr.str().c_str());                                        \
+        }                                                                     \
     }
 
 #define WRITE_BIN_ARRAY(type, array, length, dglFunc)                         \
@@ -716,7 +730,7 @@ SoOutput::write(int i)
 //
 ////////////////////////////////////////////////////////////////////////
 {
-    WRITE_NUM(i, "%d", convertInt32, int32_t);
+    WRITE_NUM(i, 0, false, convertInt32, int32_t);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -731,7 +745,7 @@ SoOutput::write(unsigned int i)
 //
 ////////////////////////////////////////////////////////////////////////
 {
-    WRITE_NUM(i, "%#x", convertInt32, int32_t);
+    WRITE_NUM(i, 0, true, convertInt32, int32_t);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -747,7 +761,7 @@ SoOutput::write(short s)
 ////////////////////////////////////////////////////////////////////////
 {
     int32_t l = (int32_t)s;
-    WRITE_NUM(l, "%ld", convertInt32, int32_t);
+    WRITE_NUM(l, 0, false, convertInt32, int32_t);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -763,7 +777,7 @@ SoOutput::write(unsigned short s)
 ////////////////////////////////////////////////////////////////////////
 {
     uint32_t l = (uint32_t)s;
-    WRITE_NUM(l, "%#lx", convertInt32, int32_t);
+    WRITE_NUM(l, 0, true, convertInt32, int32_t);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -779,7 +793,7 @@ SoOutput::write(unsigned short s)
 ////
 //////////////////////////////////////////////////////////////////////////
 //{
-//    WRITE_NUM(l, "%ld", convertInt32, int32_t);
+//    WRITE_NUM(l, 0, false, convertInt32, int32_t);
 //}
 
 ////////////////////////////////////////////////////////////////////////
@@ -795,7 +809,7 @@ SoOutput::write(unsigned short s)
 ////
 //////////////////////////////////////////////////////////////////////////
 //{
-//    WRITE_NUM(l, "%#lx", convertInt32, int32_t);
+//    WRITE_NUM(l, 0, true, convertInt32, int32_t);
 //}
 
 ////////////////////////////////////////////////////////////////////////
@@ -810,7 +824,7 @@ SoOutput::write(float f)
 //
 ////////////////////////////////////////////////////////////////////////
 {
-    WRITE_NUM(f, fmtString.getString(), convertFloat, float);
+    WRITE_NUM(f, float_precision, false, convertFloat, float);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -825,7 +839,7 @@ SoOutput::write(double d)
 //
 ////////////////////////////////////////////////////////////////////////
 {
-    WRITE_NUM(d, "%.16lg", convertDouble, double);
+    WRITE_NUM(d, 16, false, convertDouble, double);
 }
 
 ////////////////////////////////////////////////////////////////////////

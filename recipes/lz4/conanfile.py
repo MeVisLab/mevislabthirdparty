@@ -10,7 +10,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "lz4"
-    version = "1.9.4"
+    version = "1.10.0"
     homepage = "https://lz4.github.io/lz4"
     description = "Extremely fast compression algorithm"
     license = "BSD-3-Clause"
@@ -25,11 +25,13 @@ class ConanRecipe(ConanFile):
         cmake_layout(self, src_folder="src")
 
     def source(self):
-        get(self,
+        get(
+            self,
+            sha256="537512904744b35e232912055ccf8ec66d768639ff3abe5788d90d792ec5f48b",
             url=f"https://github.com/lz4/lz4/archive/v{self.version}.tar.gz",
-            sha256="0b0e3aa07c8c063ddf40b082bdf7e37a1562bda40a0ff5272957f3e987e0e54b",
             destination=self.source_folder,
-            strip_root=True)
+            strip_root=True,
+        )
 
     def generate(self):
         tc = CMakeToolchain(self)
@@ -62,6 +64,8 @@ class ConanRecipe(ConanFile):
         self._cmake_module_file_write()
 
     def package_info(self):
+        self.cpp_info.set_property("cpe", "cpe:2.3:a:lz4_project:lz4:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("base_purl", "github/lz4/lz4")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "LZ4")
         self.cpp_info.set_property("cmake_target_name", "lz4::lz4")
@@ -75,8 +79,10 @@ class ConanRecipe(ConanFile):
 
     def _cmake_module_file_write(self):
         file = self.package_path / self._cmake_module_file
-        content = textwrap.dedent("""\
+        content = textwrap.dedent(
+            """\
             set(LZ4_LIBRARY ${LZ4_LIBRARIES})
             set(LZ4_LINK_LIBRARIES ${LZ4_LIBRARIES})
-            """)
+            """
+        )
         save(self, file, content)

@@ -11,7 +11,7 @@ class ConanRecipe(ConanFile):
     name = "lzf"
     version = "3.5.0"
     description = "Fast LZ compression library"
-    homepage = "http://oldhome.schmorp.de/marc/liblzf.html"
+    homepage = "https://oldhome.schmorp.de/marc/liblzf.html"
     license = "BSD-2-Clause"
     package_type = "static-library"
     settings = "os", "arch", "compiler", "build_type"
@@ -36,6 +36,8 @@ class ConanRecipe(ConanFile):
         cmake.install()
 
     def package_info(self):
+        # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
+        # self.cpp_info.set_property("base_purl", "")  # Official repository is at http://oldhome.schmorp.de/marc/liblzf.html
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "LZF")
         self.cpp_info.set_property("cmake_target_name", "LZF::LZF")
