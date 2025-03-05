@@ -1,8 +1,8 @@
 diff --git a/dcmdata/libsrc/dcpixel.cc b/dcmdata/libsrc/dcpixel.cc
-index b5c682f..5a6f556 100644
+index 50451d6..95c6a44 100644
 --- a/dcmdata/libsrc/dcpixel.cc
 +++ b/dcmdata/libsrc/dcpixel.cc
-@@ -1209,7 +1209,15 @@ OFCondition DcmPixelData::getUncompressedFrame(
+@@ -1213,7 +1213,15 @@ OFCondition DcmPixelData::getUncompressedFrame(
        // we already have an uncompressed version of the pixel data
        // either in memory or in file. We can directly access this using
        // DcmElement::getPartialValue.

@@ -1,5 +1,5 @@
 diff --git a/dcmdata/libsrc/dcdictbi.cc b/dcmdata/libsrc/dcdictbi.cc
-index 0466d17..52b9a47 100644
+index 2bf239d..140b231 100644
 --- a/dcmdata/libsrc/dcdictbi.cc
 +++ b/dcmdata/libsrc/dcdictbi.cc
 @@ -37,7 +37,7 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
@@ -150,7 +150,7 @@ index 0466d17..52b9a47 100644
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0008, 0x0012, 0x0008, 0x0012,
-@@ -541,11 +541,11 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
+@@ -545,11 +545,11 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0008, 0x0040, 0x0008, 0x0040,
@@ -164,7 +164,7 @@ index 0466d17..52b9a47 100644
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0008, 0x0042, 0x0008, 0x0042,
-@@ -1017,7 +1017,7 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
+@@ -1021,7 +1021,7 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0008, 0x1000, 0x0008, 0x1000,
@@ -173,7 +173,7 @@ index 0466d17..52b9a47 100644
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0008, 0x1010, 0x0008, 0x1010,
-@@ -1401,7 +1401,7 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
+@@ -1421,7 +1421,7 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0008, 0x4000, 0x0008, 0x4000,
@@ -182,7 +182,7 @@ index 0466d17..52b9a47 100644
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0008, 0x9007, 0x0008, 0x9007,
-@@ -2439,7 +2439,7 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
+@@ -2459,7 +2459,7 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0010, 0x1050, 0x0010, 0x1050,
@@ -191,7 +191,7 @@ index 0466d17..52b9a47 100644
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0010, 0x1060, 0x0010, 0x1060,
-@@ -5287,7 +5287,7 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
+@@ -5707,7 +5707,7 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0018, 0x1240, 0x0018, 0x1240,
@@ -200,7 +200,7 @@ index 0466d17..52b9a47 100644
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0018, 0x1242, 0x0018, 0x1242,
-@@ -5675,7 +5675,7 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
+@@ -6095,7 +6095,7 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0018, 0x4000, 0x0018, 0x4000,
@@ -209,7 +209,7 @@ index 0466d17..52b9a47 100644
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0018, 0x5000, 0x0018, 0x5000,
-@@ -5727,11 +5727,11 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
+@@ -6147,11 +6147,11 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0018, 0x5030, 0x0018, 0x5030,
@@ -223,7 +223,7 @@ index 0466d17..52b9a47 100644
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0018, 0x5050, 0x0018, 0x5050,
-@@ -12405,7 +12405,7 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
+@@ -12825,7 +12825,7 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0020, 0x0030, 0x0020, 0x0030,
@@ -232,7 +232,7 @@ index 0466d17..52b9a47 100644
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0020, 0x0032, 0x0020, 0x0032,
-@@ -12413,7 +12413,7 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
+@@ -12833,7 +12833,7 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0020, 0x0035, 0x0020, 0x0035,
@@ -241,7 +241,7 @@ index 0466d17..52b9a47 100644
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0020, 0x0037, 0x0020, 0x0037,
-@@ -12421,7 +12421,7 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
+@@ -12841,7 +12841,7 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0020, 0x0050, 0x0020, 0x0050,
@@ -250,7 +250,7 @@ index 0466d17..52b9a47 100644
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0020, 0x0052, 0x0020, 0x0052,
-@@ -12437,11 +12437,11 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
+@@ -12857,11 +12857,11 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0020, 0x0070, 0x0020, 0x0070,
@@ -264,7 +264,7 @@ index 0466d17..52b9a47 100644
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0020, 0x00aa, 0x0020, 0x00aa,
-@@ -12473,7 +12473,7 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
+@@ -12893,7 +12893,7 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0020, 0x1001, 0x0020, 0x1001,
@@ -273,7 +273,7 @@ index 0466d17..52b9a47 100644
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0020, 0x1002, 0x0020, 0x1002,
-@@ -12481,7 +12481,7 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
+@@ -12901,7 +12901,7 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0020, 0x1003, 0x0020, 0x1003,
@@ -282,7 +282,7 @@ index 0466d17..52b9a47 100644
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0020, 0x1004, 0x0020, 0x1004,
-@@ -12489,11 +12489,11 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
+@@ -12909,11 +12909,11 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0020, 0x1005, 0x0020, 0x1005,
@@ -296,7 +296,7 @@ index 0466d17..52b9a47 100644
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0020, 0x103f, 0x0020, 0x103f,
-@@ -12537,27 +12537,27 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
+@@ -12957,27 +12957,27 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0020, 0x3401, 0x0020, 0x3401,
@@ -330,7 +330,7 @@ index 0466d17..52b9a47 100644
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0020, 0x4000, 0x0020, 0x4000,
-@@ -12565,11 +12565,11 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
+@@ -12985,11 +12985,11 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0020, 0x5000, 0x0020, 0x5000,
@@ -344,7 +344,7 @@ index 0466d17..52b9a47 100644
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0020, 0x9056, 0x0020, 0x9056,
-@@ -16019,7 +16019,7 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
+@@ -16467,7 +16467,7 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0028, 0x0005, 0x0028, 0x0005,
@@ -353,7 +353,7 @@ index 0466d17..52b9a47 100644
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0028, 0x0006, 0x0028, 0x0006,
-@@ -16071,11 +16071,11 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
+@@ -16519,11 +16519,11 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0028, 0x0040, 0x0028, 0x0040,
@@ -367,7 +367,7 @@ index 0466d17..52b9a47 100644
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0028, 0x0051, 0x0028, 0x0051,
-@@ -16083,79 +16083,79 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
+@@ -16531,79 +16531,79 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0028, 0x005f, 0x0028, 0x005f,
@@ -466,7 +466,7 @@ index 0466d17..52b9a47 100644
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0028, 0x0100, 0x0028, 0x0100,
-@@ -16175,11 +16175,11 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
+@@ -16623,11 +16623,11 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0028, 0x0104, 0x0028, 0x0104,
@@ -480,7 +480,7 @@ index 0466d17..52b9a47 100644
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0028, 0x0106, 0x0028, 0x0106,
-@@ -16231,7 +16231,7 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
+@@ -16679,7 +16679,7 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0028, 0x0200, 0x0028, 0x0200,
@@ -489,7 +489,7 @@ index 0466d17..52b9a47 100644
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0028, 0x0300, 0x0028, 0x0300,
-@@ -16255,95 +16255,95 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
+@@ -16703,95 +16703,95 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0028, 0x0400, 0x0028, 0x0400,
@@ -608,7 +608,7 @@ index 0466d17..52b9a47 100644
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0028, 0x0a02, 0x0028, 0x0a02,
-@@ -16391,7 +16391,7 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
+@@ -16839,7 +16839,7 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0028, 0x1080, 0x0028, 0x1080,
@@ -617,7 +617,7 @@ index 0466d17..52b9a47 100644
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0028, 0x1090, 0x0028, 0x1090,
-@@ -16399,7 +16399,7 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
+@@ -16847,7 +16847,7 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0028, 0x1100, 0x0028, 0x1100,
@@ -626,7 +626,7 @@ index 0466d17..52b9a47 100644
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0028, 0x1101, 0x0028, 0x1101,
-@@ -16435,7 +16435,7 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
+@@ -16883,7 +16883,7 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0028, 0x1200, 0x0028, 0x1200,
@@ -635,7 +635,7 @@ index 0466d17..52b9a47 100644
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0028, 0x1201, 0x0028, 0x1201,
-@@ -16627,7 +16627,7 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
+@@ -17075,7 +17075,7 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0028, 0x4000, 0x0028, 0x4000,
@@ -644,7 +644,7 @@ index 0466d17..52b9a47 100644
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x0028, 0x5000, 0x0028, 0x5000,
-@@ -25510,32 +25510,40 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
+@@ -25978,32 +25978,40 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        "ELSCINT1" }
  #endif
@@ -692,7 +692,7 @@ index 0466d17..52b9a47 100644
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
  #ifdef ENABLE_PRIVATE_TAGS
-@@ -30854,12 +30862,16 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
+@@ -31386,12 +31394,16 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        "INTELERAD MEDICAL SYSTEMS" }
  #endif
@@ -711,7 +711,7 @@ index 0466d17..52b9a47 100644
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x4008, 0x0040, 0x4008, 0x0040,
-@@ -31489,15 +31501,15 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
+@@ -32021,15 +32033,15 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
    , { 0x7fe0, 0x0020, 0x7fe0, 0x0020,
@@ -730,7 +730,7 @@ index 0466d17..52b9a47 100644
        DcmDictRange_Unspecified, DcmDictRange_Unspecified,
        NULL }
  #ifdef ENABLE_PRIVATE_TAGS
-@@ -31679,7 +31691,7 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
+@@ -32211,7 +32223,7 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
        DcmDictRange_Even, DcmDictRange_Unspecified,
        NULL }
    , { 0x0020, 0x3100, 0x0020, 0x31ff,
@@ -739,7 +739,7 @@ index 0466d17..52b9a47 100644
        DcmDictRange_Unspecified, DcmDictRange_Even,
        NULL }
    , { 0x5000, 0x0005, 0x50ff, 0x0005,
-@@ -31795,55 +31807,55 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
+@@ -32327,55 +32339,55 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
        DcmDictRange_Even, DcmDictRange_Unspecified,
        NULL }
    , { 0x6000, 0x0060, 0x60ff, 0x0060,
@@ -808,7 +808,7 @@ index 0466d17..52b9a47 100644
        DcmDictRange_Even, DcmDictRange_Unspecified,
        NULL }
    , { 0x6000, 0x1100, 0x60ff, 0x1100,
-@@ -31879,27 +31891,31 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
+@@ -32411,27 +32423,31 @@ static const DBI_SimpleEntry simpleBuiltinDict[] = {
        DcmDictRange_Even, DcmDictRange_Unspecified,
        NULL }
    , { 0x6000, 0x4000, 0x60ff, 0x4000,

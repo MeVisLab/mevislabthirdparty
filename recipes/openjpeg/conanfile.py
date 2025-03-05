@@ -8,7 +8,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "openjpeg"
-    version = "2.5.2"
+    version = "2.5.3"
     homepage = "https://www.openjpeg.org"
     description = "Open-source JPEG 2000 library"
     license = "BSD-2-Clause"
@@ -28,7 +28,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="90e3896fed910c376aaf79cdd98bdfdaf98c6472efd8e1debf0a854938cbda6a",
+            sha256="368fe0468228e767433c9ebdea82ad9d801a3ad1e4234421f352c8b06e7aa707",
             url=f"https://github.com/uclouvain/openjpeg/archive/v{self.version}.tar.gz",
             strip_root=True,
         )

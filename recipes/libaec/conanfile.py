@@ -74,7 +74,11 @@ class ConanRecipe(ConanFile):
         self.cpp_info.set_property("cmake_file_name", "libaec")
         self.cpp_info.set_property("cmake_target_name", "libaec::libaec")
         self.cpp_info.set_property("cmake_build_modules", [self._cmake_module_file])
-        self.cpp_info.libs = collect_libs(self)
+        for lib in collect_libs(self):
+            comp = lib.removesuffix("_d")
+            comp = "sz" if comp == "szip" else comp
+            self.cpp_info.components[comp].libs = [lib]
+            self.cpp_info.components[comp].set_property("cmake_target_name", f"libaec::{comp}")
 
     @property
     def _cmake_module_file(self):

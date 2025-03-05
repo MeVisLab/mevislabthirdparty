@@ -1,5 +1,5 @@
 diff --git a/CMake/3rdparty.cmake b/CMake/3rdparty.cmake
-index c355922..90d4211 100644
+index 510027c..8337323 100644
 --- a/CMake/3rdparty.cmake
 +++ b/CMake/3rdparty.cmake
 @@ -25,16 +25,16 @@ mark_as_advanced(DCMTK_USE_FIND_PACKAGE)
@@ -22,7 +22,7 @@ index c355922..90d4211 100644
        if(NOT JPEG_FOUND)
          message(STATUS "Info: DCMTK TIFF support will be enabled (but without JPEG)")
          include_directories(${TIFF_INCLUDE_DIR})
-@@ -48,10 +48,10 @@ if(DCMTK_USE_FIND_PACKAGE)
+@@ -49,10 +49,10 @@ if(DCMTK_USE_FIND_PACKAGE)
  
    # Find PNG
    if(DCMTK_WITH_PNG)
@@ -35,7 +35,7 @@ index c355922..90d4211 100644
        set(WITH_LIBPNG "")
      else()
        message(STATUS "Info: DCMTK PNG support will be enabled")
-@@ -63,9 +63,9 @@ if(DCMTK_USE_FIND_PACKAGE)
+@@ -64,9 +64,9 @@ if(DCMTK_USE_FIND_PACKAGE)
  
    # Find OpenSSL
    if(DCMTK_WITH_OPENSSL)
@@ -47,7 +47,7 @@ index c355922..90d4211 100644
        set(WITH_OPENSSL "")
        set(DCMTK_WITH_OPENSSL OFF CACHE BOOL "" FORCE)
      else()
-@@ -94,9 +94,9 @@ if(DCMTK_USE_FIND_PACKAGE)
+@@ -95,9 +95,9 @@ if(DCMTK_USE_FIND_PACKAGE)
  
    # Find libXML2
    if(DCMTK_WITH_XML)
@@ -59,7 +59,7 @@ index c355922..90d4211 100644
        set(WITH_LIBXML "")
        set(DCMTK_WITH_XML OFF CACHE BOOL "" FORCE)
      else()
-@@ -109,9 +109,9 @@ if(DCMTK_USE_FIND_PACKAGE)
+@@ -110,9 +110,9 @@ if(DCMTK_USE_FIND_PACKAGE)
  
    # Find zlib
    if(DCMTK_WITH_ZLIB)
@@ -71,7 +71,7 @@ index c355922..90d4211 100644
        set(WITH_ZLIB "")
        set(DCMTK_WITH_ZLIB OFF CACHE BOOL "" FORCE)
      else()
-@@ -124,9 +124,9 @@ if(DCMTK_USE_FIND_PACKAGE)
+@@ -125,9 +125,9 @@ if(DCMTK_USE_FIND_PACKAGE)
  
    # Find libsndfile
    if(DCMTK_WITH_SNDFILE)
@@ -83,7 +83,7 @@ index c355922..90d4211 100644
        set(WITH_SNDFILE "")
        set(DCMTK_WITH_SNDFILE OFF CACHE BOOL "" FORCE)
      else()
-@@ -139,8 +139,8 @@ if(DCMTK_USE_FIND_PACKAGE)
+@@ -140,8 +140,8 @@ if(DCMTK_USE_FIND_PACKAGE)
  
    # Find libiconv
    if(DCMTK_WITH_ICONV)
@@ -94,7 +94,7 @@ index c355922..90d4211 100644
      if(ICONV_FOUND)
          if(NOT Iconv_IS_BUILT_IN)
              set(LIBICONV_FOUND ${ICONV_FOUND})
-@@ -154,7 +154,7 @@ if(DCMTK_USE_FIND_PACKAGE)
+@@ -155,7 +155,7 @@ if(DCMTK_USE_FIND_PACKAGE)
          endif()
      endif()
      if(NOT LIBICONV_FOUND OR NOT LIBCHARSET_FOUND)
@@ -103,7 +103,7 @@ index c355922..90d4211 100644
        set(DCMTK_WITH_ICONV OFF CACHE BOOL "" FORCE)
        set(WITH_LIBICONV "")
      else()
-@@ -169,9 +169,9 @@ if(DCMTK_USE_FIND_PACKAGE)
+@@ -170,9 +170,9 @@ if(DCMTK_USE_FIND_PACKAGE)
  
    # Find libwrap
    if(DCMTK_WITH_WRAP)
@@ -115,7 +115,7 @@ index c355922..90d4211 100644
        set(WITH_TCPWRAPPER "")
        set(DCMTK_WITH_WRAP OFF CACHE BOOL "" FORCE)
      else()
-@@ -187,13 +187,13 @@ if(DCMTK_USE_FIND_PACKAGE)
+@@ -188,13 +188,13 @@ if(DCMTK_USE_FIND_PACKAGE)
      if(DCMTK_USE_OWN_FINDOPENJPEG_MODULE)
        # PREPEND and POP_FRONT can only be used since version 3.15.so we use more compatible commands.
        list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_CURRENT_SOURCE_DIR}/${DCMTK_CMAKE_INCLUDE}/CMake/")
@@ -132,7 +132,7 @@ index c355922..90d4211 100644
        set(WITH_OPENJPEG "")
        set(DCMTK_WITH_OPENJPEG OFF CACHE BOOL "" FORCE)
      else()
-@@ -256,7 +256,7 @@ else()
+@@ -258,7 +258,7 @@ else()
        # this hides some warnings that are emitted when linking against libxmlXXX.lib instead of linking the DLL directly
        add_definitions("-DLIBXML_STATIC")
      else() # turn off library if library path not set
@@ -141,7 +141,7 @@ index c355922..90d4211 100644
        set(DCMTK_WITH_XML OFF CACHE BOOL "" FORCE)
        set(WITH_LIBXML "")
      endif()
-@@ -271,7 +271,7 @@ else()
+@@ -273,7 +273,7 @@ else()
        message(STATUS "Info: DCMTK PNG support will be enabled")
        set(WITH_LIBPNG 1)
      else() # turn off library if library path not set
@@ -150,7 +150,7 @@ index c355922..90d4211 100644
        set(DCMTK_WITH_PNG OFF CACHE BOOL "" FORCE)
        set(WITH_LIBPNG "")
      endif()
-@@ -286,7 +286,7 @@ else()
+@@ -288,7 +288,7 @@ else()
        message(STATUS "Info: DCMTK TIFF support will be enabled")
        set(WITH_LIBTIFF 1)
      else() # turn off library if library path not set
@@ -159,7 +159,7 @@ index c355922..90d4211 100644
        set(DCMTK_WITH_TIFF OFF CACHE BOOL "" FORCE)
        set(WITH_LIBTIFF "")
      endif()
-@@ -314,7 +314,7 @@ else()
+@@ -316,7 +316,7 @@ else()
          set(WITH_OPENSSL "")
        endif()
      else() # turn off library if library path not set
@@ -168,7 +168,7 @@ index c355922..90d4211 100644
        set(DCMTK_WITH_OPENSSL OFF CACHE BOOL "" FORCE)
        set(WITH_OPENSSL "")
      endif()
-@@ -329,7 +329,7 @@ else()
+@@ -331,7 +331,7 @@ else()
        message(STATUS "Info: DCMTK ZLIB support will be enabled")
        set(WITH_ZLIB 1)
      else() # turn off library if library path not set
@@ -177,7 +177,7 @@ index c355922..90d4211 100644
        set(DCMTK_WITH_ZLIB OFF CACHE BOOL "" FORCE)
        set(WITH_ZLIB "")
      endif()
-@@ -344,7 +344,7 @@ else()
+@@ -346,7 +346,7 @@ else()
        message(STATUS "Info: DCMTK SNDFILE support will be enabled")
        set(WITH_SNDFILE 1)
      else() # turn off library if library path not set
@@ -186,7 +186,7 @@ index c355922..90d4211 100644
        set(DCMTK_WITH_SNDFILE OFF CACHE BOOL "" FORCE)
        set(WITH_SNDFILE "")
      endif()
-@@ -359,7 +359,7 @@ else()
+@@ -361,7 +361,7 @@ else()
        message(STATUS "Info: DCMTK ICONV support will be enabled")
        set(WITH_LIBICONV 1)
      else() # turn off library if library path not set
@@ -195,7 +195,7 @@ index c355922..90d4211 100644
        set(DCMTK_WITH_ICONV OFF CACHE BOOL "" FORCE)
        set(WITH_LIBICONV "")
      endif()
-@@ -383,7 +383,7 @@ else()
+@@ -385,7 +385,7 @@ else()
            set(WITH_OPENJPEG 1)
        endif()
      else() # turn off library if library path not set
@@ -204,19 +204,7 @@ index c355922..90d4211 100644
        set(DCMTK_WITH_OPENJPEG OFF CACHE BOOL "" FORCE)
        set(WITH_OPENJPEG "")
      endif()
-@@ -402,9 +402,9 @@ if(NOT DEFINED DCMTK_WITH_STDLIBC_ICONV)
- endif()
- 
- if(DCMTK_WITH_ICU)
--  find_package(ICU COMPONENTS uc data QUIET)
-+  find_package(ICU COMPONENTS uc data REQUIRED)
-   if(NOT ICU_FOUND)
--    message(STATUS "Warning: ICU support will be disabled because the ICU were not found.")
-+    message(FATAL_ERROR "ICU support will be disabled because the ICU were not found.")
-     set(DCMTK_WITH_ICU OFF CACHE BOOL "" FORCE)
-     set(WITH_ICU "")
-   else()
-@@ -418,9 +418,9 @@ endif()
+@@ -405,9 +405,9 @@ endif()
  
  # Find doxygen
  if(DCMTK_WITH_DOXYGEN)

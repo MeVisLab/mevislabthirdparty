@@ -1,8 +1,8 @@
 diff --git a/CMake/dcmtkPrepare.cmake b/CMake/dcmtkPrepare.cmake
-index 365666d..eea3651 100644
+index 5800b96..0de56dd 100644
 --- a/CMake/dcmtkPrepare.cmake
 +++ b/CMake/dcmtkPrepare.cmake
-@@ -764,7 +764,7 @@ function(DCMTK_TEST_SOCKET_LIBRARY NAME SYMBOL)
+@@ -720,7 +720,7 @@ function(DCMTK_TEST_SOCKET_LIBRARY NAME SYMBOL)
    endif()
  endfunction()
  

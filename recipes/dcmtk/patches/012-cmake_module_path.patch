@@ -1,9 +1,9 @@
 diff --git a/CMake/dcmtkPrepare.cmake b/CMake/dcmtkPrepare.cmake
-index 6d43c19..365666d 100644
+index cfcfa44..5800b96 100644
 --- a/CMake/dcmtkPrepare.cmake
 +++ b/CMake/dcmtkPrepare.cmake
-@@ -160,7 +160,7 @@ mark_as_advanced(BUILD_SINGLE_SHARED_LIBRARY)
- set(CMAKE_DEBUG_POSTFIX "" CACHE STRING "Library postfix for debug builds. Usually left blank.")
+@@ -165,7 +165,7 @@ option(BUILD_SINGLE_SHARED_LIBRARY "Build a single DCMTK library." OFF)
+ mark_as_advanced(BUILD_SINGLE_SHARED_LIBRARY)
  set(DCMTK_TLS_LIBRARY_POSTFIX "" CACHE STRING "Postfix for libraries that change their ABI when using OpenSSL.")
  # add our CMake modules to the module path, but prefer the ones from CMake.
 -list(APPEND CMAKE_MODULE_PATH "${CMAKE_ROOT}/Modules" "${CMAKE_CURRENT_SOURCE_DIR}/${DCMTK_CMAKE_INCLUDE}/CMake/")

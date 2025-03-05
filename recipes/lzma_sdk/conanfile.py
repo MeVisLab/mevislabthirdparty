@@ -10,7 +10,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "lzma_sdk"
-    version = "24.08"
+    version = "24.09"
     description = "LZMA SDK"
     homepage = "https://7-zip.de/sdk.html"
     license = "LZMA-SDK-9.22"
@@ -30,7 +30,7 @@ class ConanRecipe(ConanFile):
         minor = f"{v.minor}".zfill(2)
         get(
             self,
-            sha256="462db3397241ac0f581db024ea9c5fd71114a0ebd3bfa9e2082f77271d0d647a",
+            sha256="15f52e74f9d0db73a15add96b9adcdce5b03db3d1a0610d46beb6081f5265b6a",
             url=f"https://github.com/sisong/lzma/archive/refs/tags/v{v.major}.{minor}.tar.gz",
             strip_root=True,
         )

@@ -10,7 +10,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "7zip"
-    version = "24.08"
+    version = "24.09"
     license = "LGPL-2.1-or-later AND BSD-3-Clause"
     homepage = "https://www.7-zip.org"
     description = "7-Zip is a file archiver with a high compression ratio"
@@ -40,7 +40,7 @@ class ConanRecipe(ConanFile):
         version = "".join(self.version.split("."))
         get(
             self,
-            sha256="aa04aac906a04df59e7301f4c69e9f48808e6c8ecae4eb697703a47bfb0ac042",
+            sha256="49c05169f49572c1128453579af1632a952409ced028259381dac30726b6133a",
             url=f"https://sourceforge.net/projects/sevenzip/files/7-Zip/{self.version}/7z{version}-src.tar.xz",
         )
 

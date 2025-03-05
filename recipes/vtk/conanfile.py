@@ -112,10 +112,11 @@ Issue submitted: https://gitlab.kitware.com/vtk/vtk/-/issues/19256""",
         tc.variables["VTK_ENABLE_REMOTE_MODULES"] = False
         tc.variables["VTK_FORBID_DOWNLOADS"] = True
         tc.variables["VTK_USE_FUTURE_BOOL"] = True
+        tc.variables["CMAKE_CXX_STANDARD"] = 17
+        tc.variables["VTK_IGNORE_CMAKE_CXX11_CHECKS"] = True
 
         python_dependency = self.dependencies["python"]
         py_version = python_dependency.ref.version
-        tc.variables["VTK_PYTHON_VERSION"] = f"{py_version.major}"
         tc.variables["Python_ADDITIONAL_VERSIONS"] = f"{py_version.major}.{py_version.minor}"
         tc.variables["PythonInterp_ROOT"] = python_dependency.package_folder.replace("\\", "/")
 

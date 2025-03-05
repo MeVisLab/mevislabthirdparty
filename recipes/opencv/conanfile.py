@@ -3,7 +3,7 @@ import textwrap
 
 from conan import ConanFile
 from conan.tools.cmake import CMakeToolchain, CMake, CMakeDeps, cmake_layout
-from conan.tools.env import VirtualRunEnv, Environment
+from conan.tools.env import VirtualRunEnv
 from conan.tools.files import get, rmdir, rm, replace_in_file, copy, collect_libs, save
 from conan.tools.microsoft import is_msvc
 from conan.tools.system import package_manager
@@ -13,7 +13,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "opencv"
-    version = "4.10.0"
+    version = "4.11.0"
     homepage = "https://opencv.org"
     description = "OpenCV is an open source computer vision and machine learning software library"
     license = "Apache-2.0"
@@ -59,7 +59,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="b2171af5be6b26f7a06b1229948bbb2bdaa74fcf5cd097e0af6378fce50a6eb9",
+            sha256="9a7c11f924eff5f8d8070e297b322ee68b9227e003fd600d4b8122198091665f",
             url=f"https://github.com/opencv/opencv/archive/{self.version}.tar.gz",
             strip_root=True,
         )
@@ -130,6 +130,7 @@ class ConanRecipe(ConanFile):
 
         tc = CMakeToolchain(self)
         tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
+        tc.variables["CMAKE_TLS_VERIFY"] = False
         tc.variables["BUILD_SHARED_LIBS"] = True
         tc.variables["CMAKE_INSTALL_RPATH"] = "$ORIGIN;$ORIGIN/../lib"
         tc.variables["OpenGL_GL_PREFERENCE"] = "LEGACY"
@@ -297,14 +298,9 @@ class ConanRecipe(ConanFile):
             "@CMAKE_PYTHON_BINARIES_PATH@",
             f"os.path.join(os.path.dirname(os.path.abspath(os.path.realpath(__file__)))," f" 'python-{version.major}.{version.minor}')",
         )
-
-        # try to fix download problem
-        env = Environment()
-        env.append("CMAKE_TLS_VERIFY", "0")
-        with env.vars(self).apply():
-            cmake = CMake(self)
-            cmake.configure()
-            cmake.build()
+        cmake = CMake(self)
+        cmake.configure()
+        cmake.build()
 
     def package(self):
         cmake = CMake(self)

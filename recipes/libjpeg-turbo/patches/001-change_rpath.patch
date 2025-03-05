@@ -1,8 +1,8 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index ff9c9c2..8b70ea3 100644
+index 9c4e5e2..cb9cc4c 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -278,7 +278,7 @@ report_option(ENABLE_SHARED "Shared libraries")
+@@ -285,7 +285,7 @@ report_option(ENABLE_SHARED "Shared libraries")
  report_option(ENABLE_STATIC "Static libraries")
  
  if(ENABLE_SHARED)

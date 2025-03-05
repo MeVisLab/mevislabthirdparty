@@ -1,5 +1,5 @@
 diff --git a/CMake/3rdparty.cmake b/CMake/3rdparty.cmake
-index 90d4211..12169ce 100644
+index 8337323..99c1326 100644
 --- a/CMake/3rdparty.cmake
 +++ b/CMake/3rdparty.cmake
 @@ -37,12 +37,12 @@ if(DCMTK_USE_FIND_PACKAGE)
@@ -7,18 +7,19 @@ index 90d4211..12169ce 100644
        if(NOT JPEG_FOUND)
          message(STATUS "Info: DCMTK TIFF support will be enabled (but without JPEG)")
 -        include_directories(${TIFF_INCLUDE_DIR})
+-        set(LIBTIFF_LIBS ${TIFF_LIBRARIES} ${TIFF_EXTRA_LIBS_STATIC})
 +        include_directories(${TIFF_INCLUDE_DIRS})
++        set(LIBTIFF_LIBS TIFF::TIFF)
        else()
          message(STATUS "Info: DCMTK TIFF support will be enabled")
 -        include_directories(${TIFF_INCLUDE_DIR} ${JPEG_INCLUDE_DIR})
+-        set(LIBTIFF_LIBS ${TIFF_LIBRARIES} ${TIFF_EXTRA_LIBS_STATIC} ${JPEG_LIBRARIES})
 +        include_directories(${TIFF_INCLUDE_DIRS} ${JPEG_INCLUDE_DIRS})
++        set(LIBTIFF_LIBS TIFF::TIFF JPEG::JPEG)
        endif()
--      set(LIBTIFF_LIBS ${TIFF_LIBRARY} ${TIFF_EXTRA_LIBS_STATIC} ${JPEG_LIBRARY})
-+      set(LIBTIFF_LIBS TIFF::TIFF JPEG::JPEG)
      endif()
    endif()
- 
-@@ -56,8 +56,8 @@ if(DCMTK_USE_FIND_PACKAGE)
+@@ -57,8 +57,8 @@ if(DCMTK_USE_FIND_PACKAGE)
      else()
        message(STATUS "Info: DCMTK PNG support will be enabled")
        set(WITH_LIBPNG 1)
@@ -29,7 +30,7 @@ index 90d4211..12169ce 100644
      endif()
    endif()
  
-@@ -102,8 +102,8 @@ if(DCMTK_USE_FIND_PACKAGE)
+@@ -103,8 +103,8 @@ if(DCMTK_USE_FIND_PACKAGE)
      else()
        message(STATUS "Info: DCMTK XML support will be enabled")
        set(WITH_LIBXML 1)
@@ -40,7 +41,7 @@ index 90d4211..12169ce 100644
      endif()
    endif()
  
-@@ -118,7 +118,7 @@ if(DCMTK_USE_FIND_PACKAGE)
+@@ -119,7 +119,7 @@ if(DCMTK_USE_FIND_PACKAGE)
        message(STATUS "Info: DCMTK ZLIB support will be enabled")
        set(WITH_ZLIB 1)
        include_directories(${ZLIB_INCLUDE_DIRS})
@@ -49,14 +50,3 @@ index 90d4211..12169ce 100644
      endif()
    endif()
  
-@@ -410,8 +410,8 @@ if(DCMTK_WITH_ICU)
-   else()
-     message(STATUS "Info: DCMTK ICU support will be enabled")
-     set(WITH_ICU 1)
--    set(ICU_INCDIR ${ICU_INCLUDE_DIR})
--    set(ICU_LIBS ${ICU_LIBRARIES} ${ICU_EXTRA_LIBS_STATIC})
-+    set(ICU_INCDIR ${ICU_INCLUDE_DIRS})
-+    set(ICU_LIBS ICU::dt ICU::data ${ICU_EXTRA_LIBS_STATIC})
-     include_directories(${ICU_INCLUDE_DIR})
-   endif()
- endif()

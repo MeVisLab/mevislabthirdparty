@@ -4,9 +4,10 @@ from conan.tools.files import copy, rmdir, collect_libs, get, patch
 
 required_conan_version = ">=2.2.2"
 
+
 class ConanRecipe(ConanFile):
     name = "muparser"
-    version = "2.3.4"
+    version = "2.3.5"
     homepage = "https://github.com/beltoforion/muparser"
     description = "fast math parser library"
     license = "BSD-2-Clause"
@@ -25,11 +26,12 @@ class ConanRecipe(ConanFile):
         tc.generate()
 
     def source(self):
-        get(self,
-            sha256="0c3fa54a3ebf36dda0ed3e7cd5451c964afbb15102bdbcba08aafb359a290121",
+        get(
+            self,
+            sha256="20b43cc68c655665db83711906f01b20c51909368973116dfc8d7b3c4ddb5dd4",
             url=f"https://github.com/beltoforion/muparser/archive/refs/tags/v{self.version}.tar.gz",
-            strip_root=True
-            )
+            strip_root=True,
+        )
         patch(self, patch_file="patches/001-disable_unicode.patch")
 
     def build(self):

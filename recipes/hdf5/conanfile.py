@@ -9,7 +9,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "hdf5"
-    version = "1.14.5"
+    version = "1.14.6"
     homepage = "https://www.hdfgroup.org/solutions/hdf5/"
     description = "General purpose library and file format for storing scientific data"
     license = "BSD-3-Clause"
@@ -30,7 +30,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="ec2e13c52e60f9a01491bb3158cb3778c985697131fc6a342262d32a26e58e44",
+            sha256="e4defbac30f50d64e1556374aa49e574417c9e72c6b1de7a4ff88c4b1bea6e9b",
             url=f"https://github.com/HDFGroup/hdf5/releases/download/hdf5_{self.version}/hdf5-{self.hdf5_version()}.tar.gz",
             strip_root=True,
         )

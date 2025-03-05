@@ -9,7 +9,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "dcmtk"
-    version = "3.6.8"
+    version = "3.6.9"
     description = "The DICOM Toolkit"
     license = "BSD-3-Clause"
     homepage = "https://dicom.offis.de/dcmtk.php.en"
@@ -33,7 +33,7 @@ class ConanRecipe(ConanFile):
         v = Version(self.version)
         get(
             self,
-            sha256="232076655503138debf2f624109f1799e539354f186ce4e04b27cf82a9d8720f",
+            sha256="b93ff5561244916a6e1e7e3ecccf2e26e6932c4edb5961268401cea7d4ab9c16",
             url=f"https://dicom.offis.de/download/dcmtk/dcmtk{v.major}{v.minor}{v.patch}/dcmtk-{self.version}.tar.gz",
             strip_root=True,
         )
@@ -49,9 +49,9 @@ class ConanRecipe(ConanFile):
             patch_type="feature",
             patch_description=dedent(
                 """
-                        handles specific case of invalid multi-frame padding (padding byte for each frame)
-                        note that the detection of this case is not completely certain:
-                    """
+                handles specific case of invalid multi-frame padding (padding byte for each frame)
+                note that the detection of this case is not completely certain:
+                """
             ),
         )
         patch(
@@ -78,10 +78,10 @@ class ConanRecipe(ConanFile):
             patch_type="feature",
             patch_description=dedent(
                 """
-                        option 'short-info': decreased verbosity, creates standardized one-line descriptions per association
-                        option 'flat-study-path': incoming files will be saved top-level regardless of the study
-                        option 'tempfile-while-saving': write incoming file into temp file and renames it after completion
-                    """
+                option 'short-info': decreased verbosity, creates standardized one-line descriptions per association
+                option 'flat-study-path': incoming files will be saved top-level regardless of the study
+                option 'tempfile-while-saving': write incoming file into temp file and renames it after completion
+                """
             ),
         )
         patch(
@@ -90,9 +90,9 @@ class ConanRecipe(ConanFile):
             patch_type="feature",
             patch_description=dedent(
                 """
-                        option 'from-file': read file list to send from file
-                        option 'accept-dicom-only': skip files without preamble to avoid long processing times
-                    """
+                option 'from-file': read file list to send from file
+                option 'accept-dicom-only': skip files without preamble to avoid long processing times
+                """
             ),
         )
         patch(self, patch_file="patches/010-find_3rdparty.patch", patch_description="find and use our conan dependencies")
@@ -104,18 +104,6 @@ class ConanRecipe(ConanFile):
         patch(self, patch_file="patches/013-find_libcharset.patch", patch_description="find libcharset debug library")
         patch(self, patch_file="patches/014-libiconv.patch", patch_description="disable libiconv configure test")
         patch(self, patch_file="patches/015-disable_nsl_test.patch", patch_description="disable test for nsl socket")
-        patch(
-            self,
-            patch_file="patches/016-jpeg_symbols_conflicts.patch",
-            patch_type="bugfix",
-            patch_description="see https://support.dcmtk.org/redmine/issues/1103",
-        )
-        patch(
-            self,
-            patch_file="patches/017-resolve_ambiguous_vr.patch",
-            patch_type="bugfix",
-            patch_description="see https://forum.dcmtk.org/viewtopic.php?p=22231",
-        )
 
     def generate(self):
         cd = CMakeDeps(self)

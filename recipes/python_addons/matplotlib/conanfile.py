@@ -11,7 +11,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "matplotlib"
-    version = "3.9.2"
+    version = "3.9.4"
     homepage = "https://matplotlib.org"
     description = "A comprehensive library for creating static, animated, and interactive visualizations in Python"
     license = "Python-2.0"
@@ -32,6 +32,7 @@ class ConanRecipe(ConanFile):
         return "LICENSE/LICENSE*"
 
     def python_requirements(self):
+        self.requires("contourpy/[>=1.3.1]")
         self.requires("kiwisolver/[>=1.4.4]")
         self.requires("libpng/[>=1.6.37]")
         self.requires("numpy/[>=1.16.4]")
@@ -51,8 +52,8 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
+            sha256="a29f8bab72f81df9077480e6b55394a17effd329d0ff1524bb5bc570734e7c54",
             url=f"https://github.com/matplotlib/matplotlib/archive/refs/tags/v{self.version}.tar.gz",
-            sha256="9c49b6683a34469e6d20864c7d5b975c4f29d7c60de1ce857980bead48769c3f",
             strip_root=True,
         )
 
@@ -62,12 +63,14 @@ class ConanRecipe(ConanFile):
 
     def build(self):
         build_type = str(self.settings.build_type).lower()
-        self.default_build(config_settings=[
-            f'setup-args=-Dbuildtype={build_type}',
-            f'setup-args=-Dsystem-freetype=true',
-            f'setup-args=-Dsystem-qhull=true',
-            f'setup-args=-Db_lto=false',
-        ])
+        self.default_build(
+            config_settings=[
+                f"setup-args=-Dbuildtype={build_type}",
+                f"setup-args=-Dsystem-freetype=true",
+                f"setup-args=-Dsystem-qhull=true",
+                f"setup-args=-Db_lto=false",
+            ]
+        )
 
     def package(self):
         self.default_package()

@@ -17,7 +17,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "python"
-    version = "3.11.10"
+    version = "3.11.11"
     homepage = "https://www.python.org"
     description = "An interpreted, interactive, object-oriented programming language"
     license = "Python-2.0"
@@ -57,7 +57,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="92f2faf242681bfa406d53a51e17d42c5373affe23a130cd9697e132ef574706",
+            sha256="883bddee3c92fcb91cf9c09c5343196953cbb9ced826213545849693970868ed",
             url=f"https://www.python.org/ftp/python/{self.version}/Python-{self.version}.tgz",
             strip_root=True,
         )

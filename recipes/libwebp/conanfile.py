@@ -7,7 +7,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "libwebp"
-    version = "1.4.0"
+    version = "1.5.0"
     description = "Library to encode and decode images in WebP format"
     homepage = "https://chromium.googlesource.com/webm/libwebp"
     license = "BSD-3-Clause"
@@ -24,7 +24,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="61f873ec69e3be1b99535634340d5bde750b2e4447caa1db9f61be3fd49ab1e5",
+            sha256="7d6fab70cf844bf6769077bd5d7a74893f8ffd4dfb42861745750c63c2a5c92c",
             url=f"https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-{self.version}.tar.gz",
             strip_root=True,
         )

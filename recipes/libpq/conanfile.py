@@ -12,7 +12,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "libpq"
-    version = "17.0"
+    version = "17.2"
     homepage = "https://www.postgresql.org/docs/current/static/libpq.html"
     description = "The library used by all the standard PostgreSQL tools."
     license = "PostgreSQL"
@@ -34,7 +34,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="7e276131c0fdd6b62588dbad9b3bb24b8c3498d5009328dba59af16e819109de",
+            sha256="82ef27c0af3751695d7f64e2d963583005fbb6a0c3df63d0e4b42211d7021164",
             url=f"https://ftp.postgresql.org/pub/source/v{self.version}/postgresql-{self.version}.tar.bz2",
             strip_root=True,
         )
@@ -68,8 +68,12 @@ class ConanRecipe(ConanFile):
         rm(self, "*", os.path.join(self.package_folder, "lib"), excludes=["libpq*.so", "libpq*.so.*", "libpq*.lib"])
 
     def package_info(self):
-        self.cpp_info.set_property("cpe", "cpe:2.3:a:postgresql:postgresql:*:*:*:*:*:*:*:*")  # there seems to be no cpe that only applies to libpq
-        self.cpp_info.set_property("base_purl", "github/postgres/postgres")  # this references the whole postgres db, not just the client libpq
+        self.cpp_info.set_property(
+            "cpe", "cpe:2.3:a:postgresql:postgresql:*:*:*:*:*:*:*:*"
+        )  # there seems to be no cpe that only applies to libpq
+        self.cpp_info.set_property(
+            "base_purl", "github/postgres/postgres"
+        )  # this references the whole postgres db, not just the client libpq
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "PostgreSQL")
         self.cpp_info.set_property("cmake_target_name", "PostgreSQL::PostgreSQL")

@@ -9,7 +9,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "llvm"
-    version = "19.1.4"
+    version = "19.1.7"
     license = "Apache-2.0"
     homepage = "https://llvm.org"
     description = "Low Level Virtual Machine"
@@ -36,7 +36,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="3aa2d2d2c7553164ad5c6f3b932b31816e422635e18620c9349a7da95b98d811",
+            sha256="82401fea7b79d0078043f7598b835284d6650a75b93e64b6f761ea7b63097501",
             url=f"https://github.com/llvm/llvm-project/releases/download/llvmorg-{self.version}/llvm-project-{self.version}.src.tar.xz",
             strip_root=True,
         )

@@ -1,8 +1,8 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 8b70ea3..41fb1c1 100644
+index cb9cc4c..28e4d08 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -181,7 +181,7 @@ if(CMAKE_INSTALL_PREFIX STREQUAL "${CMAKE_INSTALL_DEFAULT_PREFIX}")
+@@ -188,7 +188,7 @@ if(CMAKE_INSTALL_PREFIX STREQUAL "${CMAKE_INSTALL_DEFAULT_PREFIX}")
    endif()
  endif()
  

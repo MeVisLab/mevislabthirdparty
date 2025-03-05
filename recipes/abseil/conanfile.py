@@ -10,7 +10,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "abseil"
-    version = "20240722.0"
+    version = "20250127.0"
     homepage = "https://abseil.io"
     description = "Collection of C++ libraries from Google"
     license = "Apache-2.0"
@@ -26,7 +26,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="f50e5ac311a81382da7fa75b97310e4b9006474f9560ac46f54a9967f07d4ae3",
+            sha256="16242f394245627e508ec6bb296b433c90f8d914f73b9c026fddb905e27276e8",
             url=f"https://github.com/abseil/abseil-cpp/archive/refs/tags/{self.version}.tar.gz",
             strip_root=True,
         )

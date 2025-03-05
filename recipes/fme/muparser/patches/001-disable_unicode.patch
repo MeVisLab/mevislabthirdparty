@@ -1,5 +1,5 @@
 diff --git a/include/muParserDLL.h b/include/muParserDLL.h
-index f15ee62..50ad587 100644
+index 14d08cd..c655df6 100644
 --- a/include/muParserDLL.h
 +++ b/include/muParserDLL.h
 @@ -43,7 +43,7 @@ extern "C"
@@ -12,7 +12,7 @@ index f15ee62..50ad587 100644
  #else
  	typedef wchar_t   muChar_t;            // character type
 diff --git a/include/muParserDef.h b/include/muParserDef.h
-index 9d2cdb9..22ca78b 100644
+index 947c670..85ed5b4 100644
 --- a/include/muParserDef.h
 +++ b/include/muParserDef.h
 @@ -57,7 +57,7 @@
@@ -34,10 +34,10 @@ index 9d2cdb9..22ca78b 100644
  	/** \brief Encapsulate wcout. */
  	inline std::wostream& console()
 diff --git a/src/muParserBase.cpp b/src/muParserBase.cpp
-index a28a7fc..b4ca15e 100644
+index 1ee8875..c6eae1b 100644
 --- a/src/muParserBase.cpp
 +++ b/src/muParserBase.cpp
-@@ -298,10 +298,10 @@ namespace mu
+@@ -322,10 +322,10 @@ namespace mu
  			ss << _T("; RELEASE");
  #endif
  
@@ -51,18 +51,9 @@ index a28a7fc..b4ca15e 100644
  #else
  			ss << _T("; ASCII");
 diff --git a/src/muParserDLL.cpp b/src/muParserDLL.cpp
-index db92d2e..b92b467 100644
+index 5730f71..0780f5c 100644
 --- a/src/muParserDLL.cpp
 +++ b/src/muParserDLL.cpp
-@@ -26,7 +26,7 @@
- 	OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
- 
--#if defined(MUPARSER_DLL) 
-+#if defined(MUPARSER_DLL)
- 
- #if defined(_WIN32)
- 	#define WIN32_LEAN_AND_MEAN
 @@ -43,7 +43,7 @@
  #include "muParserInt.h"
  #include "muParserError.h"

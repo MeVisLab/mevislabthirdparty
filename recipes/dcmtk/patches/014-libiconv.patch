@@ -1,8 +1,8 @@
 diff --git a/CMake/3rdparty.cmake b/CMake/3rdparty.cmake
-index 12169ce..4288950 100644
+index 99c1326..1bcf8a7 100644
 --- a/CMake/3rdparty.cmake
 +++ b/CMake/3rdparty.cmake
-@@ -425,7 +425,8 @@ if(DCMTK_WITH_DOXYGEN)
+@@ -412,7 +412,8 @@ if(DCMTK_WITH_DOXYGEN)
    endif()
  endif()
  

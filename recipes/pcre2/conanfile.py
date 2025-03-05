@@ -7,7 +7,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "pcre2"
-    version = "10.44"
+    version = "10.45"
     homepage = "https://www.pcre.org"
     description = "Perl-compatible regular expression library"
     license = "BSD-3-Clause"
@@ -24,11 +24,11 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="d34f02e113cf7193a1ebf2770d3ac527088d485d4e047ed10e5d217c6ef5de96",
+            sha256="21547f3516120c75597e5b30a992e27a592a31950b5140e7b8bfde3f192033c4",
             url=f"https://github.com/PCRE2Project/pcre2/releases/download/pcre2-{self.version}/pcre2-{self.version}.tar.bz2",
             strip_root=True,
         )
-        replace_in_file(self, self.source_path / "CMakeLists.txt", 'SET(CMAKE_DEBUG_POSTFIX "d")', '#SET(CMAKE_DEBUG_POSTFIX "d")')
+        replace_in_file(self, self.source_path / "CMakeLists.txt", 'set(CMAKE_DEBUG_POSTFIX "d")', '#set(CMAKE_DEBUG_POSTFIX "d")')
 
     def generate(self):
         tc = CMakeToolchain(self)
@@ -60,7 +60,7 @@ class ConanRecipe(ConanFile):
         cmake.build()
 
     def package(self):
-        copy(self, "LICENCE", src=self.source_path, dst=self.package_path / "licenses")
+        copy(self, "LICENCE.md", src=self.source_path, dst=self.package_path / "licenses")
         copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False, excludes="*vc???.pdb")
         cmake = CMake(self)
         cmake.install()
@@ -68,6 +68,7 @@ class ConanRecipe(ConanFile):
         rmdir(self, self.package_path / "man")
         rmdir(self, self.package_path / "share")
         rmdir(self, self.package_path / "lib" / "pkgconfig")
+        rmdir(self, self.package_path / "lib" / "cmake")
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:pcre:pcre2:*:*:*:*:*:*:*:*")

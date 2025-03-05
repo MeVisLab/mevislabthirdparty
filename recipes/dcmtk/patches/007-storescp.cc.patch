@@ -1,5 +1,5 @@
 diff --git a/dcmnet/apps/storescp.cc b/dcmnet/apps/storescp.cc
-index 5dae4f1..6e66a25 100644
+index 8969c92..1807001 100644
 --- a/dcmnet/apps/storescp.cc
 +++ b/dcmnet/apps/storescp.cc
 @@ -116,6 +116,8 @@ enum E_SortStudyMode
@@ -19,7 +19,7 @@ index 5dae4f1..6e66a25 100644
  
  
  #ifdef HAVE_WAITPID
-@@ -201,6 +204,100 @@ extern "C" void sigChildHandler(int)
+@@ -197,6 +200,99 @@ extern "C" void sigChildHandler(int)
  #define SHORTCOL 4
  #define LONGCOL 21
  
@@ -81,7 +81,6 @@ index 5dae4f1..6e66a25 100644
 +  int min = timebuf.wMinute;
 +  int sec = timebuf.wSecond;
 +  int centisec = (int)timebuf.wMilliseconds / 10;
-+#define snprintf _snprintf
 +#else
 +  struct timeval tv;
 +  gettimeofday(&tv, NULL);
@@ -120,7 +119,7 @@ index 5dae4f1..6e66a25 100644
  int main(int argc, char *argv[])
  {
    T_ASC_Network *net;
-@@ -227,6 +324,7 @@ int main(int argc, char *argv[])
+@@ -223,6 +319,7 @@ int main(int argc, char *argv[])
      cmd.addOption("--version",                             "print version information and exit", OFCommandLine::AF_Exclusive);
      OFLog::addOptions(cmd);
      cmd.addOption("--verbose-pc",               "+v",      "show presentation contexts in verbose mode");
@@ -128,7 +127,7 @@ index 5dae4f1..6e66a25 100644
  
  #if defined(HAVE_FORK) || defined(_WIN32)
    cmd.addGroup("multi-process options:", LONGCOL, SHORTCOL + 2);
-@@ -356,6 +454,8 @@ int main(int argc, char *argv[])
+@@ -352,6 +449,8 @@ int main(int argc, char *argv[])
        cmd.addOption("--timenames",              "-tn",     "generate filename from creation time");
        cmd.addOption("--filename-extension",     "-fe",  1, "[e]xtension: string",
                                                             "append e to all filenames");
@@ -137,7 +136,7 @@ index 5dae4f1..6e66a25 100644
  
    cmd.addGroup("event options:", LONGCOL, SHORTCOL + 2);
      cmd.addOption("--exec-on-reception",        "-xcr", 1, "[c]ommand: string",
-@@ -474,6 +574,10 @@ int main(int argc, char *argv[])
+@@ -478,6 +577,10 @@ int main(int argc, char *argv[])
        app.checkDependence("--verbose-pc", "verbose mode", storescpLogger.isEnabledFor(OFLogger::INFO_LOG_LEVEL));
        opt_showPresentationContexts = OFTrue;
      }
@@ -148,7 +147,7 @@ index 5dae4f1..6e66a25 100644
  
      cmd.beginOptionBlock();
      if (cmd.findOption("--prefer-uncompr"))
-@@ -824,6 +928,8 @@ int main(int argc, char *argv[])
+@@ -828,6 +931,8 @@ int main(int argc, char *argv[])
      if (cmd.findOption("--default-filenames")) opt_uniqueFilenames = OFFalse;
      if (cmd.findOption("--unique-filenames")) opt_uniqueFilenames = OFTrue;
      cmd.endOptionBlock();
@@ -157,7 +156,7 @@ index 5dae4f1..6e66a25 100644
  
      if (cmd.findOption("--timenames")) opt_timeNames = OFTrue;
      if (cmd.findOption("--filename-extension"))
-@@ -1073,6 +1179,8 @@ static OFCondition acceptAssociation(T_ASC_Network *net, DcmAssociationConfigura
+@@ -1078,6 +1183,8 @@ static OFCondition acceptAssociation(T_ASC_Network *net, DcmAssociationConfigura
      goto cleanup;
    }
  
@@ -166,7 +165,7 @@ index 5dae4f1..6e66a25 100644
  #if defined(HAVE_FORK) || defined(_WIN32)
    if (opt_forkMode)
      OFLOG_INFO(storescpLogger, "Association Received in " << (DUL_processIsForkedChild() ? "child" : "parent")
-@@ -1097,6 +1205,11 @@ static OFCondition acceptAssociation(T_ASC_Network *net, DcmAssociationConfigura
+@@ -1102,6 +1209,11 @@ static OFCondition acceptAssociation(T_ASC_Network *net, DcmAssociationConfigura
      };
  
      OFLOG_INFO(storescpLogger, "Refusing Association (forced via command line)");
@@ -178,7 +177,7 @@ index 5dae4f1..6e66a25 100644
      cond = ASC_rejectAssociation(assoc, &rej);
      if (cond.bad())
      {
-@@ -1399,6 +1512,11 @@ static OFCondition acceptAssociation(T_ASC_Network *net, DcmAssociationConfigura
+@@ -1411,6 +1523,11 @@ static OFCondition acceptAssociation(T_ASC_Network *net, DcmAssociationConfigura
      };
  
      OFLOG_INFO(storescpLogger, "Association Rejected: Bad Application Context Name: " << buf);
@@ -190,7 +189,7 @@ index 5dae4f1..6e66a25 100644
      cond = ASC_rejectAssociation(assoc, &rej);
      if (cond.bad())
      {
-@@ -1418,6 +1536,11 @@ static OFCondition acceptAssociation(T_ASC_Network *net, DcmAssociationConfigura
+@@ -1430,6 +1547,11 @@ static OFCondition acceptAssociation(T_ASC_Network *net, DcmAssociationConfigura
      };
  
      OFLOG_INFO(storescpLogger, "Association Rejected: No Implementation Class UID provided");
@@ -202,7 +201,7 @@ index 5dae4f1..6e66a25 100644
      cond = ASC_rejectAssociation(assoc, &rej);
      if (cond.bad())
      {
-@@ -1436,6 +1559,10 @@ static OFCondition acceptAssociation(T_ASC_Network *net, DcmAssociationConfigura
+@@ -1448,6 +1570,10 @@ static OFCondition acceptAssociation(T_ASC_Network *net, DcmAssociationConfigura
        OFLOG_ERROR(storescpLogger, DimseCondition::dump(temp_str, cond));
        goto cleanup;
      }
@@ -213,7 +212,7 @@ index 5dae4f1..6e66a25 100644
      OFLOG_INFO(storescpLogger, "Association Acknowledged (Max Send PDV: " << assoc->sendPDVLength << ")");
      if (ASC_countAcceptedPresentationContexts(assoc->params) == 0)
        OFLOG_INFO(storescpLogger, "    (but no valid presentation contexts)");
-@@ -1540,6 +1667,7 @@ processCommands(T_ASC_Association * assoc)
+@@ -1552,6 +1678,7 @@ processCommands(T_ASC_Association * assoc)
    T_DIMSE_Message msg;
    T_ASC_PresentationContextID presID = 0;
    DcmDataset *statusDetail = NULL;
@@ -221,7 +220,7 @@ index 5dae4f1..6e66a25 100644
  
    // start a loop to be able to receive more than one DIMSE command
    while( cond == EC_Normal || cond == DIMSE_NODATAAVAILABLE || cond == DIMSE_OUTOFRESOURCES )
-@@ -1602,15 +1730,27 @@ processCommands(T_ASC_Association * assoc)
+@@ -1614,15 +1741,27 @@ processCommands(T_ASC_Association * assoc)
        {
          case DIMSE_C_ECHO_RQ:
            // process C-ECHO-Request
@@ -249,7 +248,7 @@ index 5dae4f1..6e66a25 100644
            cond = DIMSE_BADCOMMANDTYPE;
            OFLOG_ERROR(storescpLogger, "Expected C-ECHO or C-STORE request but received DIMSE command 0x"
                 << STD_NAMESPACE hex << STD_NAMESPACE setfill('0') << STD_NAMESPACE setw(4)
-@@ -1618,6 +1758,11 @@ processCommands(T_ASC_Association * assoc)
+@@ -1630,6 +1769,11 @@ processCommands(T_ASC_Association * assoc)
            OFLOG_DEBUG(storescpLogger, DIMSE_dumpMessage(tempStr, msg, DIMSE_INCOMING, NULL, presID));
            break;
        }
@@ -261,7 +260,7 @@ index 5dae4f1..6e66a25 100644
      }
    }
    return cond;
-@@ -1771,7 +1916,7 @@ storeSCPCallback(
+@@ -1783,7 +1927,7 @@ storeSCPCallback(
      // is present and the options opt_bitPreserving and opt_ignore are not set.
      if ((imageDataSet != NULL) && (*imageDataSet != NULL) && !opt_bitPreserving && !opt_ignore)
      {
@@ -270,7 +269,7 @@ index 5dae4f1..6e66a25 100644
  
        // in case one of the --sort-xxx options is set, we need to perform some particular steps to
        // determine the actual name of the output file
-@@ -1820,7 +1965,8 @@ storeSCPCallback(
+@@ -1832,7 +1976,8 @@ storeSCPCallback(
          // if this is the first DICOM object that was received or if the study instance UID in the
          // current DICOM object does not equal the last object's study instance UID we need to create
          // a new subdirectory in which the current DICOM object will be stored
@@ -280,7 +279,7 @@ index 5dae4f1..6e66a25 100644
          {
            // if lastStudyInstanceUID is non-empty, we have just completed receiving all objects for one
            // study. In such a case, we need to set a certain indicator variable (lastStudySubdirectoryPathAndName),
-@@ -1889,18 +2035,18 @@ storeSCPCallback(
+@@ -1901,18 +2046,18 @@ storeSCPCallback(
              {
                // If the subdirectory already exists, then re-use it. It might have been created by another
                // process receiving images in parallel.
@@ -302,7 +301,7 @@ index 5dae4f1..6e66a25 100644
              // all objects of a study have been received, so a new subdirectory is started.
              // ->timename counter can be reset, because the next filename can't cause a duplicate.
              // if no reset would be done, files of a new study (->new directory) would start with a counter in filename
-@@ -1913,6 +2059,13 @@ storeSCPCallback(
+@@ -1925,6 +2070,13 @@ storeSCPCallback(
          // path and file name; however, the path refers to the output directory captured in opt_outputDirectory)
          OFStandard::combineDirAndFilename(fileName, subdirectoryPathAndName, OFStandard::getFilenameFromPath(tmpStr, cbdata->imageFileName));
  
@@ -316,7 +315,7 @@ index 5dae4f1..6e66a25 100644
          // update global variable outputFileNameArray
          // (might be used in executeOnReception() and renameOnEndOfStudy)
          outputFileNameArray.push_back(tmpStr);
-@@ -1921,7 +2074,12 @@ storeSCPCallback(
+@@ -1933,7 +2085,12 @@ storeSCPCallback(
        else
        {
          fileName = cbdata->imageFileName;
@@ -330,7 +329,7 @@ index 5dae4f1..6e66a25 100644
          // update global variables outputFileNameArray
          // (might be used in executeOnReception() and renameOnEndOfStudy)
          outputFileNameArray.push_back(OFStandard::getFilenameFromPath(tmpStr, fileName));
-@@ -1949,6 +2107,14 @@ storeSCPCallback(
+@@ -1961,6 +2118,14 @@ storeSCPCallback(
          OFStandard::deleteFile(fileName);
        }
  
@@ -345,7 +344,7 @@ index 5dae4f1..6e66a25 100644
        // check the image to make sure it is consistent, i.e. that its sopClass and sopInstance correspond
        // to those mentioned in the request. If not, set the status in the response message variable.
        if (rsp->DimseStatus == STATUS_Success)
-@@ -1973,14 +2139,23 @@ storeSCPCallback(
+@@ -1985,14 +2150,23 @@ storeSCPCallback(
      // in case opt_bitPreserving is set, do some other things
      if( opt_bitPreserving )
      {
@@ -371,7 +370,7 @@ index 5dae4f1..6e66a25 100644
  static OFCondition storeSCP(
    T_ASC_Association *assoc,
    T_DIMSE_Message *msg,
-@@ -2115,7 +2290,13 @@ static OFCondition storeSCP(
+@@ -2128,7 +2302,13 @@ static OFCondition storeSCP(
    // DIMSE_storeProvider must be called with certain parameters.
    if (opt_bitPreserving)
    {
