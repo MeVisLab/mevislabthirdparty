@@ -80,7 +80,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
-        self.cpp_info.set_property("base_purl", "github/qhull/qhull")
+        self.cpp_info.set_property("purl", f"pkg:github/qhull/qhull@v{self.version}")
         self.cpp_info.set_property("cmake_file_name", "Qhull")
         self.cpp_info.set_property("cmake_target_name", "Qhull::Qhull")
         self.cpp_info.set_property("pkg_config_name", "qhull_r")

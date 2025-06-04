@@ -59,7 +59,7 @@
 class PythonQtWrapper_SoField : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 void delete_SoField(SoField* obj) { delete obj; }
    bool  connectFrom(SoField* theWrappedObject, SoEngineOutput*  engineOutput);
    bool  connectFrom(SoField* theWrappedObject, SoField*  field);
@@ -106,7 +106,7 @@ void delete_SoField(SoField* obj) { delete obj; }
 class PythonQtWrapper_SoFieldContainer : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
    void addManagedSensor(SoFieldContainer* theWrappedObject, SoSensor*  sensor);
    bool  enableNotify(SoFieldContainer* theWrappedObject, bool  flag);
    bool  fieldsAreEqual(SoFieldContainer* theWrappedObject, const SoFieldContainer*  fc) const;
@@ -127,7 +127,7 @@ public slots:
 class PythonQtWrapper_SoMFBitMask : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoMFBitMask* new_SoMFBitMask();
 void delete_SoMFBitMask(SoMFBitMask* obj) { delete obj; }
    void*  static_SoMFBitMask_createInstance();
@@ -143,7 +143,7 @@ void delete_SoMFBitMask(SoMFBitMask* obj) { delete obj; }
 class PythonQtWrapper_SoMFBool : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoMFBool* new_SoMFBool();
 void delete_SoMFBool(SoMFBool* obj) { delete obj; }
    void*  static_SoMFBool_createInstance();
@@ -167,7 +167,7 @@ void delete_SoMFBool(SoMFBool* obj) { delete obj; }
 class PythonQtWrapper_SoMFColor : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoMFColor* new_SoMFColor();
 void delete_SoMFColor(SoMFColor* obj) { delete obj; }
    void*  static_SoMFColor_createInstance();
@@ -197,7 +197,7 @@ void delete_SoMFColor(SoMFColor* obj) { delete obj; }
 class PythonQtWrapper_SoMFDouble : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoMFDouble* new_SoMFDouble();
 void delete_SoMFDouble(SoMFDouble* obj) { delete obj; }
    void*  static_SoMFDouble_createInstance();
@@ -221,7 +221,7 @@ void delete_SoMFDouble(SoMFDouble* obj) { delete obj; }
 class PythonQtWrapper_SoMFEngine : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoMFEngine* new_SoMFEngine();
 void delete_SoMFEngine(SoMFEngine* obj) { delete obj; }
    void*  static_SoMFEngine_createInstance();
@@ -245,7 +245,7 @@ void delete_SoMFEngine(SoMFEngine* obj) { delete obj; }
 class PythonQtWrapper_SoMFEnum : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoMFEnum* new_SoMFEnum();
 void delete_SoMFEnum(SoMFEnum* obj) { delete obj; }
    void*  static_SoMFEnum_createInstance();
@@ -272,7 +272,7 @@ void delete_SoMFEnum(SoMFEnum* obj) { delete obj; }
 class PythonQtWrapper_SoMFFloat : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoMFFloat* new_SoMFFloat();
 void delete_SoMFFloat(SoMFFloat* obj) { delete obj; }
    void*  static_SoMFFloat_createInstance();
@@ -296,7 +296,7 @@ void delete_SoMFFloat(SoMFFloat* obj) { delete obj; }
 class PythonQtWrapper_SoMFInt32 : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoMFInt32* new_SoMFInt32();
 void delete_SoMFInt32(SoMFInt32* obj) { delete obj; }
    void*  static_SoMFInt32_createInstance();
@@ -320,7 +320,7 @@ void delete_SoMFInt32(SoMFInt32* obj) { delete obj; }
 class PythonQtWrapper_SoMFMatrix : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoMFMatrix* new_SoMFMatrix();
 void delete_SoMFMatrix(SoMFMatrix* obj) { delete obj; }
    void*  static_SoMFMatrix_createInstance();
@@ -345,7 +345,7 @@ void delete_SoMFMatrix(SoMFMatrix* obj) { delete obj; }
 class PythonQtWrapper_SoMFMatrixd : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoMFMatrixd* new_SoMFMatrixd();
 void delete_SoMFMatrixd(SoMFMatrixd* obj) { delete obj; }
    void*  static_SoMFMatrixd_createInstance();
@@ -370,7 +370,7 @@ void delete_SoMFMatrixd(SoMFMatrixd* obj) { delete obj; }
 class PythonQtWrapper_SoMFName : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoMFName* new_SoMFName();
 void delete_SoMFName(SoMFName* obj) { delete obj; }
    void*  static_SoMFName_createInstance();
@@ -396,7 +396,7 @@ void delete_SoMFName(SoMFName* obj) { delete obj; }
 class PythonQtWrapper_SoMFNode : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoMFNode* new_SoMFNode();
 void delete_SoMFNode(SoMFNode* obj) { delete obj; }
    void*  static_SoMFNode_createInstance();
@@ -420,7 +420,7 @@ void delete_SoMFNode(SoMFNode* obj) { delete obj; }
 class PythonQtWrapper_SoMFPath : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoMFPath* new_SoMFPath();
 void delete_SoMFPath(SoMFPath* obj) { delete obj; }
    void*  static_SoMFPath_createInstance();
@@ -444,7 +444,7 @@ void delete_SoMFPath(SoMFPath* obj) { delete obj; }
 class PythonQtWrapper_SoMFPlane : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoMFPlane* new_SoMFPlane();
 void delete_SoMFPlane(SoMFPlane* obj) { delete obj; }
    void*  static_SoMFPlane_createInstance();
@@ -468,7 +468,7 @@ void delete_SoMFPlane(SoMFPlane* obj) { delete obj; }
 class PythonQtWrapper_SoMFPlaned : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoMFPlaned* new_SoMFPlaned();
 void delete_SoMFPlaned(SoMFPlaned* obj) { delete obj; }
    void*  static_SoMFPlaned_createInstance();
@@ -492,7 +492,7 @@ void delete_SoMFPlaned(SoMFPlaned* obj) { delete obj; }
 class PythonQtWrapper_SoMFRotation : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoMFRotation* new_SoMFRotation();
 void delete_SoMFRotation(SoMFRotation* obj) { delete obj; }
    void*  static_SoMFRotation_createInstance();
@@ -520,7 +520,7 @@ void delete_SoMFRotation(SoMFRotation* obj) { delete obj; }
 class PythonQtWrapper_SoMFRotationd : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoMFRotationd* new_SoMFRotationd();
 void delete_SoMFRotationd(SoMFRotationd* obj) { delete obj; }
    void*  static_SoMFRotationd_createInstance();
@@ -548,7 +548,7 @@ void delete_SoMFRotationd(SoMFRotationd* obj) { delete obj; }
 class PythonQtWrapper_SoMFShort : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoMFShort* new_SoMFShort();
 void delete_SoMFShort(SoMFShort* obj) { delete obj; }
    void*  static_SoMFShort_createInstance();
@@ -572,7 +572,7 @@ void delete_SoMFShort(SoMFShort* obj) { delete obj; }
 class PythonQtWrapper_SoMFString : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoMFString* new_SoMFString();
 void delete_SoMFString(SoMFString* obj) { delete obj; }
    void*  static_SoMFString_createInstance();
@@ -599,7 +599,7 @@ void delete_SoMFString(SoMFString* obj) { delete obj; }
 class PythonQtWrapper_SoMFTime : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoMFTime* new_SoMFTime();
 void delete_SoMFTime(SoMFTime* obj) { delete obj; }
    void*  static_SoMFTime_createInstance();
@@ -623,7 +623,7 @@ void delete_SoMFTime(SoMFTime* obj) { delete obj; }
 class PythonQtWrapper_SoMFUInt32 : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoMFUInt32* new_SoMFUInt32();
 void delete_SoMFUInt32(SoMFUInt32* obj) { delete obj; }
    void*  static_SoMFUInt32_createInstance();
@@ -647,7 +647,7 @@ void delete_SoMFUInt32(SoMFUInt32* obj) { delete obj; }
 class PythonQtWrapper_SoMFUShort : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoMFUShort* new_SoMFUShort();
 void delete_SoMFUShort(SoMFUShort* obj) { delete obj; }
    void*  static_SoMFUShort_createInstance();
@@ -671,7 +671,7 @@ void delete_SoMFUShort(SoMFUShort* obj) { delete obj; }
 class PythonQtWrapper_SoMFVec2d : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoMFVec2d* new_SoMFVec2d();
 void delete_SoMFVec2d(SoMFVec2d* obj) { delete obj; }
    void*  static_SoMFVec2d_createInstance();
@@ -697,7 +697,7 @@ void delete_SoMFVec2d(SoMFVec2d* obj) { delete obj; }
 class PythonQtWrapper_SoMFVec2f : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoMFVec2f* new_SoMFVec2f();
 void delete_SoMFVec2f(SoMFVec2f* obj) { delete obj; }
    void*  static_SoMFVec2f_createInstance();
@@ -723,7 +723,7 @@ void delete_SoMFVec2f(SoMFVec2f* obj) { delete obj; }
 class PythonQtWrapper_SoMFVec3d : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoMFVec3d* new_SoMFVec3d();
 void delete_SoMFVec3d(SoMFVec3d* obj) { delete obj; }
    void*  static_SoMFVec3d_createInstance();
@@ -749,7 +749,7 @@ void delete_SoMFVec3d(SoMFVec3d* obj) { delete obj; }
 class PythonQtWrapper_SoMFVec3f : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoMFVec3f* new_SoMFVec3f();
 void delete_SoMFVec3f(SoMFVec3f* obj) { delete obj; }
    void*  static_SoMFVec3f_createInstance();
@@ -775,7 +775,7 @@ void delete_SoMFVec3f(SoMFVec3f* obj) { delete obj; }
 class PythonQtWrapper_SoMFVec4d : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoMFVec4d* new_SoMFVec4d();
 void delete_SoMFVec4d(SoMFVec4d* obj) { delete obj; }
    void*  static_SoMFVec4d_createInstance();
@@ -801,7 +801,7 @@ void delete_SoMFVec4d(SoMFVec4d* obj) { delete obj; }
 class PythonQtWrapper_SoMFVec4f : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoMFVec4f* new_SoMFVec4f();
 void delete_SoMFVec4f(SoMFVec4f* obj) { delete obj; }
    void*  static_SoMFVec4f_createInstance();

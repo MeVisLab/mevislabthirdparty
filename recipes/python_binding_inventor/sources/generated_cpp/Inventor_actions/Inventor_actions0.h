@@ -57,7 +57,7 @@ enum AppliedCode{
   NODE = SoAction::NODE,   PATH = SoAction::PATH,   PATH_LIST = SoAction::PATH_LIST};
 enum PathCode{
   NO_PATH = SoAction::NO_PATH,   IN_PATH = SoAction::IN_PATH,   BELOW_PATH = SoAction::BELOW_PATH,   OFF_PATH = SoAction::OFF_PATH};
-public slots:
+public Q_SLOTS:
 void delete_SoAction(SoAction* obj) { delete obj; }
    void apply(SoAction* theWrappedObject, SoNode*  node);
    void py_q_apply(SoAction* theWrappedObject, SoNode*  node){  (((PythonQtPublicPromoter_SoAction*)theWrappedObject)->py_q_apply(node));}
@@ -125,7 +125,7 @@ public:
 Q_ENUMS(Response )
 enum Response{
   CONTINUE = SoCallbackAction::CONTINUE,   ABORT = SoCallbackAction::ABORT,   PRUNE = SoCallbackAction::PRUNE};
-public slots:
+public Q_SLOTS:
 SoCallbackAction* new_SoCallbackAction();
 void delete_SoCallbackAction(SoCallbackAction* obj) { delete obj; }
    void py_q_beginTraversal(SoCallbackAction* theWrappedObject, SoNode*  node){  (((PythonQtPublicPromoter_SoCallbackAction*)theWrappedObject)->py_q_beginTraversal(node));}
@@ -220,7 +220,7 @@ enum AbortCode{
   CONTINUE = SoGLRenderAction::CONTINUE,   ABORT = SoGLRenderAction::ABORT,   PRUNE = SoGLRenderAction::PRUNE,   DELAY = SoGLRenderAction::DELAY};
 enum TransparencyType{
   SCREEN_DOOR = SoGLRenderAction::SCREEN_DOOR,   ADD = SoGLRenderAction::ADD,   DELAYED_ADD = SoGLRenderAction::DELAYED_ADD,   SORTED_OBJECT_ADD = SoGLRenderAction::SORTED_OBJECT_ADD,   BLEND = SoGLRenderAction::BLEND,   DELAYED_BLEND = SoGLRenderAction::DELAYED_BLEND,   SORTED_OBJECT_BLEND = SoGLRenderAction::SORTED_OBJECT_BLEND};
-public slots:
+public Q_SLOTS:
 SoGLRenderAction* new_SoGLRenderAction(const SbViewportRegion&  viewportRegion);
 void delete_SoGLRenderAction(SoGLRenderAction* obj) { delete obj; }
    bool  abortNow(SoGLRenderAction* theWrappedObject);
@@ -286,7 +286,7 @@ public:
 Q_ENUMS(ResetType )
 enum ResetType{
   TRANSFORM = SoGetBoundingBoxAction::TRANSFORM,   BBOX = SoGetBoundingBoxAction::BBOX,   ALL = SoGetBoundingBoxAction::ALL};
-public slots:
+public Q_SLOTS:
 SoGetBoundingBoxAction* new_SoGetBoundingBoxAction(const SbViewportRegion&  viewportRegion);
 void delete_SoGetBoundingBoxAction(SoGetBoundingBoxAction* obj) { delete obj; }
    void py_q_beginTraversal(SoGetBoundingBoxAction* theWrappedObject, SoNode*  node){  (((PythonQtPublicPromoter_SoGetBoundingBoxAction*)theWrappedObject)->py_q_beginTraversal(node));}
@@ -343,7 +343,7 @@ inline void py_q_beginTraversal(SoNode*  node) { SoGetMatrixAction::beginTravers
 class PythonQtWrapper_SoGetMatrixAction : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoGetMatrixAction* new_SoGetMatrixAction(const SbViewportRegion&  newRegion);
 void delete_SoGetMatrixAction(SoGetMatrixAction* obj) { delete obj; }
    void py_q_beginTraversal(SoGetMatrixAction* theWrappedObject, SoNode*  node){  (((PythonQtPublicPromoter_SoGetMatrixAction*)theWrappedObject)->py_q_beginTraversal(node));}
@@ -387,7 +387,7 @@ inline void py_q_beginTraversal(SoNode*  node) { SoHandleEventAction::beginTrave
 class PythonQtWrapper_SoHandleEventAction : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoHandleEventAction* new_SoHandleEventAction(const SbViewportRegion&  viewportRegion);
 void delete_SoHandleEventAction(SoHandleEventAction* obj) { delete obj; }
    void py_q_beginTraversal(SoHandleEventAction* theWrappedObject, SoNode*  node){  (((PythonQtPublicPromoter_SoHandleEventAction*)theWrappedObject)->py_q_beginTraversal(node));}
@@ -438,7 +438,7 @@ inline void py_q_beginTraversal(SoNode*  node) { SoPickAction::beginTraversal(no
 class PythonQtWrapper_SoPickAction : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoPickAction* new_SoPickAction(const SbViewportRegion&  viewportRegion);
    void py_q_beginTraversal(SoPickAction* theWrappedObject, SoNode*  node){  (((PythonQtPublicPromoter_SoPickAction*)theWrappedObject)->py_q_beginTraversal(node));}
    void enableCulling(SoPickAction* theWrappedObject, bool  flag);
@@ -479,7 +479,7 @@ inline void py_q_beginTraversal(SoNode*  node) { SoRayPickAction::beginTraversal
 class PythonQtWrapper_SoRayPickAction : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoRayPickAction* new_SoRayPickAction(const SbViewportRegion&  viewportRegion);
 void delete_SoRayPickAction(SoRayPickAction* obj) { delete obj; }
    SoPickedPoint*  addIntersection(SoRayPickAction* theWrappedObject, const SbVec3f&  objectSpacePoint);
@@ -541,7 +541,7 @@ enum Interest{
   FIRST = SoSearchAction::FIRST,   LAST = SoSearchAction::LAST,   ALL = SoSearchAction::ALL};
 enum LookFor{
   NODE = SoSearchAction::NODE,   TYPE = SoSearchAction::TYPE,   NAME = SoSearchAction::NAME};
-public slots:
+public Q_SLOTS:
 SoSearchAction* new_SoSearchAction();
 void delete_SoSearchAction(SoSearchAction* obj) { delete obj; }
    void addPath(SoSearchAction* theWrappedObject, SoPath*  path);
@@ -608,7 +608,7 @@ inline bool  py_q_shouldCompactPathLists() const { return SoWriteAction::shouldC
 class PythonQtWrapper_SoWriteAction : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoWriteAction* new_SoWriteAction();
 SoWriteAction* new_SoWriteAction(SoOutput*  out);
 void delete_SoWriteAction(SoWriteAction* obj) { delete obj; }

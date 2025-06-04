@@ -11,7 +11,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "matplotlib"
-    version = "3.9.4"
+    version = "3.10.3"
     homepage = "https://matplotlib.org"
     description = "A comprehensive library for creating static, animated, and interactive visualizations in Python"
     license = "Python-2.0"
@@ -52,11 +52,10 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="a29f8bab72f81df9077480e6b55394a17effd329d0ff1524bb5bc570734e7c54",
+            sha256="d581d3cec14478a0347631f93d534c2acf11bf554670eedd0a200f56ec979d12",
             url=f"https://github.com/matplotlib/matplotlib/archive/refs/tags/v{self.version}.tar.gz",
             strip_root=True,
         )
-
         patch(self, patch_file="patches/001-add_support_for_a_PythonQt_backend.patch")
         patch(self, patch_file="patches/002-notice_running_eventloop.patch")
         patch(self, patch_file="patches/003-define_py_debug.patch")
@@ -82,4 +81,4 @@ class ConanRecipe(ConanFile):
     def package_info(self):
         super().package_info()
         # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
-        self.cpp_info.set_property("base_purl", "github/matplotlib/matplotlib")
+        self.cpp_info.set_property("purl", f"pkg:github/matplotlib/matplotlib@v{self.version}")

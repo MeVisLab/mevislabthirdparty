@@ -21,7 +21,6 @@ Note that on POSIX platforms the Python 3 executable is called `python3`, while 
 Additionally, under POSIX, `pip3` is not installed per default, while under Windows it is installed with Python as `pip`. 
 To be compatible with Windows _(yes, that's the wrong way around - blame MS!)_, we currently need the `python` and `pip` symlinks point to `python3` and `pip3` _(or better `python3 -m pip`)_ respectively.  Everything else may work, but has not been tested.
 
-
 Note also that on current Windows versions [Microsoft hijacks](https://docs.microsoft.com/en-us/windows/python/faqs#why-does-running-pythonexe-open-the-microsoft-store) the `python` and `python3` executables.
 
 

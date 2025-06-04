@@ -53,7 +53,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
-        self.cpp_info.set_property("base_purl", "github/qtproject/qt-solutions")
+        self.cpp_info.set_property("purl", f"pkg:github/qtproject/qt-solutions@777e95ba69952f11eaec0adfb0cb987fabcdecb3")
         self.cpp_info.set_property("cmake_file_name", "QtService")
         self.cpp_info.set_property("cmake_target_name", "QtService::QtService")
         self.cpp_info.set_property("cmake_config_version_compat", "AnyNewerVersion")

@@ -31,7 +31,7 @@ class MeVisMSBuild(MSBuild):
 
 class ConanRecipe(ConanFile):
     name = "icu"
-    version = "76.1"
+    version = "77.1"
     homepage = "https://icu.unicode.org/"
     description = "Unicode support, software internationalization, and software globalization"
     license = "Unicode-3.0"
@@ -50,7 +50,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="dfacb46bfe4747410472ce3e1144bf28a102feeaa4e3875bac9b4c6cf30f4f3e",
+            sha256="588e431f77327c39031ffbb8843c0e3bc122c211374485fa87dc5f3faff24061",
             url=f"https://github.com/unicode-org/icu/releases/download/release-{self.version.replace('.', '-')}/icu4c-{self.version.replace('.', '_')}-src.tgz",
             strip_root=True,
         )
@@ -143,7 +143,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:icu-project:international_components_for_unicode:*:*:*:*:*:c\\/c\\+\\+:*:*")
-        self.cpp_info.set_property("base_purl", "github/unicode-org/icu")
+        self.cpp_info.set_property("purl", f"pkg:github/unicode-org/icu@release-{self.version.replace('.', '-')}")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "ICU")
         self.cpp_info.set_property("cmake_target_name", "ICU::ICU")

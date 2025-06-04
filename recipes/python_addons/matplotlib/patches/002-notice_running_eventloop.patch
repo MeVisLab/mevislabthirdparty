@@ -1,8 +1,8 @@
 diff --git a/lib/matplotlib/backends/backend_qt.py b/lib/matplotlib/backends/backend_qt.py
-index dd3e354..cd26e36 100644
+index 158bfd2..e69a473 100644
 --- a/lib/matplotlib/backends/backend_qt.py
 +++ b/lib/matplotlib/backends/backend_qt.py
-@@ -628,6 +628,9 @@ class FigureManagerQT(FigureManagerBase):
+@@ -638,6 +638,9 @@ class FigureManagerQT(FigureManagerBase):
  
      @classmethod
      def start_main_loop(cls):

@@ -15,7 +15,11 @@
 #include <Inventor/SbString.h>
 #include <Inventor/misc/SoBase.h>
 #include <QString>
+
+#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+
 #include <numpy/arrayobject.h>
+
 #include <sstream>
 
 PyObject* ConvertSbStringToPython(const void* inObject, int /*metaTypeId*/)
@@ -635,13 +639,7 @@ void InventorBaseDecorator::PySoSelectionClassCB( void *userData, SoSelection *s
   Py_XDECREF(result);
 }
 
-#if PY_MAJOR_VERSION >= 3
-// import_array(); returns NULL since Python 3
-void*
-#else
-void
-#endif
-InventorBaseDecorator::init_numpy()
+void* InventorBaseDecorator::init_numpy()
 {
   static bool initialized = false;
   if (!initialized) {
@@ -700,24 +698,24 @@ void setVectorValuesHelper( FIELD* field, int start, PyObject* obj, PyTypeObject
     PyArrayObject*  contiguousArray = PyArray_GETCONTIGUOUS((PyArrayObject*)obj);
     // we use a PythonQtObjectPtr to handle the ownership of contiguousArray
     scopedArray.setNewRef((PyObject*)contiguousArray);
-    if (contiguousArray->nd != 2) {
+    if (PyArray_NDIM(contiguousArray) != 2) {
       throw std::invalid_argument("Expecting a numpy array of dimension 2");
     }
-    if (contiguousArray->dimensions[1] != SIZE) {
+    if (PyArray_DIMS(contiguousArray)[1] != SIZE) {
       std::stringstream str;
       str << "Expecting a numpy array of size " << SIZE << " in dimension 0";
       throw std::invalid_argument(str.str());
     }
-    int type = contiguousArray->descr->type_num;
+    int type = PyArray_DESCR(contiguousArray)->type_num;
     if (type != NPY_DOUBLE && type != NPY_FLOAT) {
       throw std::invalid_argument("Expecting a numpy array of type float or double");
     }
-    int numValues = contiguousArray->dimensions[0];
+    int numValues = PyArray_DIMS(contiguousArray)[0];
     if (type == mainNumpyType) {
       typedef mainType vec[SIZE];
-      field->setValues(start, numValues, (const vec*)contiguousArray->data);
+      field->setValues(start, numValues, (const vec*)PyArray_DATA(contiguousArray));
     } else {
-      conversionType* npValues = (conversionType*)contiguousArray->data;
+      conversionType* npValues = (conversionType*)PyArray_DATA(contiguousArray);
       field->setNum(start + numValues);
       VECTOR* values = field->startEditing();
       values += start;
@@ -750,7 +748,7 @@ PyObject* InventorBaseDecorator::startEditing( SoMFVec2f* field )
   init_numpy();
   npy_intp size[2] = {field->getNum(), 2};
   PyObject* obj = PyArray_New(&PyArray_Type, 2, size, NPY_FLOAT, nullptr,
-    (float*)field->startEditing(), 0, NPY_CARRAY, nullptr);
+    (float*)field->startEditing(), 0, NPY_ARRAY_CARRAY, nullptr);
   return obj;
 }
 
@@ -761,7 +759,7 @@ PyObject* InventorBaseDecorator::getValues( SoMFVec2f* field )
   npy_intp size[2] = {field->getNum(), 2};
   // return a read-only version
   PyObject* obj = PyArray_New(&PyArray_Type, 2, size, NPY_FLOAT, nullptr,
-    (float*)field->getValues(0), 0, NPY_CONTIGUOUS | NPY_BEHAVED, nullptr);
+    (float*)field->getValues(0), 0, NPY_ARRAY_C_CONTIGUOUS | NPY_ARRAY_BEHAVED, nullptr);
   return obj;
 }
 
@@ -778,7 +776,7 @@ PyObject* InventorBaseDecorator::startEditing( SoMFVec3f* field )
   init_numpy();
   npy_intp size[2] = {field->getNum(), 3};
   PyObject* obj = PyArray_New(&PyArray_Type, 2, size, NPY_FLOAT, nullptr,
-                              (float*)field->startEditing(), 0, NPY_CARRAY, nullptr);
+                              (float*)field->startEditing(), 0, NPY_ARRAY_CARRAY, nullptr);
   return obj;
 }
 
@@ -789,7 +787,7 @@ PyObject* InventorBaseDecorator::getValues( SoMFVec3f* field )
   npy_intp size[2] = {field->getNum(), 3};
   // return a read-only version
   PyObject* obj = PyArray_New(&PyArray_Type, 2, size, NPY_FLOAT, nullptr,
-    (float*)field->getValues(0), 0, NPY_CONTIGUOUS | NPY_BEHAVED, nullptr);
+    (float*)field->getValues(0), 0, NPY_ARRAY_C_CONTIGUOUS | NPY_ARRAY_BEHAVED, nullptr);
   return obj;
 }
 
@@ -806,7 +804,7 @@ PyObject* InventorBaseDecorator::startEditing( SoMFColor* field )
   init_numpy();
   npy_intp size[2] = {field->getNum(), 3};
   PyObject* obj = PyArray_New(&PyArray_Type, 2, size, NPY_FLOAT, nullptr,
-    (float*)field->startEditing(), 0, NPY_CARRAY, nullptr);
+    (float*)field->startEditing(), 0, NPY_ARRAY_CARRAY, nullptr);
   return obj;
 }
 
@@ -817,7 +815,7 @@ PyObject* InventorBaseDecorator::getValues( SoMFColor* field )
   npy_intp size[2] = {field->getNum(), 3};
   // return a read-only version
   PyObject* obj = PyArray_New(&PyArray_Type, 2, size, NPY_FLOAT, nullptr,
-    (float*)field->getValues(0), 0, NPY_CONTIGUOUS | NPY_BEHAVED, nullptr);
+    (float*)field->getValues(0), 0, NPY_ARRAY_C_CONTIGUOUS | NPY_ARRAY_BEHAVED, nullptr);
   return obj;
 }
 
@@ -834,7 +832,7 @@ PyObject* InventorBaseDecorator::startEditing( SoMFVec4f* field )
   init_numpy();
   npy_intp size[2] = {field->getNum(), 4};
   PyObject* obj = PyArray_New(&PyArray_Type, 2, size, NPY_FLOAT, nullptr,
-    (float*)field->startEditing(), 0, NPY_CARRAY, nullptr);
+    (float*)field->startEditing(), 0, NPY_ARRAY_CARRAY, nullptr);
   return obj;
 }
 
@@ -845,7 +843,7 @@ PyObject* InventorBaseDecorator::getValues( SoMFVec4f* field )
   npy_intp size[2] = {field->getNum(), 4};
   // return a read-only version
   PyObject* obj = PyArray_New(&PyArray_Type, 2, size, NPY_FLOAT, nullptr,
-    (float*)field->getValues(0), 0, NPY_CONTIGUOUS | NPY_BEHAVED, nullptr);
+    (float*)field->getValues(0), 0, NPY_ARRAY_C_CONTIGUOUS | NPY_ARRAY_BEHAVED, nullptr);
   return obj;
 }
 
@@ -864,7 +862,7 @@ PyObject* InventorBaseDecorator::startEditing( SoMFVec2d* field )
   init_numpy();
   npy_intp size[2] = {field->getNum(), 2};
   PyObject* obj = PyArray_New(&PyArray_Type, 2, size, NPY_DOUBLE, nullptr,
-    (double*)field->startEditing(), 0, NPY_CARRAY, nullptr);
+    (double*)field->startEditing(), 0, NPY_ARRAY_CARRAY, nullptr);
   return obj;
 }
 
@@ -875,7 +873,7 @@ PyObject* InventorBaseDecorator::getValues( SoMFVec2d* field )
   npy_intp size[2] = {field->getNum(), 2};
   // return a read-only version
   PyObject* obj = PyArray_New(&PyArray_Type, 2, size, NPY_DOUBLE, nullptr,
-    (double*)field->getValues(0), 0, NPY_CONTIGUOUS | NPY_BEHAVED, nullptr);
+    (double*)field->getValues(0), 0, NPY_ARRAY_C_CONTIGUOUS | NPY_ARRAY_BEHAVED, nullptr);
   return obj;
 }
 
@@ -892,7 +890,7 @@ PyObject* InventorBaseDecorator::startEditing( SoMFVec3d* field )
   init_numpy();
   npy_intp size[2] = {field->getNum(), 3};
   PyObject* obj = PyArray_New(&PyArray_Type, 2, size, NPY_DOUBLE, nullptr,
-    (double*)field->startEditing(), 0, NPY_CARRAY, nullptr);
+    (double*)field->startEditing(), 0, NPY_ARRAY_CARRAY, nullptr);
   return obj;
 }
 
@@ -903,7 +901,7 @@ PyObject* InventorBaseDecorator::getValues( SoMFVec3d* field )
   npy_intp size[2] = {field->getNum(), 3};
   // return a read-only version
   PyObject* obj = PyArray_New(&PyArray_Type, 2, size, NPY_DOUBLE, nullptr,
-    (double*)field->getValues(0), 0, NPY_CONTIGUOUS | NPY_BEHAVED, nullptr);
+    (double*)field->getValues(0), 0, NPY_ARRAY_C_CONTIGUOUS | NPY_ARRAY_BEHAVED, nullptr);
   return obj;
 }
 
@@ -920,7 +918,7 @@ PyObject* InventorBaseDecorator::startEditing( SoMFVec4d* field )
   init_numpy();
   npy_intp size[2] = {field->getNum(), 4};
   PyObject* obj = PyArray_New(&PyArray_Type, 2, size, NPY_DOUBLE, nullptr,
-    (double*)field->startEditing(), 0, NPY_CARRAY, nullptr);
+    (double*)field->startEditing(), 0, NPY_ARRAY_CARRAY, nullptr);
   return obj;
 }
 
@@ -931,7 +929,7 @@ PyObject* InventorBaseDecorator::getValues( SoMFVec4d* field )
   npy_intp size[2] = {field->getNum(), 4};
   // return a read-only version
   PyObject* obj = PyArray_New(&PyArray_Type, 2, size, NPY_DOUBLE, nullptr,
-    (double*)field->getValues(0), 0, NPY_CONTIGUOUS | NPY_BEHAVED, nullptr);
+    (double*)field->getValues(0), 0, NPY_ARRAY_C_CONTIGUOUS | NPY_ARRAY_BEHAVED, nullptr);
   return obj;
 }
 
@@ -942,8 +940,8 @@ void setValuesHelper( FIELD* field, int start, PyObject* obj )
   InventorBaseDecorator::init_numpy();
   PythonQtObjectPtr scopedArray;
   // check if it isn't a numpy array
-  if (!PyArray_Check(obj) || (((PyArrayObject*) obj)->descr->type_num != numpyType)) {
-    PyObject* convertedArray = PyArray_FromAny(obj,PyArray_DescrFromType(numpyType), 1,1,NPY_FORCECAST,nullptr);
+  if (!PyArray_Check(obj) || PyArray_DESCR((PyArrayObject*) obj)->type_num != numpyType) {
+    PyObject* convertedArray = PyArray_FromAny(obj, PyArray_DescrFromType(numpyType), 1, 1, NPY_ARRAY_FORCECAST, nullptr);
     // this takes care of the ref counting...
     scopedArray.setNewRef(convertedArray);
     obj = convertedArray;
@@ -952,15 +950,15 @@ void setValuesHelper( FIELD* field, int start, PyObject* obj )
     PyArrayObject*  contiguousArray = PyArray_GETCONTIGUOUS((PyArrayObject*)obj);
     // we use a PythonQtObjectPtr to handle the ownership of contiguousArray
     scopedArray.setNewRef((PyObject*)contiguousArray);
-    if (contiguousArray->nd != 1) {
+    if (PyArray_NDIM(contiguousArray) != 1) {
       throw std::invalid_argument("Expecting a numpy array of dimension 1");
     }
-    int type = contiguousArray->descr->type_num;
+    int type = PyArray_DESCR(contiguousArray)->type_num;
     if (type != numpyType) {
       throw std::invalid_argument("Unexpected numpy type");
     }
-    int numValues = contiguousArray->dimensions[0];
-    field->setValues(start, numValues, (const TYPE*)contiguousArray->data);
+    int numValues = PyArray_DIMS(contiguousArray)[0];
+    field->setValues(start, numValues, (const TYPE*)PyArray_DATA(contiguousArray));
   } else {
     throw std::invalid_argument("Expecting a numpy array or something that is convertible using fromAny()");
   }
@@ -978,7 +976,7 @@ PyObject* InventorBaseDecorator::startEditing( SoMFFloat* field )
   init_numpy();
   npy_intp size[1] = {field->getNum()};
   PyObject* obj = PyArray_New(&PyArray_Type, 1, size, NPY_FLOAT, nullptr,
-    (float*)field->startEditing(), 0, NPY_CARRAY, nullptr);
+    (float*)field->startEditing(), 0, NPY_ARRAY_CARRAY, nullptr);
   return obj;
 }
 
@@ -989,7 +987,7 @@ PyObject* InventorBaseDecorator::getValues( SoMFFloat* field )
   npy_intp size[1] = {field->getNum()};
   // return a read-only version
   PyObject* obj = PyArray_New(&PyArray_Type, 1, size, NPY_FLOAT, nullptr,
-    (float*)field->getValues(0), 0, NPY_CONTIGUOUS | NPY_BEHAVED, nullptr);
+    (float*)field->getValues(0), 0, NPY_ARRAY_C_CONTIGUOUS | NPY_ARRAY_BEHAVED, nullptr);
   return obj;
 }
 
@@ -1005,7 +1003,7 @@ PyObject* InventorBaseDecorator::startEditing( SoMFDouble* field )
   init_numpy();
   npy_intp size[1] = {field->getNum()};
   PyObject* obj = PyArray_New(&PyArray_Type, 1, size, NPY_DOUBLE, nullptr,
-    (double*)field->startEditing(), 0, NPY_CARRAY, nullptr);
+    (double*)field->startEditing(), 0, NPY_ARRAY_CARRAY, nullptr);
   return obj;
 }
 
@@ -1016,7 +1014,7 @@ PyObject* InventorBaseDecorator::getValues( SoMFDouble* field )
   npy_intp size[1] = {field->getNum()};
   // return a read-only version
   PyObject* obj = PyArray_New(&PyArray_Type, 1, size, NPY_DOUBLE, nullptr,
-    (double*)field->getValues(0), 0, NPY_CONTIGUOUS | NPY_BEHAVED, nullptr);
+    (double*)field->getValues(0), 0, NPY_ARRAY_C_CONTIGUOUS | NPY_ARRAY_BEHAVED, nullptr);
   return obj;
 }
 
@@ -1033,7 +1031,7 @@ PyObject* InventorBaseDecorator::startEditing( SoMFUInt32* field )
   init_numpy();
   npy_intp size[1] = {field->getNum()};
   PyObject* obj = PyArray_New(&PyArray_Type, 1, size, NPY_UINT32, nullptr,
-    (void*)field->startEditing(), 0, NPY_CARRAY, nullptr);
+    (void*)field->startEditing(), 0, NPY_ARRAY_CARRAY, nullptr);
   return obj;
 }
 
@@ -1044,7 +1042,7 @@ PyObject* InventorBaseDecorator::getValues( SoMFUInt32* field )
   npy_intp size[1] = {field->getNum()};
   // return a read-only version
   PyObject* obj = PyArray_New(&PyArray_Type, 1, size, NPY_UINT32, nullptr,
-    (void*)field->getValues(0), 0, NPY_CONTIGUOUS | NPY_BEHAVED, nullptr);
+    (void*)field->getValues(0), 0, NPY_ARRAY_C_CONTIGUOUS | NPY_ARRAY_BEHAVED, nullptr);
   return obj;
 }
 
@@ -1060,7 +1058,7 @@ PyObject* InventorBaseDecorator::startEditing( SoMFInt32* field )
   init_numpy();
   npy_intp size[1] = {field->getNum()};
   PyObject* obj = PyArray_New(&PyArray_Type, 1, size, NPY_INT32, nullptr,
-    (void*)field->startEditing(), 0, NPY_CARRAY, nullptr);
+    (void*)field->startEditing(), 0, NPY_ARRAY_CARRAY, nullptr);
   return obj;
 }
 
@@ -1071,6 +1069,6 @@ PyObject* InventorBaseDecorator::getValues( SoMFInt32* field )
   npy_intp size[1] = {field->getNum()};
   // return a read-only version
   PyObject* obj = PyArray_New(&PyArray_Type, 1, size, NPY_INT32, nullptr,
-    (void*)field->getValues(0), 0, NPY_CONTIGUOUS | NPY_BEHAVED, nullptr);
+    (void*)field->getValues(0), 0, NPY_ARRAY_C_CONTIGUOUS | NPY_ARRAY_BEHAVED, nullptr);
   return obj;
 }

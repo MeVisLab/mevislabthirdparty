@@ -67,7 +67,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
-        # self.cpp_info.set_property("base_purl", "")  # Official repository is at https://www.7-zip.org/sdk.html
+        self.cpp_info.set_property("purl", f"pkg:github/sisong/lzma@v{self.version}")  # Official repository is at https://www.7-zip.org/sdk.html
         self.cpp_info.set_property("display_name", "LZMA SDK")
         self.cpp_info.libs = collect_libs(self)
         self.cpp_info.includedirs = ["include", "include/C"]

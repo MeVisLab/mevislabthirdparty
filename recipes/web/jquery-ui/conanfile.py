@@ -36,6 +36,6 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:jqueryui:jquery_ui:*:*:*:*:*:jquery:*:*")
-        self.cpp_info.set_property("base_purl", "github/jquery/jquery-ui")
+        self.cpp_info.set_property("purl", f"pkg:github/jquery/jquery-ui@{self.version}")
         self.cpp_info.includedirs.clear()
         self.cpp_info.set_property("cmake_find_mode", "none")

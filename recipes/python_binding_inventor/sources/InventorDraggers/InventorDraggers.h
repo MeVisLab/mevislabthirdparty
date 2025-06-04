@@ -21,7 +21,7 @@ class InventorDraggersDecorator : public QObject
 {
   Q_OBJECT
 
-public slots:
+public Q_SLOTS:
 
   void addOtherEventCallback(SoDragger* cb, PyObject* callable) {
     if (PyCallable_Check(callable)) {

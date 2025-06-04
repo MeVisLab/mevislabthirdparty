@@ -8,7 +8,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "sqlalchemy"
-    version = "2.0.37"
+    version = "2.0.41"
     homepage = "https://www.sqlalchemy.org"
     description = (
         "SQLAlchemy is the Python SQL toolkit and Object Relational Mapper "
@@ -32,7 +32,7 @@ class ConanRecipe(ConanFile):
         version = self.version.replace(".", "_")
         get(
             self,
-            sha256="8df9e10f3c77b0222fa8aed22a3a339561d7c6c29e2d1c67221f0d18cd7adeb6",
+            sha256="90ae81b04567a52abc6d4113c6fd1fff4b1fcf149122db8ebaa8af3b463b8b3d",
             url=f"https://github.com/sqlalchemy/sqlalchemy/archive/refs/tags/rel_{version}.tar.gz",
             strip_root=True,
         )
@@ -41,4 +41,4 @@ class ConanRecipe(ConanFile):
     def package_info(self):
         super().package_info()
         self.cpp_info.set_property("cpe", "cpe:2.3:a:sqlalchemy:sqlalchemy:*:*:*:*:*:*:*:*")
-        self.cpp_info.set_property("base_purl", "github/sqlalchemy/sqlalchemy")
+        self.cpp_info.set_property("purl", f"pkg:github/sqlalchemy/sqlalchemy@rel_{self.version.replace('.', '_')}")

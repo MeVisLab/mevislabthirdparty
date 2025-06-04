@@ -70,7 +70,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
-        self.cpp_info.set_property("base_purl", "github/KhronosGroup/OpenCL-ICD-Loader")
+        self.cpp_info.set_property("purl", f"pkg:github/KhronosGroup/OpenCL-ICD-Loader@v{self.version}")
         self.cpp_info.set_property("cmake_file_name", "OpenCLICDLoader")
         self.cpp_info.set_property("cmake_target_name", "OpenCLICDLoader::OpenCLICDLoader")
         self.cpp_info.set_property("cmake_config_version_compat", "AnyNewerVersion")

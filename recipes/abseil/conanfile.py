@@ -10,7 +10,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "abseil"
-    version = "20250127.0"
+    version = "20250127.1"
     homepage = "https://abseil.io"
     description = "Collection of C++ libraries from Google"
     license = "Apache-2.0"
@@ -26,7 +26,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="16242f394245627e508ec6bb296b433c90f8d914f73b9c026fddb905e27276e8",
+            sha256="b396401fd29e2e679cace77867481d388c807671dc2acc602a0259eeb79b7811",
             url=f"https://github.com/abseil/abseil-cpp/archive/refs/tags/{self.version}.tar.gz",
             strip_root=True,
         )
@@ -109,7 +109,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         # self.cpp_info.set_property("cpe", "")  # No CPE yet?
-        self.cpp_info.set_property("base_purl", "github/abseil/abseil-cpp")
+        self.cpp_info.set_property("purl", f"pkg:github/abseil/abseil-cpp@{self.version}")
         self.cpp_info.set_property("cmake_file_name", "absl")
 
         collect_libs(self)

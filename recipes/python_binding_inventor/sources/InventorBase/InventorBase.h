@@ -59,7 +59,7 @@ class SbMatrixDecomposeResult : public QObject
       matrix.getTransform(_translation, _rotation, _scaling, _scaleOrientation, center);
     }
 
-  public slots:
+  public Q_SLOTS:
     SbVec3f    py_get_translation() { return _translation; }
     SbRotation py_get_rotation() { return _rotation; }
     SbVec3f    py_get_scaling() { return _scaling; }
@@ -83,7 +83,7 @@ public:
     matrix.getTransform(_translation, _rotation, _scaling, _scaleOrientation, center);
   }
 
-public slots:
+public Q_SLOTS:
   SbVec3d    py_get_translation() { return _translation; }
   SbRotationd py_get_rotation() { return _rotation; }
   SbVec3d    py_get_scaling() { return _scaling; }
@@ -100,7 +100,7 @@ class InventorBaseDecorator : public QObject
 {
   Q_OBJECT
 
-public slots:
+public Q_SLOTS:
   SoField*  py_dynamic_get_attrib(SoFieldContainer* container, const QByteArray& name);
   PyObject* py_dynamic_get_attrib(SoEngine* engine, const QByteArray& name );
 

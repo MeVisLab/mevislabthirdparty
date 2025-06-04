@@ -93,7 +93,7 @@ inline void py_q_setDragger(SoDragger*  newDragger) { SoCenterballManip::setDrag
 class PythonQtWrapper_SoCenterballManip : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoCenterballManip* new_SoCenterballManip();
    void static_SoCenterballManip_fieldSensorCB(void*  arg__1, SoSensor*  arg__2);
    SoType  static_SoCenterballManip_getClassTypeId();
@@ -158,7 +158,7 @@ inline void py_q_search(SoSearchAction*  action) { SoDirectionalLightManip::sear
 class PythonQtWrapper_SoDirectionalLightManip : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoDirectionalLightManip* new_SoDirectionalLightManip();
    void py_q_GLRender(SoDirectionalLightManip* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoDirectionalLightManip*)theWrappedObject)->py_q_GLRender(action));}
    void py_q_callback(SoDirectionalLightManip* theWrappedObject, SoCallbackAction*  action){  (((PythonQtPublicPromoter_SoDirectionalLightManip*)theWrappedObject)->py_q_callback(action));}
@@ -220,7 +220,7 @@ void write(SoWriteAction*  action) override;
 class PythonQtWrapper_SoHandleBoxManip : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoHandleBoxManip* new_SoHandleBoxManip();
    SoType  static_SoHandleBoxManip_getClassTypeId();
 };
@@ -267,7 +267,7 @@ void write(SoWriteAction*  action) override;
 class PythonQtWrapper_SoJackManip : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoJackManip* new_SoJackManip();
    SoType  static_SoJackManip_getClassTypeId();
 };
@@ -329,7 +329,7 @@ inline void py_q_search(SoSearchAction*  action) { SoSpotLightManip::search(acti
 class PythonQtWrapper_SoSpotLightManip : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoSpotLightManip* new_SoSpotLightManip();
    void py_q_GLRender(SoSpotLightManip* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoSpotLightManip*)theWrappedObject)->py_q_GLRender(action));}
    void py_q_callback(SoSpotLightManip* theWrappedObject, SoCallbackAction*  action){  (((PythonQtPublicPromoter_SoSpotLightManip*)theWrappedObject)->py_q_callback(action));}
@@ -391,7 +391,7 @@ void write(SoWriteAction*  action) override;
 class PythonQtWrapper_SoTabBoxManip : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoTabBoxManip* new_SoTabBoxManip();
    SoType  static_SoTabBoxManip_getClassTypeId();
 };
@@ -438,7 +438,7 @@ void write(SoWriteAction*  action) override;
 class PythonQtWrapper_SoTrackballManip : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoTrackballManip* new_SoTrackballManip();
    SoType  static_SoTrackballManip_getClassTypeId();
 };
@@ -485,7 +485,7 @@ void write(SoWriteAction*  action) override;
 class PythonQtWrapper_SoTransformBoxManip : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoTransformBoxManip* new_SoTransformBoxManip();
    SoType  static_SoTransformBoxManip_getClassTypeId();
 };
@@ -549,7 +549,7 @@ inline void py_q_setDragger(SoDragger*  newDragger) { SoTransformManip::setDragg
 class PythonQtWrapper_SoTransformManip : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoTransformManip* new_SoTransformManip();
    void py_q_GLRender(SoTransformManip* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoTransformManip*)theWrappedObject)->py_q_GLRender(action));}
    void py_q_callback(SoTransformManip* theWrappedObject, SoCallbackAction*  action){  (((PythonQtPublicPromoter_SoTransformManip*)theWrappedObject)->py_q_callback(action));}
@@ -612,7 +612,7 @@ void write(SoWriteAction*  action) override;
 class PythonQtWrapper_SoTransformerManip : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoTransformerManip* new_SoTransformerManip();
    SoType  static_SoTransformerManip_getClassTypeId();
    bool  isLocateHighlighting(SoTransformerManip* theWrappedObject);

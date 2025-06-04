@@ -17,7 +17,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "python"
-    version = "3.11.11"
+    version = "3.11.12"
     homepage = "https://www.python.org"
     description = "An interpreted, interactive, object-oriented programming language"
     license = "Python-2.0"
@@ -57,7 +57,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="883bddee3c92fcb91cf9c09c5343196953cbb9ced826213545849693970868ed",
+            sha256="379c9929a989a9d65a1f5d854e011f4872b142259f4fc0a8c4062d2815ed7fba",
             url=f"https://www.python.org/ftp/python/{self.version}/Python-{self.version}.tgz",
             strip_root=True,
         )
@@ -234,7 +234,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:python:python:*:*:*:*:*:*:*:*")
-        self.cpp_info.set_property("base_purl", "github/python/cpython")
+        self.cpp_info.set_property("purl", f"pkg:github/python/cpython@v{self.version}")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "Python3")
         self.cpp_info.set_property("cmake_target_name", "Python3::Python")

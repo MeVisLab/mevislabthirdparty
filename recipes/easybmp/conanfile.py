@@ -47,7 +47,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         # self.cpp_info.set_property("cpe", "")  # No CPE?
-        # self.cpp_info.set_property("base_purl", "")  # Real source is at sourceforge - "sourceforge/easybmp"?
+        # self.cpp_info.set_property("purl", "")  # Real source is at sourceforge - "sourceforge/easybmp"?
         self.cpp_info.set_property("cmake_file_name", "easybmp")
         self.cpp_info.set_property("cmake_target_name", "EasyBMP::EasyBMP")
         self.cpp_info.libs = collect_libs(self)

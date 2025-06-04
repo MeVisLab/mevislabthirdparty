@@ -1,8 +1,8 @@
 diff --git a/src/interfaces/libpq/meson.build b/src/interfaces/libpq/meson.build
-index ed2a404..fc5b3e5 100644
+index 57fe8c3..3f74c89 100644
 --- a/src/interfaces/libpq/meson.build
 +++ b/src/interfaces/libpq/meson.build
-@@ -65,7 +65,11 @@ libpq_st = static_library('libpq',
+@@ -62,7 +62,11 @@ libpq_st = static_library('libpq',
    kwargs: default_lib_args,
  )
  

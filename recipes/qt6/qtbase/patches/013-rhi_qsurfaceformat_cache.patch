@@ -1,0 +1,41 @@
+diff --git a/src/gui/rhi/qrhigles2.cpp b/src/gui/rhi/qrhigles2.cpp
+index ea6dfdac..e5dbe7b8 100644
+--- a/src/gui/rhi/qrhigles2.cpp
++++ b/src/gui/rhi/qrhigles2.cpp
+@@ -552,16 +552,28 @@ QRhiGles2InitParams::QRhiGles2InitParams()
+  */
+ QOffscreenSurface *QRhiGles2InitParams::newFallbackSurface(const QSurfaceFormat &format)
+ {
++    static QSurfaceFormat lastInputFormat;
++    static QSurfaceFormat lastResolvedFormat;
++    static bool formatCached{};
++
+     QSurfaceFormat fmt = format;
+ 
+-    // To resolve all fields in the format as much as possible, create a context.
+-    // This may be heavy, but allows avoiding BAD_MATCH on some systems.
+-    QOpenGLContext tempContext;
+-    tempContext.setFormat(fmt);
+-    if (tempContext.create())
+-        fmt = tempContext.format();
+-    else
+-        qWarning("QRhiGles2: Failed to create temporary context");
++    if (formatCached && fmt == lastInputFormat)
++        fmt = lastResolvedFormat;
++    else {
++        // To resolve all fields in the format as much as possible, create a context.
++        // This may be heavy, but allows avoiding BAD_MATCH on some systems.
++        QOpenGLContext tempContext;
++        tempContext.setFormat(fmt);
++        if (tempContext.create()) {
++            fmt = tempContext.format();
++            // Cache the resolved QSurfaceFormat:
++            lastInputFormat = format;
++            lastResolvedFormat = fmt;
++            formatCached = true;
++        } else
++            qWarning("QRhiGles2: Failed to create temporary context");
++    }
+ 
+     QOffscreenSurface *s = new QOffscreenSurface;
+     s->setFormat(fmt);

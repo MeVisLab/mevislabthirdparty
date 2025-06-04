@@ -1,8 +1,8 @@
 diff --git a/cmake/pcl_find_boost.cmake b/cmake/pcl_find_boost.cmake
-index f9e0b28..e609496 100644
+index 5d5c785..4ac3a44 100644
 --- a/cmake/pcl_find_boost.cmake
 +++ b/cmake/pcl_find_boost.cmake
-@@ -22,7 +22,7 @@ if(CMAKE_CXX_STANDARD MATCHES "14")
+@@ -20,7 +20,7 @@ if(CMAKE_CXX_STANDARD MATCHES "14")
    set(BOOST_REQUIRED_MODULES filesystem iostreams system)
  else()
    # Optional boost modules

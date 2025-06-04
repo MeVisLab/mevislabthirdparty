@@ -59,7 +59,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
-        self.cpp_info.set_property("base_purl", "github/itay-grudev/SingleApplication")
+        self.cpp_info.set_property("purl", f"pkg:github/itay-grudev/SingleApplication@v{self.version}")
         self.cpp_info.set_property("cmake_file_name", "SingleApplication")
         self.cpp_info.set_property("cmake_target_name", "SingleApplication::SingleApplication")
         self.cpp_info.libs = collect_libs(self)

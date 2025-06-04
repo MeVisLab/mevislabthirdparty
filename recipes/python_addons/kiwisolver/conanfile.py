@@ -34,4 +34,4 @@ class ConanRecipe(ConanFile):
     def package_info(self):
         super().package_info()
         # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
-        self.cpp_info.set_property("base_purl", "github/nucleic/kiwi")
+        self.cpp_info.set_property("purl", f"pkg:github/nucleic/kiwi@{self.version}")

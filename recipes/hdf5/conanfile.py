@@ -80,7 +80,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:hdfgroup:hdf5:*:*:*:*:*:*:*:*")
-        self.cpp_info.set_property("base_purl", "github/HDFGroup/hdf5")
+        self.cpp_info.set_property("purl", f"pkg:github/HDFGroup/hdf5@hdf5_{self.version}")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "HDF5")
         self.cpp_info.set_property("cmake_target_name", "HDF5::HDF5")

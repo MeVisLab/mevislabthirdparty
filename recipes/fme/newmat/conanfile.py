@@ -47,5 +47,5 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
-        # self.cpp_info.set_property("base_purl", "")  # Official repository is at https://www.robertnz.net/ftp
+        # self.cpp_info.set_property("purl", "")  # Official repository is at https://www.robertnz.net/ftp
         self.cpp_info.libs = collect_libs(self)

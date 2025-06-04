@@ -8,7 +8,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "mimalloc"
-    version = "2.1.7"
+    version = "2.2.3"
     license = "MIT"
     homepage = "https://github.com/microsoft/mimalloc"
     description = "mimalloc is a compact general purpose allocator with excellent performance"
@@ -25,7 +25,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="0eed39319f139afde8515010ff59baf24de9e47ea316a315398e8027d198202d",
+            sha256="ac5ba94172b60823215a22b87ae923c5b05ef0cdd9047df2a832c16da02a6447",
             url=f"https://github.com/microsoft/mimalloc/archive/v{self.version}.tar.gz",
             strip_root=True,
         )
@@ -62,8 +62,8 @@ class ConanRecipe(ConanFile):
         rmdir(self, os.path.join(self.package_folder, "share"))
 
     def package_info(self):
-        #self.cpp_info.set_property("cpe", "")
-        self.cpp_info.set_property("base_purl", "github/microsoft/mimalloc")
+        # self.cpp_info.set_property("cpe", "")
+        self.cpp_info.set_property("purl", f"pkg:github/microsoft/mimalloc@v{self.version}")
 
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "mimalloc")
@@ -73,4 +73,3 @@ class ConanRecipe(ConanFile):
             self.cpp_info.system_libs.extend(["pthread", "rt"])
         elif self.settings.os == "Windows":
             self.cpp_info.system_libs.extend(["psapi", "shell32", "user32", "bcrypt"])
-        

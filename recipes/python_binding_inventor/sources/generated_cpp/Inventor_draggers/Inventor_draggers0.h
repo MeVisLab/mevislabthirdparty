@@ -137,7 +137,7 @@ inline bool  py_q_setUpConnections(bool  onOff, bool  doItAlways = 0) { return S
 class PythonQtWrapper_SoCenterballDragger : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoCenterballDragger* new_SoCenterballDragger();
    void static_SoCenterballDragger_fieldSensorCB(void*  arg__1, SoSensor*  arg__2);
    void py_q_getBoundingBox(SoCenterballDragger* theWrappedObject, SoGetBoundingBoxAction*  action){  (((PythonQtPublicPromoter_SoCenterballDragger*)theWrappedObject)->py_q_getBoundingBox(action));}
@@ -223,7 +223,7 @@ inline bool  py_q_setUpConnections(bool  onOff, bool  doItAlways = 0) { return S
 class PythonQtWrapper_SoDirectionalLightDragger : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoDirectionalLightDragger* new_SoDirectionalLightDragger();
    void static_SoDirectionalLightDragger_fieldSensorCB(void*  arg__1, SoSensor*  arg__2);
    SoType  static_SoDirectionalLightDragger_getClassTypeId();
@@ -309,7 +309,7 @@ inline bool  py_q_setUpConnections(bool  onOff, bool  doItAlways = 0) { return S
 class PythonQtWrapper_SoDragPointDragger : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoDragPointDragger* new_SoDragPointDragger();
    void drag(SoDragPointDragger* theWrappedObject);
    void dragFinish(SoDragPointDragger* theWrappedObject);
@@ -424,7 +424,7 @@ public:
 Q_ENUMS(ProjectorFrontSetting )
 enum ProjectorFrontSetting{
   FRONT = SoDragger::FRONT,   BACK = SoDragger::BACK,   USE_PICK = SoDragger::USE_PICK};
-public slots:
+public Q_SLOTS:
 SoDragger* new_SoDragger();
    SbMatrix  static_SoDragger_appendRotation(const SbMatrix&  mtx, const SbRotation&  rot, const SbVec3f&  rotCenter, const SbMatrix*  conversion = nullptr);
    SbMatrix  static_SoDragger_appendScale(const SbMatrix&  mtx, const SbVec3f&  scale, const SbVec3f&  scaleCenter, const SbMatrix*  conversion = nullptr);
@@ -580,7 +580,7 @@ inline bool  py_q_setUpConnections(bool  onOff, bool  doItAlways = 0) { return S
 class PythonQtWrapper_SoHandleBoxDragger : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoHandleBoxDragger* new_SoHandleBoxDragger();
    void drag(SoHandleBoxDragger* theWrappedObject);
    void dragFinish(SoHandleBoxDragger* theWrappedObject);
@@ -668,7 +668,7 @@ inline bool  py_q_setUpConnections(bool  onOff, bool  doItAlways = 0) { return S
 class PythonQtWrapper_SoJackDragger : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoJackDragger* new_SoJackDragger();
    void static_SoJackDragger_fieldSensorCB(void*  arg__1, SoSensor*  arg__2);
    SoType  static_SoJackDragger_getClassTypeId();
@@ -749,7 +749,7 @@ inline bool  py_q_setUpConnections(bool  onOff, bool  doItAlways = 0) { return S
 class PythonQtWrapper_SoPointLightDragger : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoPointLightDragger* new_SoPointLightDragger();
    void static_SoPointLightDragger_fieldSensorCB(void*  arg__1, SoSensor*  arg__2);
    SoType  static_SoPointLightDragger_getClassTypeId();
@@ -831,7 +831,7 @@ inline bool  py_q_setUpConnections(bool  onOff, bool  doItAlways = 0) { return S
 class PythonQtWrapper_SoRotateCylindricalDragger : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoRotateCylindricalDragger* new_SoRotateCylindricalDragger();
    void static_SoRotateCylindricalDragger_doneCB(void*  arg__1, SoDragger*  arg__2);
    void drag(SoRotateCylindricalDragger* theWrappedObject);
@@ -920,7 +920,7 @@ inline bool  py_q_setUpConnections(bool  onOff, bool  doItAlways = 0) { return S
 class PythonQtWrapper_SoRotateDiscDragger : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoRotateDiscDragger* new_SoRotateDiscDragger();
    void static_SoRotateDiscDragger_doneCB(void*  arg__1, SoDragger*  arg__2);
    void drag(SoRotateDiscDragger* theWrappedObject);
@@ -1007,7 +1007,7 @@ inline bool  py_q_setUpConnections(bool  onOff, bool  doItAlways = 0) { return S
 class PythonQtWrapper_SoRotateSphericalDragger : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoRotateSphericalDragger* new_SoRotateSphericalDragger();
    void static_SoRotateSphericalDragger_doneCB(void*  arg__1, SoDragger*  arg__2);
    void drag(SoRotateSphericalDragger* theWrappedObject);
@@ -1096,7 +1096,7 @@ inline bool  py_q_setUpConnections(bool  onOff, bool  doItAlways = 0) { return S
 class PythonQtWrapper_SoScale1Dragger : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoScale1Dragger* new_SoScale1Dragger();
    void drag(SoScale1Dragger* theWrappedObject);
    void dragFinish(SoScale1Dragger* theWrappedObject);
@@ -1183,7 +1183,7 @@ inline bool  py_q_setUpConnections(bool  onOff, bool  doItAlways = 0) { return S
 class PythonQtWrapper_SoScale2Dragger : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoScale2Dragger* new_SoScale2Dragger();
    void drag(SoScale2Dragger* theWrappedObject);
    void dragFinish(SoScale2Dragger* theWrappedObject);
@@ -1270,7 +1270,7 @@ inline bool  py_q_setUpConnections(bool  onOff, bool  doItAlways = 0) { return S
 class PythonQtWrapper_SoScale2UniformDragger : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoScale2UniformDragger* new_SoScale2UniformDragger();
    void drag(SoScale2UniformDragger* theWrappedObject);
    void dragFinish(SoScale2UniformDragger* theWrappedObject);
@@ -1357,7 +1357,7 @@ inline bool  py_q_setUpConnections(bool  onOff, bool  doItAlways = 0) { return S
 class PythonQtWrapper_SoScaleUniformDragger : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoScaleUniformDragger* new_SoScaleUniformDragger();
    void drag(SoScaleUniformDragger* theWrappedObject);
    void dragFinish(SoScaleUniformDragger* theWrappedObject);
@@ -1447,7 +1447,7 @@ inline bool  py_q_setUpConnections(bool  onOff, bool  doItAlways = 0) { return S
 class PythonQtWrapper_SoSpotLightDragger : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoSpotLightDragger* new_SoSpotLightDragger();
    void static_SoSpotLightDragger_doneCB(void*  arg__1, SoDragger*  arg__2);
    void drag(SoSpotLightDragger* theWrappedObject);
@@ -1536,7 +1536,7 @@ inline bool  py_q_setUpConnections(bool  onOff, bool  doItAlways = 0) { return S
 class PythonQtWrapper_SoTabBoxDragger : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoTabBoxDragger* new_SoTabBoxDragger();
    void adjustScaleTabSize(SoTabBoxDragger* theWrappedObject);
    void static_SoTabBoxDragger_adjustScaleTabSizeCB(void*  arg__1, SoDragger*  arg__2);
@@ -1642,7 +1642,7 @@ public:
 Q_ENUMS(State )
 enum State{
   INACTIVE = PythonQtPublicPromoter_SoTabPlaneDragger::INACTIVE,   TRANSLATING = PythonQtPublicPromoter_SoTabPlaneDragger::TRANSLATING,   EDGE_SCALING = PythonQtPublicPromoter_SoTabPlaneDragger::EDGE_SCALING,   CORNER_SCALING = PythonQtPublicPromoter_SoTabPlaneDragger::CORNER_SCALING,   UNIFORM_SCALING = PythonQtPublicPromoter_SoTabPlaneDragger::UNIFORM_SCALING};
-public slots:
+public Q_SLOTS:
 SoTabPlaneDragger* new_SoTabPlaneDragger();
    void py_q_GLRender(SoTabPlaneDragger* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoTabPlaneDragger*)theWrappedObject)->py_q_GLRender(action));}
    void adjustScaleTabSize(SoTabPlaneDragger* theWrappedObject);
@@ -1770,7 +1770,7 @@ public:
 Q_ENUMS(State )
 enum State{
   INACTIVE = PythonQtPublicPromoter_SoTrackballDragger::INACTIVE,   FREE_ROTATE = PythonQtPublicPromoter_SoTrackballDragger::FREE_ROTATE,   X_ROTATE = PythonQtPublicPromoter_SoTrackballDragger::X_ROTATE,   Y_ROTATE = PythonQtPublicPromoter_SoTrackballDragger::Y_ROTATE,   Z_ROTATE = PythonQtPublicPromoter_SoTrackballDragger::Z_ROTATE,   SCALE = PythonQtPublicPromoter_SoTrackballDragger::SCALE,   USER_AXIS_ADJUST = PythonQtPublicPromoter_SoTrackballDragger::USER_AXIS_ADJUST,   USER_AXIS_ROTATE = PythonQtPublicPromoter_SoTrackballDragger::USER_AXIS_ROTATE,   SPINNING = PythonQtPublicPromoter_SoTrackballDragger::SPINNING};
-public slots:
+public Q_SLOTS:
 SoTrackballDragger* new_SoTrackballDragger();
    void drag(SoTrackballDragger* theWrappedObject);
    void dragFinish(SoTrackballDragger* theWrappedObject);
@@ -1871,7 +1871,7 @@ inline bool  py_q_setUpConnections(bool  onOff, bool  doItAlways = 0) { return S
 class PythonQtWrapper_SoTransformBoxDragger : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoTransformBoxDragger* new_SoTransformBoxDragger();
    void static_SoTransformBoxDragger_fieldSensorCB(void*  arg__1, SoSensor*  arg__2);
    SoType  static_SoTransformBoxDragger_getClassTypeId();
@@ -1963,7 +1963,7 @@ public:
 Q_ENUMS(State )
 enum State{
   INACTIVE = SoTransformerDragger::INACTIVE,   RIT_X_ROTATE = SoTransformerDragger::RIT_X_ROTATE,   TOP_Y_ROTATE = SoTransformerDragger::TOP_Y_ROTATE,   FNT_Z_ROTATE = SoTransformerDragger::FNT_Z_ROTATE,   LFT_X_ROTATE = SoTransformerDragger::LFT_X_ROTATE,   BOT_Y_ROTATE = SoTransformerDragger::BOT_Y_ROTATE,   BAK_Z_ROTATE = SoTransformerDragger::BAK_Z_ROTATE,   PX_PY_PZ_3D_SCALE = SoTransformerDragger::PX_PY_PZ_3D_SCALE,   PX_PY_NZ_3D_SCALE = SoTransformerDragger::PX_PY_NZ_3D_SCALE,   PX_NY_PZ_3D_SCALE = SoTransformerDragger::PX_NY_PZ_3D_SCALE,   PX_NY_NZ_3D_SCALE = SoTransformerDragger::PX_NY_NZ_3D_SCALE,   NX_PY_PZ_3D_SCALE = SoTransformerDragger::NX_PY_PZ_3D_SCALE,   NX_PY_NZ_3D_SCALE = SoTransformerDragger::NX_PY_NZ_3D_SCALE,   NX_NY_PZ_3D_SCALE = SoTransformerDragger::NX_NY_PZ_3D_SCALE,   NX_NY_NZ_3D_SCALE = SoTransformerDragger::NX_NY_NZ_3D_SCALE,   RIT_TRANSLATE = SoTransformerDragger::RIT_TRANSLATE,   TOP_TRANSLATE = SoTransformerDragger::TOP_TRANSLATE,   FNT_TRANSLATE = SoTransformerDragger::FNT_TRANSLATE,   LFT_TRANSLATE = SoTransformerDragger::LFT_TRANSLATE,   BOT_TRANSLATE = SoTransformerDragger::BOT_TRANSLATE,   BAK_TRANSLATE = SoTransformerDragger::BAK_TRANSLATE};
-public slots:
+public Q_SLOTS:
 SoTransformerDragger* new_SoTransformerDragger();
    void drag(SoTransformerDragger* theWrappedObject);
    void dragFinish(SoTransformerDragger* theWrappedObject);
@@ -2067,7 +2067,7 @@ inline bool  py_q_setUpConnections(bool  onOff, bool  doItAlways = 0) { return S
 class PythonQtWrapper_SoTranslate1Dragger : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoTranslate1Dragger* new_SoTranslate1Dragger();
    void drag(SoTranslate1Dragger* theWrappedObject);
    void dragFinish(SoTranslate1Dragger* theWrappedObject);
@@ -2158,7 +2158,7 @@ inline bool  py_q_setUpConnections(bool  onOff, bool  doItAlways = 0) { return S
 class PythonQtWrapper_SoTranslate2Dragger : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoTranslate2Dragger* new_SoTranslate2Dragger();
    void drag(SoTranslate2Dragger* theWrappedObject);
    void dragFinish(SoTranslate2Dragger* theWrappedObject);

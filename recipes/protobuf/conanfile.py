@@ -11,7 +11,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "protobuf"
-    version = "29.3"
+    version = "30.2"
     homepage = "https://developers.google.com/protocol-buffers"
     description = "Google's Protocol Buffers are a language-neutral, platform-neutral extensible mechanism for serializing structured data"
     license = "BSD-3-Clause"
@@ -36,7 +36,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="008a11cc56f9b96679b4c285fd05f46d317d685be3ab524b2a310be0fbad987e",
+            sha256="fb06709acc393cc36f87c251bb28a5500a2e12936d4346099f2c6240f6c7a941",
             url=f"https://github.com/protocolbuffers/protobuf/releases/download/v{self.version}/protobuf-{self.version}.tar.gz",
             strip_root=True,
         )
@@ -106,7 +106,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:protobuf:protobuf:*:*:*:*:*:*:*:*")
-        self.cpp_info.set_property("base_purl", "github/protocolbuffers/protobuf")
+        self.cpp_info.set_property("purl", f"pkg:github/protocolbuffers/protobuf@v{self.version}")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_module_file_name", "Protobuf")
         self.cpp_info.set_property("cmake_file_name", "protobuf")
@@ -125,10 +125,10 @@ class ConanRecipe(ConanFile):
         lib_suffix = "_d" if self.settings.build_type == "Debug" else ""
 
         self.cpp_info.components["utf8_range"].set_property("cmake_target_name", "utf8_range::utf8_range")
-        self.cpp_info.components["utf8_range"].libs = ["utf8_range" + lib_suffix]
+        self.cpp_info.components["utf8_range"].libs = [lib_prefix + "utf8_range" + lib_suffix]
 
         self.cpp_info.components["utf8_validity"].set_property("cmake_target_name", "utf8_range::utf8_validity")
-        self.cpp_info.components["utf8_validity"].libs = ["utf8_validity" + lib_suffix]
+        self.cpp_info.components["utf8_validity"].libs = [lib_prefix + "utf8_validity" + lib_suffix]
         self.cpp_info.components["utf8_validity"].requires = ["abseil::absl_strings"]
 
         self.cpp_info.components["upb"].set_property("cmake_target_name", "protobuf::libupb")

@@ -30,6 +30,7 @@ if(WIN32)
   string(REPLACE "#undef HAVE_WCRTOMB" "#define HAVE_WCRTOMB 1" _contents "${_contents}")
   string(REPLACE "#undef ICONV_CONST" "#define ICONV_CONST const" _contents "${_contents}")
   string(REPLACE "#undef EILSEQ" "" _contents "${_contents}")
+  string(REPLACE "#undef HAVE_STDBOOL_H" "#define HAVE_STDBOOL_H 1" _contents "${_contents}")
   string(REPLACE "#undef WORDS_LITTLEENDIAN" "#define WORDS_LITTLEENDIAN 1" _contents "${_contents}")
   file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/config.h" "${_contents}")
 

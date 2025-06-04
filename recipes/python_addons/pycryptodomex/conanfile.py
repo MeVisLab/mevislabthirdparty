@@ -9,7 +9,7 @@ required_conan_version = ">=2.2.2"
 class ConanRecipe(ConanFile):
     name = "pycryptodomex"
     display_name = "PyCryptodome"
-    version = "3.21.0"
+    version = "3.23.0"
     homepage = "https://www.pycryptodome.org"
     description = "PyCryptodome is a self-contained Python package of low-level cryptographic primitives"
     license = "BSD-2-Clause"
@@ -30,7 +30,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="7762d1b658b47e989f21ed844a8bf9a527b130fecec26f0d5076656dc38c0558",
+            sha256="d3e12d349f62a8c3bd2e7056e2eea925abcfcdd9e2b07bff091bcc05837ac869",
             url=f"https://github.com/Legrandin/pycryptodome/archive/refs/tags/v{self.version}x.tar.gz",
             strip_root=True,
         )
@@ -38,4 +38,4 @@ class ConanRecipe(ConanFile):
     def package_info(self):
         super().package_info()
         self.cpp_info.set_property("cpe", "cpe:2.3:a:pycryptodome:pycryptodomex:*:*:*:*:*:*:*:*")
-        self.cpp_info.set_property("base_purl", "github/Legrandin/pycryptodome")
+        self.cpp_info.set_property("purl", f"pkg:github/Legrandin/pycryptodome@v{self.version}x")

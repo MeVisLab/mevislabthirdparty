@@ -21,7 +21,7 @@ required_conan_version = ">=2.2.2"
 
 class OpenSSLConan(ConanFile):
     name = "openssl"
-    version = "3.4.0"
+    version = "3.5.0"
     homepage = "https://www.openssl.org"
     license = "Apache-2.0"
     description = "full-strength general purpose cryptography library (including SSL and TLS)"
@@ -48,7 +48,7 @@ class OpenSSLConan(ConanFile):
     def source(self):
         get(
             self,
-            sha256="e15dda82fe2fe8139dc2ac21a36d4ca01d5313c75f99f46c4e8a27709b7294bf",
+            sha256="344d0a79f1a9b08029b0744e2cc401a43f9c90acd1044d09a530b4885a8e9fc0",
             url=f"https://www.openssl.org/source/openssl-{self.version}.tar.gz",
             destination=self.source_folder,
             strip_root=True,
@@ -277,7 +277,7 @@ class OpenSSLConan(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:openssl:openssl:*:*:*:*:*:*:*:*")
-        self.cpp_info.set_property("base_purl", "github/openssl/openssl")
+        self.cpp_info.set_property("purl", f"pkg:github/openssl/openssl@openssl-{self.version}")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "OpenSSL")
         # backwards compatibility with our old Conan 1 build:

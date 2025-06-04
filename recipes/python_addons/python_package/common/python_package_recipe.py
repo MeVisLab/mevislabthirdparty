@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 from common.python_package_base import PythonPackageBase
 from conan.tools.cmake import cmake_layout
@@ -120,15 +121,15 @@ class PythonPackageRecipe(PythonPackageBase):
         raise ConanException("License path is not configured")
 
     def default_package(self):
-        copy(self, "Lib/*", src=self.build_path, dst=self.package_path, excludes="*__pycache__*")
-        if not copy(self, self.license_path, src=self.source_path, dst=self.package_path / "licenses", keep_path=False):
+        copy(self, "Lib/*", src=self.build_folder, dst=self.package_folder, excludes="*__pycache__*")
+        if not copy(self, self.license_path, src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"), keep_path=False):
             raise ConanException("No license found")
         else:
             # Also copy license into .egg-info folder, so that the PythonPackageHelper tool doesn't complain
             # when creating the .mlinfo again
-            egg_info_folders = list((self.package_path / self.relative_site_package_folder()).glob("*.egg-info"))
+            egg_info_folders = list((Path(self.package_folder) / self.relative_site_package_folder()).glob("*.egg-info"))
             if len(egg_info_folders) >= 1:
-                copy(self, "*", src=self.package_path / "licenses", dst=egg_info_folders[0], keep_path=False)
+                copy(self, "*", src=Path(self.package_folder) / "licenses", dst=egg_info_folders[0], keep_path=False)
 
     def package(self):
         self.default_package()

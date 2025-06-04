@@ -18,7 +18,7 @@ class InventorSensorsDecorator : public QObject
 {
   Q_OBJECT
 
-public slots:
+public Q_SLOTS:
   SoFieldSensor* new_SoFieldSensor(PyObject* callable);
   SoNodeSensor* new_SoNodeSensor(PyObject* callable);
   SoPathSensor* new_SoPathSensor(PyObject* callable);

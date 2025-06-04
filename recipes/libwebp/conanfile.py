@@ -69,7 +69,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:webmproject:libwebp:*:*:*:*:*:*:*:*")
-        self.cpp_info.set_property("base_purl", "github/webmproject/libwebp")
+        self.cpp_info.set_property("purl", f"pkg:github/webmproject/libwebp@v{self.version}")
 
         libname = lambda name: ("lib" if self.settings.os == "Windows" else "") + (
             name + "_d" if self.settings.build_type == "Debug" else name

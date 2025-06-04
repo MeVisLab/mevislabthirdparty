@@ -11,7 +11,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "libxml2"
-    version = "2.13.5"
+    version = "2.13.8"
     homepage = "http://xmlsoft.org"
     description = "XML C parser and toolkit"
     license = "MIT"
@@ -34,7 +34,7 @@ class ConanRecipe(ConanFile):
         v = Version(self.version)
         get(
             self,
-            sha256="74fc163217a3964257d3be39af943e08861263c4231f9ef5b496b6f6d4c7b2b6",
+            sha256="277294cb33119ab71b2bc81f2f445e9bc9435b893ad15bb2cd2b0e859a0ee84a",
             url=f"https://download.gnome.org/sources/libxml2/{v.major}.{v.minor}/libxml2-{self.version}.tar.xz",
             strip_root=True,
         )
@@ -72,7 +72,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:xmlsoft:libxml2:*:*:*:*:*:*:*:*")
-        self.cpp_info.set_property("base_purl", "github/GNOME/libxml2")
+        self.cpp_info.set_property("purl", f"pkg:github/GNOME/libxml2@v{self.version}")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "LibXml2")
         self.cpp_info.set_property("cmake_target_name", "LibXml2::LibXml2")

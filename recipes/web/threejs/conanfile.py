@@ -30,6 +30,6 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:three_project:three:*:*:*:*:*:*:*:*")
-        self.cpp_info.set_property("base_purl", "github/mrdoob/three.js")
+        self.cpp_info.set_property("purl", f"pkg:github/mrdoob/three.js@r{self.version}")
         self.cpp_info.includedirs.clear()
         self.cpp_info.set_property("cmake_find_mode", "none")

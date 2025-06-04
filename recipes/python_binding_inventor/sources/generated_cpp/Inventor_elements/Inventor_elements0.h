@@ -82,7 +82,7 @@ inline bool  py_q_matches(const SoElement*  elt) const { return SoAccumulatedEle
 class PythonQtWrapper_SoAccumulatedElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoAccumulatedElement* new_SoAccumulatedElement();
    void addNodeId(SoAccumulatedElement* theWrappedObject, const SoNode*  node);
    void py_q_captureThis(SoAccumulatedElement* theWrappedObject, SoState*  state) const{  (((PythonQtPublicPromoter_SoAccumulatedElement*)theWrappedObject)->py_q_captureThis(state));}
@@ -148,7 +148,7 @@ inline void py_q_translateEltBy(const SbVec3f&  translation) { SoBBoxModelMatrix
 class PythonQtWrapper_SoBBoxModelMatrixElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoBBoxModelMatrixElement* new_SoBBoxModelMatrixElement();
    int  static_SoBBoxModelMatrixElement_getClassStackIndex();
    SoType  static_SoBBoxModelMatrixElement_getClassTypeId();
@@ -199,7 +199,7 @@ inline void py_q_pop(SoState*  state, const SoElement*  prevTopElement) { SoCach
 class PythonQtWrapper_SoCacheElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoCacheElement* new_SoCacheElement();
 void delete_SoCacheElement(SoCacheElement* obj) { delete obj; }
    void static_SoCacheElement_addElement(SoState*  state, const SoElement*  elt);
@@ -249,7 +249,7 @@ inline void py_q_push(SoState*  state) { SoClipPlaneElement::push(state); }
 class PythonQtWrapper_SoClipPlaneElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoClipPlaneElement* new_SoClipPlaneElement();
    void static_SoClipPlaneElement_add(SoState*  state, SoNode*  node, const SbPlane&  plane);
    void addToElt(SoClipPlaneElement* theWrappedObject, const SbPlane&  plane, const SbMatrix&  modelMatrix);
@@ -294,7 +294,7 @@ inline void py_q_init(SoState*  state) { SoComplexityElement::init(state); }
 class PythonQtWrapper_SoComplexityElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoComplexityElement* new_SoComplexityElement();
    float  static_SoComplexityElement_get(SoState*  state);
    int  static_SoComplexityElement_getClassStackIndex();
@@ -337,7 +337,7 @@ public:
 Q_ENUMS(Type )
 enum Type{
   OBJECT_SPACE = SoComplexityTypeElement::OBJECT_SPACE,   SCREEN_SPACE = SoComplexityTypeElement::SCREEN_SPACE,   BOUNDING_BOX = SoComplexityTypeElement::BOUNDING_BOX};
-public slots:
+public Q_SLOTS:
 SoComplexityTypeElement* new_SoComplexityTypeElement();
    SoComplexityTypeElement::Type  static_SoComplexityTypeElement_get(SoState*  state);
    int  static_SoComplexityTypeElement_getClassStackIndex();
@@ -376,7 +376,7 @@ inline void py_q_init(SoState*  state) { SoCoordinateElement::init(state); }
 class PythonQtWrapper_SoCoordinateElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoCoordinateElement* new_SoCoordinateElement();
    const SbVec3f*  get3(SoCoordinateElement* theWrappedObject, int  index) const;
    const SbVec4f*  get4(SoCoordinateElement* theWrappedObject, int  index) const;
@@ -422,7 +422,7 @@ inline void py_q_init(SoState*  state) { SoCreaseAngleElement::init(state); }
 class PythonQtWrapper_SoCreaseAngleElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoCreaseAngleElement* new_SoCreaseAngleElement();
    float  static_SoCreaseAngleElement_get(SoState*  state);
    int  static_SoCreaseAngleElement_getClassStackIndex();
@@ -465,7 +465,7 @@ public:
 Q_ENUMS(Style )
 enum Style{
   FILLED = SoDrawStyleElement::FILLED,   LINES = SoDrawStyleElement::LINES,   POINTS = SoDrawStyleElement::POINTS,   INVISIBLE = SoDrawStyleElement::INVISIBLE};
-public slots:
+public Q_SLOTS:
 SoDrawStyleElement* new_SoDrawStyleElement();
    SoDrawStyleElement::Style  static_SoDrawStyleElement_get(SoState*  state);
    int  static_SoDrawStyleElement_getClassStackIndex();
@@ -518,7 +518,7 @@ inline void py_q_push(SoState*  state) { SoElement::push(state); }
 class PythonQtWrapper_SoElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoElement* new_SoElement();
 void delete_SoElement(SoElement* obj) { delete obj; }
    void capture(SoElement* theWrappedObject, SoState*  state) const;
@@ -589,7 +589,7 @@ inline void py_q_setElt(float  value) { SoFloatElement::setElt(value); }
 class PythonQtWrapper_SoFloatElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoFloatElement* new_SoFloatElement();
    SoElement*  py_q_copyMatchInfo(SoFloatElement* theWrappedObject) const{  return (((PythonQtPublicPromoter_SoFloatElement*)theWrappedObject)->py_q_copyMatchInfo());}
    float  static_SoFloatElement_get(int  stackIndex, SoState*  state);
@@ -631,7 +631,7 @@ inline void py_q_init(SoState*  state) { SoFocalDistanceElement::init(state); }
 class PythonQtWrapper_SoFocalDistanceElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoFocalDistanceElement* new_SoFocalDistanceElement();
    float  static_SoFocalDistanceElement_get(SoState*  state);
    int  static_SoFocalDistanceElement_getClassStackIndex();
@@ -672,7 +672,7 @@ inline bool  py_q_matches(const SoElement*  elt) const { return SoFontNameElemen
 class PythonQtWrapper_SoFontNameElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoFontNameElement* new_SoFontNameElement();
    SoElement*  py_q_copyMatchInfo(SoFontNameElement* theWrappedObject) const{  return (((PythonQtPublicPromoter_SoFontNameElement*)theWrappedObject)->py_q_copyMatchInfo());}
    const SbName*  static_SoFontNameElement_get(SoState*  state);
@@ -714,7 +714,7 @@ inline void py_q_init(SoState*  state) { SoFontSizeElement::init(state); }
 class PythonQtWrapper_SoFontSizeElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoFontSizeElement* new_SoFontSizeElement();
    float  static_SoFontSizeElement_get(SoState*  state);
    int  static_SoFontSizeElement_getClassStackIndex();
@@ -755,7 +755,7 @@ inline bool  py_q_matches(const SoElement*  elt) const { return SoGLCacheContext
 class PythonQtWrapper_SoGLCacheContextElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoGLCacheContextElement* new_SoGLCacheContextElement();
    bool  static_SoGLCacheContextElement_areMipMapsFast(SoState*  state);
    SoElement*  py_q_copyMatchInfo(SoGLCacheContextElement* theWrappedObject) const{  return (((PythonQtPublicPromoter_SoGLCacheContextElement*)theWrappedObject)->py_q_copyMatchInfo());}
@@ -802,7 +802,7 @@ inline void py_q_pop(SoState*  state, const SoElement*  prevTopElement) { SoGLCl
 class PythonQtWrapper_SoGLClipPlaneElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoGLClipPlaneElement* new_SoGLClipPlaneElement();
    void py_q_addToElt(SoGLClipPlaneElement* theWrappedObject, const SbPlane&  plane, const SbMatrix&  modelMatrix){  (((PythonQtPublicPromoter_SoGLClipPlaneElement*)theWrappedObject)->py_q_addToElt(plane, modelMatrix));}
    int  static_SoGLClipPlaneElement_getClassStackIndex();
@@ -835,7 +835,7 @@ void push(SoState*  state) override;
 class PythonQtWrapper_SoGLCoordinateElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoGLCoordinateElement* new_SoGLCoordinateElement();
    int  static_SoGLCoordinateElement_getClassStackIndex();
    SoType  static_SoGLCoordinateElement_getClassTypeId();
@@ -876,7 +876,7 @@ inline void py_q_setElt(int  style) { SoGLDrawStyleElement::setElt(style); }
 class PythonQtWrapper_SoGLDrawStyleElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoGLDrawStyleElement* new_SoGLDrawStyleElement();
    int  static_SoGLDrawStyleElement_getClassStackIndex();
    SoType  static_SoGLDrawStyleElement_getClassTypeId();
@@ -919,7 +919,7 @@ inline void py_q_push(SoState*  state) { SoGLLazyElement::push(state); }
 class PythonQtWrapper_SoGLLazyElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoGLLazyElement* new_SoGLLazyElement();
 void delete_SoGLLazyElement(SoGLLazyElement* obj) { delete obj; }
    SoGLLazyElement*  copyLazyMatchInfo(SoGLLazyElement* theWrappedObject, SoState*  state);
@@ -973,7 +973,7 @@ inline void py_q_push(SoState*  state) { SoGLLightIdElement::push(state); }
 class PythonQtWrapper_SoGLLightIdElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoGLLightIdElement* new_SoGLLightIdElement();
    int  static_SoGLLightIdElement_get(SoState*  state);
    int  static_SoGLLightIdElement_getClassStackIndex();
@@ -1020,7 +1020,7 @@ inline void py_q_setElt(int  pattern) { SoGLLinePatternElement::setElt(pattern);
 class PythonQtWrapper_SoGLLinePatternElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoGLLinePatternElement* new_SoGLLinePatternElement();
    int  static_SoGLLinePatternElement_getClassStackIndex();
    SoType  static_SoGLLinePatternElement_getClassTypeId();
@@ -1064,7 +1064,7 @@ inline void py_q_setElt(float  width) { SoGLLineWidthElement::setElt(width); }
 class PythonQtWrapper_SoGLLineWidthElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoGLLineWidthElement* new_SoGLLineWidthElement();
    int  static_SoGLLineWidthElement_getClassStackIndex();
    SoType  static_SoGLLineWidthElement_getClassTypeId();
@@ -1129,7 +1129,7 @@ inline void py_q_translateEltBy(const SbVec3f&  translation) { SoGLModelMatrixEl
 class PythonQtWrapper_SoGLModelMatrixElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoGLModelMatrixElement* new_SoGLModelMatrixElement();
    int  static_SoGLModelMatrixElement_getClassStackIndex();
    SoType  static_SoGLModelMatrixElement_getClassTypeId();
@@ -1175,7 +1175,7 @@ inline void py_q_init(SoState*  state) { SoGLNormalElement::init(state); }
 class PythonQtWrapper_SoGLNormalElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoGLNormalElement* new_SoGLNormalElement();
    int  static_SoGLNormalElement_getClassStackIndex();
    SoType  static_SoGLNormalElement_getClassTypeId();
@@ -1217,7 +1217,7 @@ inline void py_q_setElt(float  size) { SoGLPointSizeElement::setElt(size); }
 class PythonQtWrapper_SoGLPointSizeElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoGLPointSizeElement* new_SoGLPointSizeElement();
    int  static_SoGLPointSizeElement_getClassStackIndex();
    SoType  static_SoGLPointSizeElement_getClassTypeId();
@@ -1259,7 +1259,7 @@ inline void py_q_setElt(const SbMatrix&  matrix) { SoGLProjectionMatrixElement::
 class PythonQtWrapper_SoGLProjectionMatrixElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoGLProjectionMatrixElement* new_SoGLProjectionMatrixElement();
    int  static_SoGLProjectionMatrixElement_getClassStackIndex();
    SoType  static_SoGLProjectionMatrixElement_getClassTypeId();
@@ -1298,7 +1298,7 @@ inline bool  py_q_matches(const SoElement*  elt) const { return SoGLRenderPassEl
 class PythonQtWrapper_SoGLRenderPassElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoGLRenderPassElement* new_SoGLRenderPassElement();
    SoElement*  py_q_copyMatchInfo(SoGLRenderPassElement* theWrappedObject) const{  return (((PythonQtPublicPromoter_SoGLRenderPassElement*)theWrappedObject)->py_q_copyMatchInfo());}
    int  static_SoGLRenderPassElement_get(SoState*  state);
@@ -1343,7 +1343,7 @@ inline void py_q_setElt(SoShapeHintsElement::VertexOrdering  vertexOrdering, SoS
 class PythonQtWrapper_SoGLShapeHintsElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoGLShapeHintsElement* new_SoGLShapeHintsElement();
    int  static_SoGLShapeHintsElement_getClassStackIndex();
    SoType  static_SoGLShapeHintsElement_getClassTypeId();
@@ -1386,7 +1386,7 @@ inline void py_q_push(SoState*  state) { SoGLTextureCoordinateElement::push(stat
 class PythonQtWrapper_SoGLTextureCoordinateElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoGLTextureCoordinateElement* new_SoGLTextureCoordinateElement();
    int  static_SoGLTextureCoordinateElement_getClassStackIndex();
    SoType  static_SoGLTextureCoordinateElement_getClassTypeId();
@@ -1431,7 +1431,7 @@ inline void py_q_setElt(int  value) { SoGLTextureEnabledElement::setElt(value); 
 class PythonQtWrapper_SoGLTextureEnabledElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoGLTextureEnabledElement* new_SoGLTextureEnabledElement();
 void delete_SoGLTextureEnabledElement(SoGLTextureEnabledElement* obj) { delete obj; }
    bool  static_SoGLTextureEnabledElement_get(SoState*  state);

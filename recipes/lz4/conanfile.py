@@ -13,7 +13,7 @@ class ConanRecipe(ConanFile):
     version = "1.10.0"
     homepage = "https://lz4.github.io/lz4"
     description = "Extremely fast compression algorithm"
-    license = "BSD-3-Clause"
+    license = "BSD-2-Clause"
     settings = "os", "arch", "compiler", "build_type"
     package_type = "static-library"
 
@@ -65,7 +65,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:lz4_project:lz4:*:*:*:*:*:*:*:*")
-        self.cpp_info.set_property("base_purl", "github/lz4/lz4")
+        self.cpp_info.set_property("purl", f"pkg:github/lz4/lz4@v{self.version}")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "LZ4")
         self.cpp_info.set_property("cmake_target_name", "lz4::lz4")

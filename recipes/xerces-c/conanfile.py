@@ -49,7 +49,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:apache:xerces-c:*:*:*:*:*:*:*:*")
-        self.cpp_info.set_property("base_purl", "github/apache/xerces-c")
+        self.cpp_info.set_property("purl", f"pkg:github/apache/xerces-c@v{self.version}")
         self.cpp_info.set_property("cmake_file_name", "XercesC")
         self.cpp_info.set_property("cmake_target_name", "XercesC::XercesC")
         self.cpp_info.set_property("display_name", "Xerces-C++")

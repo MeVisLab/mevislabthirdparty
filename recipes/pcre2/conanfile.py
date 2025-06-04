@@ -72,7 +72,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:pcre:pcre2:*:*:*:*:*:*:*:*")
-        self.cpp_info.set_property("base_purl", "github/PCRE2Project/pcre2")
+        self.cpp_info.set_property("purl", f"pkg:github/PCRE2Project/pcre2@pcre2-{self.version}")
 
         def lib_name(name):
             return f"{name}_d" if self.settings.build_type == "Debug" else name

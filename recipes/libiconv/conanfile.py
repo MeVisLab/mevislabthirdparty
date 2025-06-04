@@ -13,7 +13,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "libiconv"
-    version = "1.17"
+    version = "1.18"
     homepage = "https://www.gnu.org/software/libiconv"
     description = "Internationalization support library"
     license = "LGPL-2.1-or-later"
@@ -21,9 +21,7 @@ class ConanRecipe(ConanFile):
     settings = "os", "arch", "compiler", "build_type"
     exports_sources = "patches/*.patch", "CMakeLists.txt"
 
-    mlab_hooks = {
-        "debug_suffix.exclude": ["libiconv*.so.*", "libcharset*.so.*"]
-    }
+    mlab_hooks = {"debug_suffix.exclude": ["libiconv*.so.*", "libcharset*.so.*"]}
 
     def configure(self):
         self.settings.rm_safe("compiler.libcxx")
@@ -36,10 +34,11 @@ class ConanRecipe(ConanFile):
             basic_layout(self, src_folder="src")
 
     def source(self):
-        get(self,
+        get(
+            self,
+            sha256="3b08f5f4f9b4eb82f151a7040bfd6fe6c6fb922efe4b1659c66ea933276965e8",
             url=f"https://ftp.gnu.org/pub/gnu/libiconv/libiconv-{self.version}.tar.gz",
-            sha256="8f74213b56238c85a50a5329f77e06198771e70dd9a739779f4c02f65d971313",
-            strip_root=True
+            strip_root=True,
         )
         patch(self, patch_file="patches/001-libcharset-fix-linkage.patch")
 
@@ -47,7 +46,7 @@ class ConanRecipe(ConanFile):
         if is_msvc(self):
             tc = CMakeToolchain(self)
             tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
-            tc.variables['CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS'] = True
+            tc.variables["CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS"] = True
             tc.generate()
         else:
             tc = AutotoolsToolchain(self)
@@ -64,9 +63,9 @@ class ConanRecipe(ConanFile):
             cmake.build()
         else:
             if self.settings.build_type == "Debug":
-                replace_in_file(self, self.source_path / 'lib' / 'Makefile.in', "libiconv.la", "libiconvd.la")
-                replace_in_file(self, self.source_path / 'src' / 'Makefile.in', "libiconv.la", "libiconvd.la")
-                replace_in_file(self, self.source_path / 'libcharset' / 'lib' / 'Makefile.in', "libcharset.la", "libcharsetd.la")
+                replace_in_file(self, self.source_path / "lib" / "Makefile.in", "libiconv.la", "libiconvd.la")
+                replace_in_file(self, self.source_path / "src" / "Makefile.in", "libiconv.la", "libiconvd.la")
+                replace_in_file(self, self.source_path / "libcharset" / "lib" / "Makefile.in", "libcharset.la", "libcharsetd.la")
             autotools = Autotools(self)
             autotools.configure()
             autotools.make()
@@ -85,7 +84,10 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         # self.cpp_info.set_property("cpe", "")  # No CPE yet?
-        self.cpp_info.set_property("base_purl", "github/roboticslibrary/libiconv")  # Official repository at https://ftp.gnu.org/gnu/libiconv
+        self.cpp_info.set_property(
+            "purl", f"pkg:github/roboticslibrary/libiconv@v{self.version}"
+        )  # Official repository at https://ftp.gnu.org/gnu/libiconv
+        self.cpp_info.set_property("display_name", "libiconv")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "Iconv")
         self.cpp_info.set_property("cmake_target_name", "Iconv::Iconv")
@@ -100,7 +102,8 @@ class ConanRecipe(ConanFile):
 
     def _cmake_module_file_write(self):
         file = self.package_path / self._cmake_module_file
-        content = textwrap.dedent("""\
+        content = textwrap.dedent(
+            """\
             set(Iconv_IS_BUILT_IN FALSE)
 
             set(LIBICONV_FOUND TRUE)
@@ -114,5 +117,6 @@ class ConanRecipe(ConanFile):
             set(LIBCHARSET_LIBRARIES ${Iconv_LIBRARIES})
             set(LIBCHARSET_INCLUDE_DIR ${Iconv_INCLUDE_DIR})
             set(LIBCHARSET_INCLUDE_DIRS ${Iconv_INCLUDE_DIR})
-            """)
+            """
+        )
         save(self, file, content)

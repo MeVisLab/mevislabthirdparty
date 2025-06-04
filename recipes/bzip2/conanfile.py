@@ -73,7 +73,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:bzip:bzip2:*:*:*:*:*:*:*:*")
-        self.cpp_info.set_property("base_purl", "github/libarchive/bzip2")
+        self.cpp_info.set_property("purl", f"pkg:github/libarchive/bzip2@bzip2-{self.version}")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "BZip2")
         self.cpp_info.set_property("cmake_target_name", "BZip2::BZip2")

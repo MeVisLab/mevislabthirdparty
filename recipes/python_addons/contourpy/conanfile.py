@@ -8,7 +8,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "contourpy"
-    version = "1.3.1"
+    version = "1.3.2"
     homepage = "https://contourpy.readthedocs.io"
     description = "Python library for calculating contours of 2D quadrilateral grids"
     license = "BSD-3-Clause"
@@ -34,7 +34,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="458c88dfda13ab2bda276f8415b60df4893315b1205adc55ecf6b4bac024135c",
+            sha256="7eec4ace7c075e291b0640b7012c33c46a8d9480d3613f20194a991c1e5774f5",
             url=f"https://github.com/contourpy/contourpy/archive/refs/tags/v{self.version}.tar.gz",
             strip_root=True,
         )
@@ -42,4 +42,4 @@ class ConanRecipe(ConanFile):
     def package_info(self):
         super().package_info()
         self.cpp_info.set_property("cpe", "")
-        self.cpp_info.set_property("base_purl", "github/contourpy/contourpy")
+        self.cpp_info.set_property("purl", f"pkg:github/contourpy/contourpy@v{self.version}")

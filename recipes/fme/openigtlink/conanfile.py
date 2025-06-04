@@ -52,7 +52,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
-        self.cpp_info.set_property("base_purl", "github/openigtlink/OpenIGTLink")
+        self.cpp_info.set_property("purl", f"pkg:github/openigtlink/OpenIGTLink@{self.version}")  # no actual tag!
         self.cpp_info.set_property("display_name", "OpenIGTLink")
         self.cpp_info.set_property("cmake_config_version_compat", "AnyNewerVersion")
         self.cpp_info.set_property("mevislab_prosdk_exclude", True)

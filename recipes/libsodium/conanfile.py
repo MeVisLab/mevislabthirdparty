@@ -7,7 +7,7 @@ from conan.tools.files import copy, collect_libs, get, replace_in_file, rm, rmdi
 from conan.tools.gnu import Autotools, AutotoolsToolchain
 from conan.tools.layout import basic_layout
 from conan.tools.microsoft import is_msvc, MSBuild, MSBuildToolchain
-from conans.model.version import Version
+from conan.tools.scm import Version
 
 required_conan_version = ">=2.2.2"
 
@@ -124,7 +124,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
-        # self.cpp_info.set_property("base_purl", "")   # official repository is at https://download.libsodium.org
+        # self.cpp_info.set_property("purl", "")   # official repository is at https://download.libsodium.org
         self.cpp_info.set_property("cmake_file_name", "sodium")
         self.cpp_info.set_property("cmake_target_name", "sodium::sodium")
         self.cpp_info.set_property("pkg_config_name", "libsodium")

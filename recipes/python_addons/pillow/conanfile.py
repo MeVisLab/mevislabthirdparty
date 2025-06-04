@@ -7,7 +7,7 @@ required_conan_version = ">=2.0.0"
 
 class ConanRecipe(ConanFile):
     name = "pillow"
-    version = "10.4.0"
+    version = "11.2.1"
     homepage = "https://python-pillow.org/"
     description = "Python Imaging Library (Fork)"
     license = "HPND"
@@ -59,12 +59,20 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="e70284e8605a5b7ccb37e5bfd4634598ca2c43c7f2c353572351ccf72c031004",
+            sha256="67dd6d40e282fd3b50189bd7f68a6e9b8e59b297d3684cb35ab107e7aec8379e",
             url=f"https://github.com/python-pillow/Pillow/archive/refs/tags/{self.version}.tar.gz",
             strip_root=True,
         )
-        patch(self, patch_file="patches/001-find_debug_libraries.patch", patch_description="Check for debug libraries if in debug mode")
-        patch(self, patch_file="patches/002-debug_extension.patch", patch_description="Under Linux/debug also check for libraries with _d")
+        patch(
+            self,
+            patch_file="patches/001-find_debug_libraries.patch",
+            patch_description="Check for debug libraries if in debug mode",
+        )
+        patch(
+            self,
+            patch_file="patches/002-debug_extension.patch",
+            patch_description="Under Linux/debug also check for libraries with _d",
+        )
 
     def build(self):
         env = Environment()
@@ -96,4 +104,4 @@ class ConanRecipe(ConanFile):
     def package_info(self):
         super().package_info()
         self.cpp_info.set_property("cpe", "cpe:2.3:a:python:pillow:*:*:*:*:*:*:*:*")
-        self.cpp_info.set_property("base_purl", "github/python-pillow/Pillow")
+        self.cpp_info.set_property("purl", f"pkg:github/python-pillow/Pillow@{self.version}")

@@ -10,7 +10,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "libxslt"
-    version = "1.1.42"
+    version = "1.1.43"
     homepage = "http://xmlsoft.org"
     description = "libxslt is a software library implementing XSLT processor, based on libxml2"
     license = "MIT"
@@ -33,7 +33,7 @@ class ConanRecipe(ConanFile):
         v = Version(self.version)
         get(
             self,
-            sha256="85ca62cac0d41fc77d3f6033da9df6fd73d20ea2fc18b0a3609ffb4110e1baeb",
+            sha256="5a3d6b383ca5afc235b171118e90f5ff6aa27e9fea3303065231a6d403f0183a",
             url=f"https://download.gnome.org/sources/libxslt/{v.major}.{v.minor}/libxslt-{self.version}.tar.xz",
             strip_root=True,
         )
@@ -58,7 +58,7 @@ class ConanRecipe(ConanFile):
     def package(self):
         cmake = CMake(self)
         cmake.install()
-        copy(self, "COPYING", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
+        copy(self, "Copyright", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
         rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))
         rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
         rmdir(self, os.path.join(self.package_folder, "share"))
@@ -67,7 +67,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:xmlsoft:libxslt:*:*:*:*:*:*:*:*")
-        self.cpp_info.set_property("base_purl", "github/GNOME/libxslt")
+        self.cpp_info.set_property("purl", f"pkg:github/GNOME/libxslt@v{self.version}")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "LibXslt")
         self.cpp_info.set_property("cmake_target_name", "LibXslt::LibXslt")

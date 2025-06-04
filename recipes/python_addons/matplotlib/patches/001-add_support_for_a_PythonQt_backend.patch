@@ -1,5 +1,5 @@
 diff --git a/lib/matplotlib/backends/backend_qt.py b/lib/matplotlib/backends/backend_qt.py
-index 6603883..ed04f85 100644
+index 5cde486..158bfd2 100644
 --- a/lib/matplotlib/backends/backend_qt.py
 +++ b/lib/matplotlib/backends/backend_qt.py
 @@ -14,7 +14,8 @@ from matplotlib.backend_bases import (
@@ -21,7 +21,7 @@ index 6603883..ed04f85 100644
              other_bindings = ('PyQt5', 'PySide2')
              qt_version = 6
          elif QT_API in {'PyQt5', 'PySide2'}:
-@@ -245,7 +246,7 @@ class FigureCanvasQT(FigureCanvasBase, QtWidgets.QWidget):
+@@ -246,7 +247,7 @@ class FigureCanvasQT(FigureCanvasBase, QtWidgets.QWidget):
              # The easiest way to resize the canvas is to emit a resizeEvent
              # since we implement all the logic for resizing the canvas for
              # that event.
@@ -29,8 +29,8 @@ index 6603883..ed04f85 100644
 +            event = QtGui.QResizeEvent(_qt_property(self.size), _qt_property(self.size))
              self.resizeEvent(event)
  
-     def _update_screen(self, screen):
-@@ -492,7 +493,7 @@ class FigureCanvasQT(FigureCanvasBase, QtWidgets.QWidget):
+     @QtCore.Slot(QtGui.QScreen)
+@@ -502,7 +503,7 @@ class FigureCanvasQT(FigureCanvasBase, QtWidgets.QWidget):
              if not self._draw_pending:
                  return
              self._draw_pending = False
@@ -39,7 +39,7 @@ index 6603883..ed04f85 100644
                  return
              try:
                  self.draw()
-@@ -539,7 +540,7 @@ class MainWindow(QtWidgets.QMainWindow):
+@@ -549,7 +550,7 @@ class MainWindow(QtWidgets.QMainWindow):
  
      def closeEvent(self, event):
          self.closing.emit()
@@ -48,7 +48,7 @@ index 6603883..ed04f85 100644
  
  
  class FigureManagerQT(FigureManagerBase):
-@@ -570,13 +571,13 @@ class FigureManagerQT(FigureManagerBase):
+@@ -580,13 +581,13 @@ class FigureManagerQT(FigureManagerBase):
  
          if self.toolbar:
              self.window.addToolBar(self.toolbar)
@@ -64,7 +64,7 @@ index 6603883..ed04f85 100644
          cs_height = cs.height()
          height = cs_height + tbs_height
          self.window.resize(cs.width(), height)
-@@ -620,8 +621,8 @@ class FigureManagerQT(FigureManagerBase):
+@@ -630,8 +631,8 @@ class FigureManagerQT(FigureManagerBase):
          # rescale from physical to logical pixels.
          width = int(width / self.canvas.device_pixel_ratio)
          height = int(height / self.canvas.device_pixel_ratio)
@@ -75,7 +75,7 @@ index 6603883..ed04f85 100644
          self.canvas.resize(width, height)
          self.window.resize(width + extra_width, height + extra_height)
  
-@@ -651,7 +652,7 @@ class FigureManagerQT(FigureManagerBase):
+@@ -661,7 +662,7 @@ class FigureManagerQT(FigureManagerBase):
          self.window.close()
  
      def get_window_title(self):
@@ -84,7 +84,7 @@ index 6603883..ed04f85 100644
  
      def set_window_title(self, title):
          self.window.setWindowTitle(title)
-@@ -684,8 +685,9 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
+@@ -691,8 +692,9 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
              else:
                  slot = getattr(self, callback)
                  # https://bugreports.qt.io/browse/PYSIDE-2512
@@ -96,7 +96,7 @@ index 6603883..ed04f85 100644
  
                  a = self.addAction(self._icon(image_file + '.png'),
                                     text, slot)
-@@ -728,8 +730,8 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
+@@ -735,8 +737,8 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
          pm = QtGui.QPixmap(filename)
          pm.setDevicePixelRatio(
              self.devicePixelRatioF() or 1)  # rarely, devicePixelRatioF=0
@@ -107,7 +107,7 @@ index 6603883..ed04f85 100644
              mask = pm.createMaskFromColor(
                  QtGui.QColor('black'),
                  QtCore.Qt.MaskMode.MaskOutColor)
-@@ -759,11 +761,17 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
+@@ -766,11 +768,17 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
              for i, ax in enumerate(axes):
                  if titles[i] in duplicate_titles:
                      titles[i] += f" (id: {id(ax):#x})"  # Deduplicate titles.
@@ -128,7 +128,7 @@ index 6603883..ed04f85 100644
              ax = axes[titles.index(item)]
          figureoptions.figure_edit(ax, self)
  
-@@ -825,7 +833,7 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
+@@ -831,7 +839,7 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
              filters.append(filter)
          filters = ';;'.join(filters)
  
@@ -137,16 +137,16 @@ index 6603883..ed04f85 100644
              self.canvas.parent(), "Choose a filename to save to", start,
              filters, selectedFilter)
          if fname:
-@@ -851,7 +859,7 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
+@@ -858,7 +866,7 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
  
  class SubplotToolQt(QtWidgets.QDialog):
      def __init__(self, targetfig, parent):
--        super().__init__()
-+        QtWidgets.QDialog.__init__(self)
+-        super().__init__(parent)
++        QtWidgets.QDialog.__init__(self, parent)
          self.setWindowIcon(QtGui.QIcon(
              str(cbook._get_data_path("images/matplotlib.png"))))
          self.setObjectName("SubplotTool")
-@@ -866,7 +874,7 @@ class SubplotToolQt(QtWidgets.QDialog):
+@@ -873,7 +881,7 @@ class SubplotToolQt(QtWidgets.QDialog):
                   ["hspace", "wspace"],
                   [("Tight layout", self._tight_layout),
                    ("Reset", self._reset),
@@ -155,7 +155,7 @@ index 6603883..ed04f85 100644
              layout = QtWidgets.QVBoxLayout()
              main_layout.addLayout(layout)
              box = QtWidgets.QGroupBox(group)
-@@ -909,13 +917,13 @@ class SubplotToolQt(QtWidgets.QDialog):
+@@ -916,13 +924,13 @@ class SubplotToolQt(QtWidgets.QDialog):
          text.setReadOnly(True)
          layout.addWidget(text)
          text.setPlainText(
@@ -172,7 +172,7 @@ index 6603883..ed04f85 100644
              .size(0, text.toPlainText()).height() + 20)
          text.setMaximumSize(size)
          self._export_values_dialog.show()
-@@ -924,10 +932,10 @@ class SubplotToolQt(QtWidgets.QDialog):
+@@ -931,10 +939,10 @@ class SubplotToolQt(QtWidgets.QDialog):
          spinboxes = self._spinboxes
          # Set all mins and maxes, so that this can also be used in _reset().
          for lower, higher in [("bottom", "top"), ("left", "right")]:
@@ -186,7 +186,7 @@ index 6603883..ed04f85 100644
          self._figure.canvas.draw_idle()
  
      def _tight_layout(self):
-@@ -946,6 +954,11 @@ class SubplotToolQt(QtWidgets.QDialog):
+@@ -953,6 +961,11 @@ class SubplotToolQt(QtWidgets.QDialog):
              spinbox.blockSignals(False)
          self._on_value_changed()
  
@@ -212,7 +212,7 @@ index 256e50a..bacedb2 100644
                  ptr = buf
  
 diff --git a/lib/matplotlib/backends/qt_compat.py b/lib/matplotlib/backends/qt_compat.py
-index d91f7c1..f6ed8bb 100644
+index b57a98b..1da6ee9 100644
 --- a/lib/matplotlib/backends/qt_compat.py
 +++ b/lib/matplotlib/backends/qt_compat.py
 @@ -24,11 +24,12 @@ QT_API_PYQT6 = "PyQt6"
@@ -246,7 +246,7 @@ index d91f7c1..f6ed8bb 100644
 +    if QT_API_ENV in ["pyqt5", "pyside2", "pythonqt"]:
          QT_API = _ETS[QT_API_ENV]
      else:
-         _QT_FORCE_QT5_BINDING = True  # noqa
+         _QT_FORCE_QT5_BINDING = True  # noqa: F811
 @@ -65,7 +68,7 @@ else:
  
  def _setup_pyqt5plus():

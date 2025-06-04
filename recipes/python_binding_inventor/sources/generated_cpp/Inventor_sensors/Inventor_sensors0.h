@@ -28,7 +28,7 @@
 class PythonQtWrapper_SoAlarmSensor : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 void delete_SoAlarmSensor(SoAlarmSensor* obj) { delete obj; }
    const SbTime*  getTime(SoAlarmSensor* theWrappedObject) const;
    void setTime(SoAlarmSensor* theWrappedObject, const SbTime&  absTime);
@@ -42,7 +42,7 @@ void delete_SoAlarmSensor(SoAlarmSensor* obj) { delete obj; }
 class PythonQtWrapper_SoDataSensor : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 void delete_SoDataSensor(SoDataSensor* obj) { delete obj; }
    void dyingReference(SoDataSensor* theWrappedObject);
    SoField*  getTriggerField(SoDataSensor* theWrappedObject) const;
@@ -59,7 +59,7 @@ void delete_SoDataSensor(SoDataSensor* obj) { delete obj; }
 class PythonQtWrapper_SoDelayQueueSensor : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 void delete_SoDelayQueueSensor(SoDelayQueueSensor* obj) { delete obj; }
    unsigned int  getCounter(SoDelayQueueSensor* theWrappedObject) const;
    unsigned int  static_SoDelayQueueSensor_getDefaultPriority();
@@ -76,7 +76,7 @@ void delete_SoDelayQueueSensor(SoDelayQueueSensor* obj) { delete obj; }
 class PythonQtWrapper_SoFieldSensor : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 void delete_SoFieldSensor(SoFieldSensor* obj) { delete obj; }
    void attach(SoFieldSensor* theWrappedObject, SoField*  field);
    SoField*  getAttachedField(SoFieldSensor* theWrappedObject) const;
@@ -89,7 +89,7 @@ void delete_SoFieldSensor(SoFieldSensor* obj) { delete obj; }
 class PythonQtWrapper_SoIdleSensor : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 void delete_SoIdleSensor(SoIdleSensor* obj) { delete obj; }
 };
 
@@ -100,7 +100,7 @@ void delete_SoIdleSensor(SoIdleSensor* obj) { delete obj; }
 class PythonQtWrapper_SoNodeSensor : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 void delete_SoNodeSensor(SoNodeSensor* obj) { delete obj; }
    void attach(SoNodeSensor* theWrappedObject, SoNode*  node);
    SoNode*  getAttachedNode(SoNodeSensor* theWrappedObject) const;
@@ -113,7 +113,7 @@ void delete_SoNodeSensor(SoNodeSensor* obj) { delete obj; }
 class PythonQtWrapper_SoPathSensor : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 void delete_SoPathSensor(SoPathSensor* obj) { delete obj; }
    void attach(SoPathSensor* theWrappedObject, SoPath*  path);
    SoPath*  getAttachedPath(SoPathSensor* theWrappedObject) const;
@@ -126,7 +126,7 @@ void delete_SoPathSensor(SoPathSensor* obj) { delete obj; }
 class PythonQtWrapper_SoSensor : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 void delete_SoSensor(SoSensor* obj) { delete obj; }
    SoSensor*  getNextInQueue(SoSensor* theWrappedObject) const;
    bool  isBefore(SoSensor* theWrappedObject, const SoSensor*  s) const;
@@ -144,7 +144,7 @@ void delete_SoSensor(SoSensor* obj) { delete obj; }
 class PythonQtWrapper_SoTimerQueueSensor : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 void delete_SoTimerQueueSensor(SoTimerQueueSensor* obj) { delete obj; }
    const SbTime*  getTriggerTime(SoTimerQueueSensor* theWrappedObject) const;
 };
@@ -156,7 +156,7 @@ void delete_SoTimerQueueSensor(SoTimerQueueSensor* obj) { delete obj; }
 class PythonQtWrapper_SoTimerSensor : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 void delete_SoTimerSensor(SoTimerSensor* obj) { delete obj; }
    const SbTime*  getBaseTime(SoTimerSensor* theWrappedObject) const;
    const SbTime*  getInterval(SoTimerSensor* theWrappedObject) const;

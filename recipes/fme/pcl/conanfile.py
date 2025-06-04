@@ -7,7 +7,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "pcl"
-    version = "1.14.1"
+    version = "1.15.0"
     homepage = "https://pointclouds.org"
     description = "The Point Cloud Library (PCL) is a standalone, large scale, " "open project for 2D/3D image and point cloud processing."
     license = "BSD-3-Clause"
@@ -31,7 +31,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="cc3dc26a9ea176cb588fb1f182324399dbaf11e5ba1bea95c7d39005b7a5d352",
+            sha256="fb79d085b08b8335f43ee4cacf4daa2624bb2c411e9243efa6a92c077273840a",
             url=f"https://github.com/PointCloudLibrary/pcl/releases/download/pcl-{self.version}/source.tar.gz",
             strip_root=True,
         )
@@ -93,7 +93,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
-        self.cpp_info.set_property("base_purl", "github/PointCloudLibrary/pcl")
+        self.cpp_info.set_property("purl", f"pkg:github/PointCloudLibrary/pcl@pcl-{self.version}")
         self.cpp_info.set_property("cmake_file_name", "PCL")
         self.cpp_info.set_property("cmake_target_name", "PCL::PCL")
         self.cpp_info.set_property("display_name", "Point Cloud Library")

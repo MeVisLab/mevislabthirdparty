@@ -53,7 +53,7 @@ inline SbVec3f  py_q_project(const SbVec2f&  point) { return SbCylinderPlaneProj
 class PythonQtWrapper_SbCylinderPlaneProjector : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbCylinderPlaneProjector* new_SbCylinderPlaneProjector(const SbCylinder&  cyl, float  edgeTol = .9, bool  orientToEye = 1);
 SbCylinderPlaneProjector* new_SbCylinderPlaneProjector(float  edgeTol = .9, bool  orientToEye = 1);
 void delete_SbCylinderPlaneProjector(SbCylinderPlaneProjector* obj) { delete obj; }
@@ -94,7 +94,7 @@ inline void py_q_setWorkingSpace(const SbMatrix&  space) { SbCylinderProjector::
 class PythonQtWrapper_SbCylinderProjector : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbCylinderProjector* new_SbCylinderProjector(bool  orientToEye);
 SbCylinderProjector* new_SbCylinderProjector(const SbCylinder&  cyl, bool  orientToEye);
 void delete_SbCylinderProjector(SbCylinderProjector* obj) { delete obj; }
@@ -145,7 +145,7 @@ inline void py_q_setupTolerance() { SbCylinderSectionProjector::setupTolerance()
 class PythonQtWrapper_SbCylinderSectionProjector : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbCylinderSectionProjector* new_SbCylinderSectionProjector(const SbCylinder&  cyl, float  edgeTol = .9, bool  orientToEye = 1);
 SbCylinderSectionProjector* new_SbCylinderSectionProjector(float  edgeTol = .9, bool  orientToEye = 1);
 void delete_SbCylinderSectionProjector(SbCylinderSectionProjector* obj) { delete obj; }
@@ -193,7 +193,7 @@ inline void py_q_setupPlane() { SbCylinderSheetProjector::setupPlane(); }
 class PythonQtWrapper_SbCylinderSheetProjector : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbCylinderSheetProjector* new_SbCylinderSheetProjector(bool  orientToEye = 1);
 SbCylinderSheetProjector* new_SbCylinderSheetProjector(const SbCylinder&  cyl, bool  orientToEye = 1);
 void delete_SbCylinderSheetProjector(SbCylinderSheetProjector* obj) { delete obj; }
@@ -236,7 +236,7 @@ inline SbVec3f  py_q_project(const SbVec2f&  point) { return SbLineProjector::pr
 class PythonQtWrapper_SbLineProjector : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbLineProjector* new_SbLineProjector();
 void delete_SbLineProjector(SbLineProjector* obj) { delete obj; }
    SbProjector*  py_q_copy(SbLineProjector* theWrappedObject) const{  return (((PythonQtPublicPromoter_SbLineProjector*)theWrappedObject)->py_q_copy());}
@@ -285,7 +285,7 @@ inline SbVec3f  py_q_project(const SbVec2f&  point) { return SbPlaneProjector::p
 class PythonQtWrapper_SbPlaneProjector : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbPlaneProjector* new_SbPlaneProjector(bool  orient = 0);
 SbPlaneProjector* new_SbPlaneProjector(const SbPlane&  plane, bool  orient = 0);
 void delete_SbPlaneProjector(SbPlaneProjector* obj) { delete obj; }
@@ -335,7 +335,7 @@ inline void py_q_setWorkingSpace(const SbMatrix&  space) { SbProjector::setWorki
 class PythonQtWrapper_SbProjector : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbProjector* new_SbProjector();
    SbProjector*  copy(SbProjector* theWrappedObject) const;
    SbProjector*  py_q_copy(SbProjector* theWrappedObject) const{  return (((PythonQtPublicPromoter_SbProjector*)theWrappedObject)->py_q_copy());}
@@ -383,7 +383,7 @@ inline SbVec3f  py_q_project(const SbVec2f&  point) { return SbSpherePlaneProjec
 class PythonQtWrapper_SbSpherePlaneProjector : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbSpherePlaneProjector* new_SbSpherePlaneProjector(const SbSphere&  sph, float  edgeTol = 0.9, bool  orientToEye = 1);
 SbSpherePlaneProjector* new_SbSpherePlaneProjector(float  edgeTol = 0.9, bool  orientToEye = 1);
 void delete_SbSpherePlaneProjector(SbSpherePlaneProjector* obj) { delete obj; }
@@ -424,7 +424,7 @@ inline void py_q_setWorkingSpace(const SbMatrix&  space) { SbSphereProjector::se
 class PythonQtWrapper_SbSphereProjector : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbSphereProjector* new_SbSphereProjector(bool  orientToEye);
 SbSphereProjector* new_SbSphereProjector(const SbSphere&  s, bool  orientToEye);
 void delete_SbSphereProjector(SbSphereProjector* obj) { delete obj; }
@@ -476,7 +476,7 @@ inline void py_q_setupTolerance() { SbSphereSectionProjector::setupTolerance(); 
 class PythonQtWrapper_SbSphereSectionProjector : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbSphereSectionProjector* new_SbSphereSectionProjector(const SbSphere&  sph, float  edgeTol = .9, bool  orientToEye = 1);
 SbSphereSectionProjector* new_SbSphereSectionProjector(float  edgeTol = .9, bool  orientToEye = 1);
 void delete_SbSphereSectionProjector(SbSphereSectionProjector* obj) { delete obj; }
@@ -524,7 +524,7 @@ inline SbVec3f  py_q_project(const SbVec2f&  point) { return SbSphereSheetProjec
 class PythonQtWrapper_SbSphereSheetProjector : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbSphereSheetProjector* new_SbSphereSheetProjector(bool  orientToEye = 1);
 SbSphereSheetProjector* new_SbSphereSheetProjector(const SbSphere&  sph, bool  orientToEye = 1);
 void delete_SbSphereSheetProjector(SbSphereSheetProjector* obj) { delete obj; }

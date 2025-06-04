@@ -50,7 +50,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         # self.cpp_info.set_property("cpe", "")  # No CPE yet?
-        self.cpp_info.set_property("base_purl", "github/beltoforion/muparser")
+        self.cpp_info.set_property("purl", f"pkg:github/beltoforion/muparser@v{self.version}")
         self.cpp_info.set_property("display_name", "muParser")
         self.cpp_info.set_property("mevislab_prosdk_exclude", True)
         self.cpp_info.libs = collect_libs(self)

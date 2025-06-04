@@ -11,7 +11,7 @@ required_conan_version = ">=2.2.2"
 class ConanRecipe(ConanFile):
     name = "gtest"
     display_name = "GTest"
-    version = "1.15.2"
+    version = "1.17.0"
     homepage = "https://github.com/google/googletest"
     description = "Google Testing and Mocking Framework"
     license = "BSD-3-Clause"
@@ -24,7 +24,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="7b42b4d6ed48810c5362c265a17faebe90dc2373c885e5216439d37927f02926",
+            sha256="65fab701d9829d38cb77c14acdc431d2108bfdbf8979e40eb8ae567edf10b27c",
             url=f"https://github.com/google/googletest/archive/refs/tags/v{self.version}.tar.gz",
             destination=self.source_folder,
             strip_root=True,
@@ -56,7 +56,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:google:google_test:*:*:*:*:*:*:*:*")
-        self.cpp_info.set_property("base_purl", "github/google/googletest")
+        self.cpp_info.set_property("purl", f"pkg:github/google/googletest@v{self.version}")
         self.cpp_info.set_property("cmake_find_mode", "config")
         self.cpp_info.set_property("cmake_file_name", "GTest")
         self.cpp_info.set_property("cmake_target_name", "GTest::GTest")

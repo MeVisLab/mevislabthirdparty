@@ -13,17 +13,17 @@ index 493cbd7..0b06456 100644
  file(READ ${vigra_SOURCE_DIR}/include/vigra/config_version.hxx VIGRA_VERSION_FILE)
  string(REGEX MATCH "VIGRA_VERSION_MAJOR[ \t\n]+[^ \t\n]+" VIGRA_VERSION_MAJOR ${VIGRA_VERSION_FILE})
 diff --git a/include/vigra/error.hxx b/include/vigra/error.hxx
-index 881bc46..2cbbeb6 100644
+index 443a8b4..52d2ae3 100644
 --- a/include/vigra/error.hxx
 +++ b/include/vigra/error.hxx
 @@ -140,7 +140,7 @@ class ContractViolation : public StdException
          (*this) << "\n" << prefix << "\n" << message << "\n";
      }
-     
+ 
 -    ~ContractViolation() throw()
-+    ~ContractViolation()
++    ~ContractViolation() noexcept
      {}
-     
+ 
      template<class T>
 @@ -152,7 +152,7 @@ class ContractViolation : public StdException
          return *this;
@@ -35,27 +35,27 @@ index 881bc46..2cbbeb6 100644
          try
          {
 diff --git a/include/vigra/fftw3.hxx b/include/vigra/fftw3.hxx
-index 1f216ce..03d3e29 100644
+index 898e3ab..9f51189 100644
 --- a/include/vigra/fftw3.hxx
 +++ b/include/vigra/fftw3.hxx
 @@ -689,11 +689,11 @@ class FFTWAllocator
          typedef FFTWAllocator<Other> other;
      };
-     
+ 
 -    FFTWAllocator() throw()
 +    FFTWAllocator() noexcept
      {}
-     
+ 
      template<class Other>
 -    FFTWAllocator(const FFTWAllocator<Other>& /*right*/) throw()
 +    FFTWAllocator(const FFTWAllocator<Other>& /*right*/) noexcept
      {}
-     
+ 
      template<class Other>
 @@ -723,7 +723,7 @@ class FFTWAllocator
          ptr->~Ty();
      }
-     
+ 
 -    size_type max_size() const throw()
 +    size_type max_size() const noexcept
      {
@@ -64,21 +64,21 @@ index 1f216ce..03d3e29 100644
 @@ -757,11 +757,11 @@ class allocator<vigra::FFTWComplex<Real> >
          typedef allocator<Other> other;
      };
-     
+ 
 -    allocator() throw()
 +    allocator() noexcept
      {}
-     
+ 
      template<class Other>
 -    allocator(const allocator<Other>& /*right*/) throw()
 +    allocator(const allocator<Other>& /*right*/) noexcept
      {}
-     
+ 
      template<class Other>
 @@ -791,7 +791,7 @@ class allocator<vigra::FFTWComplex<Real> >
          ptr->~value_type();
      }
-     
+ 
 -    size_type max_size() const throw()
 +    size_type max_size() const noexcept
      {
@@ -112,7 +112,7 @@ index f370f45..efa7ecd 100644
  #pragma GCC diagnostic pop
  #endif
 diff --git a/include/vigra/unittest.hxx b/include/vigra/unittest.hxx
-index df2294c..f94d7e8 100755
+index df2294c..f94d7e8 100644
 --- a/include/vigra/unittest.hxx
 +++ b/include/vigra/unittest.hxx
 @@ -442,11 +442,11 @@ struct unit_test_failed
@@ -148,7 +148,7 @@ index 98a257a..93b226a 100644
  
  IF(JPEG_FOUND)
 diff --git a/src/impex/tiff.cxx b/src/impex/tiff.cxx
-index 82e8bec..549e014 100644
+index b4a6861..2dcbb76 100644
 --- a/src/impex/tiff.cxx
 +++ b/src/impex/tiff.cxx
 @@ -64,6 +64,7 @@

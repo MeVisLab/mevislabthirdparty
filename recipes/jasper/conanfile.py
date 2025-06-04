@@ -10,7 +10,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "jasper"
-    version = "4.2.4"
+    version = "4.2.5"
     homepage = "https://jasper-software.github.io/jasper/"
     description = "Implementation of the codec specified in the JPEG-2000 Part-1 standard"
     license = "JasPer-2.0"
@@ -30,7 +30,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="547edca543756947c86e38830c4d0fa192c950f552689e9b88c8cf0b3d0feb66",
+            sha256="31a72ba9da49b8f6f83c0c72e319fc4e4a5ec9529a1f3d2cff48a501d330b09a",
             url=f"https://github.com/jasper-software/jasper/archive/version-{self.version}.zip",
             strip_root=True,
         )
@@ -74,7 +74,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:jasper_project:jasper:*:*:*:*:*:*:*:*")
-        self.cpp_info.set_property("base_purl", "github/jasper-software/jasper")
+        self.cpp_info.set_property("purl", f"pkg:github/jasper-software/jasper@version-{self.version}")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "Jasper")
         self.cpp_info.set_property("cmake_target_name", "Jasper::Jasper")

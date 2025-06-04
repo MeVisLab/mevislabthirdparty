@@ -1,14 +1,21 @@
+from pathlib import Path
+
 from conan import ConanFile
 from conan.errors import ConanException
-from conan.tools.files import get, copy
+from conan.tools.files import get, copy, rmdir
+from conan.tools.microsoft import MSBuildToolchain
 
 required_conan_version = ">=2.2.2"
+
+# FIXME numpy links to blas/lapack/openblas if found on the system.
+# It's also recommended to use it, since it's way faster than the fallback implementation.
+# Either way, we should prevent blas/lapack/openblas from being used or we provide it explicitly as a dependency.
 
 
 class ConanRecipe(ConanFile):
     name = "numpy"
     mli_name = "Python3__NumPy"
-    version = "1.26.4"
+    version = "2.2.6"
     homepage = "https://numpy.org"
     description = "NumPy is the fundamental package for scientific computing with Python"
     license = "BSD-3-Clause"
@@ -16,15 +23,6 @@ class ConanRecipe(ConanFile):
     python_requires_extend = "python_package.PythonPackageRecipe"
     exports_sources = "requirements.txt"
     package_type = "shared-library"
-    parallel_make = False  # see https://github.com/numpy/numpy/issues/13080
-
-    mlab_hooks = {
-        "dependencies.system_libs": [
-            "liblapack.so.3",  # FIXME MLAB-2790
-            "libblas.so.3",  # FIXME MLAB-2790
-            "libcblas.so.3",  # FIXME MLAB-2790
-        ]
-    }
 
     @property
     def license_path(self):
@@ -33,33 +31,40 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="2a02aba9ed12e4ac4eb3ea9421c420301a0c6460d9830d74a9df87efa4912010",
+            sha256="e29554e2bef54a90aa5cc07da6ce955accb83f21ab5de01a62c8478897b264fd",
             url=f"https://github.com/numpy/numpy/releases/download/v{self.version}/numpy-{self.version}.tar.gz",
             strip_root=True,
         )
 
+    def generate(self):
+        if self.settings.os == "Windows":
+            tc = MSBuildToolchain(self)
+            tc.generate()
+        super().generate()
+
     def package(self):
         self.default_package()
-        numpy_config = next(self.source_path.rglob("**/numpy/core/include/numpy/_numpyconfig.h"), None)
+        numpy_config = next(Path(self.build_folder).rglob("**/numpy/_core/include/numpy/_numpyconfig.h"), None)
         if numpy_config is None:
             self.output.error("Expected Numpy include directory not found")
             raise ConanException("Expected Numpy include directory not found")
         src_dir = numpy_config.parent
-        dst_dir = self.package_path / self.relative_site_package_folder() / "numpy" / "core" / "include" / "numpy"
+        dst_dir = (
+            Path(self.package_folder) / self.relative_site_package_folder() / "numpy" / "_core" / "include" / "numpy"
+        )
         copy(self, "_numpyconfig.h", src=src_dir, dst=dst_dir)
         copy(self, "__ufunc_api.h", src=src_dir, dst=dst_dir)
         copy(self, "__multiarray_api.h", src=src_dir, dst=dst_dir)
+        rmdir(
+            self,
+            Path(self.package_folder) / self.relative_site_package_folder() / "numpy" / "_core" / "lib" / "pkgconfig",
+        )
 
     def package_info(self):
         super().package_info()
         self.cpp_info.set_property("cpe", "cpe:2.3:a:numpy:numpy:*:*:*:*:*:*:*:*")
-        self.cpp_info.set_property("base_purl", "github/numpy/numpy")
+        self.cpp_info.set_property("purl", f"pkg:github/numpy/numpy@v{self.version}")
         self.cpp_info.set_property("cmake_target_aliases", ["Python3::NumPy"])  # for use by Python3Config.cmake
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("pkg_config_name", "NumPy")
-        self.cpp_info.includedirs = [self.relative_site_package_folder() + "/numpy/core/include"]
-
-    @property
-    def prefer_setup_py(self):
-        # did not get to work it with pyproject.toml using the mesonpy build backend
-        return True
+        self.cpp_info.includedirs = [self.relative_site_package_folder() + "/numpy/_core/include"]

@@ -1,14 +1,12 @@
 diff --git a/setup.py b/setup.py
-index 5161ef3..1dff3e4 100644
+index 7beb191..549ccd4 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -226,9 +226,15 @@ def _find_include_file(self, include):
+@@ -234,7 +234,15 @@ def _find_include_file(self: pil_build_ext, include: str) -> int:
  
  
- def _find_library_file(self, library):
--    ret = self.compiler.find_library_file(
--        self.compiler.library_dirs, library, debug=debug_build()
--    )
+ def _find_library_file(self: pil_build_ext, library: str) -> str | None:
+-    ret = self.compiler.find_library_file(self.compiler.library_dirs, library)
 +    ret = None
 +    if sys.platform != "win32" and debug_build():
 +        ret = self.compiler.find_library_file(

@@ -43,6 +43,6 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:requirejs:requirejs:*:*:*:*:*:*:*:*")
-        self.cpp_info.set_property("base_purl", "github/requirejs/requirejs")
+        self.cpp_info.set_property("purl", f"pkg:github/requirejs/requirejs@{self.version}")
         self.cpp_info.includedirs.clear()
         self.cpp_info.set_property("cmake_find_mode", "none")

@@ -1,8 +1,8 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 723e234..a02c285 100644
+index 2af1e6f..fe48c4c 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -438,25 +438,6 @@ set_target_properties(
+@@ -443,24 +443,24 @@ set_target_properties(
      SOVERSION ${LIBXML_MAJOR_VERSION}
  )
  
@@ -24,7 +24,24 @@ index 723e234..a02c285 100644
 -        )
 -    endif()
 -endif()
--
++# if(MSVC)
++#     if(BUILD_SHARED_LIBS)
++#         set_target_properties(
++#             LibXml2
++#             PROPERTIES
++#             DEBUG_POSTFIX d
++#         )
++#     else()
++#         set_target_properties(
++#             LibXml2
++#             PROPERTIES
++#             DEBUG_POSTFIX sd
++#             MINSIZEREL_POSTFIX s
++#             RELEASE_POSTFIX s
++#             RELWITHDEBINFO_POSTFIX s
++#         )
++#     endif()
++# endif()
+ 
  install(FILES ${LIBXML2_HDRS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/libxml2/libxml COMPONENT development)
  
- install(

@@ -79,7 +79,7 @@ inline void py_q_setElt(const SbVec2s&  s, int  nc, const unsigned char*  bytes,
 class PythonQtWrapper_SoGLTextureImageElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoGLTextureImageElement* new_SoGLTextureImageElement();
    int  static_SoGLTextureImageElement_getClassStackIndex();
    SoType  static_SoGLTextureImageElement_getClassTypeId();
@@ -132,7 +132,7 @@ inline void py_q_translateEltBy(const SbVec3f&  translation) { SoGLTextureMatrix
 class PythonQtWrapper_SoGLTextureMatrixElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoGLTextureMatrixElement* new_SoGLTextureMatrixElement();
    int  static_SoGLTextureMatrixElement_getClassStackIndex();
    SoType  static_SoGLTextureMatrixElement_getClassTypeId();
@@ -177,7 +177,7 @@ inline void py_q_push(SoState*  state) { SoGLUpdateAreaElement::push(state); }
 class PythonQtWrapper_SoGLUpdateAreaElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoGLUpdateAreaElement* new_SoGLUpdateAreaElement();
    SoElement*  py_q_copyMatchInfo(SoGLUpdateAreaElement* theWrappedObject) const{  return (((PythonQtPublicPromoter_SoGLUpdateAreaElement*)theWrappedObject)->py_q_copyMatchInfo());}
    bool  static_SoGLUpdateAreaElement_get(SoState*  state, SbVec2f&  origin, SbVec2f&  size);
@@ -226,7 +226,7 @@ inline void py_q_setElt(const SbMatrix&  matrix) { SoGLViewingMatrixElement::set
 class PythonQtWrapper_SoGLViewingMatrixElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoGLViewingMatrixElement* new_SoGLViewingMatrixElement();
    int  static_SoGLViewingMatrixElement_getClassStackIndex();
    SoType  static_SoGLViewingMatrixElement_getClassTypeId();
@@ -270,7 +270,7 @@ inline void py_q_setElt(const SbViewportRegion&  vpReg) { SoGLViewportRegionElem
 class PythonQtWrapper_SoGLViewportRegionElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoGLViewportRegionElement* new_SoGLViewportRegionElement();
    int  static_SoGLViewportRegionElement_getClassStackIndex();
    SoType  static_SoGLViewportRegionElement_getClassTypeId();
@@ -312,7 +312,7 @@ inline void py_q_setElt(int  value) { SoInt32Element::setElt(value); }
 class PythonQtWrapper_SoInt32Element : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoInt32Element* new_SoInt32Element();
    SoElement*  py_q_copyMatchInfo(SoInt32Element* theWrappedObject) const{  return (((PythonQtPublicPromoter_SoInt32Element*)theWrappedObject)->py_q_copyMatchInfo());}
    int  static_SoInt32Element_get(int  stackIndex, SoState*  state);
@@ -372,7 +372,7 @@ enum internalMasks{
   OTHER_COLOR_MASK = SoLazyElement::OTHER_COLOR_MASK,   ALL_COLOR_MASK = SoLazyElement::ALL_COLOR_MASK,   NO_COLOR_MASK = SoLazyElement::NO_COLOR_MASK,   ALL_BUT_DIFFUSE_MASK = SoLazyElement::ALL_BUT_DIFFUSE_MASK,   DIFFUSE_ONLY_MASK = SoLazyElement::DIFFUSE_ONLY_MASK};
 enum masks{
   LIGHT_MODEL_MASK = SoLazyElement::LIGHT_MODEL_MASK,   COLOR_MATERIAL_MASK = SoLazyElement::COLOR_MATERIAL_MASK,   DIFFUSE_MASK = SoLazyElement::DIFFUSE_MASK,   AMBIENT_MASK = SoLazyElement::AMBIENT_MASK,   EMISSIVE_MASK = SoLazyElement::EMISSIVE_MASK,   SPECULAR_MASK = SoLazyElement::SPECULAR_MASK,   SHININESS_MASK = SoLazyElement::SHININESS_MASK,   TRANSPARENCY_MASK = SoLazyElement::TRANSPARENCY_MASK,   BLENDING_MASK = SoLazyElement::BLENDING_MASK,   ALL_MASK = SoLazyElement::ALL_MASK};
-public slots:
+public Q_SLOTS:
 SoLazyElement* new_SoLazyElement();
    SoElement*  py_q_copyMatchInfo(SoLazyElement* theWrappedObject) const{  return (((PythonQtPublicPromoter_SoLazyElement*)theWrappedObject)->py_q_copyMatchInfo());}
    void static_SoLazyElement_drawArrays(SoState*  state, GLenum  mode, GLint  first, GLsizei  count);
@@ -459,7 +459,7 @@ inline bool  py_q_matches(const SoElement*  elt) const { return SoLightAttenuati
 class PythonQtWrapper_SoLightAttenuationElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoLightAttenuationElement* new_SoLightAttenuationElement();
    SoElement*  py_q_copyMatchInfo(SoLightAttenuationElement* theWrappedObject) const{  return (((PythonQtPublicPromoter_SoLightAttenuationElement*)theWrappedObject)->py_q_copyMatchInfo());}
    const SbVec3f*  static_SoLightAttenuationElement_get(SoState*  state);
@@ -501,7 +501,7 @@ inline void py_q_init(SoState*  state) { SoLinePatternElement::init(state); }
 class PythonQtWrapper_SoLinePatternElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoLinePatternElement* new_SoLinePatternElement();
    int  static_SoLinePatternElement_getClassStackIndex();
    SoType  static_SoLinePatternElement_getClassTypeId();
@@ -538,7 +538,7 @@ inline void py_q_init(SoState*  state) { SoLineWidthElement::init(state); }
 class PythonQtWrapper_SoLineWidthElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoLineWidthElement* new_SoLineWidthElement();
    float  static_SoLineWidthElement_get(SoState*  state);
    int  static_SoLineWidthElement_getClassStackIndex();
@@ -580,7 +580,7 @@ inline void py_q_push(SoState*  state) { SoLocalBBoxMatrixElement::push(state); 
 class PythonQtWrapper_SoLocalBBoxMatrixElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoLocalBBoxMatrixElement* new_SoLocalBBoxMatrixElement();
    SoElement*  py_q_copyMatchInfo(SoLocalBBoxMatrixElement* theWrappedObject) const{  return (((PythonQtPublicPromoter_SoLocalBBoxMatrixElement*)theWrappedObject)->py_q_copyMatchInfo());}
    const SbMatrix*  static_SoLocalBBoxMatrixElement_get(SoState*  state);
@@ -633,7 +633,7 @@ public:
 Q_ENUMS(Binding )
 enum Binding{
   OVERALL = SoMaterialBindingElement::OVERALL,   PER_PART = SoMaterialBindingElement::PER_PART,   PER_PART_INDEXED = SoMaterialBindingElement::PER_PART_INDEXED,   PER_FACE = SoMaterialBindingElement::PER_FACE,   PER_FACE_INDEXED = SoMaterialBindingElement::PER_FACE_INDEXED,   PER_VERTEX = SoMaterialBindingElement::PER_VERTEX,   PER_VERTEX_INDEXED = SoMaterialBindingElement::PER_VERTEX_INDEXED};
-public slots:
+public Q_SLOTS:
 SoMaterialBindingElement* new_SoMaterialBindingElement();
    SoMaterialBindingElement::Binding  static_SoMaterialBindingElement_get(SoState*  state);
    int  static_SoMaterialBindingElement_getClassStackIndex();
@@ -698,7 +698,7 @@ inline void py_q_translateEltBy(const SbVec3f&  translation) { SoModelMatrixElem
 class PythonQtWrapper_SoModelMatrixElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoModelMatrixElement* new_SoModelMatrixElement();
    const SbMatrix*  static_SoModelMatrixElement_get(SoState*  state);
    const SbMatrix*  static_SoModelMatrixElement_get(SoState*  state, bool&  isIdent);
@@ -768,7 +768,7 @@ public:
 Q_ENUMS(Binding )
 enum Binding{
   OVERALL = SoNormalBindingElement::OVERALL,   PER_PART = SoNormalBindingElement::PER_PART,   PER_PART_INDEXED = SoNormalBindingElement::PER_PART_INDEXED,   PER_FACE = SoNormalBindingElement::PER_FACE,   PER_FACE_INDEXED = SoNormalBindingElement::PER_FACE_INDEXED,   PER_VERTEX = SoNormalBindingElement::PER_VERTEX,   PER_VERTEX_INDEXED = SoNormalBindingElement::PER_VERTEX_INDEXED};
-public slots:
+public Q_SLOTS:
 SoNormalBindingElement* new_SoNormalBindingElement();
    SoNormalBindingElement::Binding  static_SoNormalBindingElement_get(SoState*  state);
    int  static_SoNormalBindingElement_getClassStackIndex();
@@ -807,7 +807,7 @@ inline void py_q_init(SoState*  state) { SoNormalElement::init(state); }
 class PythonQtWrapper_SoNormalElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoNormalElement* new_SoNormalElement();
    const SbVec3f*  get(SoNormalElement* theWrappedObject, int  index) const;
    int  static_SoNormalElement_getClassStackIndex();
@@ -850,7 +850,7 @@ inline void py_q_push(SoState*  state) { SoOverrideElement::push(state); }
 class PythonQtWrapper_SoOverrideElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoOverrideElement* new_SoOverrideElement();
 void delete_SoOverrideElement(SoOverrideElement* obj) { delete obj; }
    SoElement*  py_q_copyMatchInfo(SoOverrideElement* theWrappedObject) const{  return (((PythonQtPublicPromoter_SoOverrideElement*)theWrappedObject)->py_q_copyMatchInfo());}
@@ -932,7 +932,7 @@ inline bool  py_q_matches(const SoElement*  elt) const { return SoPickRayElement
 class PythonQtWrapper_SoPickRayElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoPickRayElement* new_SoPickRayElement();
    SoElement*  py_q_copyMatchInfo(SoPickRayElement* theWrappedObject) const{  return (((PythonQtPublicPromoter_SoPickRayElement*)theWrappedObject)->py_q_copyMatchInfo());}
    const SbViewVolume*  static_SoPickRayElement_get(SoState*  state);
@@ -976,7 +976,7 @@ public:
 Q_ENUMS(Style )
 enum Style{
   SHAPE = SoPickStyleElement::SHAPE,   BOUNDING_BOX = SoPickStyleElement::BOUNDING_BOX,   UNPICKABLE = SoPickStyleElement::UNPICKABLE};
-public slots:
+public Q_SLOTS:
 SoPickStyleElement* new_SoPickStyleElement();
    SoPickStyleElement::Style  static_SoPickStyleElement_get(SoState*  state);
    int  static_SoPickStyleElement_getClassStackIndex();
@@ -1016,7 +1016,7 @@ inline void py_q_init(SoState*  state) { SoPointSizeElement::init(state); }
 class PythonQtWrapper_SoPointSizeElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoPointSizeElement* new_SoPointSizeElement();
    float  static_SoPointSizeElement_get(SoState*  state);
    int  static_SoPointSizeElement_getClassStackIndex();
@@ -1055,7 +1055,7 @@ inline void py_q_init(SoState*  state) { SoProfileCoordinateElement::init(state)
 class PythonQtWrapper_SoProfileCoordinateElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoProfileCoordinateElement* new_SoProfileCoordinateElement();
    const SbVec2f*  get2(SoProfileCoordinateElement* theWrappedObject, int  index) const;
    const SbVec3f*  get3(SoProfileCoordinateElement* theWrappedObject, int  index) const;
@@ -1104,7 +1104,7 @@ public:
 Q_ENUMS(Profile )
 enum Profile{
   START_FIRST = SoProfileElement::START_FIRST,   START_NEW = SoProfileElement::START_NEW,   ADD_TO_CURRENT = SoProfileElement::ADD_TO_CURRENT};
-public slots:
+public Q_SLOTS:
 SoProfileElement* new_SoProfileElement();
    void static_SoProfileElement_add(SoState*  state, SoProfile*  profile);
    int  static_SoProfileElement_getClassStackIndex();
@@ -1145,7 +1145,7 @@ inline void py_q_setElt(const SbMatrix&  matrix) { SoProjectionMatrixElement::se
 class PythonQtWrapper_SoProjectionMatrixElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoProjectionMatrixElement* new_SoProjectionMatrixElement();
    const SbMatrix*  static_SoProjectionMatrixElement_get(SoState*  state);
    int  static_SoProjectionMatrixElement_getClassStackIndex();
@@ -1188,7 +1188,7 @@ inline bool  py_q_matches(const SoElement*  elt) const { return SoReplacedElemen
 class PythonQtWrapper_SoReplacedElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoReplacedElement* new_SoReplacedElement();
    SoElement*  py_q_copyMatchInfo(SoReplacedElement* theWrappedObject) const{  return (((PythonQtPublicPromoter_SoReplacedElement*)theWrappedObject)->py_q_copyMatchInfo());}
    int  static_SoReplacedElement_getClassStackIndex();
@@ -1240,7 +1240,7 @@ enum ShapeType{
   UNKNOWN_SHAPE_TYPE = SoShapeHintsElement::UNKNOWN_SHAPE_TYPE,   SOLID = SoShapeHintsElement::SOLID,   SHAPE_TYPE_AS_IS = SoShapeHintsElement::SHAPE_TYPE_AS_IS};
 enum VertexOrdering{
   UNKNOWN_ORDERING = SoShapeHintsElement::UNKNOWN_ORDERING,   CLOCKWISE = SoShapeHintsElement::CLOCKWISE,   COUNTERCLOCKWISE = SoShapeHintsElement::COUNTERCLOCKWISE,   ORDERING_AS_IS = SoShapeHintsElement::ORDERING_AS_IS};
-public slots:
+public Q_SLOTS:
 SoShapeHintsElement* new_SoShapeHintsElement();
    SoElement*  py_q_copyMatchInfo(SoShapeHintsElement* theWrappedObject) const{  return (((PythonQtPublicPromoter_SoShapeHintsElement*)theWrappedObject)->py_q_copyMatchInfo());}
    void static_SoShapeHintsElement_get(SoState*  state, SoShapeHintsElement::VertexOrdering&  vertexOrdering, SoShapeHintsElement::ShapeType&  shapeType, SoShapeHintsElement::FaceType&  faceType);
@@ -1292,7 +1292,7 @@ inline void py_q_push(SoState*  state) { SoShapeStyleElement::push(state); }
 class PythonQtWrapper_SoShapeStyleElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoShapeStyleElement* new_SoShapeStyleElement();
    SoElement*  py_q_copyMatchInfo(SoShapeStyleElement* theWrappedObject) const{  return (((PythonQtPublicPromoter_SoShapeStyleElement*)theWrappedObject)->py_q_copyMatchInfo());}
    const SoShapeStyleElement*  static_SoShapeStyleElement_get(SoState*  state);
@@ -1346,7 +1346,7 @@ inline void py_q_init(SoState*  state) { SoSwitchElement::init(state); }
 class PythonQtWrapper_SoSwitchElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoSwitchElement* new_SoSwitchElement();
    int  static_SoSwitchElement_get(SoState*  state);
    int  static_SoSwitchElement_getClassStackIndex();
@@ -1389,7 +1389,7 @@ public:
 Q_ENUMS(Binding )
 enum Binding{
   PER_VERTEX = SoTextureCoordinateBindingElement::PER_VERTEX,   PER_VERTEX_INDEXED = SoTextureCoordinateBindingElement::PER_VERTEX_INDEXED};
-public slots:
+public Q_SLOTS:
 SoTextureCoordinateBindingElement* new_SoTextureCoordinateBindingElement();
    SoTextureCoordinateBindingElement::Binding  static_SoTextureCoordinateBindingElement_get(SoState*  state);
    int  static_SoTextureCoordinateBindingElement_getClassStackIndex();
@@ -1433,7 +1433,7 @@ public:
 Q_ENUMS(CoordType )
 enum CoordType{
   EXPLICIT = SoTextureCoordinateElement::EXPLICIT,   FUNCTION = SoTextureCoordinateElement::FUNCTION};
-public slots:
+public Q_SLOTS:
 SoTextureCoordinateElement* new_SoTextureCoordinateElement();
    const SbVec4f*  get(SoTextureCoordinateElement* theWrappedObject, const SbVec3f&  point, const SbVec3f&  normal) const;
    const SbVec2f*  get2(SoTextureCoordinateElement* theWrappedObject, int  index) const;
@@ -1484,7 +1484,7 @@ inline void py_q_setElt(const SbVec2s&  s, int  nc, const unsigned char*  bytes,
 class PythonQtWrapper_SoTextureImageElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoTextureImageElement* new_SoTextureImageElement();
    bool  static_SoTextureImageElement_containsTransparency(SoState*  state);
    const unsigned char*  static_SoTextureImageElement_get(SoState*  state, SbVec2s&  size, int&  numComponents, int&  wrapS, int&  wrapT, int&  model, SbColor&  blendColor);
@@ -1542,7 +1542,7 @@ inline void py_q_translateEltBy(const SbVec3f&  translation) { SoTextureMatrixEl
 class PythonQtWrapper_SoTextureMatrixElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoTextureMatrixElement* new_SoTextureMatrixElement();
    const SbMatrix*  static_SoTextureMatrixElement_get(SoState*  state);
    int  static_SoTextureMatrixElement_getClassStackIndex();

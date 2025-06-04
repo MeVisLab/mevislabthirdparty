@@ -7,7 +7,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "nlohmann_json"
-    version = "3.11.3"
+    version = "3.12.0"
     homepage = "https://github.com/nlohmann/json"
     description = "A C++11 header-only JSON library with intuitive syntax, trivial integration and serious testing"
     license = "MIT"
@@ -24,10 +24,11 @@ class ConanRecipe(ConanFile):
         cmake_layout(self, src_folder="src")
 
     def source(self):
-        get(self,
-            sha256="0d8ef5af7f9794e3263480193c491549b2ba6cc74bb018906202ada498a79406",
+        get(
+            self,
+            sha256="4b92eb0c06d10683f7447ce9406cb97cd4b453be18d7279320f7b2f025c10187",
             url=f"https://github.com/nlohmann/json/archive/v{self.version}.tar.gz",
-            strip_root=True
+            strip_root=True,
         )
 
     def generate(self):
@@ -52,7 +53,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:json-for-modern-cpp_project:json-for-modern-cpp:*:*:*:*:*:*:*:*")
-        self.cpp_info.set_property("base_purl", "github/nlohmann/json")
+        self.cpp_info.set_property("purl", f"pkg:github/nlohmann/json@v{self.version}")
         self.cpp_info.set_property("cmake_file_name", "nlohmann_json")
         self.cpp_info.set_property("cmake_target_name", "nlohmann_json::nlohmann_json")
         self.cpp_info.set_property("display_name", "JSON for Modern C++")

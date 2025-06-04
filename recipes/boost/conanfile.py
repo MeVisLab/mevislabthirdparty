@@ -112,7 +112,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:boost:boost:*:*:*:*:*:*:*:*")
-        self.cpp_info.set_property("base_purl", "github/boostorg/boost")
+        self.cpp_info.set_property("purl", f"pkg:github/boostorg/boost@boost-{self.version}")
         self.cpp_info.set_property("cmake_file_name", "Boost")
         self.cpp_info.set_property("cmake_target_name", "Boost::boost")
 

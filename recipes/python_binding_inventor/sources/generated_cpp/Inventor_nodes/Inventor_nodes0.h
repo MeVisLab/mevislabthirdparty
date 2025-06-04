@@ -117,7 +117,7 @@ inline void py_q_GLRenderInPath(SoGLRenderAction*  action) { SoAnnotation::GLRen
 class PythonQtWrapper_SoAnnotation : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoAnnotation* new_SoAnnotation();
    void py_q_GLRenderBelowPath(SoAnnotation* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoAnnotation*)theWrappedObject)->py_q_GLRenderBelowPath(action));}
    void py_q_GLRenderInPath(SoAnnotation* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoAnnotation*)theWrappedObject)->py_q_GLRenderInPath(action));}
@@ -186,7 +186,7 @@ public:
 Q_ENUMS(Sizing )
 enum Sizing{
   X = SoAntiSquish::X,   Y = SoAntiSquish::Y,   Z = SoAntiSquish::Z,   AVERAGE_DIMENSION = SoAntiSquish::AVERAGE_DIMENSION,   BIGGEST_DIMENSION = SoAntiSquish::BIGGEST_DIMENSION,   SMALLEST_DIMENSION = SoAntiSquish::SMALLEST_DIMENSION,   LONGEST_DIAGONAL = SoAntiSquish::LONGEST_DIAGONAL};
-public slots:
+public Q_SLOTS:
 SoAntiSquish* new_SoAntiSquish();
    void py_q_GLRender(SoAntiSquish* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoAntiSquish*)theWrappedObject)->py_q_GLRender(action));}
    void py_q_callback(SoAntiSquish* theWrappedObject, SoCallbackAction*  action){  (((PythonQtPublicPromoter_SoAntiSquish*)theWrappedObject)->py_q_callback(action));}
@@ -259,7 +259,7 @@ public:
 Q_ENUMS(Origin )
 enum Origin{
   FIRST = SoArray::FIRST,   CENTER = SoArray::CENTER,   LAST = SoArray::LAST};
-public slots:
+public Q_SLOTS:
 SoArray* new_SoArray();
    void py_q_GLRender(SoArray* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoArray*)theWrappedObject)->py_q_GLRender(action));}
    bool  py_q_affectsState(SoArray* theWrappedObject) const{  return (((PythonQtPublicPromoter_SoArray*)theWrappedObject)->py_q_affectsState());}
@@ -339,7 +339,7 @@ public:
 Q_ENUMS(Justification )
 enum Justification{
   LEFT = SoAsciiText::LEFT,   RIGHT = SoAsciiText::RIGHT,   CENTER = SoAsciiText::CENTER};
-public slots:
+public Q_SLOTS:
 SoAsciiText* new_SoAsciiText();
    void py_q_GLRender(SoAsciiText* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoAsciiText*)theWrappedObject)->py_q_GLRender(action));}
    void py_q_computeBBox(SoAsciiText* theWrappedObject, SoAction*  action, SbBox3f&  box, SbVec3f&  center){  (((PythonQtPublicPromoter_SoAsciiText*)theWrappedObject)->py_q_computeBBox(action, box, center));}
@@ -400,7 +400,7 @@ inline void py_q_doAction(SoAction*  action) { SoBaseColor::doAction(action); }
 class PythonQtWrapper_SoBaseColor : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoBaseColor* new_SoBaseColor();
    void py_q_GLRender(SoBaseColor* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoBaseColor*)theWrappedObject)->py_q_GLRender(action));}
    void py_q_callback(SoBaseColor* theWrappedObject, SoCallbackAction*  action){  (((PythonQtPublicPromoter_SoBaseColor*)theWrappedObject)->py_q_callback(action));}
@@ -457,7 +457,7 @@ inline void py_q_write(SoWriteAction*  action) { SoBlinker::write(action); }
 class PythonQtWrapper_SoBlinker : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoBlinker* new_SoBlinker();
    void py_q_getBoundingBox(SoBlinker* theWrappedObject, SoGetBoundingBoxAction*  action){  (((PythonQtPublicPromoter_SoBlinker*)theWrappedObject)->py_q_getBoundingBox(action));}
    SoType  static_SoBlinker_getClassTypeId();
@@ -520,7 +520,7 @@ inline void py_q_write(SoWriteAction*  action) { SoCallback::write(action); }
 class PythonQtWrapper_SoCallback : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoCallback* new_SoCallback();
    void py_q_GLRender(SoCallback* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoCallback*)theWrappedObject)->py_q_GLRender(action));}
    void py_q_callback(SoCallback* theWrappedObject, SoCallbackAction*  action){  (((PythonQtPublicPromoter_SoCallback*)theWrappedObject)->py_q_callback(action));}
@@ -598,7 +598,7 @@ public:
 Q_ENUMS(ViewportMapping )
 enum ViewportMapping{
   CROP_VIEWPORT_FILL_FRAME = SoCamera::CROP_VIEWPORT_FILL_FRAME,   CROP_VIEWPORT_LINE_FRAME = SoCamera::CROP_VIEWPORT_LINE_FRAME,   CROP_VIEWPORT_NO_FRAME = SoCamera::CROP_VIEWPORT_NO_FRAME,   ADJUST_CAMERA = SoCamera::ADJUST_CAMERA,   LEAVE_ALONE = SoCamera::LEAVE_ALONE};
-public slots:
+public Q_SLOTS:
 SoCamera* new_SoCamera();
    void py_q_GLRender(SoCamera* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoCamera*)theWrappedObject)->py_q_GLRender(action));}
    void py_q_callback(SoCamera* theWrappedObject, SoCallbackAction*  action){  (((PythonQtPublicPromoter_SoCamera*)theWrappedObject)->py_q_callback(action));}
@@ -677,7 +677,7 @@ inline void py_q_pick(SoPickAction*  action) { SoClipPlane::pick(action); }
 class PythonQtWrapper_SoClipPlane : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoClipPlane* new_SoClipPlane();
    void py_q_GLRender(SoClipPlane* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoClipPlane*)theWrappedObject)->py_q_GLRender(action));}
    void py_q_callback(SoClipPlane* theWrappedObject, SoCallbackAction*  action){  (((PythonQtPublicPromoter_SoClipPlane*)theWrappedObject)->py_q_callback(action));}
@@ -741,7 +741,7 @@ public:
 Q_ENUMS(Type )
 enum Type{
   OBJECT_SPACE = SoComplexity::OBJECT_SPACE,   SCREEN_SPACE = SoComplexity::SCREEN_SPACE,   BOUNDING_BOX = SoComplexity::BOUNDING_BOX};
-public slots:
+public Q_SLOTS:
 SoComplexity* new_SoComplexity();
    void py_q_GLRender(SoComplexity* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoComplexity*)theWrappedObject)->py_q_GLRender(action));}
    void py_q_callback(SoComplexity* theWrappedObject, SoCallbackAction*  action){  (((PythonQtPublicPromoter_SoComplexity*)theWrappedObject)->py_q_callback(action));}
@@ -814,7 +814,7 @@ public:
 Q_ENUMS(Part )
 enum Part{
   SIDES = SoCone::SIDES,   BOTTOM = SoCone::BOTTOM,   ALL = SoCone::ALL};
-public slots:
+public Q_SLOTS:
 SoCone* new_SoCone();
    void py_q_GLRender(SoCone* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoCone*)theWrappedObject)->py_q_GLRender(action));}
    void addPart(SoCone* theWrappedObject, SoCone::Part  part);
@@ -881,7 +881,7 @@ inline void py_q_pick(SoPickAction*  action) { SoCoordinate3::pick(action); }
 class PythonQtWrapper_SoCoordinate3 : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoCoordinate3* new_SoCoordinate3();
    void py_q_GLRender(SoCoordinate3* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoCoordinate3*)theWrappedObject)->py_q_GLRender(action));}
    void py_q_callback(SoCoordinate3* theWrappedObject, SoCallbackAction*  action){  (((PythonQtPublicPromoter_SoCoordinate3*)theWrappedObject)->py_q_callback(action));}
@@ -942,7 +942,7 @@ inline void py_q_pick(SoPickAction*  action) { SoCoordinate4::pick(action); }
 class PythonQtWrapper_SoCoordinate4 : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoCoordinate4* new_SoCoordinate4();
    void py_q_GLRender(SoCoordinate4* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoCoordinate4*)theWrappedObject)->py_q_GLRender(action));}
    void py_q_callback(SoCoordinate4* theWrappedObject, SoCallbackAction*  action){  (((PythonQtPublicPromoter_SoCoordinate4*)theWrappedObject)->py_q_callback(action));}
@@ -1012,7 +1012,7 @@ inline void py_q_rayPick(SoRayPickAction*  action) { SoCube::rayPick(action); }
 class PythonQtWrapper_SoCube : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoCube* new_SoCube();
    void py_q_GLRender(SoCube* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoCube*)theWrappedObject)->py_q_GLRender(action));}
    void py_q_computeBBox(SoCube* theWrappedObject, SoAction*  action, SbBox3f&  box, SbVec3f&  center){  (((PythonQtPublicPromoter_SoCube*)theWrappedObject)->py_q_computeBBox(action, box, center));}
@@ -1085,7 +1085,7 @@ public:
 Q_ENUMS(Part )
 enum Part{
   SIDES = SoCylinder::SIDES,   TOP = SoCylinder::TOP,   BOTTOM = SoCylinder::BOTTOM,   ALL = SoCylinder::ALL};
-public slots:
+public Q_SLOTS:
 SoCylinder* new_SoCylinder();
    void py_q_GLRender(SoCylinder* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoCylinder*)theWrappedObject)->py_q_GLRender(action));}
    void addPart(SoCylinder* theWrappedObject, SoCylinder::Part  part);
@@ -1148,7 +1148,7 @@ inline void py_q_GLRender(SoGLRenderAction*  action) { SoDirectionalLight::GLRen
 class PythonQtWrapper_SoDirectionalLight : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoDirectionalLight* new_SoDirectionalLight();
    void py_q_GLRender(SoDirectionalLight* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoDirectionalLight*)theWrappedObject)->py_q_GLRender(action));}
    SoType  static_SoDirectionalLight_getClassTypeId();
@@ -1206,7 +1206,7 @@ public:
 Q_ENUMS(Style )
 enum Style{
   FILLED = SoDrawStyle::FILLED,   LINES = SoDrawStyle::LINES,   POINTS = SoDrawStyle::POINTS,   INVISIBLE = SoDrawStyle::INVISIBLE};
-public slots:
+public Q_SLOTS:
 SoDrawStyle* new_SoDrawStyle();
    void py_q_GLRender(SoDrawStyle* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoDrawStyle*)theWrappedObject)->py_q_GLRender(action));}
    void py_q_callback(SoDrawStyle* theWrappedObject, SoCallbackAction*  action){  (((PythonQtPublicPromoter_SoDrawStyle*)theWrappedObject)->py_q_callback(action));}
@@ -1268,7 +1268,7 @@ public:
 Q_ENUMS(FogType )
 enum FogType{
   NONE = SoEnvironment::NONE,   HAZE = SoEnvironment::HAZE,   FOG = SoEnvironment::FOG,   SMOKE = SoEnvironment::SMOKE};
-public slots:
+public Q_SLOTS:
 SoEnvironment* new_SoEnvironment();
    void py_q_GLRender(SoEnvironment* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoEnvironment*)theWrappedObject)->py_q_GLRender(action));}
    void py_q_callback(SoEnvironment* theWrappedObject, SoCallbackAction*  action){  (((PythonQtPublicPromoter_SoEnvironment*)theWrappedObject)->py_q_callback(action));}
@@ -1328,7 +1328,7 @@ inline void py_q_handleEvent(SoHandleEventAction*  ha) { SoEventCallback::handle
 class PythonQtWrapper_SoEventCallback : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoEventCallback* new_SoEventCallback();
    SoHandleEventAction*  getAction(SoEventCallback* theWrappedObject) const;
    SoType  static_SoEventCallback_getClassTypeId();
@@ -1404,7 +1404,7 @@ public:
 Q_ENUMS(Binding )
 enum Binding{
   OVERALL = SoFaceSet::OVERALL,   PER_FACE = SoFaceSet::PER_FACE,   PER_VERTEX = SoFaceSet::PER_VERTEX};
-public slots:
+public Q_SLOTS:
 SoFaceSet* new_SoFaceSet();
    void py_q_GLRender(SoFaceSet* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoFaceSet*)theWrappedObject)->py_q_GLRender(action));}
    void py_q_computeBBox(SoFaceSet* theWrappedObject, SoAction*  action, SbBox3f&  box, SbVec3f&  center){  (((PythonQtPublicPromoter_SoFaceSet*)theWrappedObject)->py_q_computeBBox(action, box, center));}
@@ -1467,7 +1467,7 @@ inline void py_q_pick(SoPickAction*  action) { SoFile::pick(action); }
 class PythonQtWrapper_SoFile : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoFile* new_SoFile();
    void py_q_GLRender(SoFile* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoFile*)theWrappedObject)->py_q_GLRender(action));}
    void py_q_callback(SoFile* theWrappedObject, SoCallbackAction*  action){  (((PythonQtPublicPromoter_SoFile*)theWrappedObject)->py_q_callback(action));}
@@ -1531,7 +1531,7 @@ inline void py_q_pick(SoPickAction*  action) { SoFont::pick(action); }
 class PythonQtWrapper_SoFont : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoFont* new_SoFont();
    void py_q_GLRender(SoFont* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoFont*)theWrappedObject)->py_q_GLRender(action));}
    void py_q_callback(SoFont* theWrappedObject, SoCallbackAction*  action){  (((PythonQtPublicPromoter_SoFont*)theWrappedObject)->py_q_callback(action));}
@@ -1598,7 +1598,7 @@ enum Family{
   SERIF = SoFontStyle::SERIF,   SANS = SoFontStyle::SANS,   TYPEWRITER = SoFontStyle::TYPEWRITER};
 enum Style{
   NONE = SoFontStyle::NONE,   BOLD = SoFontStyle::BOLD,   ITALIC = SoFontStyle::ITALIC};
-public slots:
+public Q_SLOTS:
 SoFontStyle* new_SoFontStyle();
    void py_q_GLRender(SoFontStyle* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoFontStyle*)theWrappedObject)->py_q_GLRender(action));}
    void py_q_callback(SoFontStyle* theWrappedObject, SoCallbackAction*  action){  (((PythonQtPublicPromoter_SoFontStyle*)theWrappedObject)->py_q_callback(action));}
@@ -1670,7 +1670,7 @@ inline void py_q_write(SoWriteAction*  action) { SoGroup::write(action); }
 class PythonQtWrapper_SoGroup : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoGroup* new_SoGroup();
 SoGroup* new_SoGroup(int  nChildren);
    void py_q_GLRender(SoGroup* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoGroup*)theWrappedObject)->py_q_GLRender(action));}
@@ -1756,7 +1756,7 @@ public:
 Q_ENUMS(Binding )
 enum Binding{
   OVERALL = SoIndexedFaceSet::OVERALL,   PER_FACE = SoIndexedFaceSet::PER_FACE,   PER_FACE_INDEXED = SoIndexedFaceSet::PER_FACE_INDEXED,   PER_VERTEX = SoIndexedFaceSet::PER_VERTEX,   PER_VERTEX_INDEXED = SoIndexedFaceSet::PER_VERTEX_INDEXED};
-public slots:
+public Q_SLOTS:
 SoIndexedFaceSet* new_SoIndexedFaceSet();
    void py_q_GLRender(SoIndexedFaceSet* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoIndexedFaceSet*)theWrappedObject)->py_q_GLRender(action));}
    SoDetail*  py_q_createTriangleDetail(SoIndexedFaceSet* theWrappedObject, SoRayPickAction*  action, const SoPrimitiveVertex*  v1, const SoPrimitiveVertex*  v2, const SoPrimitiveVertex*  v3, SoPickedPoint*  pp){  return (((PythonQtPublicPromoter_SoIndexedFaceSet*)theWrappedObject)->py_q_createTriangleDetail(action, v1, v2, v3, pp));}
@@ -1824,7 +1824,7 @@ public:
 Q_ENUMS(Binding )
 enum Binding{
   OVERALL = SoIndexedLineSet::OVERALL,   PER_SEGMENT = SoIndexedLineSet::PER_SEGMENT,   PER_SEGMENT_INDEXED = SoIndexedLineSet::PER_SEGMENT_INDEXED,   PER_LINE = SoIndexedLineSet::PER_LINE,   PER_LINE_INDEXED = SoIndexedLineSet::PER_LINE_INDEXED,   PER_VERTEX = SoIndexedLineSet::PER_VERTEX,   PER_VERTEX_INDEXED = SoIndexedLineSet::PER_VERTEX_INDEXED};
-public slots:
+public Q_SLOTS:
 SoIndexedLineSet* new_SoIndexedLineSet();
    void py_q_GLRender(SoIndexedLineSet* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoIndexedLineSet*)theWrappedObject)->py_q_GLRender(action));}
    SoDetail*  py_q_createLineSegmentDetail(SoIndexedLineSet* theWrappedObject, SoRayPickAction*  action, const SoPrimitiveVertex*  v1, const SoPrimitiveVertex*  v2, SoPickedPoint*  pp){  return (((PythonQtPublicPromoter_SoIndexedLineSet*)theWrappedObject)->py_q_createLineSegmentDetail(action, v1, v2, pp));}
@@ -1892,7 +1892,7 @@ inline void py_q_rayPick(SoRayPickAction*  action) { SoIndexedNurbsCurve::rayPic
 class PythonQtWrapper_SoIndexedNurbsCurve : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoIndexedNurbsCurve* new_SoIndexedNurbsCurve();
    void py_q_GLRender(SoIndexedNurbsCurve* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoIndexedNurbsCurve*)theWrappedObject)->py_q_GLRender(action));}
    void py_q_computeBBox(SoIndexedNurbsCurve* theWrappedObject, SoAction*  action, SbBox3f&  box, SbVec3f&  center){  (((PythonQtPublicPromoter_SoIndexedNurbsCurve*)theWrappedObject)->py_q_computeBBox(action, box, center));}
@@ -1963,7 +1963,7 @@ inline void py_q_rayPick(SoRayPickAction*  action) { SoIndexedNurbsSurface::rayP
 class PythonQtWrapper_SoIndexedNurbsSurface : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoIndexedNurbsSurface* new_SoIndexedNurbsSurface();
    void py_q_GLRender(SoIndexedNurbsSurface* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoIndexedNurbsSurface*)theWrappedObject)->py_q_GLRender(action));}
    void py_q_computeBBox(SoIndexedNurbsSurface* theWrappedObject, SoAction*  action, SbBox3f&  box, SbVec3f&  center){  (((PythonQtPublicPromoter_SoIndexedNurbsSurface*)theWrappedObject)->py_q_computeBBox(action, box, center));}
@@ -2042,7 +2042,7 @@ inline void py_q_computeBBox(SoAction*  action, SbBox3f&  box, SbVec3f&  center)
 class PythonQtWrapper_SoIndexedShape : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoIndexedShape* new_SoIndexedShape();
    bool  static_SoIndexedShape_areTexCoordsIndexed(SoAction*  action);
    void py_q_computeBBox(SoIndexedShape* theWrappedObject, SoAction*  action, SbBox3f&  box, SbVec3f&  center){  (((PythonQtPublicPromoter_SoIndexedShape*)theWrappedObject)->py_q_computeBBox(action, box, center));}
@@ -2117,7 +2117,7 @@ public:
 Q_ENUMS(Binding )
 enum Binding{
   OVERALL = SoIndexedTriangleSet::OVERALL,   PER_FACE = SoIndexedTriangleSet::PER_FACE,   PER_FACE_INDEXED = SoIndexedTriangleSet::PER_FACE_INDEXED,   PER_VERTEX = SoIndexedTriangleSet::PER_VERTEX,   PER_VERTEX_INDEXED = SoIndexedTriangleSet::PER_VERTEX_INDEXED};
-public slots:
+public Q_SLOTS:
 SoIndexedTriangleSet* new_SoIndexedTriangleSet();
    void py_q_GLRender(SoIndexedTriangleSet* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoIndexedTriangleSet*)theWrappedObject)->py_q_GLRender(action));}
    SoDetail*  py_q_createTriangleDetail(SoIndexedTriangleSet* theWrappedObject, SoRayPickAction*  action, const SoPrimitiveVertex*  v1, const SoPrimitiveVertex*  v2, const SoPrimitiveVertex*  v3, SoPickedPoint*  pp){  return (((PythonQtPublicPromoter_SoIndexedTriangleSet*)theWrappedObject)->py_q_createTriangleDetail(action, v1, v2, v3, pp));}

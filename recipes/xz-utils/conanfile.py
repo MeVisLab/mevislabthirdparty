@@ -10,10 +10,10 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "xz-utils"
-    version = "5.6.4"
+    version = "5.8.1"
     homepage = "https://tukaani.org/xz"
     description = "XZ Utils is free general-purpose data compression software with a high compression ratio"
-    license = "Unlicense"
+    license = "0BSD"
     package_type = "shared-library"
     settings = "os", "arch", "compiler", "build_type"
     exports_sources = "patches/*.patch"
@@ -28,7 +28,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="176d510c30d80a23b8050bbc048f2ecaacb823ae48b6821727ed6591f0df9200",
+            sha256="5965c692c4c8800cd4b33ce6d0f6ac9ac9d6ab227b17c512b6561bce4f08d47e",
             url=f"https://github.com/tukaani-project/xz/releases/download/v{self.version}/xz-{self.version}.tar.bz2",
             strip_root=True,
         )
@@ -88,7 +88,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:tukaani:xz:*:*:*:*:*:*:*:*")
-        self.cpp_info.set_property("base_purl", "github/tukaani-project/xz")
+        self.cpp_info.set_property("purl", f"pkg:github/tukaani-project/xz@v{self.version}")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "LibLZMA")
         self.cpp_info.set_property("cmake_target_name", "LibLZMA::LibLZMA")

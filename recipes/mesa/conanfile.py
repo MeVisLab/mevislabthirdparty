@@ -130,5 +130,5 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:mesa3d:mesa:*:*:*:*:*:*:*:*")
-        # self.cpp_info.set_property("base_purl", "")  # Official repository is at https://gitlab.freedesktop.org/mesa/
+        # self.cpp_info.set_property("purl", "")  # Official repository is at https://gitlab.freedesktop.org/mesa/
         self.cpp_info.includedirs = []

@@ -44,7 +44,7 @@
 class PythonQtWrapper_SbXfBox3d : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbXfBox3d* new_SbXfBox3d();
 SbXfBox3d* new_SbXfBox3d(const SbBox3d&  box);
 SbXfBox3d* new_SbXfBox3d(const SbVec3d&  _min, const SbVec3d&  _max);
@@ -82,7 +82,7 @@ void delete_SbXfBox3d(SbXfBox3d* obj) { delete obj; }
 class PythonQtWrapper_SbXfBox3f : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbXfBox3f* new_SbXfBox3f();
 SbXfBox3f* new_SbXfBox3f(const SbBox3f&  box);
 SbXfBox3f* new_SbXfBox3f(const SbVec3f&  _min, const SbVec3f&  _max);
@@ -127,7 +127,7 @@ inline void py_q_startNotify() { SoBase::startNotify(); }
 class PythonQtWrapper_SoBase : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
    SoType  static_SoBase_getClassTypeId();
    SbName  getName(SoBase* theWrappedObject) const;
    SbName  py_q_getName(SoBase* theWrappedObject) const{  return (((PythonQtPublicPromoter_SoBase*)theWrappedObject)->py_q_getName());}
@@ -140,7 +140,7 @@ public slots:
    void touch(SoBase* theWrappedObject);
 
    SoType getTypeId(SoBase* o) const { return o->getTypeId(); }
-   
+
 };
 
 
@@ -161,7 +161,7 @@ public:
 class PythonQtWrapper_SoDB : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoDB* new_SoDB();
 SoDB* new_SoDB(const SoDB& other) {
 PythonQtShell_SoDB* a = new PythonQtShell_SoDB();
@@ -197,7 +197,7 @@ void delete_SoDB(SoDB* obj) { delete obj; }
 class PythonQtWrapper_SoInput : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoInput* new_SoInput();
 SoInput* new_SoInput(SoInput*  dictIn);
 void delete_SoInput(SoInput* obj) { delete obj; }
@@ -240,7 +240,7 @@ enum Annotations{
   ADDRESSES = SoOutput::ADDRESSES,   REF_COUNTS = SoOutput::REF_COUNTS};
 enum Stage{
   COUNT_REFS = SoOutput::COUNT_REFS,   WRITE = SoOutput::WRITE};
-public slots:
+public Q_SLOTS:
 SoOutput* new_SoOutput();
 SoOutput* new_SoOutput(SoOutput*  dictOut);
 void delete_SoOutput(SoOutput* obj) { delete obj; }
@@ -317,7 +317,7 @@ inline void py_q_write(SoWriteAction*  writeAction) const { SoPath::write(writeA
 class PythonQtWrapper_SoPath : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoPath* new_SoPath();
 SoPath* new_SoPath(SoNode*  node);
 SoPath* new_SoPath(int  approxLength);
@@ -361,7 +361,7 @@ return a; }
 class PythonQtWrapper_SoPickedPoint : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoPickedPoint* new_SoPickedPoint(const SoPath*  path, SoState*  state, const SbVec3f&  objSpacePoint);
 SoPickedPoint* new_SoPickedPoint(const SoPickedPoint&  pp);
 void delete_SoPickedPoint(SoPickedPoint* obj) { delete obj; }
@@ -393,7 +393,7 @@ void delete_SoPickedPoint(SoPickedPoint* obj) { delete obj; }
 class PythonQtWrapper_SoPrimitiveVertex : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoPrimitiveVertex* new_SoPrimitiveVertex();
 SoPrimitiveVertex* new_SoPrimitiveVertex(const SoPrimitiveVertex&  pv);
 void delete_SoPrimitiveVertex(SoPrimitiveVertex* obj) { delete obj; }
@@ -446,7 +446,7 @@ inline void py_q_setSceneGraph(SoNode*  newScene) { SoSceneManager::setSceneGrap
 class PythonQtWrapper_SoSceneManager : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoSceneManager* new_SoSceneManager();
 SoSceneManager* new_SoSceneManager(const SoSceneManager& other) {
 PythonQtShell_SoSceneManager* a = new PythonQtShell_SoSceneManager();
@@ -500,7 +500,7 @@ void delete_SoSceneManager(SoSceneManager* obj) { delete obj; }
 class PythonQtWrapper_SoState : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 void delete_SoState(SoState* obj) { delete obj; }
    SoAction*  getAction(SoState* theWrappedObject) const;
    const SoElement*  getConstElement(SoState* theWrappedObject, int  stackIndex) const;
@@ -532,7 +532,7 @@ public:
 class PythonQtWrapper_SoType : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoType* new_SoType();
 SoType* new_SoType(const SoType& other) {
 PythonQtShell_SoType* a = new PythonQtShell_SoType();

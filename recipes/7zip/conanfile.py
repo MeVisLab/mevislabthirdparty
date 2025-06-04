@@ -75,6 +75,6 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:7-zip:7-zip:*:*:*:*:*:*:*:*")
-        self.cpp_info.set_property("base_purl", "github/ip7z/7zip")
+        self.cpp_info.set_property("purl", f"pkg:github/ip7z/7zip@{self.version}")
         self.cpp_info.includedirs.clear()
         self.cpp_info.libdirs.clear()

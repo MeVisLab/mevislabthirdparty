@@ -11,7 +11,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "zstd"
-    version = "1.5.6"
+    version = "1.5.7"
     homepage = "https://facebook.github.io/zstd"
     description = "Zstandard - Fast real-time compression algorithm"
     license = "BSD-3-Clause"
@@ -28,7 +28,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="3b1c3b46e416d36931efd34663122d7f51b550c87f74de2d38249516fe7d8be5",
+            sha256="7897bc5d620580d9b7cd3539c44b59d78f3657d33663fe97a145e07b4ebd69a4",
             url=f"https://github.com/facebook/zstd/archive/v{self.version}.zip",
             destination=self.source_folder,
             strip_root=True,
@@ -62,7 +62,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:facebook:zstandard:*:*:*:*:*:*:*:*")
-        self.cpp_info.set_property("base_purl", "github/facebook/zstd")
+        self.cpp_info.set_property("purl", f"pkg:github/facebook/zstd@v{self.version}")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "zstd")
         self.cpp_info.set_property("cmake_target_name", "zstd::zstd")

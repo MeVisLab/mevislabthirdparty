@@ -10,7 +10,7 @@ from pathlib import Path
 from conan import ConanFile, conan_version
 from conan.tools.cmake import CMakeDeps
 from conan.tools.files import load, save, chdir, mkdir, replace_in_file
-from conans.model.version import Version
+from conan.tools.scm import Version
 from jinja2 import Environment, FileSystemLoader
 from licenses import spdx_licenses, other_licenses
 from mli import MLI, MLI_Python, MLI_Qt
@@ -144,8 +144,8 @@ class _ThirdPartyInformationBase:
                     self.conanfile.output.error(f"Invalid license: '{license_id}' in {dependency.ref.name}")
                     self.conanfile.output.info("Please use a SPDX license identifier (https://spdx.org/licenses/).")
         return licenses, ", ".join(license_names)
-        
-    def collect_all_dependencies(self, dependency_dict: dict, for_dependency = None):
+
+    def collect_all_dependencies(self, dependency_dict: dict, for_dependency=None):
         if for_dependency is None:
             for_dependency = self.conanfile
         to_check = []
@@ -199,10 +199,10 @@ class ThirdPartyInformationDeps(_ThirdPartyInformationBase):
                 info["cpe"] = cpe
             content_dict[f"{base_path}/{pkg_name}.mlinfo"] = json.dumps(info, indent=4)
             # purl are IDs that are used, e.g., by dependency track to determine if a newer
-            # version is available - the "pkg:" prefix and the version number should be omitted
-            purl = dependency.cpp_info.get_property("base_purl")
+            # version is available
+            purl = dependency.cpp_info.get_property("purl")
             if purl:
-                info["base_purl"] = purl
+                info["purl"] = purl
             # list dependencies:
             dependencies = sorted([d.ref.name.lower() for d in dependency.dependencies.host.values()])
             if dependencies:
@@ -454,8 +454,11 @@ class MeVisLabCMakeDeps:
             # a) is icu and OpenSSL, b) can be found in ITK and VTK
             if conan_version < Version("2.11.0"):
                 replace_in_file(
-                    self.conanfile, "cmakedeps_macros.cmake",
-                    'message(STATUS "Cannot locate shared library: ${_LIBRARY_NAME}")', "", strict=False
+                    self.conanfile,
+                    "cmakedeps_macros.cmake",
+                    'message(STATUS "Cannot locate shared library: ${_LIBRARY_NAME}")',
+                    "",
+                    strict=False,
                 )
 
             tpl = self.get_template_engine(build_type)

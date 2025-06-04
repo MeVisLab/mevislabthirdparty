@@ -1,14 +1,14 @@
 from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
 from conan.tools.files import collect_libs
-from conan.tools.files import get, copy, rmdir, patch
+from conan.tools.files import get, copy, rmdir
 
 required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
     name = "libpng"
-    version = "1.6.46"
+    version = "1.6.48"
     homepage = "http://www.libpng.org/pub/png/libpng.html"
     description = "Portable Network Graphics library"
     license = "Libpng"
@@ -29,11 +29,10 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="c2b8ffb46f48331416e01f9e5c7169c7a2e08ad766b742742644e5fdf192e4a1",
+            sha256="68f3d83a79d81dfcb0a439d62b411aa257bb4973d7c67cd1ff8bdf8d011538cd",
             url=f"https://download.sourceforge.net/libpng/libpng-{self.version}.tar.gz",
             strip_root=True,
         )
-        patch(self, patch_file="patches/001-no_incorrect_srgb_profile_warning.patch")
 
     def generate(self):
         tc = CMakeToolchain(self)
@@ -69,7 +68,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:libpng:libpng:*:*:*:*:*:*:*:*")
-        self.cpp_info.set_property("base_purl", "github/pnggroup/libpng")
+        self.cpp_info.set_property("purl", f"pkg:github/pnggroup/libpng@v{self.version}")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "PNG")
         self.cpp_info.set_property("cmake_target_name", "PNG::PNG")

@@ -62,7 +62,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:cryptopp:crypto\\+\\+:*:*:*:*:*:*:*:*")
-        self.cpp_info.set_property("base_purl", "github/weidai11/cryptopp")
+        self.cpp_info.set_property("purl", f"pkg:github/weidai11/cryptopp@CRYPTOPP_{self.version.replace('.', '_')}")
         self.cpp_info.set_property("cmake_file_name", "CryptoPP")
         self.cpp_info.set_property("cmake_target_name", "CryptoPP::CryptoPP")
         self.cpp_info.set_property("display_name", "Crypto++")

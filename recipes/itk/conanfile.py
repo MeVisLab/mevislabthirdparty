@@ -13,7 +13,7 @@ class ConanRecipe(ConanFile):
     homepage = "https://www.itk.org"
     description = ("An open-source, cross-platform library that provides developers "
                    "with an extensive suite of software tools for image analysis")
-    license = "MPL-2.0"
+    license = "Apache-2.0"
     settings = "os", "compiler", "arch", "build_type"
     package_type = "shared-library"
     exports_sources = ["patches/*"]
@@ -124,7 +124,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         # self.cpp_info.set_property("cpe", "")  # Not in CVE?
-        self.cpp_info.set_property("base_purl", "github/InsightSoftwareConsortium/ITK")
+        self.cpp_info.set_property("purl", f"pkg:github/InsightSoftwareConsortium/ITK@v{self.version}")
         self.cpp_info.set_property("cmake_file_name", "ITK")
         self.cpp_info.set_property("cmake_target_name", "ITK::ITK")
         self.cpp_info.set_property("display_name", "Insight Toolkit(ITK)")

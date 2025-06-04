@@ -27,7 +27,11 @@ class PythonPackageBase(ConanFile):
         py = self.dependencies["python"].buildenv_info.vars(self).get("MEVIS_PYTHON_CMD")
         if not py:
             raise ConanException("environment variable MEVIS_PYTHON_CMD not set.")
-        return os.path.join(self.mlab_build_path, py) if sys.platform == "win32" else os.path.join(self.mlab_build_path, "bin", py)
+        return (
+            os.path.join(self.mlab_build_path, py)
+            if sys.platform == "win32"
+            else os.path.join(self.mlab_build_path, "bin", py)
+        )
 
     def generate(self):
         # needed to be able to use the Python version with SSL DLLs (for pip)
@@ -56,7 +60,12 @@ class PythonPackageBase(ConanFile):
 
         env = VirtualRunEnv(self)
         env.generate()
-
+        # install a current version of setuptools to be able to handle newer packaging specs
+        # TODO: remove this once we have current Python/pip versions
+        self.run(
+            f"{self.py_command} -m pip install -U setuptools",
+            scope="run",
+        )
         self.run(
             f"{self.py_command} -m pip install --disable-pip-version-check --no-deps -r "
             f"{requirements_path} -t {self.site_packages_path}",
@@ -65,7 +74,10 @@ class PythonPackageBase(ConanFile):
         try:
             yield
         finally:
-            self.run(f"{self.py_command} -m pip uninstall --yes --disable-pip-version-check -r {requirements_path}", scope="run")
+            self.run(
+                f"{self.py_command} -m pip uninstall --yes --disable-pip-version-check -r {requirements_path}",
+                scope="run",
+            )
 
     def relative_site_package_folder(self):
         if sys.platform == "win32":

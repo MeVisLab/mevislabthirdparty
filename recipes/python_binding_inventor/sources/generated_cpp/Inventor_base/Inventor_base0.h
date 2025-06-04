@@ -23,7 +23,7 @@
 class PythonQtWrapper_SbBox2f : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbBox2f* new_SbBox2f();
 SbBox2f* new_SbBox2f(const SbVec2f&  _min, const SbVec2f&  _max);
 SbBox2f* new_SbBox2f(float  xmin, float  ymin, float  xmax, float  ymax);
@@ -58,7 +58,7 @@ void delete_SbBox2f(SbBox2f* obj) { delete obj; }
 class PythonQtWrapper_SbBox2s : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbBox2s* new_SbBox2s();
 SbBox2s* new_SbBox2s(const SbVec2s&  min, const SbVec2s&  max);
 SbBox2s* new_SbBox2s(short  xmin, short  ymin, short  xmax, short  ymax);
@@ -88,7 +88,7 @@ void delete_SbBox2s(SbBox2s* obj) { delete obj; }
 class PythonQtWrapper_SbBox3d : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbBox3d* new_SbBox3d();
 SbBox3d* new_SbBox3d(const SbVec3d&  min, const SbVec3d&  max);
 SbBox3d* new_SbBox3d(double  xmin, double  ymin, double  zmin, double  xmax, double  ymax, double  zmax);
@@ -124,7 +124,7 @@ void delete_SbBox3d(SbBox3d* obj) { delete obj; }
 class PythonQtWrapper_SbBox3f : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbBox3f* new_SbBox3f();
 SbBox3f* new_SbBox3f(const SbVec3f&  min, const SbVec3f&  max);
 SbBox3f* new_SbBox3f(float  xmin, float  ymin, float  zmin, float  xmax, float  ymax, float  zmax);
@@ -160,7 +160,7 @@ void delete_SbBox3f(SbBox3f* obj) { delete obj; }
 class PythonQtWrapper_SbColor : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbColor* new_SbColor();
 SbColor* new_SbColor(const SbVec3f  vec3f);
 SbColor* new_SbColor(float  r, float  g, float  b);
@@ -180,7 +180,7 @@ void delete_SbColor(SbColor* obj) { delete obj; }
 class PythonQtWrapper_SbCylinder : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbCylinder* new_SbCylinder();
 SbCylinder* new_SbCylinder(const SbLine&  a, float  r);
 SbCylinder* new_SbCylinder(const SbCylinder& other) {
@@ -202,7 +202,7 @@ void delete_SbCylinder(SbCylinder* obj) { delete obj; }
 class PythonQtWrapper_SbCylinderd : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbCylinderd* new_SbCylinderd();
 SbCylinderd* new_SbCylinderd(const SbLined&  a, double  r);
 SbCylinderd* new_SbCylinderd(const SbCylinderd& other) {
@@ -224,7 +224,7 @@ void delete_SbCylinderd(SbCylinderd* obj) { delete obj; }
 class PythonQtWrapper_SbLine : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbLine* new_SbLine();
 SbLine* new_SbLine(const SbVec3f&  p0, const SbVec3f&  p1);
 SbLine* new_SbLine(const SbLine& other) {
@@ -245,7 +245,7 @@ void delete_SbLine(SbLine* obj) { delete obj; }
 class PythonQtWrapper_SbLined : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbLined* new_SbLined();
 SbLined* new_SbLined(const SbVec3d&  p0, const SbVec3d&  p1);
 SbLined* new_SbLined(const SbLined& other) {
@@ -266,7 +266,7 @@ void delete_SbLined(SbLined* obj) { delete obj; }
 class PythonQtWrapper_SbMatrix : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbMatrix* new_SbMatrix();
 SbMatrix* new_SbMatrix(float  a11, float  a12, float  a13, float  a14, float  a21, float  a22, float  a23, float  a24, float  a31, float  a32, float  a33, float  a34, float  a41, float  a42, float  a43, float  a44);
 SbMatrix* new_SbMatrix(const SbMatrix& other) {
@@ -310,7 +310,7 @@ void delete_SbMatrix(SbMatrix* obj) { delete obj; }
 class PythonQtWrapper_SbMatrixd : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbMatrixd* new_SbMatrixd();
 SbMatrixd* new_SbMatrixd(double  a11, double  a12, double  a13, double  a14, double  a21, double  a22, double  a23, double  a24, double  a31, double  a32, double  a33, double  a34, double  a41, double  a42, double  a43, double  a44);
 SbMatrixd* new_SbMatrixd(const SbMatrixd& other) {
@@ -354,7 +354,7 @@ void delete_SbMatrixd(SbMatrixd* obj) { delete obj; }
 class PythonQtWrapper_SbName : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbName* new_SbName();
 SbName* new_SbName(const SbName&  n);
 SbName* new_SbName(const SbString&  s);
@@ -376,7 +376,7 @@ void delete_SbName(SbName* obj) { delete obj; }
 class PythonQtWrapper_SbPlane : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbPlane* new_SbPlane();
 SbPlane* new_SbPlane(const SbVec3f&  n, const SbVec3f&  p);
 SbPlane* new_SbPlane(const SbVec3f&  n, float  d);
@@ -403,7 +403,7 @@ void delete_SbPlane(SbPlane* obj) { delete obj; }
 class PythonQtWrapper_SbPlaned : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbPlaned* new_SbPlaned();
 SbPlaned* new_SbPlaned(const SbVec3d&  n, const SbVec3d&  p);
 SbPlaned* new_SbPlaned(const SbVec3d&  n, double  d);
@@ -430,7 +430,7 @@ void delete_SbPlaned(SbPlaned* obj) { delete obj; }
 class PythonQtWrapper_SbRotation : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbRotation* new_SbRotation();
 SbRotation* new_SbRotation(const SbMatrix&  m);
 SbRotation* new_SbRotation(const SbVec3f&  axis, float  radians);
@@ -468,7 +468,7 @@ void delete_SbRotation(SbRotation* obj) { delete obj; }
 class PythonQtWrapper_SbRotationd : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbRotationd* new_SbRotationd();
 SbRotationd* new_SbRotationd(const SbMatrixd&  m);
 SbRotationd* new_SbRotationd(const SbVec3d&  axis, double  radians);
@@ -506,7 +506,7 @@ void delete_SbRotationd(SbRotationd* obj) { delete obj; }
 class PythonQtWrapper_SbSphere : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbSphere* new_SbSphere();
 SbSphere* new_SbSphere(const SbVec3f&  c, float  r);
 SbSphere* new_SbSphere(const SbSphere& other) {
@@ -529,7 +529,7 @@ void delete_SbSphere(SbSphere* obj) { delete obj; }
 class PythonQtWrapper_SbSphered : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbSphered* new_SbSphered();
 SbSphered* new_SbSphered(const SbVec3d&  c, double  r);
 SbSphered* new_SbSphered(const SbSphered& other) {
@@ -552,7 +552,7 @@ void delete_SbSphered(SbSphered* obj) { delete obj; }
 class PythonQtWrapper_SbString : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbString* new_SbString();
 SbString* new_SbString(const SbString&  str);
 SbString* new_SbString(const char*  str);
@@ -580,7 +580,7 @@ void delete_SbString(SbString* obj) { delete obj; }
 class PythonQtWrapper_SbTime : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbTime* new_SbTime();
 SbTime* new_SbTime(double  sec);
 SbTime* new_SbTime(const SbTime& other) {
@@ -636,7 +636,7 @@ public:
 class PythonQtWrapper_SbVec2d : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbVec2d* new_SbVec2d();
 SbVec2d* new_SbVec2d(double  x, double  y);
 SbVec2d* new_SbVec2d(const SbVec2d& other) {
@@ -662,7 +662,7 @@ void delete_SbVec2d(SbVec2d* obj) { delete obj; }
    bool  __eq__(SbVec2d* theWrappedObject, const SbVec2d&  v2);
    SbVec2d*  setValue(SbVec2d* theWrappedObject, double  x, double  y);
 
-  
+
   SbVec2f toVec2f( SbVec2d* vec )
   {
     const double* value = vec->getValue();
@@ -704,7 +704,7 @@ void delete_SbVec2d(SbVec2d* obj) { delete obj; }
   }
 
   int   __len__(SbVec2d* vec) { return 2; }
-    
+
 };
 
 
@@ -726,7 +726,7 @@ public:
 class PythonQtWrapper_SbVec2f : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbVec2f* new_SbVec2f();
 SbVec2f* new_SbVec2f(float  x, float  y);
 SbVec2f* new_SbVec2f(const SbVec2f& other) {
@@ -793,7 +793,7 @@ void delete_SbVec2f(SbVec2f* obj) { delete obj; }
   }
 
   int   __len__(SbVec2f* vec) { return 2; }
-    
+
 };
 
 
@@ -815,7 +815,7 @@ public:
 class PythonQtWrapper_SbVec2s : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbVec2s* new_SbVec2s();
 SbVec2s* new_SbVec2s(short  x, short  y);
 SbVec2s* new_SbVec2s(const SbVec2s& other) {
@@ -877,7 +877,7 @@ void delete_SbVec2s(SbVec2s* obj) { delete obj; }
   }
 
   int   __len__(SbVec2s* vec) { return 2; }
-    
+
 };
 
 
@@ -900,7 +900,7 @@ public:
 class PythonQtWrapper_SbVec3d : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbVec3d* new_SbVec3d();
 SbVec3d* new_SbVec3d(SbPlaned&  p0, SbPlaned&  p1, SbPlaned&  p2);
 SbVec3d* new_SbVec3d(double  x, double  y, double  z);
@@ -935,7 +935,7 @@ void delete_SbVec3d(SbVec3d* obj) { delete obj; }
     const double* value = vec->getValue();
     return SbVec3f(value[0], value[1], value[2]);
   }
-    
+
   QList<double> getValue(SbVec3d* vec)
   {
     QList<double> r;
@@ -972,7 +972,7 @@ void delete_SbVec3d(SbVec3d* obj) { delete obj; }
   }
 
   int   __len__(SbVec3d* vec) { return 3; }
-    
+
 };
 
 
@@ -995,7 +995,7 @@ public:
 class PythonQtWrapper_SbVec3f : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbVec3f* new_SbVec3f();
 SbVec3f* new_SbVec3f(SbPlane&  p0, SbPlane&  p1, SbPlane&  p2);
 SbVec3f* new_SbVec3f(float  x, float  y, float  z);
@@ -1067,7 +1067,7 @@ void delete_SbVec3f(SbVec3f* obj) { delete obj; }
   }
 
   int   __len__(SbVec3f* vec) { return 3; }
-    
+
 };
 
 
@@ -1089,7 +1089,7 @@ public:
 class PythonQtWrapper_SbVec3s : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbVec3s* new_SbVec3s();
 SbVec3s* new_SbVec3s(short  x, short  y, short  z);
 SbVec3s* new_SbVec3s(const SbVec3s& other) {
@@ -1152,7 +1152,7 @@ void delete_SbVec3s(SbVec3s* obj) { delete obj; }
   }
 
   int   __len__(SbVec3s* vec) { return 3; }
-    
+
 };
 
 
@@ -1174,7 +1174,7 @@ public:
 class PythonQtWrapper_SbVec4d : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbVec4d* new_SbVec4d();
 SbVec4d* new_SbVec4d(double  x, double  y, double  z, double  w);
 SbVec4d* new_SbVec4d(const SbVec4d& other) {
@@ -1206,7 +1206,7 @@ void delete_SbVec4d(SbVec4d* obj) { delete obj; }
     const double* value = vec->getValue();
     return SbVec4f(value[0], value[1], value[2], value[3]);
   }
-  
+
   QList<double> getValue(SbVec4d* vec)
   {
     QList<double> r;
@@ -1244,7 +1244,7 @@ void delete_SbVec4d(SbVec4d* obj) { delete obj; }
   }
 
   int   __len__(SbVec4d* vec) { return 4; }
-    
+
 };
 
 
@@ -1266,7 +1266,7 @@ public:
 class PythonQtWrapper_SbVec4f : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbVec4f* new_SbVec4f();
 SbVec4f* new_SbVec4f(float  x, float  y, float  z, float  w);
 SbVec4f* new_SbVec4f(const SbVec4f& other) {
@@ -1298,7 +1298,7 @@ void delete_SbVec4f(SbVec4f* obj) { delete obj; }
     const float* value = vec->getValue();
     return SbVec4d(value[0], value[1], value[2], value[3]);
   }
-  
+
   QList<float> getValue(SbVec4f* vec)
   {
     QList<float> r;
@@ -1336,7 +1336,7 @@ void delete_SbVec4f(SbVec4f* obj) { delete obj; }
   }
 
   int   __len__(SbVec4f* vec) { return 4; }
-    
+
 };
 
 
@@ -1360,7 +1360,7 @@ public:
 Q_ENUMS(ProjectionType )
 enum ProjectionType{
   ORTHOGRAPHIC = SbViewVolume::ORTHOGRAPHIC,   PERSPECTIVE = SbViewVolume::PERSPECTIVE};
-public slots:
+public Q_SLOTS:
 SbViewVolume* new_SbViewVolume();
 SbViewVolume* new_SbViewVolume(const SbViewVolume& other) {
 PythonQtShell_SbViewVolume* a = new PythonQtShell_SbViewVolume();
@@ -1427,7 +1427,7 @@ SbVec3f  py_get_ulf(SbViewVolume* theWrappedObject){ return theWrappedObject->ul
 class PythonQtWrapper_SbViewportRegion : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SbViewportRegion* new_SbViewportRegion();
 SbViewportRegion* new_SbViewportRegion(SbVec2s  winSize);
 SbViewportRegion* new_SbViewportRegion(const SbViewportRegion&  vpReg);

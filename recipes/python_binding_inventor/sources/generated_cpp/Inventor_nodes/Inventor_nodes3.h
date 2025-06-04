@@ -82,7 +82,7 @@ void write(SoWriteAction*  action) override;
 class PythonQtWrapper_SoTransformation : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoTransformation* new_SoTransformation();
    SoType  static_SoTransformation_getClassTypeId();
 };
@@ -138,7 +138,7 @@ inline void py_q_pick(SoPickAction*  action) { SoTranslation::pick(action); }
 class PythonQtWrapper_SoTranslation : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoTranslation* new_SoTranslation();
    void py_q_GLRender(SoTranslation* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoTranslation*)theWrappedObject)->py_q_GLRender(action));}
    void py_q_callback(SoTranslation* theWrappedObject, SoCallbackAction*  action){  (((PythonQtPublicPromoter_SoTranslation*)theWrappedObject)->py_q_callback(action));}
@@ -208,7 +208,7 @@ inline void py_q_generatePrimitives(SoAction*  action) { SoTriangleStripSet::gen
 class PythonQtWrapper_SoTriangleStripSet : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoTriangleStripSet* new_SoTriangleStripSet();
    void py_q_GLRender(SoTriangleStripSet* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoTriangleStripSet*)theWrappedObject)->py_q_GLRender(action));}
    void py_q_computeBBox(SoTriangleStripSet* theWrappedObject, SoAction*  action, SbBox3f&  box, SbVec3f&  center){  (((PythonQtPublicPromoter_SoTriangleStripSet*)theWrappedObject)->py_q_computeBBox(action, box, center));}
@@ -272,7 +272,7 @@ public:
 Q_ENUMS(Units )
 enum Units{
   METERS = SoUnits::METERS,   CENTIMETERS = SoUnits::CENTIMETERS,   MILLIMETERS = SoUnits::MILLIMETERS,   MICROMETERS = SoUnits::MICROMETERS,   MICRONS = SoUnits::MICRONS,   NANOMETERS = SoUnits::NANOMETERS,   ANGSTROMS = SoUnits::ANGSTROMS,   KILOMETERS = SoUnits::KILOMETERS,   FEET = SoUnits::FEET,   INCHES = SoUnits::INCHES,   POINTS = SoUnits::POINTS,   YARDS = SoUnits::YARDS,   MILES = SoUnits::MILES,   NAUTICAL_MILES = SoUnits::NAUTICAL_MILES};
-public slots:
+public Q_SLOTS:
 SoUnits* new_SoUnits();
    void py_q_GLRender(SoUnits* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoUnits*)theWrappedObject)->py_q_GLRender(action));}
    void py_q_callback(SoUnits* theWrappedObject, SoCallbackAction*  action){  (((PythonQtPublicPromoter_SoUnits*)theWrappedObject)->py_q_callback(action));}
@@ -337,7 +337,7 @@ public:
 Q_ENUMS(Binding )
 enum Binding{
   OVERALL = SoVertexProperty::OVERALL,   PER_PART = SoVertexProperty::PER_PART,   PER_PART_INDEXED = SoVertexProperty::PER_PART_INDEXED,   PER_FACE = SoVertexProperty::PER_FACE,   PER_FACE_INDEXED = SoVertexProperty::PER_FACE_INDEXED,   PER_VERTEX = SoVertexProperty::PER_VERTEX,   PER_VERTEX_INDEXED = SoVertexProperty::PER_VERTEX_INDEXED};
-public slots:
+public Q_SLOTS:
 SoVertexProperty* new_SoVertexProperty();
    void py_q_GLRender(SoVertexProperty* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoVertexProperty*)theWrappedObject)->py_q_GLRender(action));}
    void py_q_callback(SoVertexProperty* theWrappedObject, SoCallbackAction*  action){  (((PythonQtPublicPromoter_SoVertexProperty*)theWrappedObject)->py_q_callback(action));}
@@ -411,7 +411,7 @@ inline bool  py_q_shouldGLRender(SoGLRenderAction*  action) { return SoVertexSha
 class PythonQtWrapper_SoVertexShape : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoVertexShape* new_SoVertexShape();
    bool  beginVertexArrayRendering(SoVertexShape* theWrappedObject, SoGLRenderAction*  action);
    void endVertexArrayRendering(SoVertexShape* theWrappedObject, SoGLRenderAction*  action, bool  vboWasUsed);

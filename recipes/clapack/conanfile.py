@@ -61,7 +61,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:lapack_project:lapack:*:*:*:*:*:*:*:*")  # does this refer to the Fortran Lapack?
-        self.cpp_info.set_property("base_purl", "github/alphacep/clapack")  # some arbitrary mirror
+        self.cpp_info.set_property("purl", f"pkg:github/alphacep/clapack@{self.version}")  # some arbitrary mirror without actual tags
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "CLAPACK")
         self.cpp_info.set_property("cmake_target_name", "CLAPACK::CLAPACK")

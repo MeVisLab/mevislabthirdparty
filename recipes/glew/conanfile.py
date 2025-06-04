@@ -64,7 +64,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         # self.cpp_info.set_property("cpe", "")  # No CPE yet?
-        self.cpp_info.set_property("base_purl", "github/nigels-com/glew")
+        self.cpp_info.set_property("purl", f"pkg:github/nigels-com/glew@glew-{self.version}")
         self.cpp_info.set_property("cmake_file_name", "GLEW")
         self.cpp_info.set_property("cmake_target_name", "GLEW::GLEW")
         self.cpp_info.set_property("cmake_target_aliases", ["GLEW::glew"])

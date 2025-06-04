@@ -40,7 +40,7 @@ inline SoDetail*  py_q_copy() const { return SoConeDetail::copy(); }
 class PythonQtWrapper_SoConeDetail : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoConeDetail* new_SoConeDetail();
 void delete_SoConeDetail(SoConeDetail* obj) { delete obj; }
    SoDetail*  py_q_copy(SoConeDetail* theWrappedObject) const{  return (((PythonQtPublicPromoter_SoConeDetail*)theWrappedObject)->py_q_copy());}
@@ -73,7 +73,7 @@ inline SoDetail*  py_q_copy() const { return SoCubeDetail::copy(); }
 class PythonQtWrapper_SoCubeDetail : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoCubeDetail* new_SoCubeDetail();
 void delete_SoCubeDetail(SoCubeDetail* obj) { delete obj; }
    SoDetail*  py_q_copy(SoCubeDetail* theWrappedObject) const{  return (((PythonQtPublicPromoter_SoCubeDetail*)theWrappedObject)->py_q_copy());}
@@ -106,7 +106,7 @@ inline SoDetail*  py_q_copy() const { return SoCylinderDetail::copy(); }
 class PythonQtWrapper_SoCylinderDetail : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoCylinderDetail* new_SoCylinderDetail();
 void delete_SoCylinderDetail(SoCylinderDetail* obj) { delete obj; }
    SoDetail*  py_q_copy(SoCylinderDetail* theWrappedObject) const{  return (((PythonQtPublicPromoter_SoCylinderDetail*)theWrappedObject)->py_q_copy());}
@@ -127,7 +127,7 @@ inline SoDetail*  py_q_copy() const { return this->copy(); }
 class PythonQtWrapper_SoDetail : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 void delete_SoDetail(SoDetail* obj) { delete obj; }
    SoDetail*  copy(SoDetail* theWrappedObject) const;
    SoDetail*  py_q_copy(SoDetail* theWrappedObject) const{  return (((PythonQtPublicPromoter_SoDetail*)theWrappedObject)->py_q_copy());}
@@ -159,7 +159,7 @@ inline SoDetail*  py_q_copy() const { return SoFaceDetail::copy(); }
 class PythonQtWrapper_SoFaceDetail : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoFaceDetail* new_SoFaceDetail();
 void delete_SoFaceDetail(SoFaceDetail* obj) { delete obj; }
    SoDetail*  py_q_copy(SoFaceDetail* theWrappedObject) const{  return (((PythonQtPublicPromoter_SoFaceDetail*)theWrappedObject)->py_q_copy());}
@@ -199,7 +199,7 @@ inline SoDetail*  py_q_copy() const { return SoLineDetail::copy(); }
 class PythonQtWrapper_SoLineDetail : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoLineDetail* new_SoLineDetail();
 void delete_SoLineDetail(SoLineDetail* obj) { delete obj; }
    SoDetail*  py_q_copy(SoLineDetail* theWrappedObject) const{  return (((PythonQtPublicPromoter_SoLineDetail*)theWrappedObject)->py_q_copy());}
@@ -238,7 +238,7 @@ inline SoDetail*  py_q_copy() const { return SoPointDetail::copy(); }
 class PythonQtWrapper_SoPointDetail : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoPointDetail* new_SoPointDetail();
 void delete_SoPointDetail(SoPointDetail* obj) { delete obj; }
    SoDetail*  py_q_copy(SoPointDetail* theWrappedObject) const{  return (((PythonQtPublicPromoter_SoPointDetail*)theWrappedObject)->py_q_copy());}
@@ -277,7 +277,7 @@ inline SoDetail*  py_q_copy() const { return SoTextDetail::copy(); }
 class PythonQtWrapper_SoTextDetail : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoTextDetail* new_SoTextDetail();
 void delete_SoTextDetail(SoTextDetail* obj) { delete obj; }
    SoDetail*  py_q_copy(SoTextDetail* theWrappedObject) const{  return (((PythonQtPublicPromoter_SoTextDetail*)theWrappedObject)->py_q_copy());}

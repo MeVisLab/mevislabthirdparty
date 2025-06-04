@@ -48,7 +48,7 @@ inline void py_q_init(SoState*  state) { SoTextureQualityElement::init(state); }
 class PythonQtWrapper_SoTextureQualityElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoTextureQualityElement* new_SoTextureQualityElement();
    float  static_SoTextureQualityElement_get(SoState*  state);
    int  static_SoTextureQualityElement_getClassStackIndex();
@@ -91,7 +91,7 @@ public:
 Q_ENUMS(Units )
 enum Units{
   METERS = SoUnitsElement::METERS,   CENTIMETERS = SoUnitsElement::CENTIMETERS,   MILLIMETERS = SoUnitsElement::MILLIMETERS,   MICROMETERS = SoUnitsElement::MICROMETERS,   MICRONS = SoUnitsElement::MICRONS,   NANOMETERS = SoUnitsElement::NANOMETERS,   ANGSTROMS = SoUnitsElement::ANGSTROMS,   KILOMETERS = SoUnitsElement::KILOMETERS,   FEET = SoUnitsElement::FEET,   INCHES = SoUnitsElement::INCHES,   POINTS = SoUnitsElement::POINTS,   YARDS = SoUnitsElement::YARDS,   MILES = SoUnitsElement::MILES,   NAUTICAL_MILES = SoUnitsElement::NAUTICAL_MILES};
-public slots:
+public Q_SLOTS:
 SoUnitsElement* new_SoUnitsElement();
    SoUnitsElement::Units  static_SoUnitsElement_get(SoState*  state);
    int  static_SoUnitsElement_getClassStackIndex();
@@ -130,7 +130,7 @@ inline void py_q_init(SoState*  state) { SoViewVolumeElement::init(state); }
 class PythonQtWrapper_SoViewVolumeElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoViewVolumeElement* new_SoViewVolumeElement();
    const SbViewVolume*  static_SoViewVolumeElement_get(SoState*  state);
    int  static_SoViewVolumeElement_getClassStackIndex();
@@ -171,7 +171,7 @@ inline void py_q_setElt(const SbMatrix&  matrix) { SoViewingMatrixElement::setEl
 class PythonQtWrapper_SoViewingMatrixElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoViewingMatrixElement* new_SoViewingMatrixElement();
    const SbMatrix*  static_SoViewingMatrixElement_get(SoState*  state);
    int  static_SoViewingMatrixElement_getClassStackIndex();
@@ -216,7 +216,7 @@ inline void py_q_setElt(const SbViewportRegion&  vpReg) { SoViewportRegionElemen
 class PythonQtWrapper_SoViewportRegionElement : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoViewportRegionElement* new_SoViewportRegionElement();
    SoElement*  py_q_copyMatchInfo(SoViewportRegionElement* theWrappedObject) const{  return (((PythonQtPublicPromoter_SoViewportRegionElement*)theWrappedObject)->py_q_copyMatchInfo());}
    const SbViewportRegion*  static_SoViewportRegionElement_get(SoState*  state);

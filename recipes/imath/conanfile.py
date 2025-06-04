@@ -54,7 +54,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
-        self.cpp_info.set_property("base_purl", "github/AcademySoftwareFoundation/Imath")
+        self.cpp_info.set_property("purl", f"pkg:github/AcademySoftwareFoundation/Imath@v{self.version}")
         self.cpp_info.set_property("cmake_file_name", "Imath")
         self.cpp_info.set_property("cmake_target_name", "Imath::Imath")
         self.cpp_info.set_property("pkg_config_name", "Imath")

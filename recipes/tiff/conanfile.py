@@ -94,7 +94,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:libtiff:libtiff:*:*:*:*:*:*:*:*")
-        self.cpp_info.set_property("base_purl", "gitlab/libtiff/libtiff")
+        self.cpp_info.set_property("purl", f"pkg:gitlab/libtiff/libtiff@v{self.version}")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "TIFF")
         self.cpp_info.set_property("cmake_target_name", "TIFF::TIFF")

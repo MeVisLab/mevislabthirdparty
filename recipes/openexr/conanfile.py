@@ -9,7 +9,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "openexr"
-    version = "3.3.2"
+    version = "3.3.3"
     homepage = "https://www.openexr.com"
     description = "OpenEXR is a high dynamic-range (HDR) image file format developed by Industrial Light & Magic for use in computer imaging applications"
     license = "BSD-3-Clause"
@@ -27,7 +27,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="5013e964de7399bff1dd328cbf65d239a989a7be53255092fa10b85a8715744d",
+            sha256="0ffbd842a7ee2128d44affdea30f42294b4061293cde3aa75b61a53573413d1e",
             url=f"https://github.com/AcademySoftwareFoundation/openexr/archive/v{self.version}.tar.gz",
             strip_root=True,
         )
@@ -76,7 +76,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:openexr:openexr:*:*:*:*:*:*:*:*")
-        self.cpp_info.set_property("base_purl", "github/AcademySoftwareFoundation/openexr")
+        self.cpp_info.set_property("purl", f"pkg:github/AcademySoftwareFoundation/openexr@v{self.version}")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "OpenEXR")
         self.cpp_info.set_property("cmake_target_name", "OpenEXR::OpenEXR")

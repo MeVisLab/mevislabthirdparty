@@ -55,7 +55,8 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
-        self.cpp_info.set_property("base_purl", "github/google/re2")
+        year, month, day = self.version[0:4], self.version[4:6], self.version[6:]
+        self.cpp_info.set_property("purl", f"pkg:github/google/re2@{year}-{month}-{day}")
         self.cpp_info.set_property("cmake_file_name", "re2")
         self.cpp_info.set_property("cmake_target_name", "re2::re2")
         self.cpp_info.set_property("cmake_config_version_compat", "AnyNewerVersion")

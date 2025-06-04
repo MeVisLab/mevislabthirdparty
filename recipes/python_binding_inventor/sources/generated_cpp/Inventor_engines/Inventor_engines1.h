@@ -26,7 +26,7 @@
 class PythonQtWrapper_SoTransformVec3f : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoTransformVec3f* new_SoTransformVec3f();
    SoType  static_SoTransformVec3f_getClassTypeId();
 SoEngineOutput*  py_get_direction(SoTransformVec3f* theWrappedObject){ return &theWrappedObject->direction; }
@@ -43,7 +43,7 @@ SoMFVec3f*  py_get_vector(SoTransformVec3f* theWrappedObject){ return &theWrappe
 class PythonQtWrapper_SoTriggerAny : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoTriggerAny* new_SoTriggerAny();
    SoType  static_SoTriggerAny_getClassTypeId();
 SoSFTrigger*  py_get_input0(SoTriggerAny* theWrappedObject){ return &theWrappedObject->input0; }

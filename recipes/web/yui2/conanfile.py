@@ -32,6 +32,6 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:yahoo:yui:*:*:*:*:*:*:*:*")
-        self.cpp_info.set_property("base_purl", "github/yui/yui2")
+        self.cpp_info.set_property("purl", f"pkg:github/yui/yui2@{self.version}")  # no version related tags on this project
         self.cpp_info.includedirs.clear()
         self.cpp_info.set_property("cmake_find_mode", "none")

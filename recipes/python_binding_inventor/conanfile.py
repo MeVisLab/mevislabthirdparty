@@ -8,7 +8,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "python_binding_inventor"
-    version = "2022.02.11"
+    version = "2024.12.27"
     homepage = "https://mevislab.de"
     description = "Python binding into Inventor"
     license = "LGPL-2.1-only"

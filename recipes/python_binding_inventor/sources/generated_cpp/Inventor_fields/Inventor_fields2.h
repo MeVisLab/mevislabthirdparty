@@ -28,7 +28,7 @@
 class PythonQtWrapper_SoSFVec3s : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoSFVec3s* new_SoSFVec3s();
 void delete_SoSFVec3s(SoSFVec3s* obj) { delete obj; }
    void*  static_SoSFVec3s_createInstance();
@@ -49,7 +49,7 @@ void delete_SoSFVec3s(SoSFVec3s* obj) { delete obj; }
 class PythonQtWrapper_SoSFVec4d : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoSFVec4d* new_SoSFVec4d();
 void delete_SoSFVec4d(SoSFVec4d* obj) { delete obj; }
    void*  static_SoSFVec4d_createInstance();
@@ -70,7 +70,7 @@ void delete_SoSFVec4d(SoSFVec4d* obj) { delete obj; }
 class PythonQtWrapper_SoSFVec4f : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoSFVec4f* new_SoSFVec4f();
 void delete_SoSFVec4f(SoSFVec4f* obj) { delete obj; }
    void*  static_SoSFVec4f_createInstance();
@@ -91,7 +91,7 @@ void delete_SoSFVec4f(SoSFVec4f* obj) { delete obj; }
 class PythonQtWrapper_SoSField : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 void delete_SoSField(SoSField* obj) { delete obj; }
    void*  static_SoSField_createInstance();
    SoType  static_SoSField_getClassTypeId();

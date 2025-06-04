@@ -331,7 +331,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:opencv:opencv:*:*:*:*:*:*:*:*")
-        self.cpp_info.set_property("base_purl", "github/opencv/opencv")
+        self.cpp_info.set_property("purl", f"pkg:github/opencv/opencv@{self.version}")
         self.cpp_info.set_property("cmake_file_name", "OpenCV")
         self.cpp_info.set_property("cmake_target_name", "OpenCV::OpenCV")
 

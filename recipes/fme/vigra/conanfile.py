@@ -8,7 +8,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "vigra"
-    version = "1.12.1"
+    version = "1.12.2"
     homepage = "https://ukoethe.github.io/vigra"
     description = "a generic C++ library for image analysis"
     license = "MIT"
@@ -30,19 +30,18 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="8836a40a340f96ed2abf53780e883c5bf58002eb182cfccb4255b553ca48db33",
+            sha256="e927477a8a0bcdabcaab914e425782f7eba82711dbaca02538dfda79476f6b7e",
             url=f"https://github.com/ukoethe/vigra/archive/refs/tags/Version-{self.version.replace('.', '-')}.tar.gz",
             strip_root=True,
         )
 
         patch(self, patch_file="patches/001-cpp17.patch")
-        patch(self, patch_file="patches/002-allocator.patch")
         patch(
             self,
             patch_file="patches/003-namespace.patch",
             patch_description="Temporary fix for MSVC compiler bug, see "
-                              "https://developercommunity.visualstudio.com/"
-                              "t/VS-17111:-Compiler-fails-to-match-defi/10728187"
+            "https://developercommunity.visualstudio.com/"
+            "t/VS-17111:-Compiler-fails-to-match-defi/10728187",
         )
 
         # rather use conan version of this file:
@@ -80,7 +79,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
-        self.cpp_info.set_property("base_purl", "github/ukoethe/vigra")
+        self.cpp_info.set_property("purl", f"pkg:github/ukoethe/vigra@Version-{self.version.replace('.', '-')}")
         self.cpp_info.set_property("display_name", "VIGRA Computer Vision Library")
         self.cpp_info.set_property("mevislab_prosdk_exclude", True)
         self.cpp_info.defines += ["HasHDF5"]

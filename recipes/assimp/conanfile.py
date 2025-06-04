@@ -32,6 +32,7 @@ class ConanRecipe(ConanFile):
         )
         patch(self, patch_file="patches/001-no_pkgconfig_minizip.patch")
         patch(self, patch_file="patches/002-zlib_names.patch")
+        patch(self, patch_file="patches/003-cve_2024_48423.patch")
 
     def generate(self):
         tc = CMakeToolchain(self)
@@ -75,7 +76,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:assimp:assimp:*:*:*:*:*:*:*:*")
-        self.cpp_info.set_property("base_purl", "github/assimp/assimp")
+        self.cpp_info.set_property("purl", f"pkg:github/assimp/assimp@v{self.version}")
         self.cpp_info.set_property("cmake_file_name", "assimp")
         self.cpp_info.set_property("cmake_target_name", "assimp::assimp")
         self.cpp_info.set_property("pkg_config_name", "assimp")

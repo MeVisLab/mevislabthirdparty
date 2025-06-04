@@ -17,6 +17,7 @@ set(SITE_PACKAGE_TARGET_DIR "$ENV{MEVIS_PYTHON_SITE_PACKAGES_FOLDER}")
 set(TARGET_RUNTIME_OUTPUT_DIRECTORY "${SITE_PACKAGE_TARGET_DIR}/Inventor")
 
 set(CMAKE_AUTOMOC ON)
+add_definitions(-DQT_NO_KEYWORDS)
 
 add_subdirectory(InventorActions)
 add_subdirectory(InventorBase)

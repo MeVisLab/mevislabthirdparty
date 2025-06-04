@@ -7,7 +7,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "libffi"
-    version = "3.4.6"
+    version = "3.4.8"
     homepage = "https://sourceware.org/libffi/"
     description = "A portable foreign-function interface library"
     license = "MIT"
@@ -25,7 +25,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="b0dea9df23c863a7a50e825440f3ebffabd65df1497108e5d437747843895a4e",
+            sha256="bc9842a18898bfacb0ed1252c4febcc7e78fa139fd27fdc7a3e30d9d9356119b",
             url=f"https://github.com/libffi/libffi/releases/download/v{self.version}/libffi-{self.version}.tar.gz",
             strip_root=True,
         )
@@ -52,6 +52,6 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:libffi_project:libffi:*:*:*:*:*:*:*:")
-        self.cpp_info.set_property("base_purl", "github/libffi/libffi")
+        self.cpp_info.set_property("purl", f"pkg:github/libffi/libffi@v{self.version}")
         self.cpp_info.defines = ["FFI_BUILDING", "FFI_STATIC_BUILD"]
         self.cpp_info.libs = collect_libs(self)

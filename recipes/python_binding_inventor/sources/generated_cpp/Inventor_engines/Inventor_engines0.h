@@ -42,7 +42,7 @@ public:
 Q_ENUMS(Operation )
 enum Operation{
   CLEAR = SoBoolOperation::CLEAR,   SET = SoBoolOperation::SET,   A = SoBoolOperation::A,   NOT_A = SoBoolOperation::NOT_A,   B = SoBoolOperation::B,   NOT_B = SoBoolOperation::NOT_B,   A_OR_B = SoBoolOperation::A_OR_B,   NOT_A_OR_B = SoBoolOperation::NOT_A_OR_B,   A_OR_NOT_B = SoBoolOperation::A_OR_NOT_B,   NOT_A_OR_NOT_B = SoBoolOperation::NOT_A_OR_NOT_B,   A_AND_B = SoBoolOperation::A_AND_B,   NOT_A_AND_B = SoBoolOperation::NOT_A_AND_B,   A_AND_NOT_B = SoBoolOperation::A_AND_NOT_B,   NOT_A_AND_NOT_B = SoBoolOperation::NOT_A_AND_NOT_B,   A_EQUALS_B = SoBoolOperation::A_EQUALS_B,   A_NOT_EQUALS_B = SoBoolOperation::A_NOT_EQUALS_B};
-public slots:
+public Q_SLOTS:
 SoBoolOperation* new_SoBoolOperation();
    SoType  static_SoBoolOperation_getClassTypeId();
 SoMFBool*  py_get_a(SoBoolOperation* theWrappedObject){ return &theWrappedObject->a; }
@@ -59,7 +59,7 @@ SoEngineOutput*  py_get_output(SoBoolOperation* theWrappedObject){ return &theWr
 class PythonQtWrapper_SoCalculator : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoCalculator* new_SoCalculator();
    SoType  static_SoCalculator_getClassTypeId();
 SoMFVec3f*  py_get_A(SoCalculator* theWrappedObject){ return &theWrappedObject->A; }
@@ -95,7 +95,7 @@ SoEngineOutput*  py_get_od(SoCalculator* theWrappedObject){ return &theWrappedOb
 class PythonQtWrapper_SoComposeMatrix : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoComposeMatrix* new_SoComposeMatrix();
    SoType  static_SoComposeMatrix_getClassTypeId();
 SoMFVec3f*  py_get_center(SoComposeMatrix* theWrappedObject){ return &theWrappedObject->center; }
@@ -113,7 +113,7 @@ SoMFVec3f*  py_get_translation(SoComposeMatrix* theWrappedObject){ return &theWr
 class PythonQtWrapper_SoComposeRotation : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoComposeRotation* new_SoComposeRotation();
    SoType  static_SoComposeRotation_getClassTypeId();
 SoMFFloat*  py_get_angle(SoComposeRotation* theWrappedObject){ return &theWrappedObject->angle; }
@@ -128,7 +128,7 @@ SoEngineOutput*  py_get_rotation(SoComposeRotation* theWrappedObject){ return &t
 class PythonQtWrapper_SoComposeRotationFromTo : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoComposeRotationFromTo* new_SoComposeRotationFromTo();
    SoType  static_SoComposeRotationFromTo_getClassTypeId();
 SoMFVec3f*  py_get_from(SoComposeRotationFromTo* theWrappedObject){ return &theWrappedObject->from; }
@@ -143,7 +143,7 @@ SoMFVec3f*  py_get_to(SoComposeRotationFromTo* theWrappedObject){ return &theWra
 class PythonQtWrapper_SoComposeVec2f : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoComposeVec2f* new_SoComposeVec2f();
    SoType  static_SoComposeVec2f_getClassTypeId();
 SoEngineOutput*  py_get_vector(SoComposeVec2f* theWrappedObject){ return &theWrappedObject->vector; }
@@ -158,7 +158,7 @@ SoMFFloat*  py_get_y(SoComposeVec2f* theWrappedObject){ return &theWrappedObject
 class PythonQtWrapper_SoComposeVec3f : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoComposeVec3f* new_SoComposeVec3f();
    SoType  static_SoComposeVec3f_getClassTypeId();
 SoEngineOutput*  py_get_vector(SoComposeVec3f* theWrappedObject){ return &theWrappedObject->vector; }
@@ -174,7 +174,7 @@ SoMFFloat*  py_get_z(SoComposeVec3f* theWrappedObject){ return &theWrappedObject
 class PythonQtWrapper_SoComposeVec4f : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoComposeVec4f* new_SoComposeVec4f();
    SoType  static_SoComposeVec4f_getClassTypeId();
 SoEngineOutput*  py_get_vector(SoComposeVec4f* theWrappedObject){ return &theWrappedObject->vector; }
@@ -191,7 +191,7 @@ SoMFFloat*  py_get_z(SoComposeVec4f* theWrappedObject){ return &theWrappedObject
 class PythonQtWrapper_SoComputeBoundingBox : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoComputeBoundingBox* new_SoComputeBoundingBox();
    SoType  static_SoComputeBoundingBox_getClassTypeId();
    const SbViewportRegion*  getViewportRegion(SoComputeBoundingBox* theWrappedObject) const;
@@ -211,7 +211,7 @@ SoSFPath*  py_get_path(SoComputeBoundingBox* theWrappedObject){ return &theWrapp
 class PythonQtWrapper_SoCounter : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoCounter* new_SoCounter();
    SoType  static_SoCounter_getClassTypeId();
 SoSFShort*  py_get_max(SoCounter* theWrappedObject){ return &theWrappedObject->max; }
@@ -230,7 +230,7 @@ SoSFTrigger*  py_get_trigger(SoCounter* theWrappedObject){ return &theWrappedObj
 class PythonQtWrapper_SoDecomposeMatrix : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoDecomposeMatrix* new_SoDecomposeMatrix();
    SoType  static_SoDecomposeMatrix_getClassTypeId();
 SoMFVec3f*  py_get_center(SoDecomposeMatrix* theWrappedObject){ return &theWrappedObject->center; }
@@ -248,7 +248,7 @@ SoEngineOutput*  py_get_translation(SoDecomposeMatrix* theWrappedObject){ return
 class PythonQtWrapper_SoDecomposeRotation : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoDecomposeRotation* new_SoDecomposeRotation();
    SoType  static_SoDecomposeRotation_getClassTypeId();
 SoEngineOutput*  py_get_angle(SoDecomposeRotation* theWrappedObject){ return &theWrappedObject->angle; }
@@ -263,7 +263,7 @@ SoMFRotation*  py_get_rotation(SoDecomposeRotation* theWrappedObject){ return &t
 class PythonQtWrapper_SoDecomposeVec2f : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoDecomposeVec2f* new_SoDecomposeVec2f();
    SoType  static_SoDecomposeVec2f_getClassTypeId();
 SoMFVec2f*  py_get_vector(SoDecomposeVec2f* theWrappedObject){ return &theWrappedObject->vector; }
@@ -278,7 +278,7 @@ SoEngineOutput*  py_get_y(SoDecomposeVec2f* theWrappedObject){ return &theWrappe
 class PythonQtWrapper_SoDecomposeVec3f : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoDecomposeVec3f* new_SoDecomposeVec3f();
    SoType  static_SoDecomposeVec3f_getClassTypeId();
 SoMFVec3f*  py_get_vector(SoDecomposeVec3f* theWrappedObject){ return &theWrappedObject->vector; }
@@ -294,7 +294,7 @@ SoEngineOutput*  py_get_z(SoDecomposeVec3f* theWrappedObject){ return &theWrappe
 class PythonQtWrapper_SoDecomposeVec4f : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoDecomposeVec4f* new_SoDecomposeVec4f();
    SoType  static_SoDecomposeVec4f_getClassTypeId();
 SoMFVec4f*  py_get_vector(SoDecomposeVec4f* theWrappedObject){ return &theWrappedObject->vector; }
@@ -311,7 +311,7 @@ SoEngineOutput*  py_get_z(SoDecomposeVec4f* theWrappedObject){ return &theWrappe
 class PythonQtWrapper_SoElapsedTime : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoElapsedTime* new_SoElapsedTime();
    SoType  static_SoElapsedTime_getClassTypeId();
 SoSFBool*  py_get_on(SoElapsedTime* theWrappedObject){ return &theWrappedObject->on; }
@@ -329,7 +329,7 @@ SoEngineOutput*  py_get_timeOut(SoElapsedTime* theWrappedObject){ return &theWra
 class PythonQtWrapper_SoEngine : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
    SoEngine*  copy(SoEngine* theWrappedObject) const;
    void evaluateWrapper(SoEngine* theWrappedObject);
    SoEngine*  static_SoEngine_getByName(const SbName&  name);
@@ -346,7 +346,7 @@ public slots:
 class PythonQtWrapper_SoEngineOutput : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoEngineOutput* new_SoEngineOutput();
 void delete_SoEngineOutput(SoEngineOutput* obj) { delete obj; }
    void addConnection(SoEngineOutput* theWrappedObject, SoField*  arg__1);
@@ -369,7 +369,7 @@ void delete_SoEngineOutput(SoEngineOutput* obj) { delete obj; }
 class PythonQtWrapper_SoFieldConverter : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
    SoType  static_SoFieldConverter_getClassTypeId();
    SoField*  getConnectedInput(SoFieldConverter* theWrappedObject);
    SoField*  getInput(SoFieldConverter* theWrappedObject, SoType  type);
@@ -383,7 +383,7 @@ public slots:
 class PythonQtWrapper_SoGate : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoGate* new_SoGate(SoType  mfInputType);
    SoType  static_SoGate_getClassTypeId();
 SoSFBool*  py_get_enable(SoGate* theWrappedObject){ return &theWrappedObject->enable; }
@@ -399,7 +399,7 @@ SoSFTrigger*  py_get_trigger(SoGate* theWrappedObject){ return &theWrappedObject
 class PythonQtWrapper_SoInterpolate : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
    SoType  static_SoInterpolate_getClassTypeId();
 SoSFFloat*  py_get_alpha(SoInterpolate* theWrappedObject){ return &theWrappedObject->alpha; }
 SoEngineOutput*  py_get_output(SoInterpolate* theWrappedObject){ return &theWrappedObject->output; }
@@ -412,7 +412,7 @@ SoEngineOutput*  py_get_output(SoInterpolate* theWrappedObject){ return &theWrap
 class PythonQtWrapper_SoInterpolateFloat : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoInterpolateFloat* new_SoInterpolateFloat();
    SoType  static_SoInterpolateFloat_getClassTypeId();
 SoMFFloat*  py_get_input0(SoInterpolateFloat* theWrappedObject){ return &theWrappedObject->input0; }
@@ -426,7 +426,7 @@ SoMFFloat*  py_get_input1(SoInterpolateFloat* theWrappedObject){ return &theWrap
 class PythonQtWrapper_SoInterpolateRotation : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoInterpolateRotation* new_SoInterpolateRotation();
    SoType  static_SoInterpolateRotation_getClassTypeId();
 SoMFRotation*  py_get_input0(SoInterpolateRotation* theWrappedObject){ return &theWrappedObject->input0; }
@@ -440,7 +440,7 @@ SoMFRotation*  py_get_input1(SoInterpolateRotation* theWrappedObject){ return &t
 class PythonQtWrapper_SoInterpolateVec2f : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoInterpolateVec2f* new_SoInterpolateVec2f();
    SoType  static_SoInterpolateVec2f_getClassTypeId();
 SoMFVec2f*  py_get_input0(SoInterpolateVec2f* theWrappedObject){ return &theWrappedObject->input0; }
@@ -454,7 +454,7 @@ SoMFVec2f*  py_get_input1(SoInterpolateVec2f* theWrappedObject){ return &theWrap
 class PythonQtWrapper_SoInterpolateVec3f : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoInterpolateVec3f* new_SoInterpolateVec3f();
    SoType  static_SoInterpolateVec3f_getClassTypeId();
 SoMFVec3f*  py_get_input0(SoInterpolateVec3f* theWrappedObject){ return &theWrappedObject->input0; }
@@ -468,7 +468,7 @@ SoMFVec3f*  py_get_input1(SoInterpolateVec3f* theWrappedObject){ return &theWrap
 class PythonQtWrapper_SoInterpolateVec4f : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoInterpolateVec4f* new_SoInterpolateVec4f();
    SoType  static_SoInterpolateVec4f_getClassTypeId();
 SoMFVec4f*  py_get_input0(SoInterpolateVec4f* theWrappedObject){ return &theWrappedObject->input0; }
@@ -482,7 +482,7 @@ SoMFVec4f*  py_get_input1(SoInterpolateVec4f* theWrappedObject){ return &theWrap
 class PythonQtWrapper_SoOnOff : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoOnOff* new_SoOnOff();
    SoType  static_SoOnOff_getClassTypeId();
 SoEngineOutput*  py_get_isOff(SoOnOff* theWrappedObject){ return &theWrappedObject->isOff; }
@@ -502,7 +502,7 @@ public:
 Q_ENUMS(Flags )
 enum Flags{
   RETRIGGERABLE = SoOneShot::RETRIGGERABLE,   HOLD_FINAL = SoOneShot::HOLD_FINAL};
-public slots:
+public Q_SLOTS:
 SoOneShot* new_SoOneShot();
    SoType  static_SoOneShot_getClassTypeId();
 SoSFBool*  py_get_disable(SoOneShot* theWrappedObject){ return &theWrappedObject->disable; }
@@ -522,7 +522,7 @@ SoSFTrigger*  py_get_trigger(SoOneShot* theWrappedObject){ return &theWrappedObj
 class PythonQtWrapper_SoSelectOne : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoSelectOne* new_SoSelectOne(SoType  mfInputType);
    SoType  static_SoSelectOne_getClassTypeId();
 SoSFInt32*  py_get_index(SoSelectOne* theWrappedObject){ return &theWrappedObject->index; }
@@ -537,7 +537,7 @@ SoEngineOutput*  py_get_output(SoSelectOne* theWrappedObject){ return theWrapped
 class PythonQtWrapper_SoTimeCounter : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoTimeCounter* new_SoTimeCounter();
    SoType  static_SoTimeCounter_getClassTypeId();
 SoMFFloat*  py_get_duty(SoTimeCounter* theWrappedObject){ return &theWrappedObject->duty; }

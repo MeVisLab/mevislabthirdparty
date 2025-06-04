@@ -110,7 +110,7 @@ inline void py_q_write(SoWriteAction*  action) { SoBaseKit::write(action); }
 class PythonQtWrapper_SoBaseKit : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoBaseKit* new_SoBaseKit();
    void py_q_GLRender(SoBaseKit* theWrappedObject, SoGLRenderAction*  action){  (((PythonQtPublicPromoter_SoBaseKit*)theWrappedObject)->py_q_GLRender(action));}
    void py_q_callback(SoBaseKit* theWrappedObject, SoCallbackAction*  action){  (((PythonQtPublicPromoter_SoBaseKit*)theWrappedObject)->py_q_callback(action));}
@@ -235,7 +235,7 @@ public:
 Q_ENUMS(CacheEnabled )
 enum CacheEnabled{
   OFF = SoInteractionKit::OFF,   ON = SoInteractionKit::ON,   AUTO = SoInteractionKit::AUTO};
-public slots:
+public Q_SLOTS:
 SoInteractionKit* new_SoInteractionKit();
    bool  py_q_affectsState(SoInteractionKit* theWrappedObject) const{  return (((PythonQtPublicPromoter_SoInteractionKit*)theWrappedObject)->py_q_affectsState());}
    void connectSeparatorFields(SoInteractionKit* theWrappedObject, SoSeparator*  dest, bool  onOff);
@@ -286,7 +286,7 @@ public:
 class PythonQtWrapper_SoNodeKit : public QObject
 { Q_OBJECT
 public:
-public slots:
+public Q_SLOTS:
 SoNodeKit* new_SoNodeKit();
 void delete_SoNodeKit(SoNodeKit* obj) { delete obj; }
    void static_SoNodeKit_init();

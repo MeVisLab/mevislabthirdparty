@@ -11,7 +11,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "harfbuzz"
-    version = "10.2.0"
+    version = "11.2.1"
     homepage = "http://harfbuzz.org"
     description = "An OpenType text shaping engine"
     license = "MIT"
@@ -19,19 +19,13 @@ class ConanRecipe(ConanFile):
     settings = "os", "arch", "compiler", "build_type"
     exports_sources = ["patches/*.patch"]
 
-    mlab_hooks = {
-        "dependencies.system_libs": [
-            "libfreetype.so.6",  # freetype
-        ]
-    }
-
     def layout(self):
         basic_layout(self, src_folder="src")
 
     def source(self):
         get(
             self,
-            sha256="620e3468faec2ea8685d32c46a58469b850ef63040b3565cde05959825b48227",
+            sha256="093714c8548a285094685f0bdc999e202d666b59eeb3df2ff921ab68b8336a49",
             url=f"https://github.com/harfbuzz/harfbuzz/releases/download/{self.version}/harfbuzz-{self.version}.tar.xz",
             strip_root=True,
         )
@@ -54,6 +48,7 @@ class ConanRecipe(ConanFile):
                 "benchmark": "disabled",
                 "icu_builtin": "false",
                 "utilities": "disabled",
+                "freetype": "disabled",
             }
         )
 
@@ -71,12 +66,13 @@ class ConanRecipe(ConanFile):
         copy(self, "COPYING", self.source_folder, os.path.join(self.package_folder, "licenses"))
         meson = Meson(self)
         meson.install()
+        rmdir(self, os.path.join(self.package_folder, "share"))
         rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))
         rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:harfbuzz_project:harfbuzz:*:*:*:*:*:*:*:*")
-        self.cpp_info.set_property("base_purl", "github/harfbuzz/harfbuzz")
+        self.cpp_info.set_property("purl", f"pkg:github/harfbuzz/harfbuzz@{self.version}")
         self.cpp_info.set_property("cmake_file_name", "harfbuzz")
         self.cpp_info.set_property("cmake_target_name", "harfbuzz::harfbuzz")
         self.cpp_info.set_property("cmake_target_aliases", ["Harfbuzz::Harfbuzz"])

@@ -58,7 +58,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
-        self.cpp_info.set_property("base_purl", "github/embree/embree")
+        self.cpp_info.set_property("purl", f"pkg:github/embree/embree@v{self.version}")
         self.cpp_info.set_property("cmake_file_name", "Embree")
         self.cpp_info.set_property("cmake_target_name", "Embree::Embree")
         self.cpp_info.libs = collect_libs(self)

@@ -96,7 +96,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         # self.cpp_info.set_property("cpe", "")  # No CPE for c-blosc yet (there is one for c-blosc2)!
-        self.cpp_info.set_property("base_purl", "github/Blosc/c-blosc")
+        self.cpp_info.set_property("purl", f"pkg:github/Blosc/c-blosc@v{self.version}")
         self.cpp_info.set_property("pkg_config_name", "blosc")
         self.cpp_info.libs = collect_libs(self)
         if self.settings.os == "Linux":

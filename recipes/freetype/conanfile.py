@@ -110,7 +110,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:freetype:freetype:*:*:*:*:*:*:*:*")
-        self.cpp_info.set_property("base_purl", "github/freetype/freetype")
+        self.cpp_info.set_property("purl", f"pkg:github/freetype/freetype@VER-{self.version.replace('.','-')}")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "Freetype")
         self.cpp_info.set_property("cmake_target_name", "Freetype::Freetype")
