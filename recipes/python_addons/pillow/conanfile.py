@@ -8,7 +8,7 @@ required_conan_version = ">=2.0.0"
 class ConanRecipe(ConanFile):
     name = "pillow"
     version = "11.2.1"
-    homepage = "https://python-pillow.org/"
+    homepage = "https://python-pillow.github.io/"
     description = "Python Imaging Library (Fork)"
     license = "HPND"
     python_requires = "python_package/[>=1.0.0]"
