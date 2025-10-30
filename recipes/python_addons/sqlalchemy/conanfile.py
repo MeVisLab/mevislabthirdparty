@@ -8,7 +8,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "sqlalchemy"
-    version = "2.0.41"
+    version = "2.0.43"
     homepage = "https://www.sqlalchemy.org"
     description = (
         "SQLAlchemy is the Python SQL toolkit and Object Relational Mapper "
@@ -32,7 +32,7 @@ class ConanRecipe(ConanFile):
         version = self.version.replace(".", "_")
         get(
             self,
-            sha256="90ae81b04567a52abc6d4113c6fd1fff4b1fcf149122db8ebaa8af3b463b8b3d",
+            sha256="1e4efbca2df9a0584d2c35c2b435008bb9cd3aece718a8b595b9c1edd5bbceab",
             url=f"https://github.com/sqlalchemy/sqlalchemy/archive/refs/tags/rel_{version}.tar.gz",
             strip_root=True,
         )

@@ -9,9 +9,9 @@ endif()
 
 target_sources(InventorActions PRIVATE
   InventorActions.cpp
-  ../generated_cpp/Inventor_actions/Inventor_actions0.h
-  ../generated_cpp/Inventor_actions/Inventor_actions0.cpp
-  ../generated_cpp/Inventor_actions/Inventor_actions_init.cpp
+  ../generated_cpp/inventor_actions/inventor_actions0.h
+  ../generated_cpp/inventor_actions/inventor_actions0.cpp
+  ../generated_cpp/inventor_actions/inventor_actions_init.cpp
 )
 
 target_link_libraries(InventorActions

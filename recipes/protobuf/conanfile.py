@@ -11,8 +11,8 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "protobuf"
-    version = "30.2"
-    homepage = "https://developers.google.com/protocol-buffers"
+    version = "32.0"
+    homepage = "https://protobuf.dev/"
     description = "Google's Protocol Buffers are a language-neutral, platform-neutral extensible mechanism for serializing structured data"
     license = "BSD-3-Clause"
     package_type = "static-library"
@@ -36,12 +36,15 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="fb06709acc393cc36f87c251bb28a5500a2e12936d4346099f2c6240f6c7a941",
+            sha256="9dfdf08129f025a6c5802613b8ee1395044fecb71d38210ca59ecad283ef68bb",
             url=f"https://github.com/protocolbuffers/protobuf/releases/download/v{self.version}/protobuf-{self.version}.tar.gz",
             strip_root=True,
         )
         replace_in_file(
-            self, os.path.join(self.source_folder, "CMakeLists.txt"), 'set(protobuf_DEBUG_POSTFIX "d"', 'set(protobuf_DEBUG_POSTFIX "_d"'
+            self,
+            os.path.join(self.source_folder, "CMakeLists.txt"),
+            'set(protobuf_DEBUG_POSTFIX "d"',
+            'set(protobuf_DEBUG_POSTFIX "_d"',
         )
 
     def generate(self):
@@ -102,7 +105,9 @@ class ConanRecipe(ConanFile):
                 endif()
             """
         )
-        save(self, os.path.join(self.package_folder, "lib", "cmake", "protobuf", "protobuf-protoc-target.cmake"), content)
+        save(
+            self, os.path.join(self.package_folder, "lib", "cmake", "protobuf", "protobuf-protoc-target.cmake"), content
+        )
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:protobuf:protobuf:*:*:*:*:*:*:*:*")
@@ -139,7 +144,12 @@ class ConanRecipe(ConanFile):
         self.cpp_info.components["libprotobuf"].set_property("pkg_config_name", "protobuf")
         self.cpp_info.components["libprotobuf"].builddirs.append(cmake_base_path)
         self.cpp_info.components["libprotobuf"].libs = [lib_prefix + "protobuf" + lib_suffix]
-        self.cpp_info.components["libprotobuf"].requires = ["zlib::zlib", "utf8_range", "utf8_validity", "abseil::abseil"]
+        self.cpp_info.components["libprotobuf"].requires = [
+            "zlib::zlib",
+            "utf8_range",
+            "utf8_validity",
+            "abseil::abseil",
+        ]
         if self.settings.os == "Linux":
             self.cpp_info.components["libprotobuf"].system_libs.extend(["m", "pthread"])
 

@@ -10,7 +10,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "lzma_sdk"
-    version = "24.09"
+    version = "25.01"
     description = "LZMA SDK"
     homepage = "https://7-zip.de/sdk.html"
     license = "LZMA-SDK-9.22"
@@ -30,7 +30,7 @@ class ConanRecipe(ConanFile):
         minor = f"{v.minor}".zfill(2)
         get(
             self,
-            sha256="15f52e74f9d0db73a15add96b9adcdce5b03db3d1a0610d46beb6081f5265b6a",
+            sha256="249d7847ee2932705c8e157552e481cf8b7cd16ec70243ce98184b5d48b7a998",
             url=f"https://github.com/sisong/lzma/archive/refs/tags/v{v.major}.{minor}.tar.gz",
             strip_root=True,
         )
@@ -67,7 +67,9 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
-        self.cpp_info.set_property("purl", f"pkg:github/sisong/lzma@v{self.version}")  # Official repository is at https://www.7-zip.org/sdk.html
+        self.cpp_info.set_property(
+            "purl", f"pkg:github/sisong/lzma@v{self.version}"
+        )  # Official repository is at https://www.7-zip.org/sdk.html
         self.cpp_info.set_property("display_name", "LZMA SDK")
         self.cpp_info.libs = collect_libs(self)
         self.cpp_info.includedirs = ["include", "include/C"]

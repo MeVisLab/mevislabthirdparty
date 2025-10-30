@@ -1,13 +1,3 @@
-/*************************************************************************************
-**
-** Copyright 2022, MeVis Medical Solutions AG
-**
-** GNU LESSER GENERAL PUBLIC LICENSE Version 2.1, February 1999
-**
-**************************************************************************************/
-#include <PythonQt.h>
-#include <QObject>
-#include <QVariant>
 #include <Inventor/SbString.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
@@ -34,6 +24,9 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/sensors/SoSensor.h>
+#include <PythonQt.h>
+#include <QObject>
+#include <QVariant>
 
 
 
@@ -73,8 +66,8 @@ void write(SoWriteAction*  action) override;
 
 
    SoType _type;
-   SoType getTypeId() const override { return _type; }
-
+   virtual SoType getTypeId() const { return _type; }
+   
   PythonQtInstanceWrapper* _wrapper;
 };
 
@@ -198,8 +191,8 @@ void write(SoWriteAction*  action) override;
 
 
    SoType _type;
-   SoType getTypeId() const override { return _type; }
-
+   virtual SoType getTypeId() const { return _type; }
+   
   PythonQtInstanceWrapper* _wrapper;
 };
 

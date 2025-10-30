@@ -3,6 +3,7 @@ from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
 from conan.tools.env import VirtualBuildEnv
 from conan.tools.files import copy, get, rmdir, patch, replace_in_file
 from conan.tools.microsoft import is_msvc
+import os
 
 required_conan_version = ">=2.2.2"
 
@@ -10,7 +11,7 @@ required_conan_version = ">=2.2.2"
 class ConanRecipe(ConanFile):
     name = "libjpeg-turbo"
     provides = "libjpeg"
-    version = "3.1.0"
+    version = "3.1.1"
     description = "SIMD-accelerated libjpeg-compatible JPEG codec library"
     license = "BSD-3-Clause AND IJG AND Zlib"
     homepage = "https://libjpeg-turbo.org"
@@ -28,13 +29,15 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="9564c72b1dfd1d6fe6274c5f95a8d989b59854575d4bbee44ade7bc17aa9bc93",
+            sha256="aadc97ea91f6ef078b0ae3a62bba69e008d9a7db19b34e4ac973b19b71b4217c",
             url=f"https://github.com/libjpeg-turbo/libjpeg-turbo/releases/download/{self.version}/libjpeg-turbo-{self.version}.tar.gz",
             strip_root=True,
         )
         patch(self, patch_file="patches/001-change_rpath.patch")
         patch(self, patch_file="patches/002-cmake_use_gnuinstalldirs.patch")
-        replace_in_file(self, self.source_path / "sharedlib/CMakeLists.txt", " jpeg${SO_MAJOR_VERSION}", " jpeg")
+        replace_in_file(
+            self, os.path.join(self.source_folder, "sharedlib", "CMakeLists.txt"), " jpeg${SO_MAJOR_VERSION}", " jpeg"
+        )
 
     def generate(self):
         env = VirtualBuildEnv(self)
@@ -65,12 +68,12 @@ class ConanRecipe(ConanFile):
         cmake.build()
 
     def package(self):
-        copy(self, "LICENSE.md", src=self.source_path, dst=self.package_path / "licenses")
+        copy(self, "LICENSE.md", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
         cmake = CMake(self)
         cmake.install()
-        rmdir(self, self.package_path / "share")
-        rmdir(self, self.package_path / "lib" / "pkgconfig")
-        rmdir(self, self.package_path / "lib" / "cmake")
+        rmdir(self, os.path.join(self.package_folder, "share"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:libjpeg-turbo:libjpeg-turbo:*:*:*:*:*:*:*:*")

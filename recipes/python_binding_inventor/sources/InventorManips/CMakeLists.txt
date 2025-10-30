@@ -9,9 +9,9 @@ endif()
 
 target_sources(InventorManips PRIVATE
   InventorManips.cpp
-  ../generated_cpp/Inventor_manips/Inventor_manips0.h
-  ../generated_cpp/Inventor_manips/Inventor_manips0.cpp
-  ../generated_cpp/Inventor_manips/Inventor_manips_init.cpp
+  ../generated_cpp/inventor_manips/inventor_manips0.h
+  ../generated_cpp/inventor_manips/inventor_manips0.cpp
+  ../generated_cpp/inventor_manips/inventor_manips_init.cpp
 )
 
 target_link_libraries(InventorManips

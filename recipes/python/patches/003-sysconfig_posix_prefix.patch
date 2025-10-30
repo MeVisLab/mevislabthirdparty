@@ -1,10 +1,10 @@
-diff --git a/Lib/sysconfig.py b/Lib/sysconfig.py
-index ebe3711..ce7acf5 100644
---- a/Lib/sysconfig.py
-+++ b/Lib/sysconfig.py
-@@ -530,7 +530,12 @@ def _init_posix(vars):
-     name = _get_sysconfigdata_name()
-     _temp = __import__(name, globals(), locals(), ['build_time_vars'], 0)
+diff --git a/Lib/sysconfig/__init__.py b/Lib/sysconfig/__init__.py
+index 510c7b9..f368cf6 100644
+--- a/Lib/sysconfig/__init__.py
++++ b/Lib/sysconfig/__init__.py
+@@ -360,7 +360,12 @@ def _init_posix(vars):
+     else:
+         _temp = __import__(name, globals(), locals(), ['build_time_vars'], 0)
      build_time_vars = _temp.build_time_vars
 -    vars.update(build_time_vars)
 +
@@ -13,6 +13,6 @@ index ebe3711..ce7acf5 100644
 +        if type(v) == type(''):
 +            v = v.replace(prefix, sys.prefix)
 +        vars[k] = v
- 
+
  def _init_non_posix(vars):
      """Initialize the module as appropriate for NT"""

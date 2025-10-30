@@ -1,9 +1,9 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 2af1e6f..fe48c4c 100644
+index b952d7b..c938701 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -443,24 +443,24 @@ set_target_properties(
-     SOVERSION ${LIBXML_MAJOR_VERSION}
+@@ -425,24 +425,24 @@ set_target_properties(
+     MACHO_CURRENT_VERSION "${LIBXML_MACHO_COMPAT}.${LIBXML_MICRO_VERSION}"
  )
  
 -if(MSVC)
@@ -43,5 +43,5 @@ index 2af1e6f..fe48c4c 100644
 +#     endif()
 +# endif()
  
- install(FILES ${LIBXML2_HDRS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/libxml2/libxml COMPONENT development)
+ set(XML_SYSCONFDIR "${CMAKE_INSTALL_FULL_SYSCONFDIR}")
  

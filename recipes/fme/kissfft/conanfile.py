@@ -1,6 +1,7 @@
 from conan import ConanFile
 from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout
 from conan.tools.files import copy, rmdir, get, collect_libs
+import os
 
 required_conan_version = ">=2.2.2"
 
@@ -28,11 +29,12 @@ class ConanRecipe(ConanFile):
         tc.generate()
 
     def source(self):
-        get(self,
+        get(
+            self,
             sha256="76c1aac87ddb7258f34b08a13f0eebf9e53afa299857568346aa5c82bcafaf1a",
             url=f"https://github.com/mborgerding/kissfft/archive/refs/tags/{self.version}.tar.gz",
-            strip_root=True
-            )
+            strip_root=True,
+        )
 
     def build(self):
         cmake = CMake(self)
@@ -42,10 +44,22 @@ class ConanRecipe(ConanFile):
     def package(self):
         cmake = CMake(self)
         cmake.install()
-        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False, excludes="*vc???.pdb")
-        copy(self, "*", src=self.source_path / "LICENSES", dst=self.package_path / "licenses")
-        copy(self, "COPYING", src=self.source_path, dst=self.package_path / "licenses")
-        rmdir(self, self.package_path / "lib" / "cmake")
+        copy(
+            self,
+            "*.pdb",
+            src=self.build_folder,
+            dst=os.path.join(self.package_folder, "bin"),
+            keep_path=False,
+            excludes="*vc???.pdb",
+        )
+        copy(
+            self,
+            "*",
+            src=os.path.join(self.source_folder, "LICENSES"),
+            dst=os.path.join(self.package_folder, "licenses"),
+        )
+        copy(self, "COPYING", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))
 
     def package_info(self):
         # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?

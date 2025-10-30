@@ -7,7 +7,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "mocha"
-    version = "11.0.0"
+    version = "11.4.0"
     homepage = "https://mochajs.org"
     description = "Simple, flexible, fun javascript test framework for node.js & the browser"
     package_type = "build-scripts"
@@ -19,13 +19,18 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="a9a79416a5e8ab14d379df2b75abdfa3ee7db0b926dccf18481277f21af4154f",
+            sha256="ff99e01d6b3611821927b310ae0e97104741fa8800c1dbe324a0a4bfaa669ab3",
             url=f"https://github.com/mochajs/mocha/archive/refs/tags/v{self.version}.tar.gz",
             strip_root=True,
         )
 
     def package(self):
-        copy(self, "*", src=os.path.join(self.source_folder, "lib"), dst=os.path.join(self.package_folder, "web", self.name))
+        copy(
+            self,
+            "*",
+            src=os.path.join(self.source_folder, "lib"),
+            dst=os.path.join(self.package_folder, "web", self.name),
+        )
         copy(self, "LICENSE", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
 
     def package_info(self):

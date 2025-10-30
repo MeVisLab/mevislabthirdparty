@@ -1,8 +1,8 @@
 diff --git a/src/corelib/kernel/qobject.cpp b/src/corelib/kernel/qobject.cpp
-index b4bbace8..7a2327ca 100644
+index 938afc7d..c1f4332d 100644
 --- a/src/corelib/kernel/qobject.cpp
 +++ b/src/corelib/kernel/qobject.cpp
-@@ -660,6 +660,58 @@ void QMetaCallEvent::placeMetaCall(QObject *object)
+@@ -629,6 +629,58 @@ void QMetaCallEvent::placeMetaCall(QObject *object)
      }
  }
  
@@ -62,10 +62,10 @@ index b4bbace8..7a2327ca 100644
                                              const QObject *sender, int signal_index,
                                              size_t argc, const void* const argp[],
 diff --git a/src/corelib/kernel/qobject.h b/src/corelib/kernel/qobject.h
-index 6fe575f2..d3158cc1 100644
+index 26cbd80f..15f0bcc1 100644
 --- a/src/corelib/kernel/qobject.h
 +++ b/src/corelib/kernel/qobject.h
-@@ -62,6 +62,12 @@ Q_CORE_EXPORT QObject *qt_qFindChild_helper(const QObject *parent, const QString
+@@ -63,6 +63,12 @@ Q_CORE_EXPORT QObject *qt_qFindChild_helper(const QObject *parent, const QString
  Q_CORE_EXPORT QObject *qt_qFindChild_helper(const QObject *parent, QAnyStringView name,
                                              const QMetaObject &mo, Qt::FindChildOptions options);
  
@@ -79,10 +79,10 @@ index 6fe575f2..d3158cc1 100644
  {
      Q_DISABLE_COPY(QObjectData)
 diff --git a/src/corelib/kernel/qobject_p.h b/src/corelib/kernel/qobject_p.h
-index f7886c7c..e102c6f3 100644
+index d6dd14a2..91306fa3 100644
 --- a/src/corelib/kernel/qobject_p.h
 +++ b/src/corelib/kernel/qobject_p.h
-@@ -358,6 +358,7 @@ public:
+@@ -361,6 +361,7 @@ public:
  private:
      int signalId_;
      const QObject *sender_;
@@ -90,7 +90,7 @@ index f7886c7c..e102c6f3 100644
  #if QT_CONFIG(thread)
      QSemaphore *semaphore_;
  #endif
-@@ -419,6 +420,12 @@ public:
+@@ -422,6 +423,12 @@ public:
  
      virtual void placeMetaCall(QObject *object) override;
  

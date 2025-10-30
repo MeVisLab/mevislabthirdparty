@@ -1,18 +1,17 @@
 diff --git a/lib/matplotlib/backends/backend_qt.py b/lib/matplotlib/backends/backend_qt.py
-index 5cde486..158bfd2 100644
+index d0aded5..467eb01 100644
 --- a/lib/matplotlib/backends/backend_qt.py
 +++ b/lib/matplotlib/backends/backend_qt.py
-@@ -14,7 +14,8 @@ from matplotlib.backend_bases import (
+@@ -14,7 +14,7 @@ from matplotlib.backend_bases import (
  import matplotlib.backends.qt_editor.figureoptions as figureoptions
  from . import qt_compat
  from .qt_compat import (
 -    QtCore, QtGui, QtWidgets, __version__, QT_API, _to_int, _isdeleted)
-+    QtCore, QtGui, QtWidgets, __version__, QT_API, _to_int, _isdeleted, _qt_property, _getSaveFileName
-+)
++    QtCore, QtGui, QtWidgets, __version__, QT_API, _to_int, _isdeleted, _qt_property, _getSaveFileName)
  
  
  # SPECIAL_KEYS are Qt::Key that do *not* return their Unicode name
-@@ -103,7 +104,7 @@ def _create_qApp():
+@@ -103,7 +103,7 @@ def _create_qApp():
  
          # Check to make sure a QApplication from a different major version
          # of Qt is not instantiated in the process
@@ -21,7 +20,7 @@ index 5cde486..158bfd2 100644
              other_bindings = ('PyQt5', 'PySide2')
              qt_version = 6
          elif QT_API in {'PyQt5', 'PySide2'}:
-@@ -246,7 +247,7 @@ class FigureCanvasQT(FigureCanvasBase, QtWidgets.QWidget):
+@@ -251,7 +251,7 @@ class FigureCanvasQT(FigureCanvasBase, QtWidgets.QWidget):
              # The easiest way to resize the canvas is to emit a resizeEvent
              # since we implement all the logic for resizing the canvas for
              # that event.
@@ -30,16 +29,34 @@ index 5cde486..158bfd2 100644
              self.resizeEvent(event)
  
      @QtCore.Slot(QtGui.QScreen)
-@@ -502,7 +503,7 @@ class FigureCanvasQT(FigureCanvasBase, QtWidgets.QWidget):
+@@ -265,7 +265,7 @@ class FigureCanvasQT(FigureCanvasBase, QtWidgets.QWidget):
+     def eventFilter(self, source, event):
+         if event.type() == QtCore.QEvent.Type.DevicePixelRatioChange:
+             self._update_pixel_ratio()
+-        return super().eventFilter(source, event)
++        return QtWidgets.QWidget.eventFilter(self, source, event)
+ 
+     def showEvent(self, event):
+         # Set up correct pixel ratio, and connect to any signal changes for it,
+@@ -488,7 +488,7 @@ class FigureCanvasQT(FigureCanvasBase, QtWidgets.QWidget):
+         if self._is_drawing:
+             return
+         with cbook._setattr_cm(self, _is_drawing=True):
+-            super().draw()
++            FigureCanvasBase.draw(self)
+         self.update()
+ 
+     def draw_idle(self):
+@@ -517,7 +517,7 @@ class FigureCanvasQT(FigureCanvasBase, QtWidgets.QWidget):
              if not self._draw_pending:
                  return
              self._draw_pending = False
--            if self.height() <= 0 or self.width() <= 0:
-+            if _qt_property(self.height) <= 0 or _qt_property(self.width) <= 0:
+-            if _isdeleted(self) or self.height() <= 0 or self.width() <= 0:
++            if _isdeleted(self) or _qt_property(self.height) <= 0 or _qt_property(self.width) <= 0:
                  return
              try:
                  self.draw()
-@@ -549,7 +550,7 @@ class MainWindow(QtWidgets.QMainWindow):
+@@ -564,7 +564,7 @@ class MainWindow(QtWidgets.QMainWindow):
  
      def closeEvent(self, event):
          self.closing.emit()
@@ -48,7 +65,7 @@ index 5cde486..158bfd2 100644
  
  
  class FigureManagerQT(FigureManagerBase):
-@@ -580,13 +581,13 @@ class FigureManagerQT(FigureManagerBase):
+@@ -595,13 +595,13 @@ class FigureManagerQT(FigureManagerBase):
  
          if self.toolbar:
              self.window.addToolBar(self.toolbar)
@@ -64,7 +81,7 @@ index 5cde486..158bfd2 100644
          cs_height = cs.height()
          height = cs_height + tbs_height
          self.window.resize(cs.width(), height)
-@@ -630,8 +631,8 @@ class FigureManagerQT(FigureManagerBase):
+@@ -645,8 +645,8 @@ class FigureManagerQT(FigureManagerBase):
          # rescale from physical to logical pixels.
          width = int(width / self.canvas.device_pixel_ratio)
          height = int(height / self.canvas.device_pixel_ratio)
@@ -75,7 +92,7 @@ index 5cde486..158bfd2 100644
          self.canvas.resize(width, height)
          self.window.resize(width + extra_width, height + extra_height)
  
-@@ -661,7 +662,7 @@ class FigureManagerQT(FigureManagerBase):
+@@ -676,7 +676,7 @@ class FigureManagerQT(FigureManagerBase):
          self.window.close()
  
      def get_window_title(self):
@@ -84,19 +101,20 @@ index 5cde486..158bfd2 100644
  
      def set_window_title(self, title):
          self.window.setWindowTitle(title)
-@@ -691,8 +692,9 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
+@@ -706,9 +706,9 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
              else:
                  slot = getattr(self, callback)
                  # https://bugreports.qt.io/browse/PYSIDE-2512
 -                slot = functools.wraps(slot)(functools.partial(slot))
 -                slot = QtCore.Slot()(slot)
+-
 +                # MEVIS: this does not work with PythonQt
 +                # slot = functools.wraps(slot)(functools.partial(slot))
 +                # slot = QtCore.Slot()(slot)
- 
                  a = self.addAction(self._icon(image_file + '.png'),
                                     text, slot)
-@@ -735,8 +737,8 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
+                 self._actions[callback] = a
+@@ -750,8 +750,8 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
          pm = QtGui.QPixmap(filename)
          pm.setDevicePixelRatio(
              self.devicePixelRatioF() or 1)  # rarely, devicePixelRatioF=0
@@ -107,7 +125,7 @@ index 5cde486..158bfd2 100644
              mask = pm.createMaskFromColor(
                  QtGui.QColor('black'),
                  QtCore.Qt.MaskMode.MaskOutColor)
-@@ -766,11 +768,17 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
+@@ -781,11 +781,17 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
              for i, ax in enumerate(axes):
                  if titles[i] in duplicate_titles:
                      titles[i] += f" (id: {id(ax):#x})"  # Deduplicate titles.
@@ -128,7 +146,21 @@ index 5cde486..158bfd2 100644
              ax = axes[titles.index(item)]
          figureoptions.figure_edit(ax, self)
  
-@@ -831,7 +839,7 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
+@@ -797,11 +803,11 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
+             self._actions['zoom'].setChecked(self.mode.name == 'ZOOM')
+ 
+     def pan(self, *args):
+-        super().pan(*args)
++        NavigationToolbar2.pan(self, *args)
+         self._update_buttons_checked()
+ 
+     def zoom(self, *args):
+-        super().zoom(*args)
++        NavigationToolbar2.zoom(self, *args)
+         self._update_buttons_checked()
+ 
+     def set_message(self, s):
+@@ -846,7 +852,7 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
              filters.append(filter)
          filters = ';;'.join(filters)
  
@@ -137,7 +169,7 @@ index 5cde486..158bfd2 100644
              self.canvas.parent(), "Choose a filename to save to", start,
              filters, selectedFilter)
          if fname:
-@@ -858,7 +866,7 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
+@@ -873,7 +879,7 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
  
  class SubplotToolQt(QtWidgets.QDialog):
      def __init__(self, targetfig, parent):
@@ -146,7 +178,7 @@ index 5cde486..158bfd2 100644
          self.setWindowIcon(QtGui.QIcon(
              str(cbook._get_data_path("images/matplotlib.png"))))
          self.setObjectName("SubplotTool")
-@@ -873,7 +881,7 @@ class SubplotToolQt(QtWidgets.QDialog):
+@@ -888,7 +894,7 @@ class SubplotToolQt(QtWidgets.QDialog):
                   ["hspace", "wspace"],
                   [("Tight layout", self._tight_layout),
                    ("Reset", self._reset),
@@ -155,7 +187,7 @@ index 5cde486..158bfd2 100644
              layout = QtWidgets.QVBoxLayout()
              main_layout.addLayout(layout)
              box = QtWidgets.QGroupBox(group)
-@@ -916,13 +924,13 @@ class SubplotToolQt(QtWidgets.QDialog):
+@@ -931,13 +937,13 @@ class SubplotToolQt(QtWidgets.QDialog):
          text.setReadOnly(True)
          layout.addWidget(text)
          text.setPlainText(
@@ -172,7 +204,7 @@ index 5cde486..158bfd2 100644
              .size(0, text.toPlainText()).height() + 20)
          text.setMaximumSize(size)
          self._export_values_dialog.show()
-@@ -931,10 +939,10 @@ class SubplotToolQt(QtWidgets.QDialog):
+@@ -946,10 +952,10 @@ class SubplotToolQt(QtWidgets.QDialog):
          spinboxes = self._spinboxes
          # Set all mins and maxes, so that this can also be used in _reset().
          for lower, higher in [("bottom", "top"), ("left", "right")]:
@@ -186,20 +218,21 @@ index 5cde486..158bfd2 100644
          self._figure.canvas.draw_idle()
  
      def _tight_layout(self):
-@@ -953,6 +961,11 @@ class SubplotToolQt(QtWidgets.QDialog):
-             spinbox.blockSignals(False)
+@@ -969,6 +975,12 @@ class SubplotToolQt(QtWidgets.QDialog):
          self._on_value_changed()
+ 
  
 +    def _close(self):
 +        # Needed because PythonQt can't do the signal/slot connection correctly
-+        # because of extra argument in signal (it works if it is a Python function)
++        # because of the extra argument in signal (it works if it is a Python function)
 +        self.close()
 +
- 
++
  class ToolbarQt(ToolContainerBase, QtWidgets.QToolBar):
      def __init__(self, toolmanager, parent=None):
+         ToolContainerBase.__init__(self, toolmanager)
 diff --git a/lib/matplotlib/backends/backend_qtagg.py b/lib/matplotlib/backends/backend_qtagg.py
-index 256e50a..bacedb2 100644
+index 256e50a..6deeead 100644
 --- a/lib/matplotlib/backends/backend_qtagg.py
 +++ b/lib/matplotlib/backends/backend_qtagg.py
 @@ -52,6 +52,8 @@ class FigureCanvasQTAgg(FigureCanvasAgg, FigureCanvasQT):
@@ -211,11 +244,33 @@ index 256e50a..bacedb2 100644
              else:
                  ptr = buf
  
+@@ -72,7 +74,7 @@ class FigureCanvasQTAgg(FigureCanvasAgg, FigureCanvasQT):
+             painter.end()
+ 
+     def print_figure(self, *args, **kwargs):
+-        super().print_figure(*args, **kwargs)
++        FigureCanvasQT.print_figure(self, *args, **kwargs)
+         # In some cases, Qt will itself trigger a paint event after closing the file
+         # save dialog. When that happens, we need to be sure that the internal canvas is
+         # re-drawn. However, if the user is using an automatically-chosen Qt backend but
+diff --git a/lib/matplotlib/backends/backend_qtcairo.py b/lib/matplotlib/backends/backend_qtcairo.py
+index 72eb2dc..3161576 100644
+--- a/lib/matplotlib/backends/backend_qtcairo.py
++++ b/lib/matplotlib/backends/backend_qtcairo.py
+@@ -10,7 +10,7 @@ class FigureCanvasQTCairo(FigureCanvasCairo, FigureCanvasQT):
+         if hasattr(self._renderer.gc, "ctx"):
+             self._renderer.dpi = self.figure.dpi
+             self.figure.draw(self._renderer)
+-        super().draw()
++        FigureCanvasQT.draw(self)
+ 
+     def paintEvent(self, event):
+         width = int(self.device_pixel_ratio * self.width())
 diff --git a/lib/matplotlib/backends/qt_compat.py b/lib/matplotlib/backends/qt_compat.py
-index b57a98b..1da6ee9 100644
+index b57a98b..cc27917 100644
 --- a/lib/matplotlib/backends/qt_compat.py
 +++ b/lib/matplotlib/backends/qt_compat.py
-@@ -24,11 +24,12 @@ QT_API_PYQT6 = "PyQt6"
+@@ -24,16 +24,19 @@ QT_API_PYQT6 = "PyQt6"
  QT_API_PYSIDE6 = "PySide6"
  QT_API_PYQT5 = "PyQt5"
  QT_API_PYSIDE2 = "PySide2"
@@ -229,15 +284,13 @@ index b57a98b..1da6ee9 100644
      "pyqt5": QT_API_PYQT5, "pyside2": QT_API_PYSIDE2,
  }
  # First, check if anything is already imported.
-@@ -36,6 +37,8 @@ if sys.modules.get("PyQt6.QtCore"):
+ if sys.modules.get("PyQt6.QtCore"):
      QT_API = QT_API_PYQT6
- elif sys.modules.get("PySide6.QtCore"):
-     QT_API = QT_API_PYSIDE6
 +elif "PythonQt.QtCore" in sys.modules:
 +    QT_API = QT_API_PYTHONQT
+ elif sys.modules.get("PySide6.QtCore"):
+     QT_API = QT_API_PYSIDE6
  elif sys.modules.get("PyQt5.QtCore"):
-     QT_API = QT_API_PYQT5
- elif sys.modules.get("PySide2.QtCore"):
 @@ -46,7 +49,7 @@ elif sys.modules.get("PySide2.QtCore"):
  # triggering backend resolution (which can result in a partially but
  # incompletely imported backend_qt5).
@@ -256,7 +309,7 @@ index b57a98b..1da6ee9 100644
  
      if QT_API == QT_API_PYQT6:
          from PyQt6 import QtCore, QtGui, QtWidgets, sip
-@@ -74,15 +77,20 @@ def _setup_pyqt5plus():
+@@ -74,11 +77,16 @@ def _setup_pyqt5plus():
          QtCore.Slot = QtCore.pyqtSlot
          QtCore.Property = QtCore.pyqtProperty
          _isdeleted = sip.isdeleted
@@ -266,38 +319,39 @@ index b57a98b..1da6ee9 100644
      elif QT_API == QT_API_PYSIDE6:
          from PySide6 import QtCore, QtGui, QtWidgets, __version__
          import shiboken6
-         def _isdeleted(obj): return not shiboken6.isValid(obj)
-+        def _qt_property(p):
-+            return p()
+-        def _isdeleted(obj): return not shiboken6.isValid(obj)
++        def _qt_property(p): return p()
++        def _isdeleted(obj):
++            return not shiboken6.isValid(obj)
++        _getSaveFileName = QtWidgets.QFileDialog.getSaveFileName
          if parse_version(__version__) >= parse_version('6.4'):
              _to_int = operator.attrgetter('value')
          else:
-             _to_int = int
-+        _getSaveFileName = QtWidgets.QFileDialog.getSaveFileName
-     elif QT_API == QT_API_PYQT5:
-         from PyQt5 import QtCore, QtGui, QtWidgets
-         import sip
-@@ -92,6 +100,7 @@ def _setup_pyqt5plus():
+@@ -90,7 +98,9 @@ def _setup_pyqt5plus():
+         QtCore.Signal = QtCore.pyqtSignal
+         QtCore.Slot = QtCore.pyqtSlot
          QtCore.Property = QtCore.pyqtProperty
++        def _qt_property(p): return p()
          _isdeleted = sip.isdeleted
-         _to_int = int
 +        _getSaveFileName = QtWidgets.QFileDialog.getSaveFileName
+         _to_int = int
      elif QT_API == QT_API_PYSIDE2:
          from PySide2 import QtCore, QtGui, QtWidgets, __version__
-         try:
-@@ -100,12 +109,27 @@ def _setup_pyqt5plus():
+@@ -98,14 +108,29 @@ def _setup_pyqt5plus():
+             from PySide2 import shiboken2
+         except ImportError:
              import shiboken2
++        def _qt_property(p): return p()
          def _isdeleted(obj):
              return not shiboken2.isValid(obj)
-+        def _qt_property(p):
-+            return p()
-         _to_int = int
++        _getSaveFileName = QtWidgets.QFileDialog.getSaveFileName
++        _to_int = int
 +    elif QT_API == QT_API_PYTHONQT:
 +        from PythonQt import QtCore, QtGui
 +        __version__ = "2.0"
 +        # For backwards compatibility (with Qt4) QtWidgets is contained in QtGui:
 +        QtWidgets = QtGui
-+        _to_int = int
+         _to_int = int
 +        def _isdeleted(obj):
 +            return not bool(obj)
 +        def _qt_property(p):
@@ -314,7 +368,7 @@ index b57a98b..1da6ee9 100644
      _setup_pyqt5plus()
  elif QT_API is None:  # See above re: dict.__getitem__.
      if _QT_FORCE_QT5_BINDING:
-@@ -119,6 +143,7 @@ elif QT_API is None:  # See above re: dict.__getitem__.
+@@ -119,6 +144,7 @@ elif QT_API is None:  # See above re: dict.__getitem__.
              (_setup_pyqt5plus, QT_API_PYSIDE6),
              (_setup_pyqt5plus, QT_API_PYQT5),
              (_setup_pyqt5plus, QT_API_PYSIDE2),
@@ -322,6 +376,18 @@ index b57a98b..1da6ee9 100644
          ]
      for _setup, QT_API in _candidates:
          try:
+@@ -128,8 +154,9 @@ elif QT_API is None:  # See above re: dict.__getitem__.
+         break
+     else:
+         raise ImportError(
+-            "Failed to import any of the following Qt binding modules: {}"
+-            .format(", ".join([QT_API for _, QT_API in _candidates]))
++            "Failed to import any of the following Qt binding modules: {}".format(
++                ", ".join([QT_API for _, QT_API in _candidates])
++            )
+         )
+ else:  # We should not get there.
+     raise AssertionError(f"Unexpected QT_API: {QT_API}")
 diff --git a/lib/matplotlib/backends/qt_editor/_formlayout.py b/lib/matplotlib/backends/qt_editor/_formlayout.py
 index fcf73ce..6ddc573 100644
 --- a/lib/matplotlib/backends/qt_editor/_formlayout.py

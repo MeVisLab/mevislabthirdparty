@@ -9,9 +9,9 @@ endif()
 
 target_sources(InventorEvents PRIVATE
   InventorEvents.cpp
-  ../generated_cpp/Inventor_events/Inventor_events0.h
-  ../generated_cpp/Inventor_events/Inventor_events0.cpp
-  ../generated_cpp/Inventor_events/Inventor_events_init.cpp
+  ../generated_cpp/inventor_events/inventor_events0.h
+  ../generated_cpp/inventor_events/inventor_events0.cpp
+  ../generated_cpp/inventor_events/inventor_events_init.cpp
 )
 
 target_link_libraries(InventorEvents

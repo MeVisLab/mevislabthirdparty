@@ -1,8 +1,11 @@
 from conan import ConanFile
 from conan.tools.cmake import cmake_layout, CMakeToolchain, CMake, CMakeDeps
 from conan.tools.files import get, patch, rmdir, copy, collect_libs
+import os
+from pathlib import Path
 
 required_conan_version = ">=2.2.2"
+
 
 class ConanRecipe(ConanFile):
     name = "flann"
@@ -22,22 +25,23 @@ class ConanRecipe(ConanFile):
         self.requires("hdf5/[>=1.14.2]", transitive_headers=True, transitive_libs=True)
 
     def source(self):
-        get(self,
+        get(
+            self,
             sha256="e26829bb0017f317d9cc45ab83ddcb8b16d75ada1ae07157006c1e7d601c8824",
             url=f"https://github.com/flann-lib/flann/archive/refs/tags/{self.version}.tar.gz",
-            strip_root=True
-            )
+            strip_root=True,
+        )
         patch(self, patch_file="patches/001-export_symbols.patch")
         patch(self, patch_file="patches/002-arm_neon_include.patch")
         patch(self, patch_file="patches/003-conan_lz4.patch")
         # remove embedded lz4
-        rmdir(self, self.source_path / "src" / "cpp" / "flann" / "ext")
+        rmdir(self, os.path.join(self.source_folder, "src", "cpp", "flann", "ext"))
 
     def generate(self):
         tc = CMakeToolchain(self)
         tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
         tc.variables["BUILD_SHARED_LIBS"] = False
-        tc.variables['CMAKE_POSITION_INDEPENDENT_CODE'] = True
+        tc.variables["CMAKE_POSITION_INDEPENDENT_CODE"] = True
         tc.variables["USE_OPENMP"] = False
         tc.variables["BUILD_C_BINDINGS"] = True
         tc.variables["BUILD_DOC"] = False
@@ -59,21 +63,28 @@ class ConanRecipe(ConanFile):
         cmake = CMake(self)
         cmake.install()
 
-        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False, excludes="*vc???.pdb")
-        copy(self, "COPYING", src=self.source_path, dst=self.package_path / "licenses")
+        copy(
+            self,
+            "*.pdb",
+            src=self.build_folder,
+            dst=os.path.join(self.package_folder, "bin"),
+            keep_path=False,
+            excludes="*vc???.pdb",
+        )
+        copy(self, "COPYING", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
 
-        rmdir(self, self.package_path / "lib" / "cmake")
-        rmdir(self, self.package_path / "lib" / "pkgconfig")
+        rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
 
         # Remove MS runtime files
         for pattern in ["concrt*.dll", "msvcp*.dll", "vcruntime*.dll"]:
-            for lib in (self.package_path / "bin").glob(pattern):
+            for lib in (Path(self.package_folder) / "bin").glob(pattern):
                 lib.unlink()
 
         # Remove static libraries
         static_libs = ["*flann_cpp_s.*", "*flann_cpp_sd.*", "*flann_s.*", "*flann_sd.*"]
         for pattern in static_libs:
-            for lib in (self.package_path / "lib").glob(pattern):
+            for lib in (Path(self.package_folder) / "lib").glob(pattern):
                 lib.unlink()
 
     def package_info(self):

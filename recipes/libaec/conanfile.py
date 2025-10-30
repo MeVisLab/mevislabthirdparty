@@ -1,22 +1,21 @@
 import textwrap
-from pathlib import Path
+import os
 
 from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
-from conan.tools.files import get, collect_libs, patch, copy, rmdir, save
+from conan.tools.files import get, collect_libs, copy, rmdir, save
 
 required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
     name = "libaec"
-    version = "1.1.3"
+    version = "1.1.4"
     homepage = "https://gitlab.dkrz.de/k202009/libaec"
     description = "Adaptive Entropy Coding library"
     license = "BSD-2-Clause"
     package_type = "shared-library"
     settings = "os", "compiler", "build_type", "arch"
-    exports_sources = "patches/*.patch"
 
     def configure(self):
         self.settings.rm_safe("compiler.libcxx")
@@ -28,11 +27,10 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="1bafbfaef773bf8f5e5451e6c1f23da36c7199186cc0974fb9874bf723fe4270",
+            sha256="b910e47d526ecbfb802ba6cdc6d262420f6ca436e87edfb57a32966f5148f762",
             url=f"https://gitlab.dkrz.de/k202009/libaec/-/archive/v{self.version}/libaec-v{self.version}.tar.gz",
             strip_root=True,
         )
-        patch(self, patch_file="patches/001-install_shared_libs_only.patch")
 
     def generate(self):
         tc = CMakeToolchain(self)
@@ -40,6 +38,7 @@ class ConanRecipe(ConanFile):
 
         tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
         tc.variables["BUILD_TESTING"] = False
+        tc.variables["BUILD_STATIC_LIBS"] = False
         tc.variables["CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS"] = True
         tc.variables["CMAKE_C_VISIBILITY_PRESET"] = "default"
         tc.variables["CMAKE_CXX_VISIBILITY_PRESET"] = "default"
@@ -59,12 +58,20 @@ class ConanRecipe(ConanFile):
         cmake.build()
 
     def package(self):
-        copy(self, pattern="LICENSE.txt", src=self.source_path, dst=self.package_path / "licenses")
-        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False, excludes="*vc???.pdb")
+        copy(self, pattern="LICENSE.txt", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
+        copy(
+            self,
+            "*.pdb",
+            src=self.build_folder,
+            dst=os.path.join(self.package_folder, "bin"),
+            keep_path=False,
+            excludes="*vc???.pdb",
+        )
         cmake = CMake(self)
         cmake.install()
-        rmdir(self, self.package_path / "cmake")
-        rmdir(self, self.package_path / "share")
+        rmdir(self, os.path.join(self.package_folder, "cmake"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "cmake", "libaec"))
+        rmdir(self, os.path.join(self.package_folder, "share"))
         self._cmake_module_file_write()
 
     def package_info(self):
@@ -82,10 +89,10 @@ class ConanRecipe(ConanFile):
 
     @property
     def _cmake_module_file(self):
-        return Path("lib", "cmake", f"{self.name}-variables.cmake")
+        return os.path.join("lib", "cmake", f"{self.name}-variables.cmake")
 
     def _cmake_module_file_write(self):
-        file = self.package_path / self._cmake_module_file
+        file = os.path.join(self.package_folder, self._cmake_module_file)
         content = textwrap.dedent(
             f"""\
             set(libaec_FOUND TRUE)

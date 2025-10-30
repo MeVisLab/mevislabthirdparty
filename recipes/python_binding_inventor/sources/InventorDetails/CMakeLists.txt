@@ -9,9 +9,9 @@ endif()
 
 target_sources(InventorDetails PRIVATE
   InventorDetails.cpp
-  ../generated_cpp/Inventor_details/Inventor_details0.h
-  ../generated_cpp/Inventor_details/Inventor_details0.cpp
-  ../generated_cpp/Inventor_details/Inventor_details_init.cpp
+  ../generated_cpp/inventor_details/inventor_details0.h
+  ../generated_cpp/inventor_details/inventor_details0.cpp
+  ../generated_cpp/inventor_details/inventor_details_init.cpp
 )
 
 target_link_libraries(InventorDetails

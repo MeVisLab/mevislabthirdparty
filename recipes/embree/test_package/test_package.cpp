@@ -1,8 +1,7 @@
-#include <embree2/rtcore_builder.h>
+#include <embree4/rtcore.h>
+#include <embree4/rtcore_ray.h>
 
-#include <iostream>
-
-int main() 
+int main()
 {
     return 0;
 }

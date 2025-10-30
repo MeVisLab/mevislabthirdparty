@@ -2,6 +2,7 @@ from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps, cmake_layout
 from conan.tools.files import get, copy, patch, rmdir, collect_libs, replace_in_file
 from conan.tools.scm import Version
+import os
 
 required_conan_version = ">=2.2.2"
 
@@ -40,11 +41,14 @@ class ConanRecipe(ConanFile):
         # work-around for https://github.com/conan-io/conan/issues/12180:
         patch(self, patch_file="patches/cmake-dependencies.patch")
         replace_in_file(
-            self, self.source_path / "cmake" / "WindowsSupport.cmake", 'set(CMAKE_DEBUG_POSTFIX "d")', '#set(CMAKE_DEBUG_POSTFIX "d")'
+            self,
+            os.path.join(self.source_folder, "cmake", "WindowsSupport.cmake"),
+            'set(CMAKE_DEBUG_POSTFIX "d")',
+            '#set(CMAKE_DEBUG_POSTFIX "d")',
         )
         replace_in_file(
             self,
-            self.source_path / "cmake" / "Findliblzma.cmake",
+            os.path.join(self.source_folder, "cmake", "Findliblzma.cmake"),
             "find_library(LIBLZMA_LIBRARY_DEBUG NAMES lzmad liblzmad",
             "find_library(LIBLZMA_LIBRARY_DEBUG NAMES lzmad lzma_d liblzmad liblzma_d",
         )
@@ -84,13 +88,20 @@ class ConanRecipe(ConanFile):
     def package(self):
         cmake = CMake(self)
         cmake.install()
-        copy(self, "LICENSE.md", src=self.source_path, dst=self.package_path / "licenses")
-        copy(self, "*.pdb", src=self.build_path / "libtiff", dst=self.package_path / "bin", keep_path=False, excludes="*vc???.pdb")
+        copy(self, "LICENSE.md", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
+        copy(
+            self,
+            "*.pdb",
+            src=os.path.join(self.build_folder, "libtiff"),
+            dst=os.path.join(self.package_folder, "bin"),
+            keep_path=False,
+            excludes="*vc???.pdb",
+        )
         if self.settings.os != "Windows":
-            rmdir(self, self.package_path / "bin")
-        rmdir(self, self.package_path / "share")
-        rmdir(self, self.package_path / "lib" / "cmake")
-        rmdir(self, self.package_path / "lib" / "pkgconfig")
+            rmdir(self, os.path.join(self.package_folder, "bin"))
+        rmdir(self, os.path.join(self.package_folder, "share"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:libtiff:libtiff:*:*:*:*:*:*:*:*")

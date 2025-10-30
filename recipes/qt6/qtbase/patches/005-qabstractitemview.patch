@@ -1,8 +1,8 @@
 diff --git a/src/widgets/itemviews/qabstractitemview.cpp b/src/widgets/itemviews/qabstractitemview.cpp
-index b59b96ae..b6aefc9f 100644
+index d5744b45..6255e7b4 100644
 --- a/src/widgets/itemviews/qabstractitemview.cpp
 +++ b/src/widgets/itemviews/qabstractitemview.cpp
-@@ -2787,7 +2787,10 @@ bool QAbstractItemView::edit(const QModelIndex &index, EditTrigger trigger, QEve
+@@ -2786,7 +2786,10 @@ bool QAbstractItemView::edit(const QModelIndex &index, EditTrigger trigger, QEve
      if (!d->shouldEdit(trigger, d->model->buddy(safeIndex)))
          return false;
  

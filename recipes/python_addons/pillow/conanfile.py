@@ -1,3 +1,4 @@
+import os
 from conan import ConanFile
 from conan.tools.env import Environment
 from conan.tools.files import get, patch, replace_in_file
@@ -7,7 +8,7 @@ required_conan_version = ">=2.0.0"
 
 class ConanRecipe(ConanFile):
     name = "pillow"
-    version = "11.2.1"
+    version = "11.3.0"
     homepage = "https://python-pillow.github.io/"
     description = "Python Imaging Library (Fork)"
     license = "HPND"
@@ -59,7 +60,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="67dd6d40e282fd3b50189bd7f68a6e9b8e59b297d3684cb35ab107e7aec8379e",
+            sha256="fa4aca745b1e1c733589ebf0ef19491b145dd4225c4aa06958963b4e7f0734cf",
             url=f"https://github.com/python-pillow/Pillow/archive/refs/tags/{self.version}.tar.gz",
             strip_root=True,
         )
@@ -84,7 +85,9 @@ class ConanRecipe(ConanFile):
                 env.append("MAX_CONCURRENCY", "1")
             else:
                 # workaround for Python not build in debug mode under Linux
-                replace_in_file(self, self.source_path / "setup.py", 'hasattr(sys, "gettotalrefcount")', "True")
+                replace_in_file(
+                    self, os.path.join(self.source_folder, "setup.py"), 'hasattr(sys, "gettotalrefcount")', "True"
+                )
         with env.vars(self).apply():
             config_settings = [
                 "zlib=enable",

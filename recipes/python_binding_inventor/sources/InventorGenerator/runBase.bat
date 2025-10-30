@@ -1,2 +1,0 @@
-..\release\pythonqt_generator.exe --output-directory=C:\repository\dev\MeVisLab\Standard\Sources\Bindings --include-paths=C:\repository\dev\MeVis\ThirdParty\Sources\Inventor\include global.h typesystem_Inventor_base.xml
- 

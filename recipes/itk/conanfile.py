@@ -2,6 +2,7 @@ from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps, cmake_layout
 from conan.tools.env import VirtualRunEnv
 from conan.tools.files import get, patch, copy, rm, rmdir, collect_libs, replace_in_file
+import os
 
 required_conan_version = ">=2.2.2"
 
@@ -11,8 +12,10 @@ class ConanRecipe(ConanFile):
     name = "itk"
     version = "5.3.0"
     homepage = "https://www.itk.org"
-    description = ("An open-source, cross-platform library that provides developers "
-                   "with an extensive suite of software tools for image analysis")
+    description = (
+        "An open-source, cross-platform library that provides developers "
+        "with an extensive suite of software tools for image analysis"
+    )
     license = "Apache-2.0"
     settings = "os", "compiler", "arch", "build_type"
     package_type = "shared-library"
@@ -34,29 +37,42 @@ class ConanRecipe(ConanFile):
         cmake_layout(self, src_folder="src")
 
     def source(self):
-        get(self,
+        get(
+            self,
             url=f"https://github.com/InsightSoftwareConsortium/ITK/archive/v{self.version}.tar.gz",
             sha256="64e7e8094a5023c8f68ee042459d6319581fadb35e2fe90a4ae230ce36369db1",
-            strip_root=True)
+            strip_root=True,
+        )
         patch(self, patch_file="patches/001-double_conversion.patch")
         patch(self, patch_file="patches/002-ignore_cmake_policy.patch")
         patch(self, patch_file="patches/003-conan_dependencies.patch")
         patch(self, patch_file="patches/004-issue_4358_itkShapedNeighborhoodIterator.patch")
         patch(self, patch_file="patches/005-add_using_in_class_namespace.patch")
+        patch(self, patch_file="patches/006-cpp20_replace_result_of_t.patch")
 
         # see https://github.com/InsightSoftwareConsortium/ITK/pull/4066/,
         # will be obsolete in itk 5.4.0
-        replace_in_file(self, self.source_path / "Modules" / "Filtering" / "MathematicalMorphology" / "src" /
-            "itkMathematicalMorphologyEnums.cxx",
+        replace_in_file(
+            self,
+            os.path.join(
+                self.source_folder,
+                "Modules",
+                "Filtering",
+                "MathematicalMorphology",
+                "src",
+                "itkMathematicalMorphologyEnums.cxx",
+            ),
             '#include "itkMathematicalMorphologyEnums.h"',
-            '#include "itkIntTypes.h"\n#include "itkMathematicalMorphologyEnums.h"'
+            '#include "itkIntTypes.h"\n#include "itkMathematicalMorphologyEnums.h"',
         )
         # stop libminc from forcing an absolute RPATH
-        replace_in_file(self, self.source_path / "Modules" / "ThirdParty" / "MINC" / "src" / "libminc" / "CMakeLists.txt",
-            'SET(CMAKE_INSTALL_RPATH',
-            '#SET(CMAKE_INSTALL_RPATH'
+        replace_in_file(
+            self,
+            os.path.join(self.source_folder, "Modules", "ThirdParty", "MINC", "src", "libminc", "CMakeLists.txt"),
+            "SET(CMAKE_INSTALL_RPATH",
+            "#SET(CMAKE_INSTALL_RPATH",
         )
-        rm(self, "*.cmake", self.source_path / "Modules" / "Compatibility" / "Deprecated")
+        rm(self, "*.cmake", os.path.join(self.source_folder, "Modules", "Compatibility", "Deprecated"))
 
     def generate(self):
         # need the run environment to set LD_LIBRARYPPATH while building the test kernel
@@ -101,26 +117,27 @@ class ConanRecipe(ConanFile):
 
     def build(self):
         cmake = CMake(self)
-        cmake.configure()
+        cmake4_compat = {"CMAKE_POLICY_VERSION_MINIMUM": "3.5"}  # FIXME required for compatibility with CMake 4.0+
+        cmake.configure(variables=cmake4_compat)
         cmake.build()
 
     def package(self):
         cmake = CMake(self)
         cmake.install()
 
-        bin_path = self.package_path / "bin"
+        bin_path = os.path.join(self.package_folder, "bin")
         if self.settings.os == "Windows":
-            copy(self, "*.pdb", src=self.build_path, dst=bin_path, keep_path=False, excludes="*/vc???.pdb")
-            copy(self, "*.dll", src=self.build_path, dst=bin_path, keep_path=False, excludes="*/vc???.dll")
-            copy(self, "*.exe", src=self.build_path, dst=bin_path, keep_path=False)
+            copy(self, "*.pdb", src=self.build_folder, dst=bin_path, keep_path=False, excludes="*/vc???.pdb")
+            copy(self, "*.dll", src=self.build_folder, dst=bin_path, keep_path=False, excludes="*/vc???.dll")
+            copy(self, "*.exe", src=self.build_folder, dst=bin_path, keep_path=False)
         else:
             rmdir(self, bin_path)
-        copy(self, "LICENSE", src=self.source_path, dst=self.package_path / "licenses")
-        rmdir(self, self.package_path / 'lib' / 'pkgconfig')
-        (self.package_path / 'lib' / 'gdcmopenjpeg-2.3' / 'OpenJPEGConfig.cmake').unlink()
+        copy(self, "LICENSE", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
+        rm(self, "OpenJPEGConfig.cmake", os.path.join(self.package_folder, "lib", "gdcmopenjpeg-2.3"))
 
-        rmdir(self, self.package_path / "share")
-        rmdir(self, self.package_path / "lib" / "cmake")
+        rmdir(self, os.path.join(self.package_folder, "share"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))
 
     def package_info(self):
         # self.cpp_info.set_property("cpe", "")  # Not in CVE?
@@ -128,7 +145,6 @@ class ConanRecipe(ConanFile):
         self.cpp_info.set_property("cmake_file_name", "ITK")
         self.cpp_info.set_property("cmake_target_name", "ITK::ITK")
         self.cpp_info.set_property("display_name", "Insight Toolkit(ITK)")
-        major, minor, _ = self.version.split('.')
+        major, minor, _ = self.version.split(".")
         self.cpp_info.includedirs = ["include", f"include/ITK-{major}.{minor}"]
         self.cpp_info.libs = collect_libs(self)
-

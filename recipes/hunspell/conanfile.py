@@ -1,17 +1,18 @@
 from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
 from conan.tools.files import collect_libs, get, copy
+import os
 
 required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
-    name="hunspell"
-    version="1.7.2"
-    homepage="http://hunspell.github.io"
-    description="Hunspell spell checker - an improved replacement for myspell"
-    license="MPL-1.1"
-    package_type="shared-library"
+    name = "hunspell"
+    version = "1.7.2"
+    homepage = "http://hunspell.github.io"
+    description = "Hunspell spell checker - an improved replacement for myspell"
+    license = "MPL-1.1"
+    package_type = "shared-library"
     settings = "os", "arch", "compiler", "build_type"
     exports_sources = "CMakeLists.txt"
 
@@ -19,8 +20,8 @@ class ConanRecipe(ConanFile):
         cmake_layout(self, src_folder="src")
 
     def source(self):
-        sha256="11ddfa39afe28c28539fe65fc4f1592d410c1e9b6dd7d8a91ca25d85e9ec65b8"
-        url=f"https://github.com/hunspell/hunspell/releases/download/v{self.version}/hunspell-{self.version}.tar.gz"
+        sha256 = "11ddfa39afe28c28539fe65fc4f1592d410c1e9b6dd7d8a91ca25d85e9ec65b8"
+        url = f"https://github.com/hunspell/hunspell/releases/download/v{self.version}/hunspell-{self.version}.tar.gz"
         get(self, sha256=sha256, url=url, strip_root=True)
 
     def generate(self):
@@ -32,11 +33,18 @@ class ConanRecipe(ConanFile):
 
     def build(self):
         cmake = CMake(self)
-        cmake.configure(build_script_folder=self.source_path.parent)
+        cmake.configure(build_script_folder=os.path.dirname(self.source_folder))
         cmake.build()
 
     def package(self):
-        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False, excludes="*vc???.pdb")
+        copy(
+            self,
+            "*.pdb",
+            src=self.build_folder,
+            dst=os.path.join(self.package_folder, "bin"),
+            keep_path=False,
+            excludes="*vc???.pdb",
+        )
         cmake = CMake(self)
         cmake.install()
 

@@ -1,0 +1,17 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index e9663f0..96e3ec9 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -2,6 +2,12 @@ cmake_minimum_required(VERSION 3.12...3.21 FATAL_ERROR)
+ 
+ project(VTK)
+ 
++if(MSVC)
++  # https://gitlab.kitware.com/vtk/vtk/-/issues/19533
++  set(CMAKE_CXX_STANDARD 17)
++  set(CMAKE_CXX_STANDARD_REQUIRED ON)
++endif()
++
+ if (POLICY CMP0127)
+   cmake_policy(SET CMP0127 NEW) # cmake_dependent_option changes
+ endif ()

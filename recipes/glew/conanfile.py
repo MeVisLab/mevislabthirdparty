@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
@@ -25,41 +26,58 @@ class ConanRecipe(ConanFile):
         cmake_layout(self, src_folder="src")
 
     def source(self):
-        get(self,
+        get(
+            self,
             url=f"https://github.com/nigels-com/glew/releases/download/glew-{self.version}/glew-{self.version}.tgz",
             sha256="d4fc82893cfb00109578d0a1a2337fb8ca335b3ceccf97b97e5cc7f08e4353e1",
             destination=self.source_folder,
-            strip_root=True)
-        replace_in_file(self, self.source_path / "build" / "cmake" / "CMakeLists.txt", 'set(CMAKE_DEBUG_POSTFIX d)', '')
-        replace_in_file(self, self.source_path / "build" / "cmake" / "CMakeLists.txt", '${OPENGL_LIBRARIES}', 'OpenGL::GL')
+            strip_root=True,
+        )
+        replace_in_file(
+            self, os.path.join(self.source_folder, "build", "cmake", "CMakeLists.txt"), "set(CMAKE_DEBUG_POSTFIX d)", ""
+        )
+        replace_in_file(
+            self,
+            os.path.join(self.source_folder, "build", "cmake", "CMakeLists.txt"),
+            "${OPENGL_LIBRARIES}",
+            "OpenGL::GL",
+        )
 
         # Fix cmake_minimum_required() before project():
         patch(self, patch_file="patches/001-fix-cmake_minimum_required.patch")
 
     def generate(self):
         tc = CMakeToolchain(self)
-        tc.variables["BUILD_UTILS"] = (self.settings.build_type != "Debug")
+        tc.variables["BUILD_UTILS"] = self.settings.build_type != "Debug"
         tc.variables["BUILD_SHARED_LIBS"] = True
         tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
         tc.variables["CMAKE_POSITION_INDEPENDENT_CODE"] = self.settings.os != "Windows"
         tc.variables["OpenGL_GL_PREFERENCE"] = "LEGACY"
-        if self.settings.os == 'Windows':
+        if self.settings.os == "Windows":
             tc.variables["GLEW_STATIC"] = True
         tc.generate()
 
     def build(self):
         cmake = CMake(self)
-        cmake.configure(build_script_folder=os.path.join(self.source_folder, "build", "cmake"))
+        cmake4_compat = {"CMAKE_POLICY_VERSION_MINIMUM": "3.5"}  # FIXME required for compatibility with CMake 4.0+
+        cmake.configure(build_script_folder=os.path.join(self.source_folder, "build", "cmake"), variables=cmake4_compat)
         cmake.build()
 
     def package(self):
-        copy(self, "LICENSE.txt", src=self.source_path, dst=self.package_path / "licenses")
-        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False, excludes="*vc???.pdb")
+        copy(self, "LICENSE.txt", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
+        copy(
+            self,
+            "*.pdb",
+            src=self.build_folder,
+            dst=os.path.join(self.package_folder, "bin"),
+            keep_path=False,
+            excludes="*vc???.pdb",
+        )
         cmake = CMake(self)
         cmake.install()
-        rmdir(self, self.package_path / "lib" / "pkgconfig")
-        rmdir(self, self.package_path / "lib" / "cmake")
-        for pdb in (self.package_path / "lib").glob("*.pdb"):
+        rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))
+        for pdb in Path(os.path.join(self.package_folder, "lib")).glob("*.pdb"):
             pdb.unlink()
 
     def package_info(self):

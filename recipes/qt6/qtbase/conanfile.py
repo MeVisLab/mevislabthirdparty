@@ -24,6 +24,7 @@ class ConanRecipe(ConanFile):
         "testlib": True,
         "widgets": True,
         "xml": True,
+        "gtk3": False,
         "sql_db2": False,
         "sql_ibase": False,
         "sql_mysql": False,

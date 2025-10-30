@@ -1,3 +1,4 @@
+import os
 from conan import ConanFile
 from conan.errors import ConanInvalidConfiguration
 from conan.tools.files import get, rmdir, copy, replace_in_file
@@ -10,7 +11,7 @@ required_conan_version = ">=2.0.7"
 class ConanRecipe(ConanFile):
     name = "mesa"
     display_name = "Mesa"
-    version = "24.2.7"
+    version = "25.2.2"
     homepage = "https://mesa3d.org"
     description = "an open source software implementation of OpenGL, Vulkan, and other graphics API specifications"
     license = "MIT"
@@ -67,7 +68,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="a0ce37228679647268a83b3652d859dcf23d6f6430d751489d4464f6de6459fd",
+            sha256="43d7abcd4aa8049d8fd75538344a374104765e81e17b4a6314cee2c0160e4412",
             url=f"https://mesa.freedesktop.org/archive/mesa-{self.version}.tar.xz",
             strip_root=True,
         )
@@ -76,7 +77,7 @@ class ConanRecipe(ConanFile):
         tc = MesonToolchain(self)
         tc.project_options.update(
             {
-                "gallium-drivers": "swrast",
+                "gallium-drivers": "softpipe,llvmpipe",
                 "llvm": "enabled",  # make sure we get the llvmpipe driver, not softpipe
                 "shared-llvm": "disabled",
                 "platforms": "windows" if self.settings.os == "Windows" else "x11",
@@ -113,19 +114,21 @@ class ConanRecipe(ConanFile):
         meson = Meson(self)
         meson.install()
 
-        rmdir(self, self.package_path / "share")
-        rmdir(self, self.package_path / "lib" / "pkgconfig")
+        rmdir(self, os.path.join(self.package_folder, "share"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
 
-        copy(self, "LICENSE", src=self.source_path.parent, dst=self.package_path / "licenses")
+        copy(
+            self, "LICENSE", src=os.path.dirname(self.source_folder), dst=os.path.join(self.package_folder, "licenses")
+        )
 
         # copy ThirdPartyInformation from llvm, because llvm isn't a direct dependency of MeVisLab
         # TODO: no ThirdPartyInformation created yet
-        rootpath = self.dependencies["llvm"].package_path
+        rootpath = self.dependencies["llvm"].package_folder
         copy(
             self,
             "*",
-            src=rootpath / "MeVis" / "ThirdParty" / "ThirdPartyInformation",
-            dst=self.package_path / "MeVis" / "ThirdParty" / "ThirdPartyInformation",
+            src=os.path.join(rootpath, "MeVis", "ThirdParty", "ThirdPartyInformation"),
+            dst=os.path.join(self.package_folder, "MeVis", "ThirdParty", "ThirdPartyInformation"),
         )
 
     def package_info(self):

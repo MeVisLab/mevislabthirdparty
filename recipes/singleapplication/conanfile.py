@@ -2,6 +2,7 @@ from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
 from conan.tools.env import VirtualRunEnv
 from conan.tools.files import collect_libs, copy, get, patch
+import os
 
 required_conan_version = ">=2.2.2"
 
@@ -10,7 +11,7 @@ class ConanRecipe(ConanFile):
     name = "singleapplication"
     # The latest version (3.4.0) has the license slightly changed and no needed new features.
     # In case we want to use a newer version, we also have to handle the new license.
-    version = "3.3.4"
+    version = "3.5.3"
     homepage = "https://github.com/itay-grudev/SingleApplication"
     description = "Replacement of QtSingleApplication for Qt 5 and Qt 6"
     license = "MIT"
@@ -19,10 +20,12 @@ class ConanRecipe(ConanFile):
     exports_sources = "patches/*.patch"
 
     def source(self):
-        get(self,
-            sha256="492ec764ac81e808ec8688e8a374a02eaa3fc4c69528adbc84188d9ab1214d3f",
+        get(
+            self,
+            sha256="ec8a68a24da974397668370a5a9d1fe281bfcbd7390ed1b14642921634f1881f",
             url=f"https://github.com/itay-grudev/SingleApplication/archive/refs/tags/v{self.version}.zip",
-            strip_root=True)
+            strip_root=True,
+        )
         patch(self, patch_file="patches/001-QCoreApplication.patch")
 
     def layout(self):
@@ -50,12 +53,24 @@ class ConanRecipe(ConanFile):
         cmake.build()
 
     def package(self):
-        copy(self, "LICENSE", src=self.source_path, dst=self.package_path / "licenses")
-        copy(self, "*.lib", src=self.build_path, dst=self.package_path / "lib", keep_path=False)
-        copy(self, "*.a", src=self.build_path, dst=self.package_path / "lib", keep_path=False)
-        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False)
-        copy(self, "SingleApplication", src=self.source_path, dst=self.package_path / "include", keep_path=False)
-        copy(self, "singleapplication.h", src=self.source_path, dst=self.package_path / "include", keep_path=False)
+        copy(self, "LICENSE", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
+        copy(self, "*.lib", src=self.build_folder, dst=os.path.join(self.package_folder, "lib"), keep_path=False)
+        copy(self, "*.a", src=self.build_folder, dst=os.path.join(self.package_folder, "lib"), keep_path=False)
+        copy(self, "*.pdb", src=self.build_folder, dst=os.path.join(self.package_folder, "bin"), keep_path=False)
+        copy(
+            self,
+            "SingleApplication",
+            src=self.source_folder,
+            dst=os.path.join(self.package_folder, "include"),
+            keep_path=False,
+        )
+        copy(
+            self,
+            "singleapplication.h",
+            src=self.source_folder,
+            dst=os.path.join(self.package_folder, "include"),
+            keep_path=False,
+        )
 
     def package_info(self):
         # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?

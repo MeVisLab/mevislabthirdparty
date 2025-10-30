@@ -3,9 +3,6 @@ project(test_package LANGUAGES CXX)
 
 enable_testing()
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 find_package(Qt6 COMPONENTS Core Network REQUIRED)
 qt_standard_project_setup()
 

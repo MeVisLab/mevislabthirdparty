@@ -1,6 +1,7 @@
 from conan import ConanFile
 from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout
 from conan.tools.files import copy, rmdir, collect_libs, get, patch
+import os
 
 required_conan_version = ">=2.2.2"
 
@@ -43,10 +44,16 @@ class ConanRecipe(ConanFile):
         cmake = CMake(self)
         cmake.install()
 
-        copy(self, "LICENSE", src=self.source_path, dst=self.package_path / "licenses")
-        copy(self, "*/muparserd.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False)
-        rmdir(self, self.package_path / "lib" / "cmake")
-        rmdir(self, self.package_path / "lib" / "pkgconfig")
+        copy(self, "LICENSE", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
+        copy(
+            self,
+            "*/muparserd.pdb",
+            src=self.build_folder,
+            dst=os.path.join(self.package_folder, "bin"),
+            keep_path=False,
+        )
+        rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
 
     def package_info(self):
         # self.cpp_info.set_property("cpe", "")  # No CPE yet?

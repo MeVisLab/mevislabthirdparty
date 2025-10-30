@@ -2,14 +2,15 @@ import glob
 import os
 import shutil
 import textwrap
+from pathlib import Path
 
 from conan import ConanFile
-from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
-from conan.tools.env import VirtualRunEnv
+from conan.tools.cmake import cmake_layout
+from conan.tools.env import VirtualRunEnv, Environment
 from conan.tools.files import get, copy, rmdir, chdir, save, replace_in_file, patch, collect_libs
 from conan.tools.gnu import Autotools, AutotoolsToolchain, PkgConfigDeps
 from conan.tools.layout import basic_layout
-from conan.tools.microsoft import is_msvc
+from conan.tools.microsoft import is_msvc, MSBuildToolchain, MSBuild, MSBuildDeps
 from conan.tools.scm import Version
 
 required_conan_version = ">=2.2.2"
@@ -17,13 +18,13 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "python"
-    version = "3.11.12"
+    version = "3.13.7"
     homepage = "https://www.python.org"
     description = "An interpreted, interactive, object-oriented programming language"
     license = "Python-2.0"
     package_type = "shared-library"
     settings = "os", "arch", "compiler", "build_type"
-    exports_sources = ["CMakeLists.txt", "cmake/*", "patches/*.patch"]
+    exports_sources = ["patches/*.patch"]
 
     mlab_hooks = {
         "debug_suffix.skip": True,
@@ -57,7 +58,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="379c9929a989a9d65a1f5d854e011f4872b142259f4fc0a8c4062d2815ed7fba",
+            sha256="6c9d80839cfa20024f34d9a6dd31ae2a9cd97ff5e980e969209746037a5153b2",
             url=f"https://www.python.org/ftp/python/{self.version}/Python-{self.version}.tgz",
             strip_root=True,
         )
@@ -80,15 +81,31 @@ class ConanRecipe(ConanFile):
             patch_file="patches/006-hide_own_importlib_frames.patch",
             patch_description="suppress frames from our own injected importlib code in ImportError stacktraces",
         )
+        patch(self, patch_file="patches/007-remove_tests_from_sln.patch")
+        patch(self, patch_file="patches/008-remove_libraries_from_sln.patch")
+        patch(self, patch_file="patches/009-remove_uwp_python.patch")
+        patch(
+            self,
+            patch_file="patches/010-fix_project_files.patch",
+            patch_description="Adapt vcxproj to use our libraries",
+        )
+        patch(
+            self,
+            patch_file="patches/011-fix_xxlimited_pythoncore_dependency.patch",
+            patch_description="Ensure pyconfig.h exists for xxlimited when building in parallel",
+        )
+        patch(
+            self,
+            patch_file="patches/012-fix_fatal_error_crash.patch",
+            patch_description="Fix a crash in fatal error handling on Windows",
+        )
 
     def generate(self):
         if is_msvc(self):
-            tc = CMakeToolchain(self)
-            tc.variables["PYTHON_VERSION"] = self.version
-            tc.variables["BUILD_SHARED_LIBS"] = True
-            tc.generate()
-            cd = CMakeDeps(self)
-            cd.generate()
+            msbuild = MSBuildToolchain(self)
+            msbuild.generate()
+            deps = MSBuildDeps(self)
+            deps.generate()
         else:
             env = VirtualRunEnv(self)
             env.generate(scope="build")
@@ -110,81 +127,124 @@ class ConanRecipe(ConanFile):
             pc.generate()
 
     def build(self):
-        configureFile = os.path.join(self.source_folder, "configure")
-        if self.settings.build_type == "Debug":
-            # Let configure use the debug variant of the libraries
-            replace_in_file(self, configureFile, "-lz", "-lz_d")
-            replace_in_file(self, configureFile, "-lbz2", "-lbz2_d")
-            replace_in_file(self, configureFile, "-llzma", "-llzma_d")
-            # replace_in_file(self, configureFile, "-lffi", "-lffid")  # not found
-            replace_in_file(self, configureFile, "-lsqlite3", "-lsqlite3_d -lm")  # avoid "undefined reference to `log'" with -lm
-            replace_in_file(
-                self,
-                os.path.join(self.source_folder, "setup.py"),
-                "for lib_name in ('ffi', 'ffi_pic'):",
-                "for lib_name in ('ffi_d', 'ffi_pic'):",
-            )
-        else:
-            replace_in_file(self, configureFile, "-lsqlite3", "-lsqlite3 -lm")  # avoid "undefined reference to `log'" with -lm
         if is_msvc(self):
-            cmake = CMake(self)
-            cmake.configure(build_script_folder=os.path.join(self.source_folder, os.pardir))
-            cmake.build()
+            env = Environment()
+            env.define("mpdecimalDir", os.path.join(self.source_folder, "Modules", "_decimal"))
+            # we define some of the usually used variable names for convenience; not all are really needed
+            for lib, name in [
+                ("sqlite3", "sqlite3"),
+                ("bzip2", "bz2"),
+                ("zlib", "zlib"),
+                ("xz-utils", "lzma"),
+                ("libffi", "libffi"),
+                ("openssl", "openssl"),
+            ]:
+                lib_info = self.dependencies[lib].cpp_info
+                env.define(f"{name}Dir", lib_info.includedirs[0])
+                env.define(f"{name}IncludeDir", lib_info.includedirs[0])
+                env.define(f"{name}Lib", ";".join([f"{lib}.lib" for lib in lib_info.libs]))
+                env.define(f"{name}LibDir", lib_info.libdirs[0])
+                env.define(f"{name}OutDir", lib_info.libdirs[0])
+                env.define(f"{name}BinDir", lib_info.bindirs[0])
+
+            env.define("opensslLib", "libcrypto.lib;libssl.lib")
+            env.define("opensslOutDir", self.dependencies["openssl"].cpp_info.bindirs[0])
+
+            with env.vars(self).apply():
+                msbuild = MSBuild(self)
+                msbuild.build_type = "Debug" if self.settings.build_type == "Debug" else "Release"
+                msbuild.build(os.path.join(os.path.join(self.source_folder, "PCBuild", "pcbuild.sln")))
         else:
+            configureFile = os.path.join(self.source_folder, "configure")
+            if self.settings.build_type == "Debug":
+                # Let configure use the debug variant of the libraries
+                replace_in_file(self, configureFile, "-lz", "-lz_d")
+                replace_in_file(self, configureFile, "-lbz2", "-lbz2_d")
+                replace_in_file(self, configureFile, "-llzma", "-llzma_d")
+                replace_in_file(
+                    self, configureFile, "-lsqlite3", "-lsqlite3_d -lm"
+                )  # avoid "undefined reference to 'log'" with -lm
+            else:
+                replace_in_file(
+                    self, configureFile, "-lsqlite3", "-lsqlite3 -lm"
+                )  # avoid "undefined reference to 'log'" with -lm
             autotools = Autotools(self)
             autotools.configure()
             autotools.make()
 
     def package(self):
         copy(self, "LICENSE", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
-        copy(self, "*.pdb", src=self.build_folder, dst=os.path.join(self.package_folder, "bin"), keep_path=False, excludes="*vc???.pdb")
+        copy(
+            self,
+            "*.pdb",
+            src=self.build_folder,
+            dst=os.path.join(self.package_folder, "bin"),
+            keep_path=False,
+            excludes="*vc???.pdb",
+        )
         self._cmake_module_file_write()
         if is_msvc(self):
-            cmake = CMake(self)
-            cmake.install()
-
+            build_folder = os.path.join(self.source_folder, "PCBuild", "amd64")
+            copy(
+                self,
+                "*",
+                src=os.path.join(self.source_folder, "Include"),
+                dst=os.path.join(self.package_folder, "Include"),
+            )
+            copy(self, "pyconfig.h", src=build_folder, dst=os.path.join(self.package_folder, "Include"))
+            copy(self, "*", src=os.path.join(self.source_folder, "Lib"), dst=os.path.join(self.package_folder, "lib"))
+            copy(self, "LICENSE", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
+            copy(self, "*.pdb", src=build_folder, dst=os.path.join(self.package_folder, "bin"))
+            copy(self, "*.pyd", src=build_folder, dst=os.path.join(self.package_folder, "DLLs"))
+            copy(self, "python*.lib", src=build_folder, dst=os.path.join(self.package_folder, "libs"))
+            copy(self, "python*.exe", src=build_folder, dst=self.package_folder)
+            copy(self, "python*.dll", src=build_folder, dst=self.package_folder)
+            copy(
+                self,
+                "venv*.exe",
+                src=build_folder,
+                dst=os.path.join(self.package_folder, "lib", "venv", "scripts", "nt"),
+            )
             if self.settings.build_type == "Debug":
-                mevis_python = os.path.join(self.package_folder, "MeVisPython_d.exe")
-                for name in ["python3_d", "python3", "python"]:
-                    shutil.copy(src=mevis_python, dst=os.path.join(self.package_folder, f"{name}.exe"))
+                python_exe = os.path.join(self.package_folder, "python_d.exe")
+                for name in ["MeVisPython_d", "python3", "python"]:
+                    shutil.copy(src=python_exe, dst=os.path.join(self.package_folder, f"{name}.exe"))
 
-                mevis_python_w = os.path.join(self.package_folder, "MeVisPythonW_d.exe")
-                for name in ["python3w_d", "python3w", "pythonw"]:
-                    shutil.copy(src=mevis_python_w, dst=os.path.join(self.package_folder, f"{name}.exe"))
+                python_exe = os.path.join(self.package_folder, "pythonw_d.exe")
+                for name in ["MeVisPythonW_d", "python3w", "pythonw"]:
+                    shutil.copy(src=python_exe, dst=os.path.join(self.package_folder, f"{name}.exe"))
                 v = Version(self.version)
                 shutil.copy(
                     src=os.path.join(self.package_folder, "libs", f"python{v.major}{v.minor}_d.lib"),
                     dst=os.path.join(self.package_folder, "libs", f"python{v.major}{v.minor}.lib"),
                 )
             else:
-                mevis_python = os.path.join(self.package_folder, "MeVisPython.exe")
-                for name in ["python3", "python"]:
-                    shutil.copy(src=mevis_python, dst=os.path.join(self.package_folder, f"{name}.exe"))
+                python_exe = os.path.join(self.package_folder, "python.exe")
+                for name in ["python3", "MeVisPython"]:
+                    shutil.copy(src=python_exe, dst=os.path.join(self.package_folder, f"{name}.exe"))
 
-                mevis_python_w = os.path.join(self.package_folder, "MeVisPythonW.exe")
-                for name in ["python3w", "pythonw"]:
-                    shutil.copy(src=mevis_python_w, dst=os.path.join(self.package_folder, f"{name}.exe"))
-
+                python_exe = os.path.join(self.package_folder, "pythonw.exe")
+                for name in ["python3w", "MeVisPythonW"]:
+                    shutil.copy(src=python_exe, dst=os.path.join(self.package_folder, f"{name}.exe"))
             # remove test directory
             rmdir(self, os.path.join(self.package_folder, "Lib", "test"))
-
         else:
             autotools = Autotools(self)
             autotools.make(target="install")  # instead of .install() to avoid setting DESTDIR
-            rmdir(self, self.package_path / "share")
-            rmdir(self, self.package_path / "lib" / "pkgconfig")
+            rmdir(self, os.path.join(self.package_folder, "share"))
+            rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
 
             mm_version = ".".join(self.version.split(".")[0:2])
 
             # remove test directory
-            rmdir(self, self.package_path / "lib" / f"python{mm_version}" / "test")
+            rmdir(self, os.path.join(self.package_folder, "lib", f"python{mm_version}", "test"))
 
             orig_python = f"./python{mm_version}"
             # FIXME python3 -> python3_d
-            mevis_python = os.path.join(
+            python_exe = os.path.join(
                 self.package_folder, "bin", "MeVisPython_d" if self.settings.build_type == "Debug" else "MeVisPython"
             )
-            os.symlink(orig_python, mevis_python)
+            os.symlink(orig_python, python_exe)
 
             if self.settings.os == "Macos":
                 self.run(
@@ -196,22 +256,29 @@ class ConanRecipe(ConanFile):
                     + os.path.join(self.package_folder, "bin", f"python{mm_version}")
                 )
             elif self.settings.os == "Linux":
-                self.run("patchelf --set-rpath '$ORIGIN/../lib' " + os.path.join(self.package_folder, "bin", f"python{mm_version}"))
+                self.run(
+                    "patchelf --set-rpath '$ORIGIN/../lib' "
+                    + os.path.join(self.package_folder, "bin", f"python{mm_version}")
+                )
                 dyn_modules = glob.glob(self.package_folder + "/**/lib-dynload/*.so", recursive=True)
                 for so_file in dyn_modules:
                     # make the dynamically loaded modules work in an installed MeVisLab
                     self.run("patchelf --add-rpath '$ORIGIN/../../../../../lib' " + so_file)
 
         with chdir(self, self.package_folder):
-            self.run(f"{mevis_python} -m ensurepip --verbose --altinstall", env="conanbuild")
+            self.run(f"{python_exe} -m ensurepip --verbose --altinstall", env="conanbuild")
 
-        for pycache_path in (self.package_path / "lib").rglob("__pycache__"):
+        for pycache_path in Path(self.package_folder, "lib").rglob("__pycache__"):
             rmdir(self, pycache_path)
 
         # fix bug in setuptools, see https://github.com/pypa/setuptools/issues/3591
-        ccompiler = glob.glob(self.package_folder + "/**/site-packages/setuptools/_distutils/ccompiler.py", recursive=True)
+        ccompiler = glob.glob(
+            self.package_folder + "/**/site-packages/setuptools/_distutils/ccompiler.py", recursive=True
+        )
         if ccompiler:
-            replace_in_file(self, ccompiler[0], "include_dirs = self.include_dirs", "include_dirs = list(self.include_dirs)")
+            replace_in_file(
+                self, ccompiler[0], "include_dirs = self.include_dirs", "include_dirs = list(self.include_dirs)"
+            )
         else:
             print("Did not find 'ccompiler.py'")
 
@@ -291,7 +358,7 @@ class ConanRecipe(ConanFile):
 
     def _cmake_module_file_write(self):
         v = Version(self.version)
-        file = self.package_path / self._cmake_module_file
+        file = os.path.join(self.package_folder, self._cmake_module_file)
         content = textwrap.dedent(
             f"""\
             set(Python3_VERSION_VERSION {self.version})

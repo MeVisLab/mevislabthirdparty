@@ -63,15 +63,24 @@ class ConanRecipe(ConanFile):
             cmake.build()
         else:
             if self.settings.build_type == "Debug":
-                replace_in_file(self, self.source_path / "lib" / "Makefile.in", "libiconv.la", "libiconvd.la")
-                replace_in_file(self, self.source_path / "src" / "Makefile.in", "libiconv.la", "libiconvd.la")
-                replace_in_file(self, self.source_path / "libcharset" / "lib" / "Makefile.in", "libcharset.la", "libcharsetd.la")
+                replace_in_file(
+                    self, os.path.join(self.source_folder, "lib", "Makefile.in"), "libiconv.la", "libiconvd.la"
+                )
+                replace_in_file(
+                    self, os.path.join(self.source_folder, "src", "Makefile.in"), "libiconv.la", "libiconvd.la"
+                )
+                replace_in_file(
+                    self,
+                    os.path.join(self.source_folder, "libcharset", "lib", "Makefile.in"),
+                    "libcharset.la",
+                    "libcharsetd.la",
+                )
             autotools = Autotools(self)
             autotools.configure()
             autotools.make()
 
     def package(self):
-        copy(self, "COPYING.LIB", src=self.source_path, dst=self.package_path / "licenses")
+        copy(self, "COPYING.LIB", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
         if is_msvc(self):
             cmake = CMake(self)
             cmake.install()
@@ -79,8 +88,8 @@ class ConanRecipe(ConanFile):
             autotools = Autotools(self)
             autotools.install()
         self._cmake_module_file_write()
-        rmdir(self, self.package_path / "share")
-        rm(self, pattern="*.la", folder=self.package_path / "lib")
+        rmdir(self, os.path.join(self.package_folder, "share"))
+        rm(self, pattern="*.la", folder=os.path.join(self.package_folder, "lib"))
 
     def package_info(self):
         # self.cpp_info.set_property("cpe", "")  # No CPE yet?
@@ -101,7 +110,7 @@ class ConanRecipe(ConanFile):
         return os.path.join("lib", "cmake", f"{self.name}-variables.cmake")
 
     def _cmake_module_file_write(self):
-        file = self.package_path / self._cmake_module_file
+        file = os.path.join(self.package_folder, self._cmake_module_file)
         content = textwrap.dedent(
             """\
             set(Iconv_IS_BUILT_IN FALSE)

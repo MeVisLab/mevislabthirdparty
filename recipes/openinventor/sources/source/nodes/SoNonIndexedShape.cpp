@@ -55,6 +55,8 @@
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/nodes/SoNonIndexedShape.h>
 
+#include <algorithm>
+
 SO_NODE_ABSTRACT_SOURCE(SoNonIndexedShape);
 
 ////////////////////////////////////////////////////////////////////////
@@ -106,7 +108,6 @@ SoNonIndexedShape::computeCoordBBox(SoAction *action, int numVertices,
 //
 ////////////////////////////////////////////////////////////////////////
 {
-    int32_t                     i, lastIndex;
     const SoCoordinateElement   *ce = NULL;
     const SbVec3f               *vpCoords = NULL;
 
@@ -122,15 +123,21 @@ SoNonIndexedShape::computeCoordBBox(SoAction *action, int numVertices,
     box.makeEmpty();
 
     // Loop through coordinates, keeping max bounding box and sum of coords
-    i = startIndex.getValue();
-    if (numVertices < 0) {
-        lastIndex = (ce ? ce->getNum() - 1 : vp->vertex.getNum() - 1);
-        numVertices = (int) (lastIndex - i + 1);
+    int32_t i = std::max(startIndex.getValue(), 0);
+    int32_t maxNum = ce ? ce->getNum() : vp->vertex.getNum();
+    int32_t endIndex;
+    if (numVertices < 0)
+    {
+        endIndex = maxNum;
     }
     else
-        lastIndex = i + numVertices - 1;
+    {
+        endIndex = std::min(maxNum, i + numVertices);
+    }
+    numVertices = static_cast<int>(std::max(1, endIndex - i)); // we are dividing by this, so it must not become <= 0
 
-    while (i <= lastIndex) {
+    while (i < endIndex)
+    {
 
         const SbVec3f &v = (ce ? ce->get3((int) i) : vpCoords[i]);
 

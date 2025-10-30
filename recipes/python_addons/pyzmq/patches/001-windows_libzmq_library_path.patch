@@ -1,11 +1,11 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index f810d5a..3f3aaa8 100644
+index c5c6537..c79dbe6 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -12,7 +12,11 @@ find_package(
+@@ -25,7 +25,11 @@ find_package(
  # SKBUILD_SOABI seems to be
  if (DEFINED SKBUILD_SOABI AND NOT "${SKBUILD_SOABI}" STREQUAL "${Python_SOABI}")
-   message(WARNING "SKBUILD_SOABI=${SKBUILD_SOABI} != Python_SOABI=${Python_SOABI}; likely cross-compiling, using SOABI=${SKBUILD_SOABI} from scikit-build")
+   message(WARNING "SKBUILD_SOABI=${SKBUILD_SOABI} != Python_SOABI=${Python_SOABI}; likely cross-compiling or Limited API, using SOABI=${SKBUILD_SOABI} from scikit-build")
 -  set(Python_SOABI "${SKBUILD_SOABI}")
 +  # the setting is not correct in debug mode, so we use Python_SOABI
 +  # and add the debug suffix to the prefix later
@@ -15,7 +15,7 @@ index f810d5a..3f3aaa8 100644
  endif()
  
  # legacy pyzmq env options, no PYZMQ_ prefix
-@@ -166,7 +170,8 @@ elseif (NOT ZMQ_PREFIX STREQUAL "bundled")
+@@ -179,7 +183,8 @@ elseif (NOT ZMQ_PREFIX STREQUAL "bundled")
    )
    find_library(
      LIBZMQ_LIBRARY
@@ -25,7 +25,7 @@ index f810d5a..3f3aaa8 100644
      PATHS "${ZMQ_PREFIX}/lib"
      NO_DEFAULT_PATH
    )
-@@ -367,7 +372,11 @@ if (NOT TARGET "${libzmq_target}" AND LIBZMQ_LIBRARY AND LIBZMQ_INCLUDE_DIR)
+@@ -389,7 +394,11 @@ if (NOT TARGET "${libzmq_target}" AND LIBZMQ_LIBRARY AND LIBZMQ_INCLUDE_DIR)
    # construct target from find_library results
    # what if it was static?
    add_library(libzmq SHARED IMPORTED)
@@ -38,12 +38,13 @@ index f810d5a..3f3aaa8 100644
    set_property(TARGET libzmq PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${LIBZMQ_INCLUDE_DIR})
  endif()
  
-@@ -431,6 +440,10 @@ endif()
- 
- file(MAKE_DIRECTORY ${ZMQ_BACKEND_DEST})
+@@ -459,6 +468,11 @@ if(NOT "${SKBUILD_SABI_COMPONENT}" STREQUAL "")
+   message(STATUS "Building with stable ABI ${Python_SOABI} for ${SKBUILD_SABI_VERSION}")
+ endif()
  
 +if (CMAKE_BUILD_TYPE STREQUAL "Debug" AND MSVC)
 +  set(ZMQ_EXT_NAME "${ZMQ_EXT_NAME}_d")
++  add_compile_definitions(_DEBUG)
 +endif()
 +
  python_add_library(

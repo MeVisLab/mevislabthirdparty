@@ -38,8 +38,8 @@ class ConanRecipe(ConanFile):
         )
 
     def package(self):
-        copy(self, "*.js", src=self.source_folder, dst=os.path.join(self.package_path, "web", self.name))
-        copy(self, "LICENSE", src=self.source_folder, dst=os.path.join(self.package_path, "licenses"))
+        copy(self, "*.js", src=self.source_folder, dst=os.path.join(self.package_folder, "web", self.name))
+        copy(self, "LICENSE", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:requirejs:requirejs:*:*:*:*:*:*:*:*")

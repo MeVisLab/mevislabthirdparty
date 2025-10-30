@@ -2,6 +2,7 @@ from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
 from conan.tools.files import get, patch
 from conan.tools.files import copy
+import os
 
 required_conan_version = ">=2.2.2"
 
@@ -24,11 +25,13 @@ class ConanRecipe(ConanFile):
         cmake_layout(self, src_folder="src")
 
     def source(self):
-        get(self,
+        get(
+            self,
             url=f"http://www.netlib.org/clapack/clapack-{self.version}-CMAKE.tgz",
             sha256="0b3f782bc24845d85f36bafbff0f2f1384dc72df730fda4e7924ec1a70baca5a",
             destination=self.source_folder,
-            strip_root=True)
+            strip_root=True,
+        )
         patch(self, patch_file="patches/001-add_missing_stdio_include.patch")
         patch(self, patch_file="patches/002-disable_testing.patch")
         patch(self, patch_file="patches/003-no_math_defines.patch")
@@ -38,36 +41,66 @@ class ConanRecipe(ConanFile):
         tc.preprocessor_definitions["BUILD_CLAPACK"] = 1
         tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
         tc.variables["BUILD_SHARED_LIBS"] = False
-        tc.variables['CMAKE_POSITION_INDEPENDENT_CODE'] = True
+        tc.variables["CMAKE_POSITION_INDEPENDENT_CODE"] = True
         tc.variables["CMAKE_C_VISIBILITY_PRESET"] = "hidden"
-        tc.cache_variables["CMAKE_POLICY_DEFAULT_CMP0063"] = "NEW"  # don't ignore CMAKE_C_VISIBILITY_PRESET for static libs
+        tc.cache_variables["CMAKE_POLICY_DEFAULT_CMP0063"] = (
+            "NEW"  # don't ignore CMAKE_C_VISIBILITY_PRESET for static libs
+        )
         tc.generate()
 
     def build(self):
         cmake = CMake(self)
-        cmake.configure()
+        cmake4_compat = {"CMAKE_POLICY_VERSION_MINIMUM": "3.5"}  # FIXME required for compatibility with CMake 4.0+
+        cmake.configure(variables=cmake4_compat)
         cmake.build()
 
     def package(self):
-        copy(self, pattern="COPYING", src=self.source_path, dst=self.package_path / "licenses")
-        copy(self, pattern="*.h", src=self.source_path / "INCLUDE", dst=self.package_path / "include")
-        copy(self, pattern="*.lib", src=self.build_path, dst=self.package_path / "lib", keep_path=False)
-        copy(self, pattern="*.dll", src=self.build_path, dst=self.package_path / "bin", keep_path=False)
-        copy(self, pattern="*.pdb", src=self.build_path, dst=self.package_path / "bin",
-             keep_path=False, excludes="*vc???.pdb")
-        copy(self, pattern="*.so*", src=self.build_path, dst=self.package_path / "lib", keep_path=False)
-        copy(self, pattern="*.dylib", src=self.build_path, dst=self.package_path / "lib", keep_path=False)
-        copy(self, pattern="*.a", src=self.build_path, dst=self.package_path / "lib", keep_path=False)
+        copy(self, pattern="COPYING", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
+        copy(
+            self,
+            pattern="*.h",
+            src=os.path.join(self.source_folder, "INCLUDE"),
+            dst=os.path.join(self.package_folder, "include"),
+        )
+        copy(
+            self, pattern="*.lib", src=self.build_folder, dst=os.path.join(self.package_folder, "lib"), keep_path=False
+        )
+        copy(
+            self, pattern="*.dll", src=self.build_folder, dst=os.path.join(self.package_folder, "bin"), keep_path=False
+        )
+        copy(
+            self,
+            pattern="*.pdb",
+            src=self.build_folder,
+            dst=os.path.join(self.package_folder, "bin"),
+            keep_path=False,
+            excludes="*vc???.pdb",
+        )
+        copy(
+            self, pattern="*.so*", src=self.build_folder, dst=os.path.join(self.package_folder, "lib"), keep_path=False
+        )
+        copy(
+            self,
+            pattern="*.dylib",
+            src=self.build_folder,
+            dst=os.path.join(self.package_folder, "lib"),
+            keep_path=False,
+        )
+        copy(self, pattern="*.a", src=self.build_folder, dst=os.path.join(self.package_folder, "lib"), keep_path=False)
 
     def package_info(self):
-        self.cpp_info.set_property("cpe", "cpe:2.3:a:lapack_project:lapack:*:*:*:*:*:*:*:*")  # does this refer to the Fortran Lapack?
-        self.cpp_info.set_property("purl", f"pkg:github/alphacep/clapack@{self.version}")  # some arbitrary mirror without actual tags
+        self.cpp_info.set_property(
+            "cpe", "cpe:2.3:a:lapack_project:lapack:*:*:*:*:*:*:*:*"
+        )  # does this refer to the Fortran Lapack?
+        self.cpp_info.set_property(
+            "purl", f"pkg:github/alphacep/clapack@{self.version}"
+        )  # some arbitrary mirror without actual tags
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "CLAPACK")
         self.cpp_info.set_property("cmake_target_name", "CLAPACK::CLAPACK")
         self.cpp_info.set_property("pkg_config_name", "clapack")
-        self.cpp_info.libs = ['lapack', 'blas']
-        self.cpp_info.libs.append('libf2c' if self.settings.os == "Windows" else 'f2c')
+        self.cpp_info.libs = ["lapack", "blas"]
+        self.cpp_info.libs.append("libf2c" if self.settings.os == "Windows" else "f2c")
         if self.settings.build_type == "Debug":
             self.cpp_info.libs = [x + "_d" for x in self.cpp_info.libs]
         if self.settings.os == "Linux":

@@ -21,7 +21,7 @@ required_conan_version = ">=2.2.2"
 
 class OpenSSLConan(ConanFile):
     name = "openssl"
-    version = "3.5.0"
+    version = "3.5.4"
     homepage = "https://www.openssl.org"
     license = "Apache-2.0"
     description = "full-strength general purpose cryptography library (including SSL and TLS)"
@@ -48,7 +48,7 @@ class OpenSSLConan(ConanFile):
     def source(self):
         get(
             self,
-            sha256="344d0a79f1a9b08029b0744e2cc401a43f9c90acd1044d09a530b4885a8e9fc0",
+            sha256="967311f84955316969bdb1d8d4b983718ef42338639c621ec4c34fddef355e99",
             url=f"https://www.openssl.org/source/openssl-{self.version}.tar.gz",
             destination=self.source_folder,
             strip_root=True,
@@ -76,7 +76,7 @@ class OpenSSLConan(ConanFile):
     def _get_default_openssl_dir(self):
         if self.settings.os == "Linux":
             return "/etc/ssl"
-        return self.package_path / "res"
+        return os.path.join(self.package_folder, "res")
 
     @property
     def _configure_args(self):
@@ -166,8 +166,12 @@ class OpenSSLConan(ConanFile):
                 # replace backslashes in paths with forward slashes
                 replace_in_file(self, "Makefile", "INSTALLTOP_dir=\\", "INSTALLTOP_dir=\\\\")
                 mkinstallvars_pl = os.path.join(self.source_folder, "util", "mkinstallvars.pl")
-                replace_in_file(self, mkinstallvars_pl, "push @{$values{$k}}, $v;", """$v =~ s|\\\\|/|g; push @{$values{$k}}, $v;""")
-                replace_in_file(self, mkinstallvars_pl, "$values{$k} = $v;", """$v->[0] =~ s|\\\\|/|g; $values{$k} = $v;""")
+                replace_in_file(
+                    self, mkinstallvars_pl, "push @{$values{$k}}, $v;", """$v =~ s|\\\\|/|g; push @{$values{$k}}, $v;"""
+                )
+                replace_in_file(
+                    self, mkinstallvars_pl, "$values{$k} = $v;", """$v->[0] =~ s|\\\\|/|g; $values{$k} = $v;"""
+                )
             self._run_make()
 
     def _replace_runtime_in_file(self, filename):
@@ -185,7 +189,7 @@ class OpenSSLConan(ConanFile):
         self.run(f"perl {self.source_folder}/configdata.pm --dump")
 
     def package(self):
-        copy(self, "*LICENSE*", src=self.source_path, dst=self.package_path / "licenses")
+        copy(self, "*LICENSE*", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
 
         self._make_install()
         if is_apple_os(self):
@@ -210,8 +214,8 @@ class OpenSSLConan(ConanFile):
             self.run("patchelf --set-rpath '$ORIGIN/../lib' " + os.path.join(self.package_folder, "lib", "libssl.so.3"))
 
         if True:  # fips support?
-            provdir = self.source_path / "providers"
-            modules_dir = self.package_path / "lib" / "ossl-modules"
+            provdir = os.path.join(self.source_folder, "providers")
+            modules_dir = os.path.join(self.package_folder, "lib", "ossl-modules")
             if self.settings.os == "Macos":
                 copy(self, "fips.dylib", src=provdir, dst=modules_dir)
             elif self.settings.os == "Windows":
@@ -221,7 +225,7 @@ class OpenSSLConan(ConanFile):
 
         rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
 
-        self._create_cmake_module_variables(self.package_path / self._module_file_rel_path)
+        self._create_cmake_module_variables(os.path.join(self.package_folder, self._module_file_rel_path))
 
     def _create_cmake_module_variables(self, module_file):
         content = textwrap.dedent(

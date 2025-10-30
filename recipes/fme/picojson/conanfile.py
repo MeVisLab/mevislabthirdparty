@@ -1,5 +1,6 @@
 from conan import ConanFile
 from conan.tools.files import copy, get
+import os
 
 required_conan_version = ">=2.2.2"
 
@@ -18,15 +19,16 @@ class ConanRecipe(ConanFile):
         self.settings.rm_safe("compiler.cppstd")
 
     def source(self):
-        get(self,
+        get(
+            self,
             sha256="056805ca2691798f5545935a14bb477f2e1d827c9fb862e6e449dbea22801c7d",
             url=f"https://github.com/kazuho/picojson/archive/refs/tags/v{self.version}.tar.gz",
-            strip_root=True
-            )
+            strip_root=True,
+        )
 
     def package(self):
-        copy(self, "LICENSE", src=self.source_path, dst=self.package_path / "licenses")
-        copy(self, "picojson.h", src=self.source_path, dst=self.package_path / "include")
+        copy(self, "LICENSE", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
+        copy(self, "picojson.h", src=self.source_folder, dst=os.path.join(self.package_folder, "include"))
 
     def package_info(self):
         # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?

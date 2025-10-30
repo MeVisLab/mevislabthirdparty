@@ -2,6 +2,7 @@ from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
 from conan.tools.files import copy, collect_libs
 from conan.tools.env import VirtualRunEnv
+import os
 
 required_conan_version = ">=2.2.2"
 
@@ -17,9 +18,9 @@ class ConanRecipe(ConanFile):
     exports_sources = "sources/*", "LICENSE"
 
     mlab_hooks = {
-        'dependencies.system_libs': [
-            'libfontconfig.so.1',
-            'libGLU.so.1',
+        "dependencies.system_libs": [
+            "libfontconfig.so.1",
+            "libGLU.so.1",
         ]
     }
 
@@ -50,7 +51,9 @@ class ConanRecipe(ConanFile):
         cmake.build()
 
     def package(self):
-        copy(self, "LICENSE", src=self.source_path.parent, dst=self.package_path / "licenses")
+        copy(
+            self, "LICENSE", src=os.path.dirname(self.source_folder), dst=os.path.join(self.package_folder, "licenses")
+        )
         cmake = CMake(self)
         cmake.install()
 

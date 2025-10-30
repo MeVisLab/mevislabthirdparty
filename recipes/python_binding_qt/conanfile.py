@@ -1,7 +1,7 @@
 import os
 
 from conan import ConanFile
-from conan.errors import ConanInvalidConfiguration
+from conan.errors import ConanException
 from conan.tools.cmake import cmake_layout, CMakeToolchain, CMakeDeps, CMake
 from conan.tools.env import VirtualRunEnv
 from conan.tools.files import copy, collect_libs, chdir
@@ -11,7 +11,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "python_binding_qt"
-    version = "6.7.3"  # corresponds to the Qt version which is used for code generation
+    version = "6.9.2"  # corresponds to the Qt version which is used for code generation
     homepage = "https://mevislab.de"
     description = "Python binding into Qt"
     license = "LGPL-2.1-only"
@@ -20,19 +20,22 @@ class ConanRecipe(ConanFile):
     exports_sources = "sources/*", "LICENSE"
 
     def requirements(self):
-        self.requires("qtdeclarative/[>=6.7]")
-        self.requires("qtmultimedia/[>=6.7]")
-        self.requires("qtwebengine/[>=6.7]")
-        self.requires("qtwebview/[>=6.7]")
+        self.requires("qtbase/[>=6.9]")
+        self.requires("qtdeclarative/[>=6.9]")
+        self.requires("qtmultimedia/[>=6.9]")
+        self.requires("qtwebengine/[>=6.9]")
+        self.requires("qtwebview/[>=6.9]")
         self.requires("pcre2/[>=10.34]")
-        self.requires("python/[>=3.11]")
-        self.requires("pythonqt/[>=3.5.0]")
-        self.build_requires("pythonqt_generator/[>=3.5.0]", package_id_mode="full_mode")
+        self.requires("python/[>=3.13]")
+        self.requires("pythonqt/[>=3.6.0]")
+        self.build_requires("pythonqt_generator/[>=3.6.0]", package_id_mode="full_mode")
 
     def validate(self):
         qtbase_version = self.dependencies["qtbase"].ref.version
         if qtbase_version != self.version:
-            raise ConanInvalidConfiguration(f"Version mismatch - you need to update the version of this package to {qtbase_version}!")
+            raise ConanException(
+                f"Version mismatch - you need to update the version of this package to {qtbase_version}!"
+            )
 
     def layout(self):
         cmake_layout(self, src_folder="sources")
@@ -63,13 +66,22 @@ class ConanRecipe(ConanFile):
         generator_path = self.dependencies.build["pythonqt_generator"].cpp_info.bindirs[0]
         with chdir(self, generator_path):
             qt_includes = []
-            for dep in ("qtbase", "qtmultimedia", "qtsvg", "qtdeclarative", "qtwebchannel", "qtwebengine", "qtwebsockets", "qtwebview"):
+            for dep in (
+                "qtbase",
+                "qtmultimedia",
+                "qtsvg",
+                "qtdeclarative",
+                "qtwebchannel",
+                "qtwebengine",
+                "qtwebsockets",
+                "qtwebview",
+            ):
                 qt_includes.extend(self.dependencies[dep].cpp_info.includedirs)
             qtversion = self.dependencies["qtbase"].ref.version
             cmd_line = (
                 f"PythonQtGenerator "
                 f"--include-paths={os.pathsep.join(qt_includes)} "
-                f"--output-directory={self.source_path} "
+                f"--output-directory={self.source_folder} "
                 f"--qt-version={qtversion} "
                 "--max-classes-per-file=1000 "
                 "qtscript_masterinclude.h build_all.txt"
@@ -80,12 +92,15 @@ class ConanRecipe(ConanFile):
     def package(self):
         cmake = CMake(self)
         cmake.install()
-        copy(self, "LICENSE", src=self.export_sources_path, dst=self.package_path / "licenses")
+        copy(self, "LICENSE", src=self.export_sources_folder, dst=os.path.join(self.package_folder, "licenses"))
 
     def package_info(self):
         self.cpp_info.set_property("cmake_file_name", "PythonBindingQt")
         self.cpp_info.set_property("cmake_target_name", "PythonBindingQt::PythonBindingQt")
         self.cpp_info.set_property("cmake_config_version_compat", "AnyNewerVersion")
+        self.cpp_info.set_property(
+            "optional_deps", "qtsvg,qtdeclarative,qtmultimedia,qtwebengine,qtwebsockets,qtwebchannel,qtwebview"
+        )
         self.cpp_info.set_property("pkg_config_name", "PythonBindingQt")
         self.cpp_info.libs = collect_libs(self)
         self.cpp_info.includedirs.clear()

@@ -10,11 +10,9 @@ endif()
 target_sources(InventorBase PRIVATE
   InventorBase.h
   InventorBase.cpp
-  ../generated_cpp/Inventor_base/Inventor_base0.h
-  ../generated_cpp/Inventor_base/Inventor_base0.cpp
-  ../generated_cpp/Inventor_base/Inventor_base1.h
-  ../generated_cpp/Inventor_base/Inventor_base1.cpp
-  ../generated_cpp/Inventor_base/Inventor_base_init.cpp
+  ../generated_cpp/inventor_base/inventor_base0.h
+  ../generated_cpp/inventor_base/inventor_base0.cpp
+  ../generated_cpp/inventor_base/inventor_base_init.cpp
 )
 
 target_link_libraries(InventorBase

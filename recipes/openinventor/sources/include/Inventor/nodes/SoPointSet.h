@@ -63,6 +63,8 @@
 //! the coordinates as points
 #define SO_POINT_SET_USE_REST_OF_POINTS (-1)
 
+class SoGLCoordinateElement;
+
 ////////////////////////////////////////////////////////////////////////////////
 //! Point set shape node.
 /*!
@@ -163,6 +165,8 @@ class INVENTOR_API SoPointSet : public SoNonIndexedShape {
     virtual ~SoPointSet();
 
   private:
+    //! Determine resulting index range from startIndex and numPoints fields
+    void                getEffectiveRange(const SoGLCoordinateElement* ce, int& start, int& num) const;
     //! Returns TRUE if materials/normals are bound to individual points
     bool                areMaterialsPerPoint(SoAction *action) const;
     bool                areNormalsPerPoint(SoAction *action) const;

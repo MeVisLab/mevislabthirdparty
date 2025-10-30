@@ -54,10 +54,10 @@ class ConanRecipe(ConanFile):
     def package(self):
         cmake = CMake(self)
         cmake.install()
-        copy(self, "LICENSE", src=self.source_path, dst=self.package_path / "licenses")
-        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False)
-        rmdir(self, self.package_path / "lib" / "cmake")
-        rmdir(self, self.package_path / "lib" / "pkgconfig")
+        copy(self, "LICENSE", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
+        copy(self, "*.pdb", src=self.build_folder, dst=os.path.join(self.package_folder, "bin"), keep_path=False)
+        rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
         self._cmake_module_file_write()
 
     def package_info(self):
@@ -79,7 +79,7 @@ class ConanRecipe(ConanFile):
         return os.path.join("lib", "cmake", f"{self.name}-variables.cmake")
 
     def _cmake_module_file_write(self):
-        file = self.package_path / self._cmake_module_file
+        file = os.path.join(self.package_folder, self._cmake_module_file)
         content = textwrap.dedent(
             f"""\
             set(ZSTD_FOUND TRUE)

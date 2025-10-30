@@ -4,9 +4,6 @@ project(test_package CXX)
 include(CTest)
 enable_testing()
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 find_package(Qt6 REQUIRED COMPONENTS Qml QmlIntegration Quick QuickControls2 QuickTest REQUIRED)
 qt_standard_project_setup()
 

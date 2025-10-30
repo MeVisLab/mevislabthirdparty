@@ -9,9 +9,9 @@ endif()
 
 target_sources(InventorNodekits PRIVATE
   InventorNodekits.cpp
-  ../generated_cpp/Inventor_nodekits/Inventor_nodekits0.h
-  ../generated_cpp/Inventor_nodekits/Inventor_nodekits0.cpp
-  ../generated_cpp/Inventor_nodekits/Inventor_nodekits_init.cpp
+  ../generated_cpp/inventor_nodekits/inventor_nodekits0.h
+  ../generated_cpp/inventor_nodekits/inventor_nodekits0.cpp
+  ../generated_cpp/inventor_nodekits/inventor_nodekits_init.cpp
 )
 
 target_link_libraries(InventorNodekits

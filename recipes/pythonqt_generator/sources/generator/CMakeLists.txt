@@ -32,6 +32,8 @@ set(sources
   parser/type_compiler.cpp
   parser/visitor.cpp
 
+  simplecpp/simplecpp.cpp
+
   abstractmetabuilder.cpp
   abstractmetalang.cpp
   asttoxml.cpp
@@ -85,7 +87,7 @@ set(qrc_sources
 # Copy file expected by the generator and specify install rules
 
 file(GLOB files_to_copy RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "build_*.txt" "typesystem_*.xml")
-list(APPEND files_to_copy qtscript_masterinclude.h parser/rpp/pp-qt-configuration)
+list(APPEND files_to_copy qtscript_masterinclude.h)
 foreach(file ${files_to_copy})
   configure_file(
     ${file}
@@ -99,7 +101,7 @@ endforeach()
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}/parser
-  ${CMAKE_CURRENT_SOURCE_DIR}/parser/rpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/simplecpp
 )
 
 add_definitions(-DRXX_ALLOCATOR_INIT_0)

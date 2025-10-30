@@ -73,6 +73,8 @@ _______________________________________________________________________
 #include <Inventor/misc/SoVBO.h>
 #include <Inventor/SoDebug.h>
 
+#include <algorithm>
+
 SO_NODE_SOURCE(SoPointSet);
 
 ////////////////////////////////////////////////////////////////////////
@@ -116,10 +118,6 @@ SoPointSet::GLRender(SoGLRenderAction *action)
 //
 ////////////////////////////////////////////////////////////////////////
 {
-  bool                        materialPerPoint, normalPerPoint;
-  int32_t                     numPts;
-  int                         curCoord, i;
-
   // First see if the object is visible and should be rendered now
   if (! shouldGLRender(action))
     return;
@@ -138,17 +136,14 @@ SoPointSet::GLRender(SoGLRenderAction *action)
   // Figure out number of points in set
   const SoGLCoordinateElement *ce = (const SoGLCoordinateElement *)
     SoCoordinateElement::getInstance(action->getState());
-  curCoord = (int) startIndex.getValue();
-  numPts = numPoints.getValue();
-  if (numPts == SO_POINT_SET_USE_REST_OF_POINTS)
-    numPts = ce->getNum() - curCoord;
-
+  int curCoord, numPts;
+  getEffectiveRange(ce, curCoord, numPts);
 
   // This extra level of brackets is to make bundle destructors get
   // called before state->pop() is called:
   {
-    materialPerPoint = areMaterialsPerPoint(action);
-    normalPerPoint   = areNormalsPerPoint(action);
+    bool materialPerPoint = areMaterialsPerPoint(action);
+    bool normalPerPoint   = areNormalsPerPoint(action);
 
     // Test for auto-normal case; since this modifies an element this
     // MUST BE DONE BEFORE ANY BUNDLES ARE CREATED!
@@ -208,7 +203,7 @@ SoPointSet::GLRender(SoGLRenderAction *action)
       
       glBegin(GL_POINTS);
 
-      for (i = 0; i < numPts; i++) {
+      for (int i = 0; i < numPts; i++) {
         // Send next material, normal, and texture coordinate if necessary
         if (materialPerPoint && i > 0)
           mb.send(curCoord, TRUE);
@@ -245,9 +240,6 @@ SoPointSet::generatePrimitives(SoAction *action)
   // texture coordinates
   bool forPicking = action->isOfType(SoRayPickAction::getClassTypeId());
 
-  bool                        materialPerPoint, normalPerPoint;
-  int32_t                     numPts;
-  int                         curCoord, i;
   SoPrimitiveVertex           pv;
   SoPointDetail               detail;
 
@@ -269,13 +261,11 @@ SoPointSet::generatePrimitives(SoAction *action)
       SoCoordinateElement::getInstance(action->getState());
 
     // Figure out number of points in set
-    curCoord = (int) startIndex.getValue();
-    numPts = numPoints.getValue();
-    if (numPts == SO_POINT_SET_USE_REST_OF_POINTS)
-      numPts = ce->getNum() - curCoord;
+    int curCoord, numPts;
+    getEffectiveRange(ce, curCoord, numPts);
 
-    materialPerPoint = areMaterialsPerPoint(action);
-    normalPerPoint   = areNormalsPerPoint(action);
+    bool materialPerPoint = areMaterialsPerPoint(action);
+    bool normalPerPoint   = areNormalsPerPoint(action);
 
     // Test for auto-normal case; since this modifies an element this
     // MUST BE DONE BEFORE ANY BUNDLES ARE CREATED!
@@ -309,7 +299,7 @@ SoPointSet::generatePrimitives(SoAction *action)
     if (forPicking)
       delta = 0.0;
 
-    for (i = 0; i < numPts; i++, fraction += delta) {
+    for (int i = 0; i < numPts; i++, fraction += delta) {
 
       // Check to see if this point should be skipped due to complexity
       if (fraction >= 1.0) {
@@ -416,6 +406,30 @@ SoPointSet::createPointDetail(SoRayPickAction *action,
     pp->getObjectNormal()));
 
   return detail;
+}
+
+////////////////////////////////////////////////////////////////////////
+//
+// Description:
+//    Determine resulting index range from startIndex and numPoints fields
+//
+// Use: private
+
+void
+SoPointSet::getEffectiveRange(const SoGLCoordinateElement* ce, int& start, int& num) const
+//
+////////////////////////////////////////////////////////////////////////
+{
+  start = static_cast<int>(std::max(startIndex.getValue(), 0));
+  num = numPoints.getValue();
+  if (num == SO_POINT_SET_USE_REST_OF_POINTS)
+  {
+    num = ce->getNum() - start;
+  }
+  else
+  {
+    num = std::min(num, std::max(ce->getNum() - start, 0));
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////

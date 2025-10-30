@@ -21,8 +21,8 @@ class ConanRecipe(ConanFile):
         tc = CMakeToolchain(self)
         tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
         tc.variables["BUILD_SHARED_LIBS"] = False
-        tc.variables['CMAKE_POSITION_INDEPENDENT_CODE'] = True
-        tc.cache_variables['CONAN_LZF_VERSION'] = f"{self.version}"
+        tc.variables["CMAKE_POSITION_INDEPENDENT_CODE"] = True
+        tc.cache_variables["CONAN_LZF_VERSION"] = f"{self.version}"
         tc.generate()
 
     def build(self):
@@ -31,7 +31,7 @@ class ConanRecipe(ConanFile):
         cmake.build()
 
     def package(self):
-        copy(self, "LICENSE", src=self.source_path, dst=self.package_path / "licenses")
+        copy(self, "LICENSE", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
         cmake = CMake(self)
         cmake.install()
 

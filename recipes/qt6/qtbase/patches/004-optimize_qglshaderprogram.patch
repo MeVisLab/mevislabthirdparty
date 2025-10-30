@@ -1,8 +1,8 @@
 diff --git a/src/opengl/qopenglshaderprogram.cpp b/src/opengl/qopenglshaderprogram.cpp
-index fb33bf0d..db88fdca 100644
+index 23e6de59..03c4dd8f 100644
 --- a/src/opengl/qopenglshaderprogram.cpp
 +++ b/src/opengl/qopenglshaderprogram.cpp
-@@ -1299,22 +1299,24 @@ bool QOpenGLShaderProgram::link()
+@@ -1319,22 +1319,24 @@ bool QOpenGLShaderProgram::link()
      value = 0;
      d->glfuncs->glGetProgramiv(program, GL_LINK_STATUS, &value);
      d->linked = (value != 0);
@@ -20,7 +20,7 @@ index fb33bf0d..db88fdca 100644
 -                qWarning("QOpenGLShader::link: %ls", qUtf16Printable(d->log));
 -            else
 -                qWarning("QOpenGLShader::link[%ls]: %ls", qUtf16Printable(name), qUtf16Printable(d->log));
-+    if (!d->linked) {    
++    if (!d->linked) {
 +        value = 0;
 +        d->glfuncs->glGetProgramiv(program, GL_INFO_LOG_LENGTH, &value);
 +        d->log = QString();

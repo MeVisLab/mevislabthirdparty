@@ -8,7 +8,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "opencl-icd-loader"
-    version = "2024.10.24"
+    version = "2025.07.22"
     homepage = "https://github.com/KhronosGroup/OpenCL-ICD-Loader"
     description = "OpenCL ICD Loader"
     license = "Apache-2.0"
@@ -31,7 +31,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="95f2f0cda375b13d2760290df044ebea9c6ff954a7d7faa0867422442c9174dc",
+            sha256="dff7a0b11ad5b63a669358e3476e3dc889a4a361674e5b69b267b944d0794142",
             url=f"https://github.com/KhronosGroup/OpenCL-ICD-Loader/archive/refs/tags/v{self.version}.tar.gz",
             strip_root=True,
         )
@@ -41,7 +41,9 @@ class ConanRecipe(ConanFile):
         tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
         tc.variables["BUILD_SHARED_LIBS"] = True
         header_info = self.dependencies["opencl-headers"].cpp_info
-        tc.variables["OPENCL_ICD_LOADER_HEADERS_DIR"] = ";".join([hi.replace("\\", "/") for hi in header_info.includedirs])
+        tc.variables["OPENCL_ICD_LOADER_HEADERS_DIR"] = ";".join(
+            [hi.replace("\\", "/") for hi in header_info.includedirs]
+        )
         tc.generate()
 
         cd = CMakeDeps(self)

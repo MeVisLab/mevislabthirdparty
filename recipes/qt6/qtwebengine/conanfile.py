@@ -25,6 +25,7 @@ class ConanRecipe(ConanFile):
             'libplds4.so',              # nspr
             'libresolv.so.2',           # glibc
             'libsmime3.so',             # nss
+            'libxcb-dri3.so.0',         # libxcb
             'libxcb.so.1',              # libxcb
             'libXcomposite.so.1',
             'libXdamage.so.1',
@@ -36,6 +37,7 @@ class ConanRecipe(ConanFile):
             'libXrender.so.1',
             'libxshmfence.so.1',
             'libXtst.so.6',
+            "libudev.so.1",
         ]
     }
     qt_feature = {
@@ -91,7 +93,7 @@ class ConanRecipe(ConanFile):
 
     def system_requirements(self):
         apt = package_manager.Apt(self)
-        apt.install(['libcups2-dev'], update=True)
+        apt.install(['libcups2-dev', 'libudev-dev', 'libgbm-dev', 'libxshmfence-dev'], update=True)
 
     def requirements(self):
         super().requirements()

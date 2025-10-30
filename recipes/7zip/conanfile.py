@@ -10,7 +10,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "7zip"
-    version = "24.09"
+    version = "25.01"
     license = "LGPL-2.1-or-later AND BSD-3-Clause"
     homepage = "https://www.7-zip.org"
     description = "7-Zip is a file archiver with a high compression ratio"
@@ -40,7 +40,7 @@ class ConanRecipe(ConanFile):
         version = "".join(self.version.split("."))
         get(
             self,
-            sha256="49c05169f49572c1128453579af1632a952409ced028259381dac30726b6133a",
+            sha256="ed087f83ee789c1ea5f39c464c55a5c9d4008deb0efe900814f2df262b82c36e",
             url=f"https://sourceforge.net/projects/sevenzip/files/7-Zip/{self.version}/7z{version}-src.tar.xz",
         )
 
@@ -56,8 +56,18 @@ class ConanRecipe(ConanFile):
         self.run(f"nmake /f makefile PLATFORM=x64", cwd=os.path.join(self.source_folder, "CPP", "7zip"))
 
     def package(self):
-        copy(self, "License.txt", dst=os.path.join(self.package_folder, "licenses"), src=os.path.join(self.source_folder, "DOC"))
-        copy(self, "unRarLicense.txt", dst=os.path.join(self.package_folder, "licenses"), src=os.path.join(self.source_folder, "DOC"))
+        copy(
+            self,
+            "License.txt",
+            dst=os.path.join(self.package_folder, "licenses"),
+            src=os.path.join(self.source_folder, "DOC"),
+        )
+        copy(
+            self,
+            "unRarLicense.txt",
+            dst=os.path.join(self.package_folder, "licenses"),
+            src=os.path.join(self.source_folder, "DOC"),
+        )
         copy(
             self,
             "*/7z.exe",

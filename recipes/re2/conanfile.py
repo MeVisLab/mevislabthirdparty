@@ -8,7 +8,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "re2"
-    version = "20240702"
+    version = "20250812"
     homepage = "https://github.com/google/re2"
     description = "Fast, safe, thread-friendly regular expression library"
     license = "BSD-3-Clause"
@@ -25,7 +25,7 @@ class ConanRecipe(ConanFile):
         year, month, day = self.version[0:4], self.version[4:6], self.version[6:]
         get(
             self,
-            sha256="eb2df807c781601c14a260a507a5bb4509be1ee626024cb45acbd57cb9d4032b",
+            sha256="2f3bec634c3e51ea1faf0d441e0a8718b73ef758d7020175ed7e352df3f6ae12",
             url=f"https://github.com/google/re2/archive/{year}-{month}-{day}.tar.gz",
             strip_root=True,
         )

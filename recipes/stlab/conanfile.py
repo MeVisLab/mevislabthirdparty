@@ -1,6 +1,7 @@
 from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
 from conan.tools.files import get, copy, rmdir, patch
+import os
 
 required_conan_version = ">=2.2.2"
 
@@ -20,10 +21,11 @@ class ConanRecipe(ConanFile):
         del self.info.settings.arch
 
     def source(self):
-        get(self,
+        get(
+            self,
             url=f"https://github.com/stlab/libraries/archive/v{self.version}.tar.gz",
             sha256="0160b5f7be7d423100a9a8b205a99285b106dd438f806978028a82b9f01c6b64",
-            strip_root=True
+            strip_root=True,
         )
         patch(self, patch_file="patches/001-add_missing_include.patch")
 
@@ -32,7 +34,6 @@ class ConanRecipe(ConanFile):
 
     def generate(self):
         tc = CMakeToolchain(self)
-        tc.variables["CMAKE_CXX_STANDARD"] = "17"
         tc.variables["BUILD_TESTING"] = "OFF"
         tc.variables["CMAKE_DISABLE_FIND_PACKAGE_Qt5"] = True
         tc.variables["CMAKE_DISABLE_FIND_PACKAGE_Qt6"] = True
@@ -46,10 +47,10 @@ class ConanRecipe(ConanFile):
         cmake.configure()
 
     def package(self):
-        copy(self, "LICENSE", src=self.source_path, dst=self.package_path / "licenses")
+        copy(self, "LICENSE", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
         cmake = CMake(self)
         cmake.install()
-        rmdir(self, self.package_path / 'share')
+        rmdir(self, os.path.join(self.package_folder, "share"))
 
     def package_info(self):
         # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?

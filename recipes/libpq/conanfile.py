@@ -35,6 +35,7 @@ class ConanRecipe(ConanFile):
         get(
             self,
             sha256="fcb7ab38e23b264d1902cb25e6adafb4525a6ebcbd015434aeef9eda80f528d8",
+            # sha256="e0630a3600aea27511715563259ec2111cd5f4353a4b040e0be827f94cd7a8b0",
             url=f"https://ftp.postgresql.org/pub/source/v{self.version}/postgresql-{self.version}.tar.bz2",
             strip_root=True,
         )
@@ -87,4 +88,11 @@ class ConanRecipe(ConanFile):
         if self.settings.os == "Linux":
             self.cpp_info.components["pq"].system_libs = ["pthread"]
         if self.settings.os == "Windows":
-            self.cpp_info.components["pq"].system_libs = ["ws2_32", "secur32", "advapi32", "shell32", "crypt32", "wldap32"]
+            self.cpp_info.components["pq"].system_libs = [
+                "ws2_32",
+                "secur32",
+                "advapi32",
+                "shell32",
+                "crypt32",
+                "wldap32",
+            ]

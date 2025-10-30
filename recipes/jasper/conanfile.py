@@ -10,7 +10,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "jasper"
-    version = "4.2.5"
+    version = "4.2.8"
     homepage = "https://jasper-software.github.io/jasper/"
     description = "Implementation of the codec specified in the JPEG-2000 Part-1 standard"
     license = "JasPer-2.0"
@@ -30,11 +30,16 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="31a72ba9da49b8f6f83c0c72e319fc4e4a5ec9529a1f3d2cff48a501d330b09a",
+            sha256="44507e71b55ca1bf0d0736df8228c37df6395ae42398a48359f320f9178ae830",
             url=f"https://github.com/jasper-software/jasper/archive/version-{self.version}.zip",
             strip_root=True,
         )
-        replace_in_file(self, os.path.join(self.source_folder, "CMakeLists.txt"), "set(CMAKE_INSTALL_RPATH", "set(__CMAKE_INSTALL_RPATH")
+        replace_in_file(
+            self,
+            os.path.join(self.source_folder, "CMakeLists.txt"),
+            "set(CMAKE_INSTALL_RPATH",
+            "set(__CMAKE_INSTALL_RPATH",
+        )
 
     def generate(self):
         cd = CMakeDeps(self)
@@ -67,8 +72,15 @@ class ConanRecipe(ConanFile):
         rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
         rmdir(self, os.path.join(self.package_folder, "share"))
         if self.settings.os == "Windows":
-            copy(self, "*.pdb", src=self.build_path, dst=os.path.join(self.package_folder, "bin"), keep_path=False, excludes="*vc*.pdb")
-            for dll_file in (Path(self.package_path) / "bin").glob("*.dll"):
+            copy(
+                self,
+                "*.pdb",
+                src=self.build_folder,
+                dst=os.path.join(self.package_folder, "bin"),
+                keep_path=False,
+                excludes="*vc*.pdb",
+            )
+            for dll_file in (Path(self.package_folder) / "bin").glob("*.dll"):
                 if dll_file.name.startswith(("concrt", "msvcp", "vcruntime")):
                     dll_file.unlink()
 

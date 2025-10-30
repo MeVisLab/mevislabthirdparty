@@ -1,13 +1,3 @@
-/*************************************************************************************
-**
-** Copyright 2022, MeVis Medical Solutions AG
-**
-** GNU LESSER GENERAL PUBLIC LICENSE Version 2.1, February 1999
-**
-**************************************************************************************/
-#include <PythonQt.h>
-#include <QObject>
-#include <QVariant>
 #include <Inventor/SbTime.h>
 #include <Inventor/SoPath.h>
 #include <Inventor/fields/SoField.h>
@@ -22,6 +12,9 @@
 #include <Inventor/sensors/SoSensor.h>
 #include <Inventor/sensors/SoTimerQueueSensor.h>
 #include <Inventor/sensors/SoTimerSensor.h>
+#include <PythonQt.h>
+#include <QObject>
+#include <QVariant>
 
 
 
@@ -79,6 +72,7 @@ public:
 public Q_SLOTS:
 void delete_SoFieldSensor(SoFieldSensor* obj) { delete obj; }
    void attach(SoFieldSensor* theWrappedObject, SoField*  field);
+   void detach(SoFieldSensor* theWrappedObject);
    SoField*  getAttachedField(SoFieldSensor* theWrappedObject) const;
 };
 
@@ -103,6 +97,7 @@ public:
 public Q_SLOTS:
 void delete_SoNodeSensor(SoNodeSensor* obj) { delete obj; }
    void attach(SoNodeSensor* theWrappedObject, SoNode*  node);
+   void detach(SoNodeSensor* theWrappedObject);
    SoNode*  getAttachedNode(SoNodeSensor* theWrappedObject) const;
 };
 
@@ -116,6 +111,7 @@ public:
 public Q_SLOTS:
 void delete_SoPathSensor(SoPathSensor* obj) { delete obj; }
    void attach(SoPathSensor* theWrappedObject, SoPath*  path);
+   void detach(SoPathSensor* theWrappedObject);
    SoPath*  getAttachedPath(SoPathSensor* theWrappedObject) const;
 };
 

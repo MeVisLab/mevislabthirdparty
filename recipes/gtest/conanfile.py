@@ -36,6 +36,7 @@ class ConanRecipe(ConanFile):
             tc.variables["gtest_force_shared_crt"] = "ON"
         tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
         tc.variables["BUILD_SHARED_LIBS"] = True
+        tc.variables["GTEST_CREATE_SHARED_LIBRARY"] = True
         tc.variables["CMAKE_POSITION_INDEPENDENT_CODE"] = True
         tc.generate()
 
@@ -61,6 +62,9 @@ class ConanRecipe(ConanFile):
         self.cpp_info.set_property("cmake_file_name", "GTest")
         self.cpp_info.set_property("cmake_target_name", "GTest::GTest")
         self.cpp_info.set_property("pkg_config_name", "gtest")
+        if is_msvc(self):
+            self.cpp_info.defines.append("GTEST_LINKED_AS_SHARED_LIBRARY")
+
         self.cpp_info.libs = collect_libs(self)
 
         for lib in collect_libs(self):
@@ -72,3 +76,5 @@ class ConanRecipe(ConanFile):
                 comp += "_lib"
             self.cpp_info.components[comp].libs = [lib]
             self.cpp_info.components[comp].set_property("cmake_target_name", f"GTest::{comp}")
+            if is_msvc(self):
+                self.cpp_info.components[comp].defines.append("GTEST_LINKED_AS_SHARED_LIBRARY")

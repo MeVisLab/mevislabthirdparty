@@ -1,10 +1,8 @@
-Prefer the plugin with the correct suffix for the current compile mode.
----
 diff --git a/src/qml/qml/qqmlpluginimporter.cpp b/src/qml/qml/qqmlpluginimporter.cpp
-index 24f12891..86ec1c48 100644
+index 091cd28b..f82576be 100644
 --- a/src/qml/qml/qqmlpluginimporter.cpp
 +++ b/src/qml/qml/qqmlpluginimporter.cpp
-@@ -360,11 +360,11 @@ QString QQmlPluginImporter::resolvePlugin(const QString &qmldirPluginPath, const
+@@ -358,11 +358,11 @@ QString QQmlPluginImporter::resolvePlugin(const QString &qmldirPluginPath, const
      static const QString prefix;
      static const QStringList suffixes = {
      # ifdef QT_DEBUG
@@ -19,7 +17,7 @@ index 24f12891..86ec1c48 100644
      # endif
      };
  #elif defined(Q_OS_DARWIN)
-@@ -386,7 +386,13 @@ QString QQmlPluginImporter::resolvePlugin(const QString &qmldirPluginPath, const
+@@ -384,7 +384,13 @@ QString QQmlPluginImporter::resolvePlugin(const QString &qmldirPluginPath, const
      # if defined(Q_OS_ANDROID)
          QStringLiteral(LIBS_SUFFIX),
      # endif

@@ -4,9 +4,6 @@ project(test_package CXX)
 include(CTest)
 enable_testing()
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 find_package(Qt6 REQUIRED COMPONENTS 3DCore 3DRender 3DInput 3DLogic 3DExtras 3DAnimation REQUIRED)
 qt_standard_project_setup()
 

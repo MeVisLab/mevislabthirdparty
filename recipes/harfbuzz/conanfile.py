@@ -11,7 +11,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "harfbuzz"
-    version = "11.2.1"
+    version = "11.4.5"
     homepage = "http://harfbuzz.org"
     description = "An OpenType text shaping engine"
     license = "MIT"
@@ -25,7 +25,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="093714c8548a285094685f0bdc999e202d666b59eeb3df2ff921ab68b8336a49",
+            sha256="0f052eb4ab01d8bae98ba971c954becb32be57d7250f18af343b1d27892e03fa",
             url=f"https://github.com/harfbuzz/harfbuzz/releases/download/{self.version}/harfbuzz-{self.version}.tar.xz",
             strip_root=True,
         )

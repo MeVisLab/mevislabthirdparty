@@ -1,15 +1,20 @@
 from conan import ConanFile
 from conan.tools.cmake import CMakeToolchain, CMakeDeps, CMake, cmake_layout
 from conan.tools.files import rmdir, collect_libs, copy, get, patch, replace_in_file
+from pathlib import Path
+import os
 
 required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
     name = "pcl"
-    version = "1.15.0"
+    version = "1.15.1"
     homepage = "https://pointclouds.org"
-    description = "The Point Cloud Library (PCL) is a standalone, large scale, " "open project for 2D/3D image and point cloud processing."
+    description = (
+        "The Point Cloud Library (PCL) is a standalone, large scale, "
+        "open project for 2D/3D image and point cloud processing."
+    )
     license = "BSD-3-Clause"
     package_type = "shared-library"
     settings = "os", "arch", "compiler", "build_type"
@@ -31,12 +36,17 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="fb79d085b08b8335f43ee4cacf4daa2624bb2c411e9243efa6a92c077273840a",
+            sha256="f187b2646422ae6fb6daf7eec2d62c538ae7fe626397ed649c0e9b5a5b862b5a",
             url=f"https://github.com/PointCloudLibrary/pcl/releases/download/pcl-{self.version}/source.tar.gz",
             strip_root=True,
         )
         patch(self, patch_file="patches/001-boost_no_mpi.patch")
-        replace_in_file(self, self.source_path / "CMakeLists.txt", "set(CMAKE_INSTALL_RPATH", "#set(CMAKE_INSTALL_RPATH")
+        replace_in_file(
+            self,
+            os.path.join(self.source_folder, "CMakeLists.txt"),
+            "set(CMAKE_INSTALL_RPATH",
+            "#set(CMAKE_INSTALL_RPATH",
+        )
 
     def generate(self):
         tc = CMakeToolchain(self)
@@ -47,7 +57,6 @@ class ConanRecipe(ConanFile):
         tc.variables["BUILD_tools"] = False
         tc.variables["BUILD_CUDA"] = False
 
-        tc.variables["CMAKE_CXX_STANDARD"] = 17
         tc.variables["CMAKE_DISABLE_FIND_PACKAGE_VTK"] = True
         tc.variables["PCL_ENABLE_MARCHNATIVE"] = False
         tc.variables["PCL_DISABLE_GPU_TESTS"] = False
@@ -73,22 +82,29 @@ class ConanRecipe(ConanFile):
 
     def build(self):
         cmake = CMake(self)
-        cmake.configure(build_script_folder=self.source_path.parent)
+        cmake.configure(build_script_folder=os.path.dirname(self.source_folder))
         cmake.build()
 
     def package(self):
         cmake = CMake(self)
         cmake.install()
 
-        copy(self, "LICENSE.txt", src=self.source_path, dst=self.package_path / "licenses")
-        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False, excludes="*/vc???.pdb")
-        rmdir(self, self.package_path / "cmake")
-        rmdir(self, self.package_path / "share")
-        rmdir(self, self.package_path / "lib" / "pkgconfig")
+        copy(self, "LICENSE.txt", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
+        copy(
+            self,
+            "*.pdb",
+            src=self.build_folder,
+            dst=os.path.join(self.package_folder, "bin"),
+            keep_path=False,
+            excludes="*/vc???.pdb",
+        )
+        rmdir(self, os.path.join(self.package_folder, "cmake"))
+        rmdir(self, os.path.join(self.package_folder, "share"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
 
         # Remove MS runtime files
         for pattern in ["concrt*.dll", "msvcp*.dll", "vcruntime*.dll"]:
-            for lib in (self.package_path / "bin").glob(pattern):
+            for lib in (Path(self.package_folder) / "bin").glob(pattern):
                 lib.unlink()
 
     def package_info(self):

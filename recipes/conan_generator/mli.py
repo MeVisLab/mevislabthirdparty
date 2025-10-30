@@ -1,9 +1,10 @@
+import glob
 import os
 import re
-import glob
 import textwrap
-from conan.tools.files import chdir
 
+from conan.internal.model.conanfile_interface import ConanFileInterface
+from conan.tools.files import chdir
 
 MLI_DIRECTORY: str = "MeVis/ThirdParty/Configuration/Installers/Libraries"
 
@@ -30,7 +31,7 @@ def _is_empty_dir(path, subpath=None):
 
 
 class MLIBaseGenerator:
-    def __init__(self, conanfile, library, package_id: str):
+    def __init__(self, conanfile: ConanFileInterface, library: ConanFileInterface, package_id: str):
         self.conanfile = conanfile
         self.library = library
         self.dependencies = library.dependencies.direct_host
@@ -42,8 +43,11 @@ class MLIBaseGenerator:
         self.is_windows: bool = self.conanfile.settings.os == "Windows"
         self.mli_files: dict[str, str] = {}
         self.external_mli_files: dict[str, str] = {}  # mapping from dependency name to package_id
+        self.has_package = self.library.package_folder is not None  # False for skipped packages
 
     def _get_package_dir_content(self, subdir, excludeFunc=None, prependPath=""):
+        if not self.has_package:
+            return []
         path = os.path.join(self.library.package_folder, subdir)
         prependPath = (prependPath + "/") if prependPath and not prependPath.endswith("/") else prependPath
         subdir = (subdir + "/") if subdir else ""
@@ -60,6 +64,8 @@ class MLIBaseGenerator:
 
     def _get_glob_package_dir_content(self, subdir, excludeFunc=None, prependPath=""):
         result = []
+        if not self.has_package:
+            return result
         with chdir(self.conanfile, self.library.package_folder):
             for candidate in glob.iglob(subdir):
                 result += self._get_package_dir_content(candidate, excludeFunc=excludeFunc, prependPath=prependPath)
@@ -79,7 +85,9 @@ class MLIBaseGenerator:
             path = f"{dep}.mli"
             if dep in self.external_mli_files:
                 # include from other package
-                path = f"$(MLAB_{self.external_mli_files[dep].replace('/','_')})/Configuration/Installers/Libraries/{path}"
+                path = (
+                    f"$(MLAB_{self.external_mli_files[dep].replace('/','_')})/Configuration/Installers/Libraries/{path}"
+                )
             includes.append(f"{cmd} {path}")
         includes = ("\n" + " " * indent).join(includes)
         return includes
@@ -105,7 +113,7 @@ ENDIF
 
 
 class MLI(MLIBaseGenerator):
-    def __init__(self, conanfile, library, package_id: str):
+    def __init__(self, conanfile: ConanFileInterface, library: ConanFileInterface, package_id: str):
         super().__init__(conanfile, library, package_id)
         self.build_type: str = conanfile.settings.get_safe("build_type")
         self.otherStuff: list[str] = []
@@ -175,26 +183,29 @@ class MLI(MLIBaseGenerator):
         return False
 
     def _create_library_mli_files(self):
-        existingMliDirectory = self.library.package_path / self.mli_directory
-        if existingMliDirectory.exists():
+        if self.has_package and (self.library.package_path / self.mli_directory).exists():
             return
 
         # generate .mli files
         dependencyIncludes = self._create_includes(self.get_dependencies())
 
         mainFile = f"""
-# Include possible dependencies
-{dependencyIncludes}
+IFDEF EXCLUDE_{self.name.upper()}
+  PRINT Note: {self.name} was explicitly excluded from the installer!
+ELSE
+  # Include possible dependencies
+{textwrap.indent(dependencyIncludes, "  ")}
 
-SWITCH_PACKAGE {self.package_id}
-+ ThirdPartyInformation/{self.name.lower()}
+  SWITCH_PACKAGE {self.package_id}
+  + ThirdPartyInformation/{self.name.lower()}
 
-IFDEF RELEASE
-  INCLUDE_IF_EXISTING {self.name}_Release.mli
-ENDIF
+  IFDEF RELEASE
+    INCLUDE_IF_EXISTING {self.name}_Release.mli
+  ENDIF
 
-IFDEF DEBUG
-  INCLUDE_IF_EXISTING {self.name}_Debug.mli
+  IFDEF DEBUG
+    INCLUDE_IF_EXISTING {self.name}_Debug.mli
+  ENDIF
 ENDIF
 """
 
@@ -291,7 +302,10 @@ ENDIF
             return subContent
 
         # First add binary redirectable content:
-        content = _redirectableBinContent("lib") + _redirectableBinContent("bin")
+        if self.has_package:
+            content = _redirectableBinContent("lib") + _redirectableBinContent("bin")
+        else:
+            content = ""
 
         # Then add other redirectable content, which stays in its sub-directory (this is used for Qt):
         hasSwitched = False
@@ -341,7 +355,9 @@ ENDIF
             sitePackagesContentList = self._get_package_dir_content("Lib/site-packages", excludeFunc=_pythonExcludes)
             pythonPrefix = "Python/"
         else:
-            sitePackagesContentList = self._get_glob_package_dir_content("lib/python*/site-packages/", excludeFunc=_pythonExcludes)
+            sitePackagesContentList = self._get_glob_package_dir_content(
+                "lib/python*/site-packages/", excludeFunc=_pythonExcludes
+            )
             pythonPrefix = f"Python/{build_type}/"
 
         # extract import names:

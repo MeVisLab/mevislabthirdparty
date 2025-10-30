@@ -1,6 +1,7 @@
 from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
 from conan.tools.files import copy, collect_libs
+import os
 
 required_conan_version = ">=2.2.2"
 
@@ -16,11 +17,11 @@ class ConanRecipe(ConanFile):
     exports_sources = "sources/*"
 
     mlab_hooks = {
-        "folders.exclude": ['doxygen'],
-        'dependencies.system_libs': [
-            'libfontconfig.so.1',
-            'libfreetype.so.6',
-            'libGLU.so.1',
+        "folders.exclude": ["doxygen"],
+        "dependencies.system_libs": [
+            "libfontconfig.so.1",
+            "libfreetype.so.6",
+            "libGLU.so.1",
         ],
     }
 
@@ -55,7 +56,7 @@ class ConanRecipe(ConanFile):
         cmake.build()
 
     def package(self):
-        copy(self, "COPYING", src=self.source_path, dst=self.package_path / "licenses")
+        copy(self, "COPYING", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
         cmake = CMake(self)
         cmake.install()
 

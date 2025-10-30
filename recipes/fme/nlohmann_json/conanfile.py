@@ -1,6 +1,7 @@
 from conan import ConanFile
 from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout
 from conan.tools.files import get, copy, rmdir, rm
+import os
 
 required_conan_version = ">=2.2.2"
 
@@ -46,9 +47,9 @@ class ConanRecipe(ConanFile):
     def package(self):
         cmake = CMake(self)
         cmake.install()
-        copy(self, "LICENSE.MIT", src=self.source_path, dst=self.package_path / "licenses")
-        rmdir(self, self.package_path / "lib")
-        rmdir(self, self.package_path / "share")
+        copy(self, "LICENSE.MIT", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
+        rmdir(self, os.path.join(self.package_folder, "lib"))
+        rmdir(self, os.path.join(self.package_folder, "share"))
         rm(self, pattern="nlohmann_json.natvis", folder=self.package_folder)
 
     def package_info(self):

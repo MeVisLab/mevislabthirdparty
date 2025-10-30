@@ -20,23 +20,29 @@ class ConanRecipe(ConanFile):
         cmake_layout(self, src_folder="src")
 
     def source(self):
-        get(self,
+        get(
+            self,
             sha256="ab5174b9b5c6236588e15a1aa1aaecb6658cdbe09501c7981ac8db276a24d9ab",
             url=f"https://github.com/weidai11/cryptopp/archive/CRYPTOPP_{self.version.replace('.', '_')}.tar.gz",
-            strip_root=True
+            strip_root=True,
         )
-        get(self,
+        get(
+            self,
             sha256="191d69061c56602de1610ebf03b44dcf75636006e7e60ef8105bee6472ec0caf",
             url=f"https://github.com/abdes/cryptopp-cmake/archive/CRYPTOPP_{self.version.replace('.', '_')}.tar.gz",
             destination=os.path.join(self.source_folder, "cryptopp-cmake"),
-            strip_root=True
+            strip_root=True,
         )
-        patch(self,
-              patch_file="patches/001-check_for_prime.patch",
-              patch_description="CVE-2023-50981, see https://github.com/weidai11/cryptopp/pull/1255")
-        patch(self,
-              patch_file="patches/002-vaildate_poly_coefficients.patch",
-              patch_description="CVE-2023-50980, see https://github.com/weidai11/cryptopp/issues/1248")
+        patch(
+            self,
+            patch_file="patches/001-check_for_prime.patch",
+            patch_description="CVE-2023-50981, see https://github.com/weidai11/cryptopp/pull/1255",
+        )
+        patch(
+            self,
+            patch_file="patches/002-vaildate_poly_coefficients.patch",
+            patch_description="CVE-2023-50980, see https://github.com/weidai11/cryptopp/issues/1248",
+        )
 
     def generate(self):
         tc = CMakeToolchain(self)
@@ -55,10 +61,10 @@ class ConanRecipe(ConanFile):
         cmake.build()
 
     def package(self):
-        copy(self, "License.txt", src=self.source_path, dst=self.package_path / "licenses")
+        copy(self, "License.txt", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
         cmake = CMake(self)
         cmake.install()
-        rmdir(self, self.package_path / "share")
+        rmdir(self, os.path.join(self.package_folder, "share"))
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:cryptopp:crypto\\+\\+:*:*:*:*:*:*:*:*")

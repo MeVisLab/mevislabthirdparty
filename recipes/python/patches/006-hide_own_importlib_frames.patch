@@ -1,8 +1,8 @@
 diff --git a/Python/import.c b/Python/import.c
-index c4e2145..7a00d63 100644
+index 64048a4..e8542d4 100644
 --- a/Python/import.c
 +++ b/Python/import.c
-@@ -1491,6 +1491,7 @@ remove_importlib_frames(PyThreadState *tstate)
+@@ -3427,6 +3427,7 @@ remove_importlib_frames(PyThreadState *tstate)
  {
      const char *importlib_filename = "<frozen importlib._bootstrap>";
      const char *external_filename = "<frozen importlib._bootstrap_external>";
@@ -10,9 +10,9 @@ index c4e2145..7a00d63 100644
      const char *remove_frames = "_call_with_frames_removed";
      int always_trim = 0;
      int in_importlib = 0;
-@@ -1521,7 +1522,8 @@ remove_importlib_frames(PyThreadState *tstate)
- 
-         assert(PyTraceBack_Check(tb));
+@@ -3459,7 +3460,8 @@ remove_importlib_frames(PyThreadState *tstate)
+         int now_in_importlib;
+
          now_in_importlib = _PyUnicode_EqualToASCIIString(code->co_filename, importlib_filename) ||
 -                           _PyUnicode_EqualToASCIIString(code->co_filename, external_filename);
 +                           _PyUnicode_EqualToASCIIString(code->co_filename, external_filename) ||

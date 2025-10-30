@@ -1,8 +1,8 @@
 diff --git a/src/widgets/kernel/qwidget.cpp b/src/widgets/kernel/qwidget.cpp
-index 854e4da5..b2c762f0 100644
+index a604cb1e..5a3b2f8e 100644
 --- a/src/widgets/kernel/qwidget.cpp
 +++ b/src/widgets/kernel/qwidget.cpp
-@@ -7612,9 +7612,10 @@ bool QWidget::restoreGeometry(const QByteArray &geometry)
+@@ -7552,9 +7552,10 @@ bool QWidget::restoreGeometry(const QByteArray &geometry)
      // high DPI scaling or different levels of DPI awareness.
      if (restoredScreenWidth) {
          const qreal factor = qreal(restoredScreenWidth) / screenWidthF;

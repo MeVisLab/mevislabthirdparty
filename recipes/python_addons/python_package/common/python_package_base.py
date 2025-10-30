@@ -60,14 +60,9 @@ class PythonPackageBase(ConanFile):
 
         env = VirtualRunEnv(self)
         env.generate()
-        # install a current version of setuptools to be able to handle newer packaging specs
-        # TODO: remove this once we have current Python/pip versions
+        extra_pip_args = "--disable-pip-version-check --use-deprecated=legacy-certs"
         self.run(
-            f"{self.py_command} -m pip install -U setuptools",
-            scope="run",
-        )
-        self.run(
-            f"{self.py_command} -m pip install --disable-pip-version-check --no-deps -r "
+            f"{self.py_command} -m pip install --no-deps {extra_pip_args} -r "
             f"{requirements_path} -t {self.site_packages_path}",
             scope="run",
         )
@@ -75,7 +70,7 @@ class PythonPackageBase(ConanFile):
             yield
         finally:
             self.run(
-                f"{self.py_command} -m pip uninstall --yes --disable-pip-version-check -r {requirements_path}",
+                f"{self.py_command} -m pip uninstall --yes {extra_pip_args} -r {requirements_path}",
                 scope="run",
             )
 

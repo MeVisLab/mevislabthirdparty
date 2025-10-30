@@ -22,8 +22,10 @@ void run_program(const char *desc, const char *prog)
 }
 
 int main() {
-    Py_DontWriteBytecodeFlag = 1;
-    Py_Initialize();
+    PyConfig config;
+    PyConfig_InitPythonConfig(&config);
+    config.write_bytecode = 0;
+    Py_InitializeFromConfig(&config);
 
     run_program("set DLL directories on Windows",
         "import os\n"
@@ -65,7 +67,7 @@ int main() {
     run_stmt("import xml");
     run_stmt("import zoneinfo");
 
-    run_program("recursice_future_repr.patch",
+    run_program("recursive_future_repr.patch",
         "import asyncio\n"
         "import functools\n"
         "import sys\n"
@@ -74,7 +76,7 @@ int main() {
         "def done_cb(arg):\n"
         "  pass\n"
         "fut.add_done_callback(functools.partial(done_cb, fut))\n"
-        "assert(repr(fut) == \"<Future pending cb=[done_cb(...)() at <string>:6]>\")\n"
+        "assert(repr(fut) == \"<Future pending cb=[done_cb()() at <string>:6]>\")\n"
     );
 
 	Py_Finalize();

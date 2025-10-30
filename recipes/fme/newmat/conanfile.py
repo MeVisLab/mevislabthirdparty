@@ -1,6 +1,7 @@
 from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
 from conan.tools.files import get, collect_libs, patch, copy
+import os
 
 required_conan_version = ">=2.2.2"
 
@@ -10,7 +11,7 @@ class ConanRecipe(ConanFile):
     version = "11"
     homepage = "https://www.robertnz.net/nm_intro.htm"
     description = "A C++ matrix library"
-    license = "Unlicense"
+    license = "LicenseRef-newmat-0BSD-like"
     package_type = "static-library"
     settings = "os", "arch", "compiler", "build_type"
     exports_sources = "LICENSE", "CMakeLists.txt", "patches/*.patch"
@@ -36,12 +37,17 @@ class ConanRecipe(ConanFile):
 
     def build(self):
         cmake = CMake(self)
-        cmake.configure(build_script_folder=self.source_path.parent)
+        cmake.configure(build_script_folder=os.path.dirname(self.source_folder))
         cmake.build()
 
     def package(self):
-        copy(self, pattern="LICENSE", src=self.source_path.parent, dst=self.package_path / "licenses")
-        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False)
+        copy(
+            self,
+            pattern="LICENSE",
+            src=os.path.dirname(self.source_folder),
+            dst=os.path.join(self.package_folder, "licenses"),
+        )
+        copy(self, "*.pdb", src=self.build_folder, dst=os.path.join(self.package_folder, "bin"), keep_path=False)
         cmake = CMake(self)
         cmake.install()
 

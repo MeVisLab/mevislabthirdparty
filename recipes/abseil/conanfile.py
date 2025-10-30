@@ -10,6 +10,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "abseil"
+    # when updating this, check with FME that it does not cause problems with their thirdparty builds
     version = "20250127.1"
     homepage = "https://abseil.io"
     description = "Collection of C++ libraries from Google"

@@ -5,13 +5,17 @@ import os
 import re
 import textwrap
 import traceback
+from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
+
 from conan import ConanFile, conan_version
+from conan.internal.model.conanfile_interface import ConanFileInterface
 from conan.tools.cmake import CMakeDeps
 from conan.tools.files import load, save, chdir, mkdir, replace_in_file
 from conan.tools.scm import Version
 from jinja2 import Environment, FileSystemLoader
+
 from licenses import spdx_licenses, other_licenses
 from mli import MLI, MLI_Python, MLI_Qt
 
@@ -49,11 +53,11 @@ def get_display_name(dependency):
 
 class MLIDeps:
 
-    def __init__(self, conanfile):
+    def __init__(self, conanfile: ConanFileInterface):
         self.conanfile = conanfile
         self.external_mli_files = {}
 
-    def refer_to_existing_mlab_package(self, package_id, package_path):
+    def refer_to_existing_mlab_package(self, package_id: str, package_path: str):
         """If generating .mli files for a MeVisLab package other than MeVis/ThirdParty,
         some dependencies might come from MeVis/ThirdParty, and need to be included
         correctly.
@@ -67,16 +71,14 @@ class MLIDeps:
         path = Path(package_path) / "Configuration" / "Installers" / "Libraries"
         for entry in path.glob("*.mli"):
             dep_name = entry[:-4]
-            try:
-                self.conanfile.dependencies.host[dep_name]
-                # Is this a known dependency?
+            # Is this a known dependency?
+            if dep_name in self.conanfile.dependencies.host:
                 self.external_mli_files[dep_name] = package_id
-            except KeyError:
-                pass
 
-    def get_content(self, package_id):
+    def get_content(self, package_id: str):
         result = {}
-        for dependency in self.conanfile.dependencies.host.values():  # only non-build requirements
+        # check only non-build requirements, but include skipped ones (some static libraries)
+        for dependency in self.conanfile.dependencies.filter({"build": False, "test": False}).values():
             dependency_name = dependency.ref.name
             if is_excluded_package(dependency_name):
                 continue
@@ -97,6 +99,14 @@ class MLIDeps:
             save(self.conanfile, generator_file, content)
 
 
+@dataclass
+class PackageDeps:
+    """Holds all transitive dependencies of a package, separated by mandatory and optional."""
+
+    mandatory: set[ConanFileInterface]
+    optional: set[ConanFileInterface]
+
+
 class _ThirdPartyInformationBase:
 
     def __init__(self, conanfile: ConanFile):
@@ -104,7 +114,7 @@ class _ThirdPartyInformationBase:
 
     def _get_licenses_of_dependency(self, dependency):
 
-        def partition_all(s: str, separators: tuple[str]):
+        def partition_all(s: str, separators: tuple[str, ...]):
             if separators:
                 before, sep, after = s.partition(separators[0])
                 if sep:
@@ -118,16 +128,19 @@ class _ThirdPartyInformationBase:
             else:
                 return []
 
-        separators = (" ", "(", ")")
-        non_parts = separators + ("AND", "OR")
+        license_separators = (" ", "(", ")")
+        non_parts = license_separators + ("AND", "OR")
         licenses = dependency.license
         if isinstance(licenses, (list, tuple)):
             # support license lists:
             license_list = licenses
             licenses = " AND ".join(licenses)
         else:
-            # split potential SPDX license expression
-            license_list = partition_all(licenses, separators)
+            if licenses:
+                # split potential SPDX license expression
+                license_list = partition_all(licenses, license_separators)
+            else:
+                license_list = []
         license_names = []
         for license_id in license_list:
             if license_id in non_parts:
@@ -145,16 +158,32 @@ class _ThirdPartyInformationBase:
                     self.conanfile.output.info("Please use a SPDX license identifier (https://spdx.org/licenses/).")
         return licenses, ", ".join(license_names)
 
-    def collect_all_dependencies(self, dependency_dict: dict, for_dependency=None):
-        if for_dependency is None:
-            for_dependency = self.conanfile
-        to_check = []
-        for d in for_dependency.dependencies.host.values():
-            if d.ref not in dependency_dict:
-                dependency_dict[d.ref] = d
-                to_check.append(d)
-        for d in to_check:
-            self.collect_all_dependencies(dependency_dict, d)
+    def collect_all_dependencies(
+        self,
+        dependencies: dict[ConanFileInterface, PackageDeps],
+        *,
+        for_dependency: ConanFileInterface | None = None,
+    ):
+        top_level_dep = for_dependency or self.conanfile
+        deps = {d for d in top_level_dep.dependencies.direct_host.values()}
+        optional_dep_names = (top_level_dep.cpp_info.get_property("optional_deps") or "").split(",")
+        top_level_optional_deps = {d for d in deps if d.ref.name in optional_dep_names}
+        optional_deps = set(top_level_optional_deps)
+        mandatory_deps = deps - optional_deps
+        for d in deps:
+            if d not in dependencies:
+                self.collect_all_dependencies(dependencies, for_dependency=d)
+            secondary_deps = dependencies[d]
+            if d in top_level_optional_deps:
+                # all secondary dependencies are initially optional
+                optional_deps |= secondary_deps.optional | secondary_deps.mandatory
+            else:
+                # only secondary optional dependencies are optional
+                mandatory_deps |= secondary_deps.mandatory
+                optional_deps |= secondary_deps.optional
+        # dependencies that are in both groups are mandatory
+        optional_deps -= mandatory_deps
+        dependencies[top_level_dep] = PackageDeps(mandatory_deps, optional_deps)
 
 
 class ThirdPartyInformationDeps(_ThirdPartyInformationBase):
@@ -165,66 +194,78 @@ class ThirdPartyInformationDeps(_ThirdPartyInformationBase):
             raise AssertionError()
         return value
 
-    def generate(self, package_id="MeVis/ThirdParty"):
-        content_dict = {}
+    def generate_dependency(
+        self,
+        dependency: ConanFile,
+        package_id: str,
+        contents: dict,
+        mandatory_deps: set[ConanFile],
+        optional_deps: set[ConanFile],
+    ):
         tp_info_path = package_id + "/ThirdPartyInformation"
+        pkg_name = dependency.ref.name
+        base_path = f"{tp_info_path}/{pkg_name}"
+        licenses, license_names = self._get_licenses_of_dependency(dependency)
+
+        info = {
+            "id": pkg_name.lower(),
+            "name": get_display_name(dependency),
+            "version": str(dependency.ref.version),
+            "license": licenses,
+            "license_name": license_names,
+            "homepage": dependency.homepage,
+            "description": dependency.description,
+            # This package was created with conan:
+            "package_source": "conan-mevislab-MMS",
+            # TODO MeVisLab shows all licenses anyway.
+            #      However, some customers use this information for their OTS monitoring.
+            #      So when we provide that information, we have to be absolutely sure that we don't have false negatives.
+            "aboutNeeded": True,
+        }
+        for key, value in info.items():
+            if not value:
+                self.conanfile.output.warning(f"Missing value for {key} in .mlinfo for {pkg_name}")
+        # cpe are IDs for CVE entries, and must be set manually on the conan recipe.
+        cpe = dependency.cpp_info.get_property("cpe")
+        if cpe:
+            info["cpe"] = cpe
+        # purl are IDs that are used, e.g., by dependency track to determine if a newer
+        # version is available
+        purl = dependency.cpp_info.get_property("purl")
+        if purl:
+            info["purl"] = purl
+        # list dependencies:
+        if mandatory_deps or optional_deps:
+            # we list both mandatory and optional dependencies in the "dependencies" entry
+            info["dependencies"] = sorted([d.ref.name.lower() for d in (mandatory_deps | optional_deps)])
+        if optional_deps:
+            info["optional_dependencies"] = sorted([d.ref.name.lower() for d in optional_deps])
+        # create JSON:
+        contents[f"{base_path}/{pkg_name}.mlinfo"] = json.dumps(info, indent=4)
+
+        if not dependency.package_folder:
+            return
+
+        license_folder = dependency.package_path / "licenses"
+        license_files = list(license_folder.glob("**/*")) if license_folder.exists() else []
+        license_files = [f for f in license_files if (license_folder / f).is_file()]  # remove pure sub-directories
+        if not license_files:
+            self.conanfile.output.error(f"No license found for ThirdPartyInformation of {pkg_name}")
+        else:
+            contents[f"{base_path}/{pkg_name}.license"] = load(self.conanfile, license_folder / license_files[0])
+            # in case there is more than one license file:
+            for num, filename in enumerate(license_files[1:], start=2):
+                contents[f"{base_path}/{pkg_name}.license{num}"] = load(self.conanfile, license_folder / filename)
+
+    def generate(self, package_id="MeVis/ThirdParty"):
         dependencies = {}
         self.collect_all_dependencies(dependencies)
-        for dependency in dependencies.values():
-            pkg_name = dependency.ref.name
-            base_path = f"{tp_info_path}/{pkg_name}"
-            licenses, license_names = self._get_licenses_of_dependency(dependency)
-
-            info = {
-                "id": pkg_name.lower(),
-                "name": get_display_name(dependency),
-                "version": str(dependency.ref.version),
-                "license": licenses,
-                "license_name": license_names,
-                "homepage": dependency.homepage,
-                "description": dependency.description,
-                # This package was created with conan:
-                "package_source": "conan-mevislab-MMS",
-                # TODO MeVisLab shows all licenses anyway.
-                #      However, some customers use this information for their OTS monitoring.
-                #      So when we provide that information, we have to be absolutely sure that we don't have false negatives.
-                "aboutNeeded": True,
-            }
-            for key, value in info.items():
-                if not value:
-                    self.conanfile.output.warning(f"Missing value for {key} in .mlinfo for {pkg_name}")
-            # cpe are IDs for CVE entries, and must be set manually on the conan recipe.
-            cpe = dependency.cpp_info.get_property("cpe")
-            if cpe:
-                info["cpe"] = cpe
-            content_dict[f"{base_path}/{pkg_name}.mlinfo"] = json.dumps(info, indent=4)
-            # purl are IDs that are used, e.g., by dependency track to determine if a newer
-            # version is available
-            purl = dependency.cpp_info.get_property("purl")
-            if purl:
-                info["purl"] = purl
-            # list dependencies:
-            dependencies = sorted([d.ref.name.lower() for d in dependency.dependencies.host.values()])
-            if dependencies:
-                info["dependencies"] = dependencies
-            # create JSON:
-            content_dict[f"{base_path}/{pkg_name}.mlinfo"] = json.dumps(info, indent=4)
-
-            if not dependency.package_folder:
+        contents = {}
+        for dependency, values in dependencies.items():
+            if dependency.ref.name == self.conanfile.ref.name:
                 continue
-
-            license_folder = dependency.package_path / "licenses"
-            license_files = list(license_folder.glob("**/*")) if license_folder.exists() else []
-            license_files = [f for f in license_files if (license_folder / f).is_file()]  # remove pure sub-directories
-            if not license_files:
-                self.conanfile.output.error(f"No license found for ThirdPartyInformation of {pkg_name}")
-            else:
-                content_dict[f"{base_path}/{pkg_name}.license"] = load(self.conanfile, license_folder / license_files[0])
-                # in case there is more than one license file:
-                for num, filename in enumerate(license_files[1:], start=2):
-                    content_dict[f"{base_path}/{pkg_name}.license{num}"] = load(self.conanfile, license_folder / filename)
-
-        for generator_file, content in content_dict.items():
+            self.generate_dependency(dependency, package_id, contents, values.mandatory, values.optional)
+        for generator_file, content in contents.items():
             save(self.conanfile, generator_file, content)
 
 
@@ -344,7 +385,10 @@ class MeVisLabCMakeDeps:
 
     def get_template_engine(self, build_type):
         # initialize template engine
-        tpl = Environment(loader=FileSystemLoader(os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")), trim_blocks=True)
+        tpl = Environment(
+            loader=FileSystemLoader(os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")),
+            trim_blocks=True,
+        )
         tpl.globals["header_date"] = datetime.now().strftime("%d/%m/%Y")
         tpl.globals["min_cmake_version"] = "3.20.0"
         tpl.globals["build_type"] = build_type
@@ -395,12 +439,16 @@ class MeVisLabCMakeDeps:
                 )
             )
 
-        ret[f"{self.cmake_intern_folder}/MeVisLabInstallThirdParty.cmake"] = tpl.get_template("MeVisLabInstallThirdParty.jinja").render()
+        ret[f"{self.cmake_intern_folder}/MeVisLabInstallThirdParty.cmake"] = tpl.get_template(
+            "MeVisLabInstallThirdParty.jinja"
+        ).render()
         ret[f"{self.cmake_intern_folder}/MeVisLabThirdPartyPaths-{build_type.lower()}.cmake"] = tpl.get_template(
             "MeVisLabThirdPartyPathsType.jinja"
         ).render(package_root_dirs=package_root_dirs)
 
-        ret[f"{self.cmake_intern_folder}/MeVisLabThirdPartyPaths.cmake"] = tpl.get_template("MeVisLabThirdPartyPaths.jinja").render()
+        ret[f"{self.cmake_intern_folder}/MeVisLabThirdPartyPaths.cmake"] = tpl.get_template(
+            "MeVisLabThirdPartyPaths.jinja"
+        ).render()
 
         return ret
 
@@ -409,7 +457,9 @@ class MeVisLabCMakeDeps:
         with chdir(self.conanfile, self.cmake_sub_folder):
             deps = CMakeDeps(self.conanfile)
             deps.generate()
-            absolute_path_statement = re.compile(r'set\((?P<name>[-\w]+)_PACKAGE_FOLDER_(?P<build_type>[-\w]+) "[^"]*"\)')
+            absolute_path_statement = re.compile(
+                r'set\((?P<name>[-\w]+)_PACKAGE_FOLDER_(?P<build_type>[-\w]+) "[^"]*"\)'
+            )
             # patch cmake files, files like Eigen3-debug-x86_64-data.cmake
             for filename in glob.glob("*-*-*-data.cmake"):
                 content = load(self.conanfile, filename)

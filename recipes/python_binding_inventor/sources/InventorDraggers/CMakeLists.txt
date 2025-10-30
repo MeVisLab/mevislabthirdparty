@@ -10,9 +10,9 @@ endif()
 target_sources(InventorDraggers PRIVATE
   InventorDraggers.h
   InventorDraggers.cpp
-  ../generated_cpp/Inventor_draggers/Inventor_draggers0.h
-  ../generated_cpp/Inventor_draggers/Inventor_draggers0.cpp
-  ../generated_cpp/Inventor_draggers/Inventor_draggers_init.cpp
+  ../generated_cpp/inventor_draggers/inventor_draggers0.h
+  ../generated_cpp/inventor_draggers/inventor_draggers0.cpp
+  ../generated_cpp/inventor_draggers/inventor_draggers_init.cpp
 )
 
 target_link_libraries(InventorDraggers

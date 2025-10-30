@@ -1,7 +1,7 @@
 import glob
 import json
 import os
-
+from pathlib import Path
 from conan import ConanFile
 from conan.tools.build import check_min_cppstd, can_run
 from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
@@ -70,7 +70,7 @@ class QtPackage:
         self.info.python_requires.recipe_revision_mode()
 
     def validate(self):
-        check_min_cppstd(self, "17")
+        check_min_cppstd(self, "20")
 
     def configure(self):
         pass
@@ -90,8 +90,14 @@ class QtPackage:
                 self.requires(f"{d}/{self.version}")
 
     def source(self: ConanFile):
-        get(self, sha256=self._qtdata["modules"][self.name]["sha256"], url=self._qtdata["modules"][self.name]["url"], strip_root=True)
-        patches = (self.export_sources_path / "patches").glob("*.patch") if (self.export_sources_path / "patches").exists() else []
+        get(
+            self,
+            sha256=self._qtdata["modules"][self.name]["sha256"],
+            url=self._qtdata["modules"][self.name]["url"],
+            strip_root=True,
+        )
+        patchFolder = Path(self.export_sources_folder) / "patches"
+        patches = patchFolder.glob("*.patch") if patchFolder.exists() else []
         for p in sorted(patches):
             self.output.info(f"Apply patch: {p}")
             patch(self, patch_file=p)
@@ -108,20 +114,25 @@ class QtPackage:
 
         tc = CMakeToolchain(self, generator="Ninja")
         tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
+        tc.variables["CMAKE_CXX_EXTENSIONS"] = True  # -std=c++NN instead of gnu++NN breaks <type_traits> on libstdc++
+
         tc.variables["BUILD_SHARED_LIBS"] = True
 
         tc.variables["OpenGL_GL_PREFERENCE"] = "LEGACY"
 
         tc.variables["FEATURE_separate_debug_info"] = self.settings.build_type == "Debug" and not is_msvc(self)
-        # tc.variables["FEATURE_cxx20"] = False
+        tc.variables["FEATURE_cxx20"] = True
         tc.variables["FEATURE_c11"] = True
 
-        tc.variables["QT_UNITY_BUILD"] = False
+        tc.variables["QT_UNITY_BUILD"] = (
+            False if self.settings.os == "Windows" else True
+        )  # ~30% faster build (but build problems on windows with 6.8.0)
         tc.variables["QT_DISABLE_DEPRECATED_UP_TO"] = "0x051500"
 
         tc.variables["QT_BUILD_TESTS"] = False
         tc.variables["QT_BUILD_EXAMPLES"] = False
         tc.variables["QT_BUILD_BENCHMARKS"] = False
+        tc.variables["QT_GENERATE_SBOM"] = False
 
         if self.qt_feature:
             for key, value in self.qt_feature.items():
@@ -159,11 +170,16 @@ class QtPackage:
     def package(self):
         cmake = CMake(self)
         cmake.install()
-        copy(self, pattern="*.txt", src=self.source_path / "LICENSES", dst=self.package_path / "licenses")
+        copy(
+            self,
+            pattern="*.txt",
+            src=os.path.join(self.source_folder, "LICENSES"),
+            dst=os.path.join(self.package_folder, "licenses"),
+        )
         if self.settings.os == "Windows":
             # In Qt6.6.1 we found a directory objects-Debug/Release in lib that clearly
             # doesn't belong there - seems to be a bug in the CMake files:
-            rmdir(self, self.package_path / "lib" / f"objects-{self.settings.build_type}")
+            rmdir(self, os.path.join(self.package_folder, "lib", f"objects-{self.settings.build_type}"))
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:qt:qt:*:*:*:*:*:*:*:*")

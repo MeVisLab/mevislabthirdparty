@@ -2,6 +2,7 @@ from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
 from conan.tools.files import collect_libs, copy, get, rmdir
 from conan.tools.scm import Version
+import os
 
 required_conan_version = ">=2.2.2"
 
@@ -32,7 +33,7 @@ class ConanRecipe(ConanFile):
             url=f"https://github.com/uclouvain/openjpeg/archive/v{self.version}.tar.gz",
             strip_root=True,
         )
-        copy(self, self.exports_sources, self.export_sources_path, self.source_path)
+        copy(self, self.exports_sources, self.export_sources_folder, self.source_folder)
 
     def generate(self):
         tc = CMakeToolchain(self)
@@ -58,15 +59,22 @@ class ConanRecipe(ConanFile):
         cmake.build()
 
     def package(self):
-        copy(self, "LICENSE", src=self.source_path, dst=self.package_path / "licenses")
-        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False, excludes="*vc???.pdb")
+        copy(self, "LICENSE", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
+        copy(
+            self,
+            "*.pdb",
+            src=self.build_folder,
+            dst=os.path.join(self.package_folder, "bin"),
+            keep_path=False,
+            excludes="*vc???.pdb",
+        )
         cmake = CMake(self)
         cmake.install()
         v = Version(self.version)
-        rmdir(self, self.package_path / "lib" / "cmake")
-        rmdir(self, self.package_path / "lib" / "pkgconfig")
-        rmdir(self, self.package_path / "lib" / f"openjpeg-{v.major}.{v.minor}")
-        copy(self, self.exports_sources, self.source_path, self.package_path / "lib")
+        rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
+        rmdir(self, os.path.join(self.package_folder, "lib", f"openjpeg-{v.major}.{v.minor}"))
+        copy(self, self.exports_sources, self.source_folder, os.path.join(self.package_folder, "lib"))
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:uclouvain:openjpeg:*:*:*:*:*:*:*:*")

@@ -1,13 +1,3 @@
-/*************************************************************************************
-**
-** Copyright 2022, MeVis Medical Solutions AG
-**
-** GNU LESSER GENERAL PUBLIC LICENSE Version 2.1, February 1999
-**
-**************************************************************************************/
-#include <PythonQt.h>
-#include <QObject>
-#include <QVariant>
 #include <Inventor/SbLinear.h>
 #include <Inventor/projectors/SbCylinderPlaneProjector.h>
 #include <Inventor/projectors/SbCylinderProjector.h>
@@ -20,7 +10,9 @@
 #include <Inventor/projectors/SbSphereProjector.h>
 #include <Inventor/projectors/SbSphereSectionProjector.h>
 #include <Inventor/projectors/SbSphereSheetProjector.h>
-#include <stdexcept>
+#include <PythonQt.h>
+#include <QObject>
+#include <QVariant>
 
 
 

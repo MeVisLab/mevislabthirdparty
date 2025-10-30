@@ -2,6 +2,7 @@ from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
 from conan.tools.files import patch, collect_libs, copy, get
 from conan.tools.env import VirtualRunEnv
+import os
 
 required_conan_version = ">=2.2.2"
 
@@ -23,7 +24,8 @@ class ConanRecipe(ConanFile):
         self.requires("qtbase/[>=6.6]")
 
     def source(self):
-        get(self,
+        get(
+            self,
             sha256="49628e859a6aea81ada25b9b51630808cb6d7e9042b017b6514cdfd9dabb65dd",
             url=f"https://github.com/nikhilm/qhttpserver/archive/30ac5715d123030b01bbac7383fb73d1d00d932b.tar.gz",
             destination="src",
@@ -42,7 +44,7 @@ class ConanRecipe(ConanFile):
         tc.variables["BUILD_SHARED_LIBS"] = True
         tc.variables["CMAKE_INSTALL_RPATH"] = "$ORIGIN;$ORIGIN/../lib"
         tc.variables["CMAKE_POSITION_INDEPENDENT_CODE"] = True
-        tc.variables["CMAKE_CXX_VISIBILITY_PRESET"] = "default" #fixme
+        tc.variables["CMAKE_CXX_VISIBILITY_PRESET"] = "default"  # fixme
         tc.generate()
 
     def build(self):
@@ -51,7 +53,12 @@ class ConanRecipe(ConanFile):
         cmake.build()
 
     def package(self):
-        copy(self, "LICENSE", src=self.source_path / "src", dst=self.package_path / "licenses")
+        copy(
+            self,
+            "LICENSE",
+            src=os.path.join(self.source_folder, "src"),
+            dst=os.path.join(self.package_folder, "licenses"),
+        )
         cmake = CMake(self)
         cmake.install()
 

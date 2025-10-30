@@ -48,11 +48,11 @@ class ConanRecipe(ConanFile):
         cmake = CMake(self)
         cmake.install()
 
-        rmdir(self, self.package_path / "lib" / "cmake")
-        rmdir(self, self.package_path / "lib" / "pkgconfig")
-        rmdir(self, self.package_path / "share")
+        rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
+        rmdir(self, os.path.join(self.package_folder, "share"))
 
-        copy(self, "COPYING", src=self.source_path, dst=self.package_path / "licenses")
+        copy(self, "COPYING", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
 
         content = textwrap.dedent(
             f"""\
@@ -80,7 +80,7 @@ class ConanRecipe(ConanFile):
             set(LIBLZMA_VERSION_STRING "{self.version}")
         """
         )
-        save(self, self.package_path / self._module_file_rel_path, content)
+        save(self, os.path.join(self.package_folder, self._module_file_rel_path), content)
 
     @property
     def _module_file_rel_path(self):

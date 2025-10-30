@@ -1,8 +1,8 @@
 diff --git a/src/core/api/qwebenginemessagepumpscheduler.cpp b/src/core/api/qwebenginemessagepumpscheduler.cpp
-index a435e2c..f185a22 100644
+index 860696c374..8ec05932d0 100644
 --- a/src/core/api/qwebenginemessagepumpscheduler.cpp
 +++ b/src/core/api/qwebenginemessagepumpscheduler.cpp
-@@ -34,10 +34,12 @@ void QWebEngineMessagePumpScheduler::scheduleDelayedWork(int delay)
+@@ -29,10 +29,12 @@ void QWebEngineMessagePumpScheduler::scheduleDelayedWork(int delay)
  
  void QWebEngineMessagePumpScheduler::timerEvent(QTimerEvent *ev)
  {

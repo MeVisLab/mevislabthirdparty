@@ -9,9 +9,9 @@ endif()
 
 target_sources(InventorProjectors PRIVATE
   InventorProjectors.cpp
-  ../generated_cpp/Inventor_projectors/Inventor_projectors0.h
-  ../generated_cpp/Inventor_projectors/Inventor_projectors0.cpp
-  ../generated_cpp/Inventor_projectors/Inventor_projectors_init.cpp
+  ../generated_cpp/inventor_projectors/inventor_projectors0.h
+  ../generated_cpp/inventor_projectors/inventor_projectors0.cpp
+  ../generated_cpp/inventor_projectors/inventor_projectors_init.cpp
 )
 
 target_link_libraries(InventorProjectors

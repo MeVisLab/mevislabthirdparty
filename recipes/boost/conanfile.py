@@ -21,7 +21,7 @@ class ConanRecipe(ConanFile):
     name = "boost"
     display_name = "Boost"
     mli_name = "None"
-    version = "1.86.0"
+    version = "1.89.0"
     homepage = "https://www.boost.org"
     description = "Boost provides free peer-reviewed portable C++ source libraries"
     license = "BSL-1.0"
@@ -70,7 +70,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="1bed88e40401b2cb7a1f76d4bab499e352fa4d0c5f31c0dbae64e24d34d7513b",
+            sha256="85a33fa22621b4f314f8e85e1a5e2a9363d22e4f4992925d4bb3bc631b5a0c7a",
             url=f"https://archives.boost.io/release/{self.version}/source/boost_{self.version.replace('.','_')}.tar.bz2",
             strip_root=True,
         )
@@ -79,8 +79,8 @@ class ConanRecipe(ConanFile):
         self._bootstrap()
 
         flags = self._get_build_flags()
-        b2dir = self.source_path / "tools" / "build"
-        b2exe = b2dir / ("b2.exe" if self.settings.os == "Windows" else "b2")
+        b2dir = os.path.join(self.source_folder, "tools", "build")
+        b2exe = os.path.join(b2dir, ("b2.exe" if self.settings.os == "Windows" else "b2"))
         b2 = (
             f'{b2exe} {" ".join(flags)} '
             f"-j{os.cpu_count()} "
@@ -98,17 +98,23 @@ class ConanRecipe(ConanFile):
                 self.run(b2)
 
     def package(self):
-        copy(self, pattern="*", src=self.source_path / "boost", dst=self.package_path / "include" / "boost", excludes="*/CMakeLists.txt")
-        copy(self, "LICENSE_1_0.txt", src=self.source_path, dst=self.package_path / "licenses")
+        copy(
+            self,
+            pattern="*",
+            src=os.path.join(self.source_folder, "boost"),
+            dst=os.path.join(self.package_folder, "include", "boost"),
+            excludes="*/CMakeLists.txt",
+        )
+        copy(self, "LICENSE_1_0.txt", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
 
-        out_lib_dir = self.source_path / "stage" / "lib"
-        copy(self, pattern="*.a", dst=self.package_path / "lib", src=out_lib_dir, keep_path=False)
-        copy(self, pattern="*.so", dst=self.package_path / "lib", src=out_lib_dir, keep_path=False)
-        copy(self, pattern="*.so.*", dst=self.package_path / "lib", src=out_lib_dir, keep_path=False)
-        copy(self, pattern="*.dylib*", dst=self.package_path / "lib", src=out_lib_dir, keep_path=False)
-        copy(self, pattern="*.lib", dst=self.package_path / "lib", src=out_lib_dir, keep_path=False)
-        copy(self, pattern="*.dll", dst=self.package_path / "bin", src=out_lib_dir, keep_path=False)
-        copy(self, pattern="boost*.pdb", dst=self.package_path / "bin", src=out_lib_dir, keep_path=False)
+        out_lib_dir = os.path.join(self.source_folder, "stage", "lib")
+        copy(self, pattern="*.a", dst=os.path.join(self.package_folder, "lib"), src=out_lib_dir, keep_path=False)
+        copy(self, pattern="*.so", dst=os.path.join(self.package_folder, "lib"), src=out_lib_dir, keep_path=False)
+        copy(self, pattern="*.so.*", dst=os.path.join(self.package_folder, "lib"), src=out_lib_dir, keep_path=False)
+        copy(self, pattern="*.dylib*", dst=os.path.join(self.package_folder, "lib"), src=out_lib_dir, keep_path=False)
+        copy(self, pattern="*.lib", dst=os.path.join(self.package_folder, "lib"), src=out_lib_dir, keep_path=False)
+        copy(self, pattern="*.dll", dst=os.path.join(self.package_folder, "bin"), src=out_lib_dir, keep_path=False)
+        copy(self, pattern="boost*.pdb", dst=os.path.join(self.package_folder, "bin"), src=out_lib_dir, keep_path=False)
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:boost:boost:*:*:*:*:*:*:*:*")
@@ -120,16 +126,8 @@ class ConanRecipe(ConanFile):
         self.cpp_info.components["headers"].set_property("cmake_target_name", "Boost::headers")
         self.cpp_info.components["headers"].defines.append("BOOST_ALL_DYN_LINK")
 
-        # PCL 1.13.1 still uses deprecated asio and filesystem functions
-        # self.cpp_info.components["headers"].defines.append("BOOST_ASIO_NO_DEPRECATED")
-        # self.cpp_info.components["headers"].defines.append("BOOST_FILESYSTEM_NO_DEPRECATED")
-        self.cpp_info.components["headers"].defines.append("BOOST_BEAST_NO_DEPRECATED")
-        self.cpp_info.components["headers"].defines.append("BOOST_PROCESS_NO_DEPRECATED")
-        self.cpp_info.components["headers"].defines.append("BOOST_SYSTEM_NO_DEPRECATED")
-
         if is_msvc(self):
             # Avoid WINAPI mismatch in boost::log:
-            self.cpp_info.components["headers"].defines.append("BOOST_USE_WINAPI_VERSION=0x600")
             self.cpp_info.components["headers"].defines.append("BOOST_ALL_NO_LIB")
 
         # Boost::boost is an alias of Boost::headers
@@ -137,7 +135,9 @@ class ConanRecipe(ConanFile):
 
         self.cpp_info.components["diagnostic_definitions"].libs = []
         self.cpp_info.components["diagnostic_definitions"].defines = ["BOOST_LIB_DIAGNOSTIC"]
-        self.cpp_info.components["diagnostic_definitions"].set_property("cmake_target_name", f"Boost::diagnostic_definitions")
+        self.cpp_info.components["diagnostic_definitions"].set_property(
+            "cmake_target_name", f"Boost::diagnostic_definitions"
+        )
 
         # A target defined by CMake's original Boost find package and used by openvdb
         self.cpp_info.components["disable_autolinking"].libs = []
@@ -159,7 +159,7 @@ class ConanRecipe(ConanFile):
             self.cpp_info.components["thread"].system_libs.extend(["m", "pthread"])
 
     def _bootstrap(self):
-        folder = self.source_path / "tools" / "build"
+        folder = os.path.join(self.source_folder, "tools", "build")
         try:
             bootstrap = "bootstrap.bat" if self.settings.os == "Windows" else "sh bootstrap.sh"
             with files.chdir(self, folder):
@@ -169,8 +169,8 @@ class ConanRecipe(ConanFile):
                 self.run(cmd)
         except Exception as ex:
             self.output.warning(str(ex))
-            log_path = folder / "bootstrap.log"
-            if log_path.exists():
+            log_path = os.path.join(folder, "bootstrap.log")
+            if os.path.exists(log_path):
                 self.output.warning(files.load(self, log_path))
             raise
         self.output.info("boost bootstrap done")
@@ -233,7 +233,7 @@ class ConanRecipe(ConanFile):
             flags.append("abi=%s" % self._b2_abi())
 
         flags.append("--layout=tagged")
-        flags.append(f"-sBOOST_BUILD_PATH={self.source_path / 'sources' / 'tools' / 'build'}")
+        flags.append(f"-sBOOST_BUILD_PATH={os.path.join(self.source_folder, 'sources', 'tools', 'build')}")
 
         # TODO fix requirements
         flags.append("-sNO_BZIP2=1")
@@ -253,7 +253,6 @@ class ConanRecipe(ConanFile):
 
         if is_msvc(self):
             # Avoid WINAPI mismatch in boost::log:
-            flags.append("define=BOOST_USE_WINAPI_VERSION=0x600")
             flags.append("runtime-link=shared")
 
         flags.append("threading=multi")

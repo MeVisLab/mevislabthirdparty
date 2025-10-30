@@ -1,15 +1,4 @@
-/*************************************************************************************
-**
-** Copyright 2022, MeVis Medical Solutions AG
-**
-** GNU LESSER GENERAL PUBLIC LICENSE Version 2.1, February 1999
-**
-**************************************************************************************/
-#include "Inventor_engines0.h"
-#include <PythonQtConversion.h>
-#include <PythonQtMethodInfo.h>
-#include <PythonQtSignalReceiver.h>
-#include <QVariant>
+#include "inventor_engines0.h"
 #include <Inventor/SbLinear.h>
 #include <Inventor/SbString.h>
 #include <Inventor/SbViewportRegion.h>
@@ -22,6 +11,10 @@
 #include <Inventor/fields/SoFieldData.h>
 #include <Inventor/misc/SoBase.h>
 #include <Inventor/sensors/SoSensor.h>
+#include <PythonQtConversion.h>
+#include <PythonQtMethodInfo.h>
+#include <PythonQtSignalReceiver.h>
+#include <QVariant>
 
 SoBoolOperation* PythonQtWrapper_SoBoolOperation::new_SoBoolOperation()
 { 
@@ -442,6 +435,28 @@ return new SoTimeCounter(); }
 SoType  PythonQtWrapper_SoTimeCounter::static_SoTimeCounter_getClassTypeId()
 {
   return (SoTimeCounter::getClassTypeId());
+}
+
+
+
+SoTransformVec3f* PythonQtWrapper_SoTransformVec3f::new_SoTransformVec3f()
+{ 
+return new SoTransformVec3f(); }
+
+SoType  PythonQtWrapper_SoTransformVec3f::static_SoTransformVec3f_getClassTypeId()
+{
+  return (SoTransformVec3f::getClassTypeId());
+}
+
+
+
+SoTriggerAny* PythonQtWrapper_SoTriggerAny::new_SoTriggerAny()
+{ 
+return new SoTriggerAny(); }
+
+SoType  PythonQtWrapper_SoTriggerAny::static_SoTriggerAny_getClassTypeId()
+{
+  return (SoTriggerAny::getClassTypeId());
 }
 
 

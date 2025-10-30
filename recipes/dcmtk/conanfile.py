@@ -3,6 +3,7 @@ from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
 from conan.tools.files import copy, get, rmdir, patch
 from conan.tools.scm import Version
+import os
 
 required_conan_version = ">=2.2.2"
 
@@ -95,7 +96,9 @@ class ConanRecipe(ConanFile):
                 """
             ),
         )
-        patch(self, patch_file="patches/010-find_3rdparty.patch", patch_description="find and use our conan dependencies")
+        patch(
+            self, patch_file="patches/010-find_3rdparty.patch", patch_description="find and use our conan dependencies"
+        )
         patch(
             self,
             patch_file="patches/012-cmake_module_path.patch",
@@ -142,15 +145,22 @@ class ConanRecipe(ConanFile):
         cmake.build()
 
     def package(self):
-        copy(self, "COPYRIGHT", src=self.source_path, dst=self.package_path / "licenses")
+        copy(self, "COPYRIGHT", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
         cmake = CMake(self)
         cmake.install()
-        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False, excludes="*vc???.pdb")
-        rmdir(self, self.package_path / "cmake")
-        rmdir(self, self.package_path / "share")
-        rmdir(self, self.package_path / "etc")
-        rmdir(self, self.package_path / "lib" / "pkgconfig")
-        rmdir(self, self.package_path / "lib" / "cmake")
+        copy(
+            self,
+            "*.pdb",
+            src=self.build_folder,
+            dst=os.path.join(self.package_folder, "bin"),
+            keep_path=False,
+            excludes="*vc???.pdb",
+        )
+        rmdir(self, os.path.join(self.package_folder, "cmake"))
+        rmdir(self, os.path.join(self.package_folder, "share"))
+        rmdir(self, os.path.join(self.package_folder, "etc"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))
 
     @property
     def _dcmtk_components(self):
@@ -190,7 +200,19 @@ class ConanRecipe(ConanFile):
             "dcmdsig": ["ofstd", "dcmdata"] + openssl,
             "dcmwlm": ["ofstd", "dcmdata", "dcmnet"],
             "dcmqrdb": ["ofstd", "dcmdata", "dcmnet"],
-            "dcmpstat": ["ofstd", "oflog", "dcmdata", "dcmimgle", "dcmimage", "dcmnet", "dcmiod", "dcmdsig", "dcmtls", "dcmsr", "dcmqrdb"]
+            "dcmpstat": [
+                "ofstd",
+                "oflog",
+                "dcmdata",
+                "dcmimgle",
+                "dcmimage",
+                "dcmnet",
+                "dcmiod",
+                "dcmdsig",
+                "dcmtls",
+                "dcmsr",
+                "dcmqrdb",
+            ]
             + openssl,
             "dcmrt": ["ofstd", "oflog", "dcmdata", "dcmimgle"],
             "dcmiod": ["dcmdata", "ofstd", "oflog"],

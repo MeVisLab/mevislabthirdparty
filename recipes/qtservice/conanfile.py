@@ -2,6 +2,7 @@ from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
 from conan.tools.env import VirtualRunEnv
 from conan.tools.files import collect_libs, copy, get, patch
+import os
 
 required_conan_version = ">=2.2.2"
 
@@ -23,9 +24,12 @@ class ConanRecipe(ConanFile):
         self.requires("qtbase/[>=6.5]")
 
     def source(self):
-        get(self, sha256="195f1fcabe80e711199517f20b916d603ea260b1a2d7abcc8ce980af67f3cc96",
+        get(
+            self,
+            sha256="195f1fcabe80e711199517f20b916d603ea260b1a2d7abcc8ce980af67f3cc96",
             url="https://github.com/qtproject/qt-solutions/archive/777e95ba69952f11eaec0adfb0cb987fabcdecb3.zip",
-            strip_root=True)
+            strip_root=True,
+        )
         patch(self, patch_file="patches/001-adapt_to_qt6.patch")
 
     def generate(self):
@@ -43,17 +47,24 @@ class ConanRecipe(ConanFile):
 
     def build(self):
         cmake = CMake(self)
-        cmake.configure(build_script_folder=self.source_path.parent)
+        cmake.configure(build_script_folder=os.path.dirname(self.source_folder))
         cmake.build()
 
     def package(self):
-        copy(self, "BSD-3-Clause.txt", src=self.source_path / "LICENSES", dst=self.package_path / "licenses")
+        copy(
+            self,
+            "BSD-3-Clause.txt",
+            src=os.path.join(self.source_folder, "LICENSES"),
+            dst=os.path.join(self.package_folder, "licenses"),
+        )
         cmake = CMake(self)
         cmake.install()
 
     def package_info(self):
         # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
-        self.cpp_info.set_property("purl", f"pkg:github/qtproject/qt-solutions@777e95ba69952f11eaec0adfb0cb987fabcdecb3")
+        self.cpp_info.set_property(
+            "purl", f"pkg:github/qtproject/qt-solutions@777e95ba69952f11eaec0adfb0cb987fabcdecb3"
+        )
         self.cpp_info.set_property("cmake_file_name", "QtService")
         self.cpp_info.set_property("cmake_target_name", "QtService::QtService")
         self.cpp_info.set_property("cmake_config_version_compat", "AnyNewerVersion")

@@ -1,5 +1,6 @@
 import os
 from shutil import which
+from pathlib import Path
 
 from conan import ConanFile
 from conan.errors import ConanException
@@ -11,7 +12,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "pyzmq"
-    version = "26.4.0"
+    version = "27.0.2"
     homepage = "https://zguide.zeromq.org/"
     description = "Lightweight and super-fast messaging library built on top of the ZeroMQ library"
     license = ["BSD-3-Clause", "LGPL-3.0"]
@@ -37,7 +38,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="e3637b7dd78dd5665cf76574077b97dfada7f81296596db8b5be488cb83b33b0",
+            sha256="8d35e584748cdb9f02d722610804b7bda53e166693b4885efe405412f2f44f7e",
             url=f"https://github.com/zeromq/pyzmq/archive/refs/tags/v{self.version}.tar.gz",
             strip_root=True,
         )
@@ -62,7 +63,7 @@ class ConanRecipe(ConanFile):
             patchelf = which("patchelf")
             if not patchelf:
                 raise ConanException("patchelf could not be found")
-            for sofile in self.package_path.rglob("*.so"):
+            for sofile in Path(self.package_folder).rglob("*.so"):
                 self.run(f"{patchelf} --set-rpath '$ORIGIN/../lib' {sofile}")
 
     def package_info(self):

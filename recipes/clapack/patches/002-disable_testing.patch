@@ -1,3 +1,11 @@
+diff --git a/BLAS/CMakeLists.txt b/BLAS/CMakeLists.txt
+index 3387cd1..a57385a 100644
+--- a/BLAS/CMakeLists.txt
++++ b/BLAS/CMakeLists.txt
+@@ -1,2 +1,2 @@
+ add_subdirectory(SRC)
+-add_subdirectory(TESTING)
++# add_subdirectory(TESTING)
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 index 320ccc6..960baa5 100644
 --- a/CMakeLists.txt

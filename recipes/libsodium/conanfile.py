@@ -56,9 +56,9 @@ class ConanRecipe(ConanFile):
 
     def build(self):
         if is_msvc(self):
-            sln_path = self.source_path / "builds" / "msvc" / "vs2019"
-            proj_path = sln_path / "libsodium"
-            vcxproj_path = proj_path / "libsodium.vcxproj"
+            sln_path = os.path.join(self.source_folder, "builds", "msvc", "vs2019")
+            proj_path = os.path.join(sln_path, "libsodium")
+            vcxproj_path = os.path.join(proj_path, "libsodium.vcxproj")
 
             # TODO: to remove once https://github.com/conan-io/conan/pull/12817 is merged
             replace_in_file(
@@ -68,7 +68,7 @@ class ConanRecipe(ConanFile):
                 replace=f"<PlatformToolset>{MSBuildToolchain(self).toolset}</PlatformToolset>",
             )
 
-            props = self.generators_path / MSBuildToolchain.filename
+            props = os.path.join(self.generators_folder, MSBuildToolchain.filename)
             replace_in_file(
                 self,
                 vcxproj_path,
@@ -77,18 +77,20 @@ class ConanRecipe(ConanFile):
             )
 
             if self.settings.build_type == "Debug":
-                for filename in proj_path.iterdir():
-                    new_name = filename.parent / str(filename.name).replace("libsodium", "libsodium_d")
-                    rename(self, filename, new_name)
+                for filename in os.listdir(proj_path):
+                    old_path = os.path.join(proj_path, filename)
+                    new_name = filename.replace("libsodium", "libsodium_d")
+                    new_path = os.path.join(proj_path, new_name)
+                    rename(self, old_path, new_path)
                 replace_in_file(
                     self,
-                    proj_path / "libsodium_d.vcxproj",
+                    os.path.join(proj_path, "libsodium_d.vcxproj"),
                     "<ProjectName>libsodium</ProjectName>",
                     "<ProjectName>libsodium_d</ProjectName>",
                 )
                 replace_in_file(
                     self,
-                    sln_path / "libsodium.sln",
+                    os.path.join(sln_path, "libsodium.sln"),
                     r'"libsodium", "libsodium\libsodium.vcxproj"',
                     r'"libsodium", "libsodium\libsodium_d.vcxproj"',
                 )
@@ -96,30 +98,48 @@ class ConanRecipe(ConanFile):
 
             msbuild = MSBuild(self)
             msbuild.build_type = f"Dyn{self.settings.build_type}"
-            msbuild.build(self.source_path / "builds" / "msvc" / "vs2019" / "libsodium.sln")
+            msbuild.build(os.path.join(self.source_folder, "builds", "msvc", "vs2019", "libsodium.sln"))
         else:
             autotools = Autotools(self)
             autotools.configure()
             autotools.make()
 
     def package(self):
-        copy(self, "*LICENSE", src=self.source_path, dst=self.package_path / "licenses")
+        copy(self, "*LICENSE", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
         if is_msvc(self):
-            copy(self, "*.dll", src=self.source_path / "bin", dst=self.package_path / "bin", keep_path=False)
-            copy(self, "*.pdb", src=self.source_path / "bin", dst=self.package_path / "bin", keep_path=False)
-            copy(self, "*.lib", src=self.source_path / "bin", dst=self.package_path / "lib", keep_path=False)
+            copy(
+                self,
+                "*.dll",
+                src=os.path.join(self.source_folder, "bin"),
+                dst=os.path.join(self.package_folder, "bin"),
+                keep_path=False,
+            )
+            copy(
+                self,
+                "*.pdb",
+                src=os.path.join(self.source_folder, "bin"),
+                dst=os.path.join(self.package_folder, "bin"),
+                keep_path=False,
+            )
+            copy(
+                self,
+                "*.lib",
+                src=os.path.join(self.source_folder, "bin"),
+                dst=os.path.join(self.package_folder, "lib"),
+                keep_path=False,
+            )
             copy(
                 self,
                 "*.h",
-                src=self.source_path / "src" / "libsodium" / "include",
-                dst=self.package_path / "include",
+                src=os.path.join(self.source_folder, "src", "libsodium", "include"),
+                dst=os.path.join(self.package_folder, "include"),
                 excludes="*/private/*",
             )
         else:
             autotools = Autotools(self)
             autotools.install()
-            rmdir(self, self.package_path / "lib" / "pkgconfig")
-            rm(self, "*.la", self.package_path / "lib")
+            rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
+            rm(self, "*.la", os.path.join(self.package_folder, "lib"))
         self._cmake_module_file_write()
 
     def package_info(self):
@@ -140,7 +160,7 @@ class ConanRecipe(ConanFile):
 
     def _cmake_module_file_write(self):
         v = Version(self.version)
-        file = self.package_path / self._cmake_module_file
+        file = os.path.join(self.package_folder, self._cmake_module_file)
         content = textwrap.dedent(
             f"""\
             set(SODIUM_FOUND TRUE)

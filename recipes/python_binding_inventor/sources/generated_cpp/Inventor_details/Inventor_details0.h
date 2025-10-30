@@ -1,13 +1,3 @@
-/*************************************************************************************
-**
-** Copyright 2022, MeVis Medical Solutions AG
-**
-** GNU LESSER GENERAL PUBLIC LICENSE Version 2.1, February 1999
-**
-**************************************************************************************/
-#include <PythonQt.h>
-#include <QObject>
-#include <QVariant>
 #include <Inventor/SoType.h>
 #include <Inventor/details/SoConeDetail.h>
 #include <Inventor/details/SoCubeDetail.h>
@@ -17,6 +7,9 @@
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/details/SoTextDetail.h>
+#include <PythonQt.h>
+#include <QObject>
+#include <QVariant>
 
 
 

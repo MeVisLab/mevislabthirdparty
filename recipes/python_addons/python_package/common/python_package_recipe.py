@@ -1,4 +1,5 @@
 import os
+import sys
 from pathlib import Path
 
 from common.python_package_base import PythonPackageBase
@@ -7,7 +8,10 @@ from conan.tools.env import Environment
 from conan.tools.files import mkdir, chdir, copy
 from conan.errors import ConanException
 
-import tomli
+if sys.version_info >= (3, 11):
+    import tomllib as tomli
+else:
+    import tomli
 
 
 class PythonPackageRecipe(PythonPackageBase):
@@ -34,7 +38,7 @@ class PythonPackageRecipe(PythonPackageBase):
         pass
 
     def default_requirements(self):
-        self.requires("python/[>=3.9.7]")
+        self.requires("python/[>=3.13]")
 
     @property
     def has_requirements_txt(self):
@@ -46,7 +50,7 @@ class PythonPackageRecipe(PythonPackageBase):
         env.define("SETUPTOOLS_SCM_PRETEND_VERSION", self.version)
 
         # prevent setuptools_scm from trying to determine the version itself, which fails
-        env.define("PKG_CONFIG_PATH",  self.folders.generators_folder)
+        env.define("PKG_CONFIG_PATH", self.folders.generators_folder)
 
         cpu_count = os.cpu_count() if self.parallel_make else 1
         env.define("MAKEFLAGS", f"-j{cpu_count}")
@@ -63,14 +67,15 @@ class PythonPackageRecipe(PythonPackageBase):
         self.default_build()
 
     def pyproject_build(self, backend, build_args, config_settings, env, site_package):
+        extra_pip_args = "--no-build-isolation --disable-pip-version-check --use-deprecated=legacy-certs"
         if backend == "setuptools.build_meta":
             self.run(f"{self.py_command} setup.py build {' '.join(build_args)}", env=env)
-            cmd = f"{self.py_command} -m pip install -v --no-deps --no-build-isolation " f"--target {site_package}" f" {self.source_folder}"
+            cmd = f"{self.py_command} -m pip install -v --no-deps {extra_pip_args} --target {site_package} {self.source_folder}"
             self.run(cmd, env=env)
         else:
             # we assume Python only
             cmd = (
-                f"{self.py_command} -m pip install -v --no-deps --no-build-isolation "
+                f"{self.py_command} -m pip install -v --no-deps {extra_pip_args}"
                 f" {''.join(map(lambda x: ' -C ' +x, config_settings))}"
                 f" --target {site_package}"
                 f" {self.source_folder}"
@@ -122,12 +127,20 @@ class PythonPackageRecipe(PythonPackageBase):
 
     def default_package(self):
         copy(self, "Lib/*", src=self.build_folder, dst=self.package_folder, excludes="*__pycache__*")
-        if not copy(self, self.license_path, src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"), keep_path=False):
+        if not copy(
+            self,
+            self.license_path,
+            src=self.source_folder,
+            dst=os.path.join(self.package_folder, "licenses"),
+            keep_path=False,
+        ):
             raise ConanException("No license found")
         else:
             # Also copy license into .egg-info folder, so that the PythonPackageHelper tool doesn't complain
             # when creating the .mlinfo again
-            egg_info_folders = list((Path(self.package_folder) / self.relative_site_package_folder()).glob("*.egg-info"))
+            egg_info_folders = list(
+                (Path(self.package_folder) / self.relative_site_package_folder()).glob("*.egg-info")
+            )
             if len(egg_info_folders) >= 1:
                 copy(self, "*", src=Path(self.package_folder) / "licenses", dst=egg_info_folders[0], keep_path=False)
 

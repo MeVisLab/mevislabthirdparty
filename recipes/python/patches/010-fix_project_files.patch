@@ -1,0 +1,273 @@
+diff --git a/PCbuild/_bz2.vcxproj b/PCbuild/_bz2.vcxproj
+index e0dc6ec..5ceeeec 100644
+--- a/PCbuild/_bz2.vcxproj
++++ b/PCbuild/_bz2.vcxproj
+@@ -99,19 +99,17 @@
+       <DisableSpecificWarnings>4244;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+     </ClCompile>
+   </ItemDefinitionGroup>
++  <ItemDefinitionGroup>
++    <Link>
++      <AdditionalDependencies>$(bz2Lib);%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalLibraryDirectories>$(bz2LibDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
++    </Link>
++  </ItemDefinitionGroup>
+   <ItemGroup>
+     <ClCompile Include="..\Modules\_bz2module.c" />
+-    <ClCompile Include="$(bz2Dir)\blocksort.c" />
+-    <ClCompile Include="$(bz2Dir)\bzlib.c" />
+-    <ClCompile Include="$(bz2Dir)\compress.c" />
+-    <ClCompile Include="$(bz2Dir)\crctable.c" />
+-    <ClCompile Include="$(bz2Dir)\decompress.c" />
+-    <ClCompile Include="$(bz2Dir)\huffman.c" />
+-    <ClCompile Include="$(bz2Dir)\randtable.c" />
+   </ItemGroup>
+   <ItemGroup>
+     <ClInclude Include="$(bz2Dir)\bzlib.h" />
+-    <ClInclude Include="$(bz2Dir)\bzlib_private.h" />
+   </ItemGroup>
+   <ItemGroup>
+     <ResourceCompile Include="..\PC\python_nt.rc" />
+diff --git a/PCbuild/_ctypes.vcxproj b/PCbuild/_ctypes.vcxproj
+index 63d5fa4..dbe8635 100644
+--- a/PCbuild/_ctypes.vcxproj
++++ b/PCbuild/_ctypes.vcxproj
+@@ -94,7 +94,7 @@
+   </PropertyGroup>
+   <ItemDefinitionGroup>
+     <ClCompile>
+-      <PreprocessorDefinitions>USING_MALLOC_CLOSURE_DOT_C=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <PreprocessorDefinitions>USING_MALLOC_CLOSURE_DOT_C=1;FFI_STATIC_BUILD=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+     </ClCompile>
+     <Link>
+       <AdditionalOptions>/EXPORT:DllGetClassObject,PRIVATE /EXPORT:DllCanUnloadNow,PRIVATE %(AdditionalOptions)</AdditionalOptions>
+diff --git a/PCbuild/_decimal.vcxproj b/PCbuild/_decimal.vcxproj
+index ee74214..57859e4 100644
+--- a/PCbuild/_decimal.vcxproj
++++ b/PCbuild/_decimal.vcxproj
+@@ -98,7 +98,7 @@
+       <PreprocessorDefinitions Condition="'$(Platform)'=='ARM'">CONFIG_32;ANSI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+       <PreprocessorDefinitions Condition="'$(Platform)'=='ARM64'">CONFIG_64;ANSI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+       <PreprocessorDefinitions Condition="'$(Platform)' == 'x64'">CONFIG_64;MASM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+-      <AdditionalIncludeDirectories>..\Modules\_decimal;..\Modules\_decimal\windows;$(mpdecimalDir)\libmpdec;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <AdditionalIncludeDirectories>..\Modules\_decimal;$(mpdecimalDir)\libmpdec;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+     </ClCompile>
+   </ItemDefinitionGroup>
+   <ItemGroup>
+@@ -111,11 +111,7 @@
+     <ClInclude Include="..\Modules\_decimal\docstrings.h" />
+     <ClInclude Include="$(mpdecimalDir)\libmpdec\fnt.h" />
+     <ClInclude Include="$(mpdecimalDir)\libmpdec\fourstep.h" />
+-    <ClInclude Include="..\Modules\_decimal\windows\mpdecimal.h" />
+-    <ClInclude Condition="'$(Platform)' == 'Win32'" Include="$(mpdecimalDir)\libmpdec\mpdecimal32vc.h" />
+-    <ClInclude Condition="'$(Platform)' == 'ARM'" Include="$(mpdecimalDir)\libmpdec\mpdecimal32vc.h" />
+-    <ClInclude Condition="'$(Platform)' == 'ARM64'" Include="$(mpdecimalDir)\libmpdec\mpdecimal64vc.h" />
+-    <ClInclude Condition="'$(Platform)' == 'x64'" Include="$(mpdecimalDir)\libmpdec\mpdecimal64vc.h" />
++    <ClInclude Include="$(mpdecimalDir)\libmpdec\mpdecimal.h" />
+     <ClInclude Include="$(mpdecimalDir)\libmpdec\numbertheory.h" />
+     <ClInclude Include="$(mpdecimalDir)\libmpdec\sixstep.h" />
+     <ClInclude Include="$(mpdecimalDir)\libmpdec\transpose.h" />
+diff --git a/PCbuild/_lzma.vcxproj b/PCbuild/_lzma.vcxproj
+index 40107d4..36172bd 100644
+--- a/PCbuild/_lzma.vcxproj
++++ b/PCbuild/_lzma.vcxproj
+@@ -93,11 +93,12 @@
+   </PropertyGroup>
+   <ItemDefinitionGroup>
+     <ClCompile>
+-      <AdditionalIncludeDirectories>$(lzmaDir)src/liblzma/api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
++      <AdditionalIncludeDirectories>$(lzmaDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+       <PreprocessorDefinitions>WIN32;_FILE_OFFSET_BITS=64;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;LZMA_API_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+     </ClCompile>
+     <Link>
+-      <AdditionalDependencies>$(OutDir)liblzma$(PyDebugExt).lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalDependencies>$(lzmaLib);%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalLibraryDirectories>$(lzmaLibDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+     </Link>
+   </ItemDefinitionGroup>
+   <ItemGroup>
+@@ -111,10 +112,6 @@
+       <Project>{cf7ac3d1-e2df-41d2-bea6-1e2556cdea26}</Project>
+       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+     </ProjectReference>
+-    <ProjectReference Include="liblzma.vcxproj">
+-      <Project>{12728250-16eC-4dc6-94d7-e21dd88947f8}</Project>
+-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+-    </ProjectReference>
+   </ItemGroup>
+   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+   <ImportGroup Label="ExtensionTargets">
+diff --git a/PCbuild/_sqlite3.vcxproj b/PCbuild/_sqlite3.vcxproj
+index 9ae0a0f..a5ce82d 100644
+--- a/PCbuild/_sqlite3.vcxproj
++++ b/PCbuild/_sqlite3.vcxproj
+@@ -96,6 +96,10 @@
+       <AdditionalIncludeDirectories>$(sqlite3Dir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+       <PreprocessorDefinitions>PY_SQLITE_HAVE_SERIALIZE;PY_SQLITE_ENABLE_LOAD_EXTENSION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+     </ClCompile>
++    <Link>
++      <AdditionalDependencies>$(sqlite3Lib);%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalLibraryDirectories>$(sqlite3LibDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
++    </Link>
+   </ItemDefinitionGroup>
+   <ItemGroup>
+     <ClInclude Include="..\Modules\_sqlite\connection.h" />
+@@ -127,10 +131,6 @@
+       <Project>{cf7ac3d1-e2df-41d2-bea6-1e2556cdea26}</Project>
+       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+     </ProjectReference>
+-    <ProjectReference Include="sqlite3.vcxproj">
+-      <Project>{a1a295e5-463c-437f-81ca-1f32367685da}</Project>
+-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+-    </ProjectReference>
+   </ItemGroup>
+   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+   <ImportGroup Label="ExtensionTargets">
+diff --git a/PCbuild/_ssl.vcxproj b/PCbuild/_ssl.vcxproj
+index ce21f99..9f1e81f 100644
+--- a/PCbuild/_ssl.vcxproj
++++ b/PCbuild/_ssl.vcxproj
+@@ -94,7 +94,8 @@
+   </PropertyGroup>
+   <ItemDefinitionGroup>
+     <Link>
+-      <AdditionalDependencies>ws2_32.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalDependencies>ws2_32.lib;crypt32.lib;$(opensslLib);%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalLibraryDirectories>$(opensslLibDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+     </Link>
+   </ItemDefinitionGroup>
+   <ItemGroup>
+diff --git a/PCbuild/libffi.props b/PCbuild/libffi.props
+index 22c9550..8021f97 100644
+--- a/PCbuild/libffi.props
++++ b/PCbuild/libffi.props
+@@ -6,16 +6,7 @@
+     </ClCompile>
+     <Link>
+       <AdditionalLibraryDirectories>$(libffiOutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+-      <AdditionalDependencies>libffi-8.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalDependencies>$(libffiLib);%(AdditionalDependencies)</AdditionalDependencies>
+     </Link>
+   </ItemDefinitionGroup>
+-  <ItemGroup>
+-    <_LIBFFIDLL Include="$(libffiOutDir)\libffi-8.dll" />
+-  </ItemGroup>
+-  <Target Name="_CopyLIBFFIDLL" Inputs="@(_LIBFFIDLL)" Outputs="@(_LIBFFIDLL->'$(OutDir)%(Filename)%(Extension)')" AfterTargets="Build">
+-    <Copy SourceFiles="@(_LIBFFIDLL)" DestinationFolder="$(OutDir)" />
+-  </Target>
+-  <Target Name="_CleanLIBFFIDLL" BeforeTargets="Clean">
+-    <Delete Files="@(_LIBFFIDLL->'$(OutDir)%(Filename)%(Extension)')" TreatErrorsAsWarnings="true" />
+-  </Target>
+ </Project>
+\ No newline at end of file
+diff --git a/PCbuild/openssl.props b/PCbuild/openssl.props
+index 5fd708b..27119fa 100644
+--- a/PCbuild/openssl.props
++++ b/PCbuild/openssl.props
+@@ -5,21 +5,20 @@
+       <AdditionalIncludeDirectories>$(opensslIncludeDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+     </ClCompile>
+     <Link>
+-      <AdditionalLibraryDirectories>$(opensslOutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+-      <AdditionalDependencies>ws2_32.lib;libcrypto.lib;libssl.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalLibraryDirectories>$(opensslLibDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
++      <AdditionalDependencies>ws2_32.lib;$(opensslLib);%(AdditionalDependencies)</AdditionalDependencies>
+     </Link>
+   </ItemDefinitionGroup>
+   <PropertyGroup>
+     <_DLLSuffix>-3</_DLLSuffix>
+     <_DLLSuffix Condition="$(Platform) == 'ARM'">$(_DLLSuffix)-arm</_DLLSuffix>
+     <_DLLSuffix Condition="$(Platform) == 'ARM64'">$(_DLLSuffix)-arm64</_DLLSuffix>
++    <_DLLSuffix Condition="$(Platform) == 'x64'">$(_DLLSuffix)-x64</_DLLSuffix>
+     <OpenSSLDLLSuffix Condition="$(OpenSSLDLLSuffix) == ''">$(_DLLSuffix)</OpenSSLDLLSuffix>
+   </PropertyGroup>
+   <ItemGroup>
+     <_SSLDLL Include="$(opensslOutDir)\libcrypto$(_DLLSuffix).dll" />
+-    <_SSLDLL Include="$(opensslOutDir)\libcrypto$(_DLLSuffix).pdb" />
+     <_SSLDLL Include="$(opensslOutDir)\libssl$(_DLLSuffix).dll" />
+-    <_SSLDLL Include="$(opensslOutDir)\libssl$(_DLLSuffix).pdb" />
+   </ItemGroup>
+   <Target Name="_CopySSLDLL"
+           Inputs="@(_SSLDLL)"
+diff --git a/PCbuild/pythoncore.vcxproj b/PCbuild/pythoncore.vcxproj
+index 7021290..915a552 100644
+--- a/PCbuild/pythoncore.vcxproj
++++ b/PCbuild/pythoncore.vcxproj
+@@ -108,7 +108,8 @@
+       <PreprocessorDefinitions Condition="'$(UseTIER2)' != '' and '$(UseTIER2)' != '0'">_Py_TIER2=$(UseTIER2);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+     </ClCompile>
+     <Link>
+-      <AdditionalDependencies>version.lib;ws2_32.lib;pathcch.lib;bcrypt.lib;%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalDependencies>version.lib;ws2_32.lib;pathcch.lib;bcrypt.lib;$(zlibLib);%(AdditionalDependencies)</AdditionalDependencies>
++      <AdditionalLibraryDirectories>$(zlibLibDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+     </Link>
+   </ItemDefinitionGroup>
+   <ItemGroup>
+@@ -398,17 +399,8 @@
+     <ClInclude Include="..\Python\thread_nt.h" />
+   </ItemGroup>
+   <ItemGroup Condition="$(IncludeExternals)">
+-    <ClInclude Include="$(zlibDir)\crc32.h" />
+-    <ClInclude Include="$(zlibDir)\deflate.h" />
+-    <ClInclude Include="$(zlibDir)\inffast.h" />
+-    <ClInclude Include="$(zlibDir)\inffixed.h" />
+-    <ClInclude Include="$(zlibDir)\inflate.h" />
+-    <ClInclude Include="$(zlibDir)\inftrees.h" />
+-    <ClInclude Include="$(zlibDir)\trees.h" />
+     <ClInclude Include="$(zlibDir)\zconf.h" />
+-    <ClInclude Include="$(zlibDir)\zconf.in.h" />
+     <ClInclude Include="$(zlibDir)\zlib.h" />
+-    <ClInclude Include="$(zlibDir)\zutil.h" />
+   </ItemGroup>
+   <ItemGroup>
+     <ClCompile Include="..\Modules\_abc.c" />
+@@ -643,19 +635,6 @@
+   </ItemGroup>
+   <ItemGroup Condition="$(IncludeExternals)">
+     <ClCompile Include="..\Modules\zlibmodule.c" />
+-    <ClCompile Include="$(zlibDir)\adler32.c" />
+-    <ClCompile Include="$(zlibDir)\compress.c" />
+-    <ClCompile Include="$(zlibDir)\crc32.c" />
+-    <ClCompile Include="$(zlibDir)\deflate.c">
+-      <DisableSpecificWarnings>4244</DisableSpecificWarnings>
+-    </ClCompile>
+-    <ClCompile Include="$(zlibDir)\infback.c" />
+-    <ClCompile Include="$(zlibDir)\inffast.c" />
+-    <ClCompile Include="$(zlibDir)\inflate.c" />
+-    <ClCompile Include="$(zlibDir)\inftrees.c" />
+-    <ClCompile Include="$(zlibDir)\trees.c" />
+-    <ClCompile Include="$(zlibDir)\uncompr.c" />
+-    <ClCompile Include="$(zlibDir)\zutil.c" />
+   </ItemGroup>
+   <ItemGroup>
+     <ClCompile Include="..\PC\dl_nt.c" />
+@@ -697,29 +676,6 @@
+     <Delete Files="$(IntDir)pyconfig.h;$(OutDir)pyconfig.h" />
+   </Target>
+ 
+-  <Target Name="_GetBuildInfo" BeforeTargets="PrepareForBuild">
+-    <PropertyGroup>
+-      <GIT Condition="$(GIT) == ''">git</GIT>
+-      <_GIT>$(GIT)</_GIT>
+-      <_GIT Condition="$(GIT.Contains(` `))">"$(GIT)"</_GIT>
+-    </PropertyGroup>
+-    <Message Text="Getting build info from $(_GIT)" Importance="high" />
+-    <MakeDir Directories="$(IntDir)" Condition="!Exists($(IntDir))" />
+-    <Exec Command="$(_GIT) name-rev --name-only HEAD &gt; &quot;$(IntDir)gitbranch.txt&quot;" ContinueOnError="true" />
+-    <Exec Command="$(_GIT) rev-parse --short HEAD &gt; &quot;$(IntDir)gitversion.txt&quot;" ContinueOnError="true" />
+-    <Exec Command="$(_GIT) describe --all --always --dirty &gt; &quot;$(IntDir)gittag.txt&quot;" ContinueOnError="true" />
+-    <PropertyGroup>
+-      <GitBranch Condition="Exists('$(IntDir)gitbranch.txt')">$([System.IO.File]::ReadAllText('$(IntDir)gitbranch.txt').Trim())</GitBranch>
+-      <GitVersion Condition="Exists('$(IntDir)gitversion.txt')">$([System.IO.File]::ReadAllText('$(IntDir)gitversion.txt').Trim())</GitVersion>
+-      <GitTag Condition="Exists('$(IntDir)gittag.txt')">$([System.IO.File]::ReadAllText('$(IntDir)gittag.txt').Trim())</GitTag>
+-    </PropertyGroup>
+-    <Message Text="Building $(GitTag):$(GitVersion) $(GitBranch)" Importance="high" />
+-    <ItemGroup>
+-      <ClCompile Condition="%(Filename) == 'getbuildinfo'">
+-        <PreprocessorDefinitions>GITVERSION="$(GitVersion)";GITTAG="$(GitTag)";GITBRANCH="$(GitBranch)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+-      </ClCompile>
+-    </ItemGroup>
+-  </Target>
+   <Target Name="_WarnAboutToolset" BeforeTargets="PrepareForBuild" Condition="$(PlatformToolset) != 'v140' and $(PlatformToolset) != 'v141' and $(PlatformToolset) != 'v142' and $(PlatformToolset) != 'v143'">
+     <Warning Text="Toolset $(PlatformToolset) is not used for official builds. Your build may have errors or incompatibilities." />
+   </Target>

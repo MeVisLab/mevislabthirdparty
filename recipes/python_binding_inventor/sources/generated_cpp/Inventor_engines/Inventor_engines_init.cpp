@@ -1,14 +1,6 @@
-/*************************************************************************************
-**
-** Copyright 2022, MeVis Medical Solutions AG
-**
-** GNU LESSER GENERAL PUBLIC LICENSE Version 2.1, February 1999
-**
-**************************************************************************************/
 #include <PythonQt.h>
 #include <PythonQtConversion.h>
-#include "Inventor_engines0.h"
-#include "Inventor_engines1.h"
+#include "inventor_engines0.h"
 
 
 

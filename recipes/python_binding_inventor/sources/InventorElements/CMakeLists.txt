@@ -9,13 +9,9 @@ endif()
 
 target_sources(InventorElements PRIVATE
   InventorElements.cpp
-  ../generated_cpp/Inventor_elements/Inventor_elements0.h
-  ../generated_cpp/Inventor_elements/Inventor_elements0.cpp
-  ../generated_cpp/Inventor_elements/Inventor_elements1.h
-  ../generated_cpp/Inventor_elements/Inventor_elements1.cpp
-  ../generated_cpp/Inventor_elements/Inventor_elements2.h
-  ../generated_cpp/Inventor_elements/Inventor_elements2.cpp
-  ../generated_cpp/Inventor_elements/Inventor_elements_init.cpp
+  ../generated_cpp/inventor_elements/inventor_elements0.h
+  ../generated_cpp/inventor_elements/inventor_elements0.cpp
+  ../generated_cpp/inventor_elements/inventor_elements_init.cpp
 )
 
 target_link_libraries(InventorElements

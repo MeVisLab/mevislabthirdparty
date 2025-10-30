@@ -10,9 +10,9 @@ endif()
 target_sources(InventorSensors PRIVATE
   InventorSensors.h
   InventorSensors.cpp
-  ../generated_cpp/Inventor_sensors/Inventor_sensors0.h
-  ../generated_cpp/Inventor_sensors/Inventor_sensors0.cpp
-  ../generated_cpp/Inventor_sensors/Inventor_sensors_init.cpp
+  ../generated_cpp/inventor_sensors/inventor_sensors0.h
+  ../generated_cpp/inventor_sensors/inventor_sensors0.cpp
+  ../generated_cpp/inventor_sensors/inventor_sensors_init.cpp
 )
 
 target_link_libraries(InventorSensors

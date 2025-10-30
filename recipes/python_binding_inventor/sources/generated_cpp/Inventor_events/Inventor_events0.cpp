@@ -1,21 +1,13 @@
-/*************************************************************************************
-**
-** Copyright 2022, MeVis Medical Solutions AG
-**
-** GNU LESSER GENERAL PUBLIC LICENSE Version 2.1, February 1999
-**
-**************************************************************************************/
-#include "Inventor_events0.h"
-#include <PythonQtConversion.h>
-#include <PythonQtMethodInfo.h>
-#include <PythonQtSignalReceiver.h>
-#include <QVariant>
+#include "inventor_events0.h"
 #include <Inventor/SbLinear.h>
 #include <Inventor/SbTime.h>
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/SoType.h>
 #include <Inventor/events/SoEvent.h>
-#include <stdexcept>
+#include <PythonQtConversion.h>
+#include <PythonQtMethodInfo.h>
+#include <PythonQtSignalReceiver.h>
+#include <QVariant>
 
 PythonQtShell_SoButtonEvent::~PythonQtShell_SoButtonEvent() {
   PythonQtPrivate* priv = PythonQt::priv();

@@ -1,10 +1,12 @@
 import re
 import textwrap
+import os
+from pathlib import Path
 
 from conan import ConanFile
 from conan.tools.cmake import CMakeToolchain, CMake, CMakeDeps, cmake_layout
 from conan.tools.env import VirtualRunEnv
-from conan.tools.files import get, rmdir, rm, replace_in_file, copy, collect_libs, save
+from conan.tools.files import get, rmdir, rm, replace_in_file, patch, copy, collect_libs, save
 from conan.tools.microsoft import is_msvc
 from conan.tools.system import package_manager
 
@@ -13,12 +15,13 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "opencv"
-    version = "4.11.0"
+    version = "4.12.0"
     homepage = "https://opencv.org"
     description = "OpenCV is an open source computer vision and machine learning software library"
     license = "Apache-2.0"
     package_type = "shared-library"
     settings = "os", "arch", "compiler", "build_type"
+    exports_sources = ["patches/*.patch"]
 
     mlab_hooks = {
         "dependencies.system_libs": [
@@ -48,8 +51,8 @@ class ConanRecipe(ConanFile):
         self.requires("protobuf/[>=21.9]", visible=False)
         # self.requires("openexr/[>=2.5.3]")
         # self.requires("openjpeg/[>=2.4.0]")
-        self.requires("python/[>=3.9.7]")
-        self.requires("qtbase/[>=6.5]")
+        self.requires("python/[>=3.13]")
+        self.requires("qtbase/[>=6.9]")
         self.requires("libjpeg-turbo/[>=2.1.5]")
         # self.build_requires("pcre2/[>=10.34]")
 
@@ -59,20 +62,34 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="9a7c11f924eff5f8d8070e297b322ee68b9227e003fd600d4b8122198091665f",
+            sha256="44c106d5bb47efec04e531fd93008b3fcd1d27138985c5baf4eafac0e1ec9e9d",
             url=f"https://github.com/opencv/opencv/archive/{self.version}.tar.gz",
             strip_root=True,
         )
 
-        [rmdir(self, d) for d in (self.source_path / "3rdparty").iterdir() if d.is_dir() and d.name != "flatbuffers"]
+        [
+            rmdir(self, d)
+            for d in Path(self.source_folder, "3rdparty").iterdir()
+            if d.is_dir() and d.name != "flatbuffers"
+        ]
+
+        patch(
+            self,
+            patch_file="patches/001_opencv411_qt690.patch",
+            patch_type="bugfix",
+            patch_description="short term fix for opencv 4.11.0: https://github.com/opencv/opencv/issues/27223",
+        )
 
         replace_in_file(
-            self, self.source_path / "CMakeLists.txt", 'if(" ${CMAKE_SOURCE_DIR}" STREQUAL " ${CMAKE_BINARY_DIR}")', "if(false)"
+            self,
+            os.path.join(self.source_folder, "CMakeLists.txt"),
+            'if(" ${CMAKE_SOURCE_DIR}" STREQUAL " ${CMAKE_BINARY_DIR}")',
+            "if(false)",
         )
 
         save(
             self,
-            self.source_path / "cmake" / "OpenCVFindWebP.cmake",
+            os.path.join(self.source_folder, "cmake", "OpenCVFindWebP.cmake"),
             textwrap.dedent(
                 """
             find_package(WebP CONFIG REQUIRED)
@@ -89,38 +106,49 @@ class ConanRecipe(ConanFile):
 
         replace_in_file(
             self,
-            self.source_path / "cmake" / "OpenCVDetectOpenCL.cmake",
-            'ocv_install_3rdparty_licenses(opencl-headers "${OpenCV_SOURCE_DIR}' '/3rdparty/include/opencl/LICENSE.txt")',
+            os.path.join(self.source_folder, "cmake", "OpenCVDetectOpenCL.cmake"),
+            'ocv_install_3rdparty_licenses(opencl-headers "${OpenCV_SOURCE_DIR}'
+            '/3rdparty/include/opencl/LICENSE.txt")',
             "",
         )
         replace_in_file(
             self,
-            self.source_path / "cmake" / "OpenCVInstallLayout.cmake",
+            os.path.join(self.source_folder, "cmake", "OpenCVInstallLayout.cmake"),
             'ocv_update(OPENCV_INSTALL_BINARIES_PREFIX "${OpenCV_ARCH}/${OpenCV_RUNTIME}/")',
             'ocv_update(OPENCV_INSTALL_BINARIES_PREFIX "")',
         )
         replace_in_file(
             self,
-            self.source_path / "cmake" / "OpenCVInstallLayout.cmake",
+            os.path.join(self.source_folder, "cmake", "OpenCVInstallLayout.cmake"),
             "set(CMAKE_INSTALL_RPATH_USE_LINK_PATH",
             "#set(CMAKE_INSTALL_RPATH_USE_LINK_PATH",
         )
 
         # It is necessary to remove the global configured Debug postfix for the Python binding library,
         # otherwise there would be two postfixes
-        replace_in_file(self, self.source_path / "modules" / "python" / "common.cmake", 'PREFIX ""', 'PREFIX "" DEBUG_POSTFIX ""')
+        replace_in_file(
+            self,
+            os.path.join(self.source_folder, "modules", "python", "common.cmake"),
+            'PREFIX ""',
+            'PREFIX "" DEBUG_POSTFIX ""',
+        )
 
         # Without this patch, the debug Python binding library would not be installed
         replace_in_file(
             self,
-            self.source_path / "modules" / "python" / "common.cmake",
+            os.path.join(self.source_folder, "modules", "python", "common.cmake"),
             "set(PYTHON_INSTALL_CONFIGURATIONS CONFIGURATIONS Release)",
             'set(PYTHON_INSTALL_CONFIGURATIONS "")',
         )
 
         # allow to find conan-supplied OpenEXR
-        find_openexr = self.source_path / "cmake" / "OpenCVFindOpenEXR.cmake"
-        replace_in_file(self, find_openexr, r'SET(OPENEXR_ROOT "C:/Deploy" CACHE STRING "Path to the OpenEXR \"Deploy\" folder")', "")
+        find_openexr = os.path.join(self.source_folder, "cmake", "OpenCVFindOpenEXR.cmake")
+        replace_in_file(
+            self,
+            find_openexr,
+            r'SET(OPENEXR_ROOT "C:/Deploy" CACHE STRING "Path to the OpenEXR \"Deploy\" folder")',
+            "",
+        )
         replace_in_file(self, find_openexr, "SET(OPENEXR_LIBSEARCH_SUFFIXES x64/Release x64 x64/Debug)", "")
         replace_in_file(self, find_openexr, "SET(OPENEXR_LIBSEARCH_SUFFIXES Win32/Release Win32 Win32/Debug)", "")
 
@@ -133,6 +161,7 @@ class ConanRecipe(ConanFile):
         tc.variables["CMAKE_TLS_VERIFY"] = False
         tc.variables["BUILD_SHARED_LIBS"] = True
         tc.variables["CMAKE_INSTALL_RPATH"] = "$ORIGIN;$ORIGIN/../lib"
+
         tc.variables["OpenGL_GL_PREFERENCE"] = "LEGACY"
 
         tc.variables["OPENCV_ENABLE_NONFREE"] = False
@@ -189,7 +218,7 @@ class ConanRecipe(ConanFile):
         tc.variables["WITH_CUDNN"] = False
         tc.variables["WITH_CUFFT"] = False
         tc.variables["WITH_DIRECTX"] = self.settings.os == "Windows"
-        tc.variables["WITH_DSHOW"] = False
+        tc.variables["WITH_DSHOW"] = self.settings.os == "Windows"
         tc.variables["WITH_EIGEN"] = True
         tc.variables["WITH_FFMPEG"] = False
         tc.variables["WITH_GDAL"] = False
@@ -246,6 +275,7 @@ class ConanRecipe(ConanFile):
         tc.variables["WITH_WIN32UI"] = self.settings.os == "Windows"
         tc.variables["WITH_XIMEA"] = False
         tc.variables["WITH_XINE"] = False
+        tc.variables["WITH_AVIF"] = False
 
         tc.variables["PROTOBUF_UPDATE_FILES"] = True
         tc.variables["Protobuf_USE_STATIC_LIBS"] = True
@@ -277,6 +307,11 @@ class ConanRecipe(ConanFile):
         tc.variables["PYTHON3_NUMPY_INCLUDE_DIRS"] = ";".join(numpy_include_folders).replace("\\", "/")
         opencv_folder = self.package_folder.replace("\\", "/")
         tc.variables["OPENCV_PYTHON_INSTALL_PATH"] = f"{opencv_folder}/{site_pkg_folder}"
+
+        eigen_version = self.dependencies["eigen"].ref.version
+        tc.variables["EIGEN_WORLD_VERSION"] = eigen_version.major
+        tc.variables["EIGEN_MAJOR_VERSION"] = eigen_version.minor
+        tc.variables["EIGEN_MINOR_VERSION"] = eigen_version.patch
         tc.generate()
 
         cd = CMakeDeps(self)
@@ -284,19 +319,21 @@ class ConanRecipe(ConanFile):
 
     def build(self):
         # These config files must be patched, because they contain the conan package dir as library path for the library
-        template_path = self.source_path / "modules" / "python" / "package" / "template"
+        template_path = os.path.join(self.source_folder, "modules", "python", "package", "template")
         version = self.dependencies["python"].ref.version
         replace_in_file(
             self,
-            template_path / "config-x.y.py.in",
+            os.path.join(template_path, "config-x.y.py.in"),
             "@CMAKE_PYTHON_EXTENSION_PATH@",
-            f"os.path.join(os.path.dirname(os.path.abspath(os.path.realpath(__file__)))," f" 'python-{version.major}.{version.minor}')",
+            f"os.path.join(os.path.dirname(os.path.abspath(os.path.realpath(__file__))),"
+            f" 'python-{version.major}.{version.minor}')",
         )
         replace_in_file(
             self,
-            template_path / "config.py.in",
+            os.path.join(template_path, "config.py.in"),
             "@CMAKE_PYTHON_BINARIES_PATH@",
-            f"os.path.join(os.path.dirname(os.path.abspath(os.path.realpath(__file__)))," f" 'python-{version.major}.{version.minor}')",
+            f"os.path.join(os.path.dirname(os.path.abspath(os.path.realpath(__file__))),"
+            f" 'python-{version.major}.{version.minor}')",
         )
         cmake = CMake(self)
         cmake.configure()
@@ -305,29 +342,36 @@ class ConanRecipe(ConanFile):
     def package(self):
         cmake = CMake(self)
         cmake.install()
-        copy(self, "LICENSE", src=self.source_path, dst=self.package_path / "licenses")
-        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False, excludes="*vc???.pdb")
+        copy(self, "LICENSE", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
+        copy(
+            self,
+            "*.pdb",
+            src=self.build_folder,
+            dst=os.path.join(self.package_folder, "bin"),
+            keep_path=False,
+            excludes="*vc???.pdb",
+        )
 
         if self.settings.os == "Windows":
             # cleanup package root on Windows
-            rm(self, pattern="LICENSE", folder=self.package_path)
-            rm(self, pattern="setup_vars_opencv4.cmd", folder=self.package_path)
-            rm(self, pattern="OpenCVConfig*.cmake", folder=self.package_path)
-            rm(self, pattern="OpenCVConfig*.cmake", folder=self.package_path / "lib")
+            rm(self, pattern="LICENSE", folder=self.package_folder)
+            rm(self, pattern="setup_vars_opencv4.cmd", folder=self.package_folder)
+            rm(self, pattern="OpenCVConfig*.cmake", folder=self.package_folder)
+            rm(self, pattern="OpenCVConfig*.cmake", folder=os.path.join(self.package_folder, "lib"))
 
         if self.settings.os != "Windows":
-            rmdir(self, self.package_path / "bin")
-        rmdir(self, self.package_path / "etc")
-        rmdir(self, self.package_path / "share")
-        rmdir(self, self.package_path / "lib" / "cmake")
+            rmdir(self, os.path.join(self.package_folder, "bin"))
+        rmdir(self, os.path.join(self.package_folder, "etc"))
+        rmdir(self, os.path.join(self.package_folder, "share"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))
 
-        for cmakefile in (self.package_path / "lib").glob("*.cmake"):
+        for cmakefile in Path(self.package_folder, "lib").glob("*.cmake"):
             cmakefile.unlink()
-        for cmakefile in self.package_path.glob("*.cmake"):
+        for cmakefile in Path(self.package_folder).glob("*.cmake"):
             cmakefile.unlink()
-        setup_vars_path = self.package_path / "setup_vars_opencv4.cmd"
-        if setup_vars_path.exists():
-            setup_vars_path.unlink()
+        setup_vars_path = os.path.join(self.package_folder, "setup_vars_opencv4.cmd")
+        if os.path.exists(setup_vars_path):
+            os.remove(setup_vars_path)
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:opencv:opencv:*:*:*:*:*:*:*:*")
@@ -344,7 +388,14 @@ class ConanRecipe(ConanFile):
             "photo": ["imgproc"],
             "dnn": ["imgproc"],
             "features2d": ["flann", "imgproc"],
-            "imgcodecs": ["imgproc", "libpng::libpng", "libjpeg-turbo::jpeg", "tiff::tiff", "libwebp::webp", "zlib::zlib"],
+            "imgcodecs": [
+                "imgproc",
+                "libpng::libpng",
+                "libjpeg-turbo::jpeg",
+                "tiff::tiff",
+                "libwebp::webp",
+                "zlib::zlib",
+            ],
             "videoio": ["imgproc", "imgcodecs"],
             "calib3d": ["flann", "imgproc", "features2d"],
             "objdetect": ["flann", "imgproc", "features2d", "calib3d"],

@@ -9,13 +9,9 @@ endif()
 
 target_sources(InventorFields PRIVATE
   InventorFields.cpp
-  ../generated_cpp/Inventor_fields/Inventor_fields0.h
-  ../generated_cpp/Inventor_fields/Inventor_fields0.cpp
-  ../generated_cpp/Inventor_fields/Inventor_fields1.h
-  ../generated_cpp/Inventor_fields/Inventor_fields1.cpp
-  ../generated_cpp/Inventor_fields/Inventor_fields2.h
-  ../generated_cpp/Inventor_fields/Inventor_fields2.cpp
-  ../generated_cpp/Inventor_fields/Inventor_fields_init.cpp
+  ../generated_cpp/inventor_fields/inventor_fields0.h
+  ../generated_cpp/inventor_fields/inventor_fields0.cpp
+  ../generated_cpp/inventor_fields/inventor_fields_init.cpp
 )
 
 target_link_libraries(InventorFields

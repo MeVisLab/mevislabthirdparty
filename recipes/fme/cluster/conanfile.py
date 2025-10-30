@@ -1,6 +1,7 @@
 from conan import ConanFile
 from conan.tools.cmake import cmake_layout, CMakeToolchain, CMake
 from conan.tools.files import copy, collect_libs
+import os
 
 required_conan_version = ">=2.2.2"
 
@@ -26,7 +27,7 @@ class ConanRecipe(ConanFile):
         tc = CMakeToolchain(self)
         tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
         tc.variables["BUILD_SHARED_LIBS"] = False
-        tc.variables['CMAKE_POSITION_INDEPENDENT_CODE'] = True
+        tc.variables["CMAKE_POSITION_INDEPENDENT_CODE"] = True
         tc.generate()
 
     def build(self):
@@ -35,7 +36,7 @@ class ConanRecipe(ConanFile):
         cmake.build()
 
     def package(self):
-        copy(self, "LICENSE", src=self.source_path, dst=self.package_path / "licenses")
+        copy(self, "LICENSE", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
         cmake = CMake(self)
         cmake.install()
 

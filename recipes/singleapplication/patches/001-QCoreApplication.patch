@@ -2,7 +2,7 @@ diff --git a/singleapplication.h b/singleapplication.h
 index 91cabf9..400c88a 100644
 --- a/singleapplication.h
 +++ b/singleapplication.h
-@@ -27,7 +27,7 @@
+@@ -28,7 +28,7 @@
  #include <QtNetwork/QLocalSocket>
  
  #ifndef QAPPLICATION_CLASS

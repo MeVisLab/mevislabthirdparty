@@ -7,7 +7,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "opencl-headers"
-    version = "2024.10.24"
+    version = "2025.07.22"
     homepage = "https://github.com/KhronosGroup/OpenCL-Headers"
     description = "C language headers for the OpenCL API"
     license = "Apache-2.0"
@@ -24,7 +24,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="159f2a550592bae49859fee83d372acd152328fdf95c0dcd8b9409f8fad5db93",
+            sha256="98f0a3ea26b4aec051e533cb1750db2998ab8e82eda97269ed6efe66ec94a240",
             url=f"https://github.com/KhronosGroup/OpenCL-Headers/archive/refs/tags/v{self.version}.tar.gz",
             strip_root=True,
         )

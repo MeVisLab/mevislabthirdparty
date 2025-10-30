@@ -25,18 +25,19 @@ class ConanRecipe(ConanFile):
 
     def requirements(self):
         self.requires("lz4/[>=1.9.4]")
-        #self.requires("snappy/[>=1.1.9]")
+        # self.requires("snappy/[>=1.1.9]")
         self.requires("zlib/[>=1.2.13]")
         self.requires("zstd/[>=1.5.2]")
 
     def source(self):
-        get(self,
+        get(
+            self,
             sha256="9fcd60301aae28f97f1301b735f966cc19e7c49b6b4321b839b4579a0c156f38",
             url=f"https://github.com/Blosc/c-blosc/archive/refs/tags/v{self.version}.tar.gz",
-            strip_root=True
+            strip_root=True,
         )
-        rmdir(self, self.source_path / "cmake")
-        rmdir(self, self.source_path / "internal-complibs")
+        rmdir(self, os.path.join(self.source_folder, "cmake"))
+        rmdir(self, os.path.join(self.source_folder, "internal-complibs"))
 
     def generate(self):
         tc = CMakeToolchain(self)
@@ -84,12 +85,20 @@ class ConanRecipe(ConanFile):
 
     def build(self):
         cmake = CMake(self)
-        cmake.configure()
+        cmake4_compat = {"CMAKE_POLICY_VERSION_MINIMUM": "3.5"}  # FIXME required for compatibility with CMake 4.0+
+        cmake.configure(variables=cmake4_compat)
         cmake.build()
 
     def package(self):
         copy(self, "LICENSE.txt", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
-        copy(self, "*.pdb", src=self.build_folder, dst=os.path.join(self.package_folder, "bin"), keep_path=False, excludes="*vc???.pdb")
+        copy(
+            self,
+            "*.pdb",
+            src=self.build_folder,
+            dst=os.path.join(self.package_folder, "bin"),
+            keep_path=False,
+            excludes="*vc???.pdb",
+        )
         cmake = CMake(self)
         cmake.install()
         rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))

@@ -1,8 +1,8 @@
 diff --git a/src/gui/rhi/qrhigles2.cpp b/src/gui/rhi/qrhigles2.cpp
-index ea6dfdac..e5dbe7b8 100644
+index 2791ba92..b6ff326d 100644
 --- a/src/gui/rhi/qrhigles2.cpp
 +++ b/src/gui/rhi/qrhigles2.cpp
-@@ -552,16 +552,28 @@ QRhiGles2InitParams::QRhiGles2InitParams()
+@@ -586,16 +586,28 @@ QRhiGles2InitParams::QRhiGles2InitParams()
   */
  QOffscreenSurface *QRhiGles2InitParams::newFallbackSurface(const QSurfaceFormat &format)
  {

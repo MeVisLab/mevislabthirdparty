@@ -1,0 +1,13 @@
+diff --git a/src/3rdparty/chromium/v8/src/heap/cppgc/marking-state.h b/src/3rdparty/chromium/v8/src/heap/cppgc/marking-state.h
+index d3533274ba..1f42edd778 100644
+--- a/src/3rdparty/chromium/v8/src/heap/cppgc/marking-state.h
++++ b/src/3rdparty/chromium/v8/src/heap/cppgc/marking-state.h
+@@ -358,7 +358,7 @@ class MutatorMarkingState final : public BasicMarkingState {
+   ~MutatorMarkingState() override = default;
+ 
+   inline bool MarkNoPush(HeapObjectHeader& header) {
+-    return MutatorMarkingState::BasicMarkingState::MarkNoPush(header);
++    return BasicMarkingState::MarkNoPush(header);
+   }
+ 
+   inline void ReTraceMarkedWeakContainer(cppgc::Visitor&, HeapObjectHeader&);

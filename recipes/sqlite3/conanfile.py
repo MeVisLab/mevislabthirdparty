@@ -9,7 +9,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "sqlite3"
-    version = "3.49.2"
+    version = "3.50.4"
     description = "Self-contained, serverless, in-process SQL database engine."
     license = "Unlicense"
     homepage = "https://www.sqlite.org"
@@ -31,7 +31,7 @@ class ConanRecipe(ConanFile):
         v = Version(self.version)
         get(
             self,
-            sha256="921fc725517a694df7df38a2a3dfede6684024b5788d9de464187c612afb5918",
+            sha256="1d3049dd0f830a025a53105fc79fd2ab9431aea99e137809d064d8ee8356b032",
             url=f"https://www.sqlite.org/2025/sqlite-amalgamation-{v.major}{str(v.minor).zfill(2)}{str(v.patch).zfill(2)}00.zip",
             strip_root=True,
         )
@@ -58,8 +58,15 @@ class ConanRecipe(ConanFile):
         return license_content
 
     def package(self):
-        save(self, self.package_path / "licenses" / "LICENSE", self._extract_license())
-        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False, excludes="*vc???.pdb")
+        save(self, os.path.join(self.package_folder, "licenses", "LICENSE"), self._extract_license())
+        copy(
+            self,
+            "*.pdb",
+            src=self.build_folder,
+            dst=os.path.join(self.package_folder, "bin"),
+            keep_path=False,
+            excludes="*vc???.pdb",
+        )
         cmake = CMake(self)
         cmake.install()
 

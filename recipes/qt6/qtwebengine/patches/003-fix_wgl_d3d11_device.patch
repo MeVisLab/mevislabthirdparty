@@ -1,0 +1,30 @@
+diff --git a/src/core/compositor/wgl_helper.cpp b/src/core/compositor/wgl_helper.cpp
+index 11526f4..27ecde8 100644
+--- a/src/core/compositor/wgl_helper.cpp
++++ b/src/core/compositor/wgl_helper.cpp
+@@ -58,10 +58,11 @@ WGLHelper::WGLHelper() : m_functions(new WGLHelper::WGLFunctions())
+ 
+     uint devFlags = 0;
+ #if !defined(QT_NO_DEBUG)
+-    devFlags |= D3D11_CREATE_DEVICE_DEBUG;
++    // devFlags |= D3D11_CREATE_DEVICE_DEBUG;  // MeVis: This requires an additional DirectX SDK Layer package
+ #endif
+ 
+-    const D3D_FEATURE_LEVEL featureLevels[] = { D3D_FEATURE_LEVEL_11_1 };
++    // MeVis: Feature level 11.1 is not supported on some old graphics cards, also allow 11.0:
++    const D3D_FEATURE_LEVEL featureLevels[] = { D3D_FEATURE_LEVEL_11_1, D3D_FEATURE_LEVEL_11_0 };
+     hr = D3D11CreateDevice(m_adapter.Get(), D3D_DRIVER_TYPE_UNKNOWN, /*Software=*/nullptr, devFlags,
+                            featureLevels, std::size(featureLevels), D3D11_SDK_VERSION, &m_device,
+                            /*pFeatureLevel=*/nullptr, &m_immediateContext);
+@@ -79,8 +80,9 @@ WGLHelper::WGLHelper() : m_functions(new WGLHelper::WGLFunctions())
+ 
+ WGLHelper::~WGLHelper()
+ {
+-    if (m_interopDevice != INVALID_HANDLE_VALUE)
+-        m_functions->wglDXCloseDeviceNV(m_interopDevice);
++    // MeVis: This could lead to crashes (with the NVidia driver) on application shutdown
++    // if (m_interopDevice != INVALID_HANDLE_VALUE)
++    //     m_functions->wglDXCloseDeviceNV(m_interopDevice);
+ }
+ 
+ D3DSharedTexture::D3DSharedTexture(WGLHelper::WGLFunctions *wglFun, ID3D11Device *device,

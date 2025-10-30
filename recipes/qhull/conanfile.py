@@ -2,6 +2,7 @@ from conan import ConanFile
 from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout
 from conan.tools.files import get, patch, replace_in_file, rmdir, copy, collect_libs
 from conan.tools.microsoft import is_msvc
+import os
 
 required_conan_version = ">=2.2.2"
 
@@ -36,22 +37,35 @@ class ConanRecipe(ConanFile):
 
         # we say we don't want static libs, but we need static qhullcpp (but only that)
         replace_in_file(
-            self, self.source_path / "CMakeLists.txt", "set_target_properties(${qhull_CPP} PROPERTIES EXCLUDE_FROM_ALL TRUE)", ""
+            self,
+            os.path.join(self.source_folder, "CMakeLists.txt"),
+            "set_target_properties(${qhull_CPP} PROPERTIES EXCLUDE_FROM_ALL TRUE)",
+            "",
         )
         replace_in_file(
             self,
-            self.source_path / "CMakeLists.txt",
+            os.path.join(self.source_folder, "CMakeLists.txt"),
             "list(APPEND qhull_TARGETS_INSTALL ${qhull_TARGETS_SHARED})",
             "list(APPEND qhull_TARGETS_INSTALL ${qhull_TARGETS_SHARED} ${qhull_CPP})",
         )
 
-        replace_in_file(self, self.source_path / "CMakeLists.txt", "INSTALL_RPATH_USE_LINK_PATH TRUE", "INSTALL_RPATH_USE_LINK_PATH FALSE")
-
         replace_in_file(
-            self, self.source_path / "CMakeLists.txt", 'INSTALL_RPATH "${LIB_INSTALL_DIR}"', 'INSTALL_RPATH "\$ORIGIN;\$ORIGIN/../lib"'
+            self,
+            os.path.join(self.source_folder, "CMakeLists.txt"),
+            "INSTALL_RPATH_USE_LINK_PATH TRUE",
+            "INSTALL_RPATH_USE_LINK_PATH FALSE",
         )
 
-        replace_in_file(self, self.source_path / "CMakeLists.txt", "$<$<CONFIG:Debug>:d>", "$<$<CONFIG:Debug>:_d>")
+        replace_in_file(
+            self,
+            os.path.join(self.source_folder, "CMakeLists.txt"),
+            'INSTALL_RPATH "${LIB_INSTALL_DIR}"',
+            'INSTALL_RPATH "\$ORIGIN;\$ORIGIN/../lib"',
+        )
+
+        replace_in_file(
+            self, os.path.join(self.source_folder, "CMakeLists.txt"), "$<$<CONFIG:Debug>:d>", "$<$<CONFIG:Debug>:_d>"
+        )
 
     def generate(self):
         tc = CMakeToolchain(self)
@@ -64,19 +78,22 @@ class ConanRecipe(ConanFile):
 
     def build(self):
         cmake = CMake(self)
-        cmake.configure()
+        cmake4_compat = {"CMAKE_POLICY_VERSION_MINIMUM": "3.5"}  # FIXME required for compatibility with CMake 4.0+
+        cmake.configure(variables=cmake4_compat)
         cmake.build()
 
     def package(self):
         cmake = CMake(self)
         cmake.install()
 
-        copy(self, "*/qhull_rd.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False)
-        copy(self, "COPYING.txt", src=self.source_path, dst=self.package_path / "licenses")
+        copy(
+            self, "*/qhull_rd.pdb", src=self.build_folder, dst=os.path.join(self.package_folder, "bin"), keep_path=False
+        )
+        copy(self, "COPYING.txt", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
 
-        rmdir(self, self.package_path / "lib" / "cmake")
-        rmdir(self, self.package_path / "lib" / "pkgconfig")
-        rmdir(self, self.package_path / "share")
+        rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
+        rmdir(self, os.path.join(self.package_folder, "share"))
 
     def package_info(self):
         # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?

@@ -1,0 +1,224 @@
+<typesystem package="Inventor.elements">
+
+
+  <rejection class="SoTextureCoordinateElement" function-name="setFunction"/>
+  <rejection class="SoGLTextureCoordinateElement" function-name="setElt"/>
+  <rejection class="SoGLTextureCoordinateElement" function-name="setTexGen"/>
+  <rejection class="SoGLTextureMatrixElement" function-name="getElt"/>
+  <rejection class="SoGLLazyElement" function-name="copyBackGL"/>
+  <rejection class="SoGLLazyElement" function-name="getCopyGL"/>
+  <rejection class="SoGLCacheContextElement" enum-name="enum_1"/>
+  <rejection class="SoLazyElement" function-name="setDrawArraysCallback"/>
+  <rejection class="SoLazyElement" function-name="setDrawElementsCallback"/>
+
+  <enum-type name="SoPickStyleElement::Style" />
+  <enum-type name="SoTextureCoordinateBindingElement::Binding" />
+  <enum-type name="SoTextureCoordinateElement::CoordType" />
+  <enum-type name="SoMaterialBindingElement::Binding" />
+  <enum-type name="SoProfileElement::Profile" />
+  <enum-type name="SoComplexityTypeElement::Type" />
+  <enum-type name="SoShapeHintsElement::ShapeType" />
+  <enum-type name="SoShapeHintsElement::VertexOrdering" />
+  <enum-type name="SoShapeHintsElement::FaceType" />
+  <enum-type name="SoDrawStyleElement::Style" />
+  <enum-type name="SoNormalBindingElement::Binding" />
+  <enum-type name="SoUnitsElement::Units" />
+  <enum-type name="SoLazyElement::internalMasks" />
+  <enum-type name="SoLazyElement::masks" />
+  <enum-type name="SoLazyElement::cases" />
+  <enum-type name="SoLazyElement::LightModel" />
+  <enum-type name="SoLazyElement::VertexAttribs" />
+  <enum-type name="SoGLCacheContextElement::enum_1" />
+  
+  <object-type name="SoAccumulatedElement">
+  </object-type>
+  <object-type name="SoAmbientColorElement">
+  </object-type>
+  <object-type name="SoBBoxModelMatrixElement">
+  </object-type>
+  <object-type name="SoCacheElement">
+  </object-type>
+  <object-type name="SoClipPlaneElement">
+  </object-type>
+  <object-type name="SoComplexityElement">
+  </object-type>
+  <object-type name="SoComplexityTypeElement">
+  </object-type>
+  <object-type name="SoCoordinateElement">
+  </object-type>
+  <object-type name="SoCreaseAngleElement">
+  </object-type>
+  <object-type name="SoCullVolumeElement">
+  </object-type>
+  <object-type name="SoCurrentGLMaterialElement">
+  </object-type>
+  <object-type name="SoDiffuseColorElement">
+  </object-type>
+  <object-type name="SoDrawStyleElement">
+  </object-type>
+  <object-type name="SoElement">
+  </object-type>
+  <object-type name="SoEmissiveColorElement">
+  </object-type>
+  <object-type name="SoFloatElement">
+  </object-type>
+  <object-type name="SoFocalDistanceElement">
+  </object-type>
+  <object-type name="SoFontNameElement">
+  </object-type>
+  <object-type name="SoFontSizeElement">
+  </object-type>
+  <object-type name="SoGLAmbientColorElement">
+  </object-type>
+  <object-type name="SoGLCacheContextElement">
+  </object-type>
+  <object-type name="SoGLClipPlaneElement">
+  </object-type>
+  <object-type name="SoGLColorIndexElement">
+  </object-type>
+  <object-type name="SoGLCoordinateElement">
+  </object-type>
+  <object-type name="SoGLDiffuseColorElement">
+  </object-type>
+  <object-type name="SoGLDrawStyleElement">
+  </object-type>
+  <object-type name="SoGLEmissiveColorElement">
+  </object-type>
+  <object-type name="SoGLLazyElement">
+  </object-type>
+  <object-type name="SoGLLightIdElement">
+  </object-type>
+  <object-type name="SoGLLightModelElement">
+  </object-type>
+  <object-type name="SoGLLinePatternElement">
+  </object-type>
+  <object-type name="SoGLLineWidthElement">
+  </object-type>
+  <object-type name="SoGLMaterialIndexElement">
+  </object-type>
+  <object-type name="SoGLModelMatrixElement">
+  </object-type>
+  <object-type name="SoGLNormalElement">
+  </object-type>
+  <object-type name="SoGLPointSizeElement">
+  </object-type>
+  <object-type name="SoGLPolygonStippleElement">
+  </object-type>
+  <object-type name="SoGLProjectionMatrixElement">
+  </object-type>
+  <object-type name="SoGLRenderPassElement">
+  </object-type>
+  <object-type name="SoGLShapeHintsElement">
+  </object-type>
+  <object-type name="SoGLShininessElement">
+  </object-type>
+  <object-type name="SoGLSpecularColorElement">
+  </object-type>
+  <object-type name="SoGLTextureBlendColorElement">
+  </object-type>
+  <object-type name="SoGLTextureCoordinateElement">
+  </object-type>
+  <object-type name="SoGLTextureEnabledElement">
+  </object-type>
+  <object-type name="SoGLTextureImageElement">
+  </object-type>
+  <object-type name="SoGLTextureMatrixElement">
+    <modify-function signature="getElt() const" remove="all"/>
+  </object-type>
+  <object-type name="SoGLTextureModelElement">
+  </object-type>
+  <object-type name="SoGLTextureQualityElement">
+  </object-type>
+  <object-type name="SoGLTextureWrapSElement">
+  </object-type>
+  <object-type name="SoGLTextureWrapTElement">
+  </object-type>
+  <object-type name="SoGLUpdateAreaElement">
+  </object-type>
+  <object-type name="SoGLViewingMatrixElement">
+  </object-type>
+  <object-type name="SoGLViewportRegionElement">
+  </object-type>
+  <object-type name="SoInt32Element">
+  </object-type>
+  <object-type name="SoLazyElement">
+  </object-type>
+  <object-type name="SoLightAttenuationElement">
+  </object-type>
+  <object-type name="SoLightModelElement">
+  </object-type>
+  <object-type name="SoLinePatternElement">
+  </object-type>
+  <object-type name="SoLineWidthElement">
+  </object-type>
+  <object-type name="SoLocalBBoxMatrixElement">
+  </object-type>
+  <object-type name="SoLongElement">
+  </object-type>
+  <object-type name="SoMaterialBindingElement">
+  </object-type>
+  <object-type name="SoModelMatrixElement">
+  </object-type>
+  <object-type name="SoNormalBindingElement">
+  </object-type>
+  <object-type name="SoNormalElement">
+  </object-type>
+  <object-type name="SoOverrideElement">
+  </object-type>
+  <object-type name="SoPickRayElement">
+  </object-type>
+  <object-type name="SoPickStyleElement">
+  </object-type>
+  <object-type name="SoPointSizeElement">
+  </object-type>
+  <object-type name="SoProfileCoordinateElement">
+  </object-type>
+  <object-type name="SoProfileElement">
+  </object-type>
+  <object-type name="SoProjectionMatrixElement">
+  </object-type>
+  <object-type name="SoReplacedElement">
+  </object-type>
+  <object-type name="SoShapeHintsElement">
+  </object-type>
+  <object-type name="SoShapeStyleElement">
+  </object-type>
+  <object-type name="SoShininessElement">
+  </object-type>
+  <object-type name="SoSpecularColorElement">
+  </object-type>
+  <object-type name="SoSubElement">
+  </object-type>
+  <object-type name="SoSwitchElement">
+  </object-type>
+  <object-type name="SoTextureBlendColorElement">
+  </object-type>
+  <object-type name="SoTextureCoordinateBindingElement">
+  </object-type>
+  <object-type name="SoTextureCoordinateElement">
+  </object-type>
+  <object-type name="SoTextureImageElement">
+  </object-type>
+  <object-type name="SoTextureMatrixElement">
+    <modify-function signature="getElt() const" remove="all"/>
+  </object-type>
+  <object-type name="SoTextureModelElement">
+  </object-type>
+  <object-type name="SoTextureQualityElement">
+  </object-type>
+  <object-type name="SoTextureWrapSElement">
+  </object-type>
+  <object-type name="SoTextureWrapTElement">
+  </object-type>
+  <object-type name="SoTransparencyElement">
+  </object-type>
+  <object-type name="SoUnitsElement">
+  </object-type>
+  <object-type name="SoViewVolumeElement">
+  </object-type>
+  <object-type name="SoViewingMatrixElement">
+  </object-type>
+  <object-type name="SoViewportRegionElement">
+  </object-type>
+
+ </typesystem>

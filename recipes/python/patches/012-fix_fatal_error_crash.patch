@@ -1,0 +1,15 @@
+diff --git a/Python/pylifecycle.c b/Python/pylifecycle.c
+index a8852a8..0fbff4e 100644
+--- a/Python/pylifecycle.c
++++ b/Python/pylifecycle.c
+@@ -3096,6 +3096,10 @@ fatal_output_debug(const char *msg)
+ 
+     OutputDebugStringW(L"Fatal Python error: ");
+ 
++    if (!msg) {
++        OutputDebugStringW(L"<message not set>\n");
++        return;
++    }
+     msglen = strlen(msg);
+     while (msglen) {
+         size_t i;

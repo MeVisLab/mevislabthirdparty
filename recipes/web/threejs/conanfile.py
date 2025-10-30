@@ -7,7 +7,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "threejs"
-    version = "170"
+    version = "176"
     homepage = "https://threejs.org"
     description = "JavaScript 3D library"
     package_type = "build-scripts"
@@ -19,13 +19,18 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="3c1b18c127cafa8febe1453a9d8cf576435ba78fc0f94aa1824a5690073a58f4",
+            sha256="c28d0e11c281684f4c72356926e8fe374c99176eafad45cda56551fee25e803a",
             url=f"https://github.com/mrdoob/three.js/archive/r{self.version}.zip",
             strip_root=True,
         )
 
     def package(self):
-        copy(self, "three.js", src=os.path.join(self.source_folder, "build"), dst=os.path.join(self.package_folder, "web", self.name))
+        copy(
+            self,
+            "three.js",
+            src=os.path.join(self.source_folder, "build"),
+            dst=os.path.join(self.package_folder, "web", self.name),
+        )
         copy(self, "LICENSE", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
 
     def package_info(self):

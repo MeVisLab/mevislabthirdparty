@@ -9,7 +9,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "assimp"
-    version = "5.4.3"
+    version = "6.0.2"
     homepage = "https://www.assimp.org"
     description = "library to import and export various 3d-model-formats including scene-post-processing to generate missing render data"
     license = "BSD-3-Clause"
@@ -26,13 +26,12 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="795c29716f4ac123b403e53b677e9f32a8605c4a7b2d9904bfaae3f4053b506d",
+            sha256="699b455b92ce2b6b39aa06a957e59f9d83e8652c8b51364e811660a4acb9ee49",
             url=f"https://github.com/assimp/assimp/archive/v{self.version}.zip",
             strip_root=True,
         )
         patch(self, patch_file="patches/001-no_pkgconfig_minizip.patch")
         patch(self, patch_file="patches/002-zlib_names.patch")
-        patch(self, patch_file="patches/003-cve_2024_48423.patch")
 
     def generate(self):
         tc = CMakeToolchain(self)
@@ -47,10 +46,6 @@ class ConanRecipe(ConanFile):
         tc.variables["ASSIMP_INSTALL_PDB"] = False
         tc.variables["ASSIMP_IGNORE_GIT_HASH"] = True
         tc.variables["ASSIMP_BUILD_ZLIB"] = False
-
-        # disable Collada module, see CVE-2022-45748 / https://github.com/assimp/assimp/issues/4286
-        tc.variables["ASSIMP_BUILD_COLLADA_IMPORTER"] = False
-        tc.variables["ASSIMP_BUILD_COLLADA_EXPORTER"] = False
 
         if self.settings.os == "Windows":
             tc.preprocessor_definitions["NOMINMAX"] = 1
@@ -68,7 +63,13 @@ class ConanRecipe(ConanFile):
 
     def package(self):
         copy(self, "LICENSE", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
-        copy(self, "*.pdb", src=os.path.join(self.build_folder, "bin"), dst=os.path.join(self.package_folder, "bin"), keep_path=False)
+        copy(
+            self,
+            "*.pdb",
+            src=os.path.join(self.build_folder, "bin"),
+            dst=os.path.join(self.package_folder, "bin"),
+            keep_path=False,
+        )
         cmake = CMake(self)
         cmake.install()
         rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))

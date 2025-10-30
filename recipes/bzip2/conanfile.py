@@ -28,16 +28,18 @@ class ConanRecipe(ConanFile):
         cmake_layout(self, src_folder="src")
 
     def source(self):
-        get(self,
+        get(
+            self,
             url=f"https://sourceware.org/pub/bzip2/bzip2-{self.version}.tar.gz",
             sha256="ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269",
-            strip_root=True)
+            strip_root=True,
+        )
 
     def generate(self):
         tc = CMakeToolchain(self)
         tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
-        tc.variables['BUILD_SHARED_LIBS'] = False
-        tc.variables['CMAKE_POSITION_INDEPENDENT_CODE'] = not is_msvc(self)
+        tc.variables["BUILD_SHARED_LIBS"] = False
+        tc.variables["CMAKE_POSITION_INDEPENDENT_CODE"] = not is_msvc(self)
         tc.variables["BZ2_SRC_DIR"] = self.source_folder.replace("\\", "/")
         tc.variables["BZ2_VERSION_MAJOR"] = Version(self.version).major
         tc.variables["BZ2_VERSION_STRING"] = self.version
@@ -45,18 +47,19 @@ class ConanRecipe(ConanFile):
 
     def build(self):
         cmake = CMake(self)
-        cmake.configure(build_script_folder=self.source_path.parent)
+        cmake.configure(build_script_folder=os.path.dirname(self.source_folder))
         cmake.build()
 
     def package(self):
-        copy(self, "LICENSE", src=self.source_path, dst=self.package_path / "licenses")
-        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False)
+        copy(self, "LICENSE", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
+        copy(self, "*.pdb", src=self.build_folder, dst=os.path.join(self.package_folder, "bin"), keep_path=False)
         cmake = CMake(self)
         cmake.install()
-        self._create_cmake_module_variables(self.package_path / self._module_file_rel_path)
+        self._create_cmake_module_variables(os.path.join(self.package_folder, self._module_file_rel_path))
 
     def _create_cmake_module_variables(self, module_file):
-        content = textwrap.dedent(f"""\
+        content = textwrap.dedent(
+            f"""\
             set(BZIP2_FOUND TRUE)
             set(BZIP2_INCLUDE_DIRS ${{BZip2_INCLUDE_DIR}})
             set(BZIP2_LIBRARIES ${{BZip2_LIBRARIES}})
@@ -64,7 +67,8 @@ class ConanRecipe(ConanFile):
             set(BZIP2_VERSION "{self.version}")
             set(BZIP2_INCLUDE_DIR ${{BZip2_INCLUDE_DIR}})
             set(BZIP2_VERSION_STRING "{self.version}")
-        """)
+        """
+        )
         save(self, module_file, content)
 
     @property

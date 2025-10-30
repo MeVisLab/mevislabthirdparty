@@ -1,0 +1,15 @@
+diff --git a/PCbuild/xxlimited.vcxproj b/PCbuild/xxlimited.vcxproj
+index 3312c85..d4c7221 100644
+--- a/PCbuild/xxlimited.vcxproj
++++ b/PCbuild/xxlimited.vcxproj
+@@ -1,6 +1,10 @@
+ ﻿<?xml version="1.0" encoding="utf-8"?>
+ <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+   <ItemGroup Label="ProjectConfigurations">
++    <ProjectReference Include="pythoncore.vcxproj">
++      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
++      <SkipGetTargetFrameworkProperties>true</SkipGetTargetFrameworkProperties>
++    </ProjectReference>
+     <ProjectConfiguration Include="Debug|ARM">
+       <Configuration>Debug</Configuration>
+       <Platform>ARM</Platform>

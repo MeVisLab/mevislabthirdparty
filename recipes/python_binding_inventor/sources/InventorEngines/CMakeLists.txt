@@ -9,11 +9,9 @@ endif()
 
 target_sources(InventorEngines PRIVATE
   InventorEngines.cpp
-  ../generated_cpp/Inventor_engines/Inventor_engines0.h
-  ../generated_cpp/Inventor_engines/Inventor_engines0.cpp
-  ../generated_cpp/Inventor_engines/Inventor_engines1.h
-  ../generated_cpp/Inventor_engines/Inventor_engines1.cpp
-  ../generated_cpp/Inventor_engines/Inventor_engines_init.cpp
+  ../generated_cpp/inventor_engines/inventor_engines0.h
+  ../generated_cpp/inventor_engines/inventor_engines0.cpp
+  ../generated_cpp/inventor_engines/inventor_engines_init.cpp
 )
 
 target_link_libraries(InventorEngines

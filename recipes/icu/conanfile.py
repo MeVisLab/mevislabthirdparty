@@ -1,5 +1,6 @@
 import os
 import shutil
+from pathlib import Path
 
 from conan import ConanFile
 from conan.tools.apple import is_apple_os
@@ -97,52 +98,98 @@ class ConanRecipe(ConanFile):
             tc.generate()
 
     def build(self):
+        proj_dir = os.path.join(self.source_folder, "source")
         if is_msvc(self):
-            proj_dir = self.source_path / "source" / "allinone"
             msbuild = MeVisMSBuild(self)
             msbuild.build_type = "Debug" if self.settings.build_type == "Debug" else "Release"
             msbuild.properties["SkipUWP"] = "true"
-            msbuild.build(proj_dir / "allinone.sln")
+            msbuild.build(os.path.join(proj_dir, "allinone", "allinone.sln"))
         else:
             autotools = Autotools(self)
-            autotools.configure(build_script_folder=os.path.join(self.source_folder, "source"))
+            autotools.configure(build_script_folder=proj_dir)
             autotools.make()
 
     def package(self):
-        copy(self, "LICENSE", src=self.source_path, dst=self.package_path / "licenses")
+        copy(self, "LICENSE", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
         if is_msvc(self):
             # Note: build results are located in the source folder
-            copy(self, pattern="*", src=self.source_path / "include", dst=self.package_path / "include")
-            copy(self, pattern="*.lib", src=self.source_path / "lib64", dst=self.package_path / "lib")
-            copy(self, pattern="*.pdb", src=self.source_path / "lib64", dst=self.package_path / "bin")
-            copy(self, pattern="*.exe", src=self.source_path / "bin64", dst=self.package_path / "bin")
-            copy(self, pattern="*.dll", src=self.source_path / "bin64", dst=self.package_path / "bin")
+            copy(
+                self,
+                pattern="*",
+                src=os.path.join(self.source_folder, "include"),
+                dst=os.path.join(self.package_folder, "include"),
+            )
+            copy(
+                self,
+                pattern="*.lib",
+                src=os.path.join(self.source_folder, "lib64"),
+                dst=os.path.join(self.package_folder, "lib"),
+            )
+            copy(
+                self,
+                pattern="*.pdb",
+                src=os.path.join(self.source_folder, "lib64"),
+                dst=os.path.join(self.package_folder, "bin"),
+            )
+            copy(
+                self,
+                pattern="*.exe",
+                src=os.path.join(self.source_folder, "bin64"),
+                dst=os.path.join(self.package_folder, "bin"),
+            )
+            copy(
+                self,
+                pattern="*.dll",
+                src=os.path.join(self.source_folder, "bin64"),
+                dst=os.path.join(self.package_folder, "bin"),
+            )
         else:
             autotools = Autotools(self)
             autotools.install()
 
         # Copy some files required for cross-compiling
-        config_dir = self.package_path / "config"
-        copy(self, "icucross.mk", src=self.build_path / "config", dst=config_dir)
-        copy(self, "icucross.inc", src=self.build_path / "config", dst=config_dir)
+        copy(
+            self,
+            "icucross.mk",
+            src=os.path.join(self.build_folder, "config"),
+            dst=os.path.join(self.package_folder, "config"),
+        )
+        copy(
+            self,
+            "icucross.inc",
+            src=os.path.join(self.build_folder, "config"),
+            dst=os.path.join(self.package_folder, "config"),
+        )
 
         suffix = "d" if self.settings.build_type == "Debug" else ""
-        rmdir(self, self.package_path / "lib" / f"icu{suffix}")
-        rmdir(self, self.package_path / "lib" / "man")
-        rmdir(self, self.package_path / "lib" / "pkgconfig")
-        rmdir(self, self.package_path / "share")
+        rmdir(self, os.path.join(self.package_folder, "lib", f"icu{suffix}"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "man"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
+        rmdir(self, os.path.join(self.package_folder, "share"))
 
         if self.settings.os == "Linux":
             # change rpath of binaries
             patchelf = shutil.which("patchelf")
-            with chdir(self, self.package_path / "bin"):
-                for binary in ["derb", "genbrk", "gencfu", "gencnval", "gendict", "genrb", "icuinfo", "makeconv", "pkgdata"]:
+            with chdir(self, os.path.join(self.package_folder, "bin")):
+                for binary in [
+                    "derb",
+                    "genbrk",
+                    "gencfu",
+                    "gencnval",
+                    "gendict",
+                    "genrb",
+                    "icuinfo",
+                    "makeconv",
+                    "pkgdata",
+                ]:
                     self.run(f"{patchelf} --set-rpath '$ORIGIN/../lib' {binary}")
-            for lib in (self.package_path / "lib").glob("*.so"):
+            for lib in Path(self.package_folder, "lib").glob("*.so"):
                 self.run(f"{patchelf} --set-rpath '$ORIGIN/../lib' {lib}")
 
     def package_info(self):
-        self.cpp_info.set_property("cpe", "cpe:2.3:a:icu-project:international_components_for_unicode:*:*:*:*:*:c\\/c\\+\\+:*:*")
+        self.cpp_info.set_property(
+            "cpe", "cpe:2.3:a:icu-project:international_components_for_unicode:*:*:*:*:*:c\\/c\\+\\+:*:*"
+        )
         self.cpp_info.set_property("purl", f"pkg:github/unicode-org/icu@release-{self.version.replace('.', '-')}")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "ICU")

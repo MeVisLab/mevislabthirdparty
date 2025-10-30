@@ -1,13 +1,3 @@
-/*************************************************************************************
-**
-** Copyright 2022, MeVis Medical Solutions AG
-**
-** GNU LESSER GENERAL PUBLIC LICENSE Version 2.1, February 1999
-**
-**************************************************************************************/
-#include <PythonQt.h>
-#include <QObject>
-#include <QVariant>
 #include <Inventor/SbBox.h>
 #include <Inventor/SbColor.h>
 #include <Inventor/SbLinear.h>
@@ -32,7 +22,9 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoShape.h>
-#include <stdexcept>
+#include <PythonQt.h>
+#include <QObject>
+#include <QVariant>
 
 
 
@@ -572,7 +564,7 @@ void delete_SoSearchAction(SoSearchAction* obj) { delete obj; }
      }
      return result;
    }
-
+   
 };
 
 

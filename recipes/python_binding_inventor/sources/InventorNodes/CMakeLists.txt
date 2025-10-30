@@ -9,15 +9,9 @@ endif()
 
 target_sources(InventorNodes PRIVATE
   InventorNodes.cpp
-  ../generated_cpp/Inventor_nodes/Inventor_nodes0.h
-  ../generated_cpp/Inventor_nodes/Inventor_nodes0.cpp
-  ../generated_cpp/Inventor_nodes/Inventor_nodes1.h
-  ../generated_cpp/Inventor_nodes/Inventor_nodes1.cpp
-  ../generated_cpp/Inventor_nodes/Inventor_nodes2.h
-  ../generated_cpp/Inventor_nodes/Inventor_nodes2.cpp
-  ../generated_cpp/Inventor_nodes/Inventor_nodes3.h
-  ../generated_cpp/Inventor_nodes/Inventor_nodes3.cpp
-  ../generated_cpp/Inventor_nodes/Inventor_nodes_init.cpp
+  ../generated_cpp/inventor_nodes/inventor_nodes0.h
+  ../generated_cpp/inventor_nodes/inventor_nodes0.cpp
+  ../generated_cpp/inventor_nodes/inventor_nodes_init.cpp
 )
 
 target_link_libraries(InventorNodes

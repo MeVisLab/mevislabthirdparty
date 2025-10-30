@@ -1,8 +1,8 @@
 diff --git a/Modules/Setup b/Modules/Setup
-index d3647ec..bcc98d3 100644
+index e4acf6b..574cc4d 100644
 --- a/Modules/Setup
 +++ b/Modules/Setup
-@@ -300,3 +300,14 @@ xxsubtype xxsubtype.c  # Required for the test suite to pass!
+@@ -296,3 +296,14 @@ PYTHONPATH=$(COREPYTHONPATH)
  #
  # _sqlite3 _tkinter _curses pyexpat
  # _codecs_jp _codecs_kr _codecs_tw unicodedata

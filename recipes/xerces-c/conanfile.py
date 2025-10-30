@@ -2,6 +2,7 @@ from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
 from conan.tools.files import collect_libs, copy, get, patch
 from conan.tools.scm import Version
+import os
 
 required_conan_version = ">=2.2.2"
 
@@ -21,10 +22,11 @@ class ConanRecipe(ConanFile):
 
     def source(self):
         v = Version(self.version)
-        get(self,
+        get(
+            self,
             url=f"https://archive.apache.org/dist/xml/xerces-c/Xerces-C_{v.major}_{v.minor}_{v.patch}/source/xerces-c-src_{v.major}_{v.minor}_{v.patch}.tar.gz",
             sha256="77fae8a1e7aa58007115c939aa68fd5028da79c481fc457dfce546b50c9dfda5",
-            strip_root=True
+            strip_root=True,
         )
         patch(self, patch_file="patches/001-macos.patch")
         patch(self, patch_file="patches/002-windows_64bit.patch")
@@ -33,17 +35,24 @@ class ConanRecipe(ConanFile):
         tc = CMakeToolchain(self)
         tc.cache_variables["CONAN_XERCES_VERSION"] = f"{self.version}"
         tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
-        tc.variables['BUILD_SHARED_LIBS'] = True
+        tc.variables["BUILD_SHARED_LIBS"] = True
         tc.generate()
 
     def build(self):
         cmake = CMake(self)
-        cmake.configure(build_script_folder=self.source_path.parent)
+        cmake.configure(build_script_folder=os.path.dirname(self.source_folder))
         cmake.build()
 
     def package(self):
-        copy(self, "LICENSE", src=self.source_path, dst=self.package_path / "licenses")
-        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False, excludes="*vc???.pdb")
+        copy(self, "LICENSE", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
+        copy(
+            self,
+            "*.pdb",
+            src=self.build_folder,
+            dst=os.path.join(self.package_folder, "bin"),
+            keep_path=False,
+            excludes="*vc???.pdb",
+        )
         cmake = CMake(self)
         cmake.install()
 

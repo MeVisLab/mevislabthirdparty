@@ -1,13 +1,3 @@
-/*************************************************************************************
-**
-** Copyright 2022, MeVis Medical Solutions AG
-**
-** GNU LESSER GENERAL PUBLIC LICENSE Version 2.1, February 1999
-**
-**************************************************************************************/
-#include <PythonQt.h>
-#include <QObject>
-#include <QVariant>
 #include <Inventor/SbLinear.h>
 #include <Inventor/SbTime.h>
 #include <Inventor/SbViewportRegion.h>
@@ -21,7 +11,9 @@
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/events/SoMouseWheelEvent.h>
 #include <Inventor/events/SoSpaceballButtonEvent.h>
-#include <stdexcept>
+#include <PythonQt.h>
+#include <QObject>
+#include <QVariant>
 
 
 
@@ -68,6 +60,9 @@ public:
 class PythonQtWrapper_SoEvent : public QObject
 { Q_OBJECT
 public:
+Q_ENUMS(MouseButtonsMask )
+enum MouseButtonsMask{
+  NO_MOUSEBUTTON_MASK = SoEvent::NO_MOUSEBUTTON_MASK,   LEFT_MOUSEBUTTON_MASK = SoEvent::LEFT_MOUSEBUTTON_MASK,   MIDDLE_MOUSEBUTTON_MASK = SoEvent::MIDDLE_MOUSEBUTTON_MASK,   RIGHT_MOUSEBUTTON_MASK = SoEvent::RIGHT_MOUSEBUTTON_MASK,   ALL_MOUSEBUTTONS_MASK = SoEvent::ALL_MOUSEBUTTONS_MASK};
 public Q_SLOTS:
 SoEvent* new_SoEvent();
 void delete_SoEvent(SoEvent* obj) { delete obj; }

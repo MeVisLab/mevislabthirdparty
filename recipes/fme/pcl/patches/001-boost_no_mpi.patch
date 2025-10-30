@@ -1,13 +1,13 @@
 diff --git a/cmake/pcl_find_boost.cmake b/cmake/pcl_find_boost.cmake
-index 5d5c785..4ac3a44 100644
+index 381024e..9f2665f 100644
 --- a/cmake/pcl_find_boost.cmake
 +++ b/cmake/pcl_find_boost.cmake
 @@ -20,7 +20,7 @@ if(CMAKE_CXX_STANDARD MATCHES "14")
-   set(BOOST_REQUIRED_MODULES filesystem iostreams system)
+   set(BOOST_REQUIRED_MODULES filesystem iostreams)
  else()
    # Optional boost modules
--  set(BOOST_OPTIONAL_MODULES filesystem serialization mpi)
-+  set(BOOST_OPTIONAL_MODULES filesystem serialization)
+-  set(BOOST_OPTIONAL_MODULES filesystem serialization mpi system)
++  set(BOOST_OPTIONAL_MODULES filesystem serialization system)
    # Required boost modules
-   set(BOOST_REQUIRED_MODULES iostreams system)
+   set(BOOST_REQUIRED_MODULES iostreams)
  endif()

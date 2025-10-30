@@ -1,13 +1,14 @@
 from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
 from conan.tools.files import copy, get, rmdir, replace_in_file
+import os
 
 required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
     name = "pcre2"
-    version = "10.45"
+    version = "10.46"
     homepage = "https://www.pcre.org"
     description = "Perl-compatible regular expression library"
     license = "BSD-3-Clause"
@@ -24,11 +25,16 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="21547f3516120c75597e5b30a992e27a592a31950b5140e7b8bfde3f192033c4",
+            sha256="15fbc5aba6beee0b17aecb04602ae39432393aba1ebd8e39b7cabf7db883299f",
             url=f"https://github.com/PCRE2Project/pcre2/releases/download/pcre2-{self.version}/pcre2-{self.version}.tar.bz2",
             strip_root=True,
         )
-        replace_in_file(self, self.source_path / "CMakeLists.txt", 'set(CMAKE_DEBUG_POSTFIX "d")', '#set(CMAKE_DEBUG_POSTFIX "d")')
+        replace_in_file(
+            self,
+            os.path.join(self.source_folder, "CMakeLists.txt"),
+            'set(CMAKE_DEBUG_POSTFIX "d")',
+            '#set(CMAKE_DEBUG_POSTFIX "d")',
+        )
 
     def generate(self):
         tc = CMakeToolchain(self)
@@ -60,15 +66,22 @@ class ConanRecipe(ConanFile):
         cmake.build()
 
     def package(self):
-        copy(self, "LICENCE.md", src=self.source_path, dst=self.package_path / "licenses")
-        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False, excludes="*vc???.pdb")
+        copy(self, "LICENCE.md", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
+        copy(
+            self,
+            "*.pdb",
+            src=self.build_folder,
+            dst=os.path.join(self.package_folder, "bin"),
+            keep_path=False,
+            excludes="*vc???.pdb",
+        )
         cmake = CMake(self)
         cmake.install()
-        rmdir(self, self.package_path / "cmake")
-        rmdir(self, self.package_path / "man")
-        rmdir(self, self.package_path / "share")
-        rmdir(self, self.package_path / "lib" / "pkgconfig")
-        rmdir(self, self.package_path / "lib" / "cmake")
+        rmdir(self, os.path.join(self.package_folder, "cmake"))
+        rmdir(self, os.path.join(self.package_folder, "man"))
+        rmdir(self, os.path.join(self.package_folder, "share"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:pcre:pcre2:*:*:*:*:*:*:*:*")

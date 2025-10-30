@@ -69,7 +69,7 @@ class ConanRecipe(ConanFile):
 
     def package(self):
         self._write_license_file()
-        copy(self, "*.pdb", src=self.build_path, dst=self.package_path / "bin", keep_path=False)
+        copy(self, "*.pdb", src=self.build_folder, dst=os.path.join(self.package_folder, "bin"), keep_path=False)
         cmake = CMake(self)
         cmake.install()
         self._cmake_module_file_write()
@@ -88,7 +88,7 @@ class ConanRecipe(ConanFile):
     def _write_license_file(self):
         license_header = load(self, os.path.join(self.source_folder, "zlib.h"))
         license_contents = license_header[2 : license_header.find("*/", 1)]
-        license_file = self.package_path / "licenses" / "LICENSE"
+        license_file = os.path.join(self.package_folder, "licenses", "LICENSE")
         save(self, license_file, license_contents)
 
     @property
@@ -97,7 +97,7 @@ class ConanRecipe(ConanFile):
 
     def _cmake_module_file_write(self):
         v = Version(self.version)
-        file = self.package_path / self._cmake_module_file
+        file = os.path.join(self.package_folder, self._cmake_module_file)
         content = textwrap.dedent(
             f"""\
             set(ZLIB_FOUND TRUE)

@@ -1,28 +1,20 @@
-diff --git a/setup.py b/setup.py
-index ad8fb81..28a7c6a 100644
---- a/setup.py
-+++ b/setup.py
-@@ -577,6 +577,7 @@ class PyBuildExt(build_ext):
-             print("Failed to build these modules:")
-             print_three_column(failed)
+diff --git a/Tools/build/check_extension_modules.py b/Tools/build/check_extension_modules.py
+index e0c7a92..bff7d8d 100644
+--- a/Tools/build/check_extension_modules.py
++++ b/Tools/build/check_extension_modules.py
+@@ -244,6 +244,7 @@ class ModuleChecker:
+             )
+             print_three_column(self.failed_on_import)
              print()
 +            sys.exit(1)
  
-         if self.failed_on_import:
-             failed = self.failed_on_import[:]
-@@ -585,6 +586,7 @@ class PyBuildExt(build_ext):
-                   " but were removed because they could not be imported:")
-             print_three_column(failed)
-             print()
-+            sys.exit(1)
- 
-         if any('_ssl' in l
-                for l in (self.missing, self.failed, self.failed_on_import)):
-@@ -594,6 +596,7 @@ class PyBuildExt(build_ext):
+         if any(
+             modinfo.name == "_ssl" for modinfo in self.missing + self.failed_on_import
+@@ -253,6 +254,7 @@ class ModuleChecker:
              if sysconfig.get_config_var("OPENSSL_LDFLAGS"):
                  print("Custom linker flags may require --with-openssl-rpath=auto")
              print()
 +            sys.exit(1)
  
-         if os.environ.get("PYTHONSTRICTEXTENSIONBUILD") and (
-             self.failed or self.failed_on_import or self.missing
+         disabled = len(self.disabled_configure) + len(self.disabled_setup)
+         print(

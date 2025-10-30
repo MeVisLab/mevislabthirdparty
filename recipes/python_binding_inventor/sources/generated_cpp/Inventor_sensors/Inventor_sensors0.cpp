@@ -1,20 +1,13 @@
-/*************************************************************************************
-**
-** Copyright 2022, MeVis Medical Solutions AG
-**
-** GNU LESSER GENERAL PUBLIC LICENSE Version 2.1, February 1999
-**
-**************************************************************************************/
-#include "Inventor_sensors0.h"
-#include <PythonQtConversion.h>
-#include <PythonQtMethodInfo.h>
-#include <PythonQtSignalReceiver.h>
-#include <QVariant>
+#include "inventor_sensors0.h"
 #include <Inventor/SbTime.h>
 #include <Inventor/SoPath.h>
 #include <Inventor/fields/SoField.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/sensors/SoSensor.h>
+#include <PythonQtConversion.h>
+#include <PythonQtMethodInfo.h>
+#include <PythonQtSignalReceiver.h>
+#include <QVariant>
 
 const SbTime*  PythonQtWrapper_SoAlarmSensor::getTime(SoAlarmSensor* theWrappedObject) const
 {
@@ -102,6 +95,11 @@ void PythonQtWrapper_SoFieldSensor::attach(SoFieldSensor* theWrappedObject, SoFi
   ( theWrappedObject->attach(field));
 }
 
+void PythonQtWrapper_SoFieldSensor::detach(SoFieldSensor* theWrappedObject)
+{
+  ( theWrappedObject->detach());
+}
+
 SoField*  PythonQtWrapper_SoFieldSensor::getAttachedField(SoFieldSensor* theWrappedObject) const
 {
   return ( theWrappedObject->getAttachedField());
@@ -116,6 +114,11 @@ void PythonQtWrapper_SoNodeSensor::attach(SoNodeSensor* theWrappedObject, SoNode
   ( theWrappedObject->attach(node));
 }
 
+void PythonQtWrapper_SoNodeSensor::detach(SoNodeSensor* theWrappedObject)
+{
+  ( theWrappedObject->detach());
+}
+
 SoNode*  PythonQtWrapper_SoNodeSensor::getAttachedNode(SoNodeSensor* theWrappedObject) const
 {
   return ( theWrappedObject->getAttachedNode());
@@ -126,6 +129,11 @@ SoNode*  PythonQtWrapper_SoNodeSensor::getAttachedNode(SoNodeSensor* theWrappedO
 void PythonQtWrapper_SoPathSensor::attach(SoPathSensor* theWrappedObject, SoPath*  path)
 {
   ( theWrappedObject->attach(path));
+}
+
+void PythonQtWrapper_SoPathSensor::detach(SoPathSensor* theWrappedObject)
+{
+  ( theWrappedObject->detach());
 }
 
 SoPath*  PythonQtWrapper_SoPathSensor::getAttachedPath(SoPathSensor* theWrappedObject) const

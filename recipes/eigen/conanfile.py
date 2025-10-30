@@ -1,6 +1,7 @@
 from conan import ConanFile
 from conan.tools.cmake import CMake, cmake_layout, CMakeToolchain
 from conan.tools.files import copy, get, patch, rmdir
+import os
 
 required_conan_version = ">=2.2.2"
 
@@ -22,11 +23,13 @@ class EigenConan(ConanFile):
         self.info.clear()
 
     def source(self):
-        get(self,
+        get(
+            self,
             url=f"https://gitlab.com/libeigen/eigen/-/archive/{self.version}/eigen-{self.version}.tar.gz",
             sha256="8586084f71f9bde545ee7fa6d00288b264a2b7ac3607b974e54d13e7162c1c72",
             destination=self.source_folder,
-            strip_root=True)
+            strip_root=True,
+        )
         patch(self, patch_file="patches/001-improve_configure_time.patch")
 
     def generate(self):
@@ -44,12 +47,14 @@ class EigenConan(ConanFile):
     def package(self):
         cmake = CMake(self)
         cmake.install()
-        copy(self, "COPYING.*", self.source_path, self.package_path / "licenses")
-        rmdir(self, self.package_path / "share")
+        copy(self, "COPYING.*", self.source_folder, os.path.join(self.package_folder, "licenses"))
+        rmdir(self, os.path.join(self.package_folder, "share"))
 
     def package_info(self):
         # self.cpp_info.set_property("cpe", "")  # No CPE yet?
-        self.cpp_info.set_property("purl", "pkg:gitlab/libeigen/eigen@{self.version}")  # gitlab not really defined per standard?
+        self.cpp_info.set_property(
+            "purl", "pkg:gitlab/libeigen/eigen@{self.version}"
+        )  # gitlab not really defined per standard?
         self.cpp_info.set_property("cmake_file_name", "Eigen3")
         self.cpp_info.set_property("cmake_target_name", "Eigen3::Eigen")
         self.cpp_info.set_property("cmake_target_aliases", ["Eigen3::Eigen3"])
@@ -58,8 +63,8 @@ class EigenConan(ConanFile):
 
         self.cpp_info.bindirs = []
         self.cpp_info.libdirs = []
-        self.cpp_info.includedirs.append('include/eigen3')
-        self.cpp_info.defines = ['EIGEN_MPL2_ONLY', 'EIGEN_MALLOC_ALREADY_ALIGNED=1', 'EIGEN_MAX_ALIGN_BYTES=16']
+        self.cpp_info.includedirs.append("include/eigen3")
+        self.cpp_info.defines = ["EIGEN_MPL2_ONLY", "EIGEN_MALLOC_ALREADY_ALIGNED=1", "EIGEN_MAX_ALIGN_BYTES=16"]
 
         if self.settings.os in ["Linux"]:
             self.cpp_info.system_libs = ["m"]

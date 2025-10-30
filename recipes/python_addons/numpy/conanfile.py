@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 from conan import ConanFile
@@ -15,7 +16,7 @@ required_conan_version = ">=2.2.2"
 class ConanRecipe(ConanFile):
     name = "numpy"
     mli_name = "Python3__NumPy"
-    version = "2.2.6"
+    version = "2.3.2"
     homepage = "https://numpy.org"
     description = "NumPy is the fundamental package for scientific computing with Python"
     license = "BSD-3-Clause"
@@ -31,7 +32,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="e29554e2bef54a90aa5cc07da6ce955accb83f21ab5de01a62c8478897b264fd",
+            sha256="e0486a11ec30cdecb53f184d496d1c6a20786c81e55e41640270130056f8ee48",
             url=f"https://github.com/numpy/numpy/releases/download/v{self.version}/numpy-{self.version}.tar.gz",
             strip_root=True,
         )
@@ -49,15 +50,17 @@ class ConanRecipe(ConanFile):
             self.output.error("Expected Numpy include directory not found")
             raise ConanException("Expected Numpy include directory not found")
         src_dir = numpy_config.parent
-        dst_dir = (
-            Path(self.package_folder) / self.relative_site_package_folder() / "numpy" / "_core" / "include" / "numpy"
+        dst_dir = os.path.join(
+            self.package_folder, self.relative_site_package_folder(), "numpy", "_core", "include", "numpy"
         )
         copy(self, "_numpyconfig.h", src=src_dir, dst=dst_dir)
         copy(self, "__ufunc_api.h", src=src_dir, dst=dst_dir)
         copy(self, "__multiarray_api.h", src=src_dir, dst=dst_dir)
         rmdir(
             self,
-            Path(self.package_folder) / self.relative_site_package_folder() / "numpy" / "_core" / "lib" / "pkgconfig",
+            os.path.join(
+                self.package_folder, self.relative_site_package_folder(), "numpy", "_core", "lib", "pkgconfig"
+            ),
         )
 
     def package_info(self):
