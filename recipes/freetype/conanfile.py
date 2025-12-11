@@ -15,7 +15,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "freetype"
-    version = "2.13.3"
+    version = "2.14.1"
     homepage = "https://www.freetype.org"
     description = "A high-quality and portable font engine"
     license = "FTL"
@@ -28,7 +28,9 @@ class ConanRecipe(ConanFile):
 
     def validate(self):
         if self.settings.os == "Linux":
-            raise ConanInvalidConfiguration(f"{self.name} is not supported on Linux. Please use the one provided by the system.")
+            raise ConanInvalidConfiguration(
+                f"{self.name} is not supported on Linux. Please use the one provided by the system."
+            )
 
     def layout(self):
         cmake_layout(self, src_folder="src")
@@ -42,12 +44,15 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="5c3a8e78f7b24c20b25b54ee575d6daa40007a5f4eea2845861c3409b3021747",
+            sha256="174d9e53402e1bf9ec7277e22ec199ba3e55a6be2c0740cb18c0ee9850fc8c34",
             url=f"https://download.savannah.gnu.org/releases/freetype/freetype-{self.version}.tar.gz",
             strip_root=True,
         )
         replace_in_file(
-            self, os.path.join(self.source_folder, "CMakeLists.txt"), 'if ("${CMAKE_BINARY_DIR}" STREQUAL "${CMAKE_SOURCE_DIR}")', "if (0)"
+            self,
+            os.path.join(self.source_folder, "CMakeLists.txt"),
+            'if ("${CMAKE_BINARY_DIR}" STREQUAL "${CMAKE_SOURCE_DIR}")',
+            "if (0)",
         )
         replace_in_file(
             self,
@@ -103,8 +108,20 @@ class ConanRecipe(ConanFile):
         cmake.install()
         libtool_version = self._extract_libtool_version()
         save(self, self._libtool_version_txt, libtool_version)
-        copy(self, "FTL.TXT", src=os.path.join(self.source_folder, "docs"), dst=os.path.join(self.package_folder, "licenses"))
-        copy(self, "*.pdb", src=self.build_folder, dst=os.path.join(self.package_folder, "bin"), keep_path=False, excludes="*vc???.pdb")
+        copy(
+            self,
+            "FTL.TXT",
+            src=os.path.join(self.source_folder, "docs"),
+            dst=os.path.join(self.package_folder, "licenses"),
+        )
+        copy(
+            self,
+            "*.pdb",
+            src=self.build_folder,
+            dst=os.path.join(self.package_folder, "bin"),
+            keep_path=False,
+            excludes="*vc???.pdb",
+        )
         rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))
         rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
 

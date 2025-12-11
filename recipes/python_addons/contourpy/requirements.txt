@@ -1,4 +1,4 @@
-meson==1.9.0
+meson==1.9.1
 meson-python==0.18.0
 packaging==25.0
 pybind11==3.0.1

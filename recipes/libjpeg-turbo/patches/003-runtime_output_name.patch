@@ -1,0 +1,13 @@
+diff --git a/sharedlib/CMakeLists.txt b/sharedlib/CMakeLists.txt
+index 060181e..ce3d9c7 100644
+--- a/sharedlib/CMakeLists.txt
++++ b/sharedlib/CMakeLists.txt
+@@ -66,7 +66,7 @@ if(MAPFLAG)
+ endif()
+ if(MSVC_LIKE)
+   set_target_properties(jpeg PROPERTIES
+-    RUNTIME_OUTPUT_NAME jpeg${SO_MAJOR_VERSION})
++    RUNTIME_OUTPUT_NAME jpeg)
+   # The jsimd_*.c file is built to use libcmt or libcmtd, so this prevents a
+   # linker warning.
+   if(MSVC)

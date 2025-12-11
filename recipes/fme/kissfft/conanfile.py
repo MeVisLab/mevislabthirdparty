@@ -8,7 +8,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "kissfft"
-    version = "131.1.0"
+    version = "131.2.0"
     homepage = "https://github.com/mborgerding/kissfft"
     description = "A mixed-radix Fast Fourier Transform"
     license = "BSD-3-Clause"
@@ -31,7 +31,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="76c1aac87ddb7258f34b08a13f0eebf9e53afa299857568346aa5c82bcafaf1a",
+            sha256="205a8f6a448ef12b091f8ac6a514b5091bb5f6b0b543431ed75f673116cf5cbf",
             url=f"https://github.com/mborgerding/kissfft/archive/refs/tags/{self.version}.tar.gz",
             strip_root=True,
         )

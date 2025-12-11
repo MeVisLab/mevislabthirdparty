@@ -32,7 +32,7 @@ class MeVisMSBuild(MSBuild):
 
 class ConanRecipe(ConanFile):
     name = "icu"
-    version = "77.1"
+    version = "78.1"
     homepage = "https://icu.unicode.org/"
     description = "Unicode support, software internationalization, and software globalization"
     license = "Unicode-3.0"
@@ -51,8 +51,8 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="588e431f77327c39031ffbb8843c0e3bc122c211374485fa87dc5f3faff24061",
-            url=f"https://github.com/unicode-org/icu/releases/download/release-{self.version.replace('.', '-')}/icu4c-{self.version.replace('.', '_')}-src.tgz",
+            sha256="6217f58ca39b23127605cfc6c7e0d3475fe4b0d63157011383d716cb41617886",
+            url=f"https://github.com/unicode-org/icu/releases/download/release-{self.version}/icu4c-{self.version}-sources.tgz",
             strip_root=True,
         )
         patch(self, patch_file="patches/001-disable_renaming_by_default.patch")

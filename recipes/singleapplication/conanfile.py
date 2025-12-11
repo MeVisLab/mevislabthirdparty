@@ -9,7 +9,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "singleapplication"
-    # The latest version (3.4.0) has the license slightly changed and no needed new features.
+    # The latest version (3.5.4) has the license slightly changed and no needed new features.
     # In case we want to use a newer version, we also have to handle the new license.
     version = "3.5.3"
     homepage = "https://github.com/itay-grudev/SingleApplication"

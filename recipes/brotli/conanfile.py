@@ -8,7 +8,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "brotli"
-    version = "1.1.0"
+    version = "1.2.0"
     homepage = "https://github.com/google/brotli"
     description = "Generic-purpose lossless compression algorithm"
     license = "MIT"
@@ -24,10 +24,11 @@ class ConanRecipe(ConanFile):
         cmake_layout(self, src_folder="src")
 
     def source(self):
-        get(self,
-            sha256="e720a6ca29428b803f4ad165371771f5398faba397edf6778837a18599ea13ff",
+        get(
+            self,
+            sha256="816c96e8e8f193b40151dad7e8ff37b1221d019dbcb9c35cd3fadbfe6477dfec",
             url=f"https://github.com/google/brotli/archive/refs/tags/v{self.version}.tar.gz",
-            strip_root=True
+            strip_root=True,
         )
 
     def generate(self):
@@ -35,8 +36,8 @@ class ConanRecipe(ConanFile):
         tc.variables["BUILD_SHARED_LIBS"] = True
 
         tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
-        tc.variables['CMAKE_POSITION_INDEPENDENT_CODE'] = True
-        tc.variables['CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS'] = True
+        tc.variables["CMAKE_POSITION_INDEPENDENT_CODE"] = True
+        tc.variables["CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS"] = True
         tc.variables["CMAKE_INSTALL_RPATH"] = "$ORIGIN;$ORIGIN/../lib"
 
         tc.variables["BROTLI_BUNDLED_MODE"] = False
@@ -57,13 +58,14 @@ class ConanRecipe(ConanFile):
         cmake = CMake(self)
         cmake.install()
         rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
+        rmdir(self, os.path.join(self.package_folder, "share"))
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:google:brotli:*:*:*:*:*:*:*:*")
         self.cpp_info.set_property("purl", f"pkg:github/google/brotli@v{self.version}")
 
         incdir = os.path.join("include", "brotli")
-        suffix = '_d' if self.settings.build_type == 'Debug' else ''
+        suffix = "_d" if self.settings.build_type == "Debug" else ""
 
         # brotlicommon
         self.cpp_info.components["brotlicommon"].set_property("pkg_config_name", "libbrotlicommon")

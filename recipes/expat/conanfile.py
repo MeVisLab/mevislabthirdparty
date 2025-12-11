@@ -8,7 +8,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "expat"
-    version = "2.7.1"
+    version = "2.7.3"
     homepage = "https://libexpat.github.io"
     description = "Fast stream-oriented XML parser library"
     license = "MIT"
@@ -25,7 +25,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="354552544b8f99012e5062f7d570ec77f14b412a3ff5c7d8d0dae62c0d217c30",
+            sha256="71df8f40706a7bb0a80a5367079ea75d91da4f8c65c58ec59bcdfbf7decdab9f",
             url=f"https://github.com/libexpat/libexpat/releases/download/R_{self.version.replace('.', '_')}/expat-{self.version}.tar.xz",
             strip_root=True,
         )
@@ -49,7 +49,14 @@ class ConanRecipe(ConanFile):
 
     def package(self):
         copy(self, "COPYING", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
-        copy(self, "*.pdb", src=self.build_folder, dst=os.path.join(self.package_folder, "bin"), keep_path=False, excludes="*vc???.pdb")
+        copy(
+            self,
+            "*.pdb",
+            src=self.build_folder,
+            dst=os.path.join(self.package_folder, "bin"),
+            keep_path=False,
+            excludes="*vc???.pdb",
+        )
         cmake = CMake(self)
         cmake.install()
         rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))

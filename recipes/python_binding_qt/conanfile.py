@@ -11,7 +11,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "python_binding_qt"
-    version = "6.9.2"  # corresponds to the Qt version which is used for code generation
+    version = "6.9.3"  # corresponds to the Qt version which is used for code generation
     homepage = "https://mevislab.de"
     description = "Python binding into Qt"
     license = "LGPL-2.1-only"

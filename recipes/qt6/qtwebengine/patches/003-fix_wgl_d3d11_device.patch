@@ -1,8 +1,8 @@
 diff --git a/src/core/compositor/wgl_helper.cpp b/src/core/compositor/wgl_helper.cpp
-index 11526f4..27ecde8 100644
+index 29bc551acf..062f4ed67c 100644
 --- a/src/core/compositor/wgl_helper.cpp
 +++ b/src/core/compositor/wgl_helper.cpp
-@@ -58,10 +58,11 @@ WGLHelper::WGLHelper() : m_functions(new WGLHelper::WGLFunctions())
+@@ -59,10 +59,11 @@ WGLHelper::WGLHelper() : m_functions(new WGLHelper::WGLFunctions())
  
      uint devFlags = 0;
  #if !defined(QT_NO_DEBUG)
@@ -16,7 +16,7 @@ index 11526f4..27ecde8 100644
      hr = D3D11CreateDevice(m_adapter.Get(), D3D_DRIVER_TYPE_UNKNOWN, /*Software=*/nullptr, devFlags,
                             featureLevels, std::size(featureLevels), D3D11_SDK_VERSION, &m_device,
                             /*pFeatureLevel=*/nullptr, &m_immediateContext);
-@@ -79,8 +80,9 @@ WGLHelper::WGLHelper() : m_functions(new WGLHelper::WGLFunctions())
+@@ -80,8 +81,9 @@ WGLHelper::WGLHelper() : m_functions(new WGLHelper::WGLFunctions())
  
  WGLHelper::~WGLHelper()
  {

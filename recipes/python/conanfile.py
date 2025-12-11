@@ -18,7 +18,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "python"
-    version = "3.13.7"
+    version = "3.13.9"
     homepage = "https://www.python.org"
     description = "An interpreted, interactive, object-oriented programming language"
     license = "Python-2.0"
@@ -26,16 +26,25 @@ class ConanRecipe(ConanFile):
     settings = "os", "arch", "compiler", "build_type"
     exports_sources = ["patches/*.patch"]
 
+    # fmt: off
     mlab_hooks = {
         "debug_suffix.skip": True,
         "folders.exclude": ["DLLs", "libs", "Scripts", "python*.dll", "python*.exe", "MeVisPython*.exe"],
         "dependencies.system_libs": [
-            "libcrypt.so.*",  # required for python module _crypt
-            "libb2.so.1",  # required for python module _blake2
-            "libbsd.so.0",  # required for python module fcntl
-            "libuuid.so.1",  # required for python module _uuid
+            "libb2.so.1",           # required by the _blake2 module - implements fast BLAKE2 hash functions (used by hashlib)
+            "libbsd.so.0",          # required for certain POSIX compatibility functions (e.g. fcntl, os.setresuid on BSD-like systems)
+            "libcrypt.so.*",        # required by the _crypt module - provides crypt(3) password hashing (used by crypt.crypt())
+            "libgdbm_compat.so.4",  # required by the dbm.gnu module - GNU DBM compatibility layer for older database APIs
+            "libgdbm.so.6",         # also required by dbm.gnu - main GNU DBM key/value database library
+            "libmpdec.so.4",        # required by the _decimal module - high-precision decimal arithmetic
+            "libncursesw.so.6",     # required by the _curses module - terminal handling, colors, and screen management
+            "libpanelw.so.6",       # required by the _curses_panel module - advanced ncurses panel support
+            "libreadline.so.8",     # required by the readline module → provides advanced line editing and command history in the Python REPL
+            "libtinfow.so.6",       # required by readline/curses - provides terminal capability information (colors, cursor movement)
+            "libuuid.so.1",         # required by the _uuid module - used for UUID generation via libuuid (uuid.uuid1(), uuid.uuid4())
         ],
     }
+    # fmt: on
 
     def configure(self):
         self.settings.rm_safe("compiler.cppstd")
@@ -58,7 +67,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="6c9d80839cfa20024f34d9a6dd31ae2a9cd97ff5e980e969209746037a5153b2",
+            sha256="c4c066af19c98fb7835d473bebd7e23be84f6e9874d47db9e39a68ee5d0ce35c",
             url=f"https://www.python.org/ftp/python/{self.version}/Python-{self.version}.tgz",
             strip_root=True,
         )

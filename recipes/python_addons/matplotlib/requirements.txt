@@ -1,7 +1,7 @@
-meson==1.9.0
+meson==1.9.1
 meson-python==0.18.0
 packaging==25.0
-pybind11==2.13.6
+pybind11==3.0.1
 pyproject-metadata==0.9.1
 setuptools==80.9.0
-setuptools_scm==9.2.0
+setuptools_scm==9.2.2

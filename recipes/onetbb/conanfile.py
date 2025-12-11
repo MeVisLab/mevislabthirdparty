@@ -9,7 +9,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "onetbb"
-    version = "2022.2.0"
+    version = "2022.3.0"
     license = "Apache-2.0"
     homepage = "https://oneapi-src.github.io/oneTBB/"
     description = (
@@ -26,7 +26,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="f0f78001c8c8edb4bddc3d4c5ee7428d56ae313254158ad1eec49eced57f6a5b",
+            sha256="01598a46c1162c27253a0de0236f520fd8ee8166e9ebb84a4243574f88e6e50a",
             url=f"https://github.com/oneapi-src/oneTBB/archive/refs/tags/v{self.version}.tar.gz",
             strip_root=True,
         )

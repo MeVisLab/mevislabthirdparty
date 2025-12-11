@@ -1,7 +1,7 @@
 from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
 from conan.tools.env import VirtualBuildEnv
-from conan.tools.files import copy, get, rmdir, patch, replace_in_file
+from conan.tools.files import copy, get, rmdir, patch
 from conan.tools.microsoft import is_msvc
 import os
 
@@ -11,7 +11,7 @@ required_conan_version = ">=2.2.2"
 class ConanRecipe(ConanFile):
     name = "libjpeg-turbo"
     provides = "libjpeg"
-    version = "3.1.1"
+    version = "3.1.2"
     description = "SIMD-accelerated libjpeg-compatible JPEG codec library"
     license = "BSD-3-Clause AND IJG AND Zlib"
     homepage = "https://libjpeg-turbo.org"
@@ -29,15 +29,13 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="aadc97ea91f6ef078b0ae3a62bba69e008d9a7db19b34e4ac973b19b71b4217c",
+            sha256="8f0012234b464ce50890c490f18194f913a7b1f4e6a03d6644179fa0f867d0cf",
             url=f"https://github.com/libjpeg-turbo/libjpeg-turbo/releases/download/{self.version}/libjpeg-turbo-{self.version}.tar.gz",
             strip_root=True,
         )
         patch(self, patch_file="patches/001-change_rpath.patch")
         patch(self, patch_file="patches/002-cmake_use_gnuinstalldirs.patch")
-        replace_in_file(
-            self, os.path.join(self.source_folder, "sharedlib", "CMakeLists.txt"), " jpeg${SO_MAJOR_VERSION}", " jpeg"
-        )
+        patch(self, patch_file="patches/003-runtime_output_name.patch")
 
     def generate(self):
         env = VirtualBuildEnv(self)

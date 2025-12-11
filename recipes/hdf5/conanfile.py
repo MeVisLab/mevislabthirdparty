@@ -9,7 +9,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "hdf5"
-    version = "1.14.6"
+    version = "2.0.0"
     homepage = "https://www.hdfgroup.org/solutions/hdf5/"
     description = "General purpose library and file format for storing scientific data"
     license = "BSD-3-Clause"
@@ -30,7 +30,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="e4defbac30f50d64e1556374aa49e574417c9e72c6b1de7a4ff88c4b1bea6e9b",
+            sha256="6e45a4213cb11bb5860e1b0a7645688ab55562cc2d55c6ff9bcb0984ed12b22b",
             url=f"https://github.com/HDFGroup/hdf5/releases/download/hdf5_{self.version}/hdf5-{self.hdf5_version()}.tar.gz",
             strip_root=True,
         )
@@ -41,24 +41,25 @@ class ConanRecipe(ConanFile):
         tc = CMakeToolchain(self)
         tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
         tc.variables["CMAKE_INSTALL_RPATH"] = "$ORIGIN;$ORIGIN/../lib"
-        tc.variables["HDF5_EXTERNALLY_CONFIGURED"] = True
-        tc.variables["HDF5_USE_FOLDERS"] = False
-        tc.variables["USE_LIBAEC"] = True
-        tc.variables["HDF5_NO_PACKAGES"] = True
-        tc.variables["ONLY_SHARED_LIBS"] = True
+        tc.variables["BUILD_TESTING"] = False
         tc.variables["BUILD_STATIC_LIBS"] = False
         tc.variables["BUILD_STATIC_EXECS"] = False
-        tc.variables["HDF5_ENABLE_Z_LIB_SUPPORT"] = True
-        tc.variables["HDF5_ENABLE_SZIP_SUPPORT"] = True
-        tc.variables["HDF5_ENABLE_SZIP_ENCODING"] = True
-        tc.variables["BUILD_TESTING"] = False
-        tc.variables["HDF5_INSTALL_INCLUDE_DIR"] = "include/hdf5"
+        tc.variables["BUILD_STATIC_TOOLS"] = False
+        tc.variables["HDF5_ONLY_SHARED_LIBS"] = True
+        tc.variables["HDF5_BUILD_CPP_LIB"] = True
+        tc.variables["HDF5_BUILD_DOC"] = False
+        tc.variables["HDF5_BUILD_EXAMPLES"] = False
+        tc.variables["HDF5_BUILD_FORTRAN"] = False
+        tc.variables["HDF5_BUILD_JAVA"] = False
         tc.variables["HDF5_BUILD_TOOLS"] = False
         tc.variables["HDF5_BUILD_UTILS"] = False
-        tc.variables["HDF5_BUILD_EXAMPLES"] = False
-        tc.variables["HDF5_BUILD_CPP_LIB"] = True
-        tc.variables["HDF5_BUILD_JAVA"] = False
-        tc.variables["HDF5_BUILD_FORTRAN"] = False
+        tc.variables["HDF5_ENABLE_SZIP_ENCODING"] = True
+        tc.variables["HDF5_ENABLE_SZIP_SUPPORT"] = True
+        tc.variables["HDF5_ENABLE_ZLIB_SUPPORT"] = True
+        tc.variables["HDF5_EXTERNALLY_CONFIGURED"] = True
+        tc.variables["HDF5_INSTALL_INCLUDE_DIR"] = "include/hdf5"
+        tc.variables["HDF5_NO_PACKAGES"] = True
+        tc.variables["HDF5_USE_FOLDERS"] = False
         tc.generate()
 
     def build(self):
@@ -69,7 +70,7 @@ class ConanRecipe(ConanFile):
     def package(self):
         copy(
             self,
-            "COPYING",
+            "LICENSE",
             src=os.path.join(self.source_folder, f"hdf5-{self.hdf5_version()}"),
             dst=os.path.join(self.package_folder, "licenses"),
         )

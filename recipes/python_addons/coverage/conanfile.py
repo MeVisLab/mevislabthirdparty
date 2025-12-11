@@ -5,8 +5,8 @@ required_conan_version = ">=2.2.2"
 
 
 class ConanRecipe(ConanFile):
-    name = "coveragepy"
-    version = "7.10.6"
+    name = "coverage"
+    version = "7.11.3"
     homepage = "https://coverage.readthedocs.io"
     description = "Coverage.py is a tool for measuring code coverage of Python programs"
     license = "Apache-2.0"
@@ -27,7 +27,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="ad4e7ecaa4cd234e9244d67c91000367fec6d91041acb0d21e63bd581c06587c",
+            sha256="ed8659c9eceef8e9e7c333fd723cfaa0a879f29744c75620fa888fb6940d7e0c",
             url=f"https://github.com/nedbat/coveragepy/archive/refs/tags/{self.version}.tar.gz",
             strip_root=True,
         )

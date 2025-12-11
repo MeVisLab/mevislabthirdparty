@@ -1,8 +1,8 @@
 diff --git a/setup.py b/setup.py
-index 7beb191..549ccd4 100644
+index 27f54b8..91407fc 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -234,7 +234,15 @@ def _find_include_file(self: pil_build_ext, include: str) -> int:
+@@ -246,7 +246,15 @@ def _find_include_file(self: pil_build_ext, include: str) -> str | None:
  
  
  def _find_library_file(self: pil_build_ext, library: str) -> str | None:

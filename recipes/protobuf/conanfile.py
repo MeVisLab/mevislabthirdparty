@@ -11,20 +11,12 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "protobuf"
-    version = "32.0"
-    homepage = "https://protobuf.dev/"
+    version = "33.0"
+    homepage = "https://protobuf.dev"
     description = "Google's Protocol Buffers are a language-neutral, platform-neutral extensible mechanism for serializing structured data"
     license = "BSD-3-Clause"
     package_type = "static-library"
     settings = "os", "arch", "compiler", "build_type"
-
-    mlab_hooks = {
-        "cmake_files.exclude": [
-            "lib/cmake/protobuf/protobuf*.cmake",
-            "lib/cmake/protobuf/FindProtobuf.cmake",
-            "lib/cmake/utf8_range/utf8_range-*.cmake",
-        ]
-    }
 
     def layout(self):
         cmake_layout(self, src_folder="src")
@@ -36,7 +28,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="9dfdf08129f025a6c5802613b8ee1395044fecb71d38210ca59ecad283ef68bb",
+            sha256="cbc536064706b628dcfe507bef386ef3e2214d563657612296f1781aa155ee07",
             url=f"https://github.com/protocolbuffers/protobuf/releases/download/v{self.version}/protobuf-{self.version}.tar.gz",
             strip_root=True,
         )
@@ -50,7 +42,6 @@ class ConanRecipe(ConanFile):
     def generate(self):
         cd = CMakeDeps(self)
         cd.generate()
-
         tc = CMakeToolchain(self)
         tc.cache_variables["CMAKE_DEBUG_POSTFIX"] = "_d"
         tc.cache_variables["BUILD_SHARED_LIBS"] = False
@@ -81,23 +72,18 @@ class ConanRecipe(ConanFile):
         rm(self, "protobuf-targets*.cmake", folder=cmake_config_folder)
         replace_in_file(
             self,
-            os.path.join(self.package_folder, "lib", "cmake", "protobuf", "protobuf-module.cmake"),
+            os.path.join(cmake_config_folder, "protobuf-module.cmake"),
             "VERSION_VAR Protobuf_VERSION",
             "VERSION_VAR Protobuf_VERSION NAME_MISMATCHED",
         )
         content = textwrap.dedent(
             """
+                set(PROTOBUF_FOUND TRUE)
+                set(PROTOBUF_LIBRARY protobuf::libprotobuf)
+                set(PROTOBUF_LIBRARIES ${PROTOBUF_LIBRARY})
+
                 if(NOT TARGET protobuf::protoc)
                     find_program(PROTOC_PROGRAM NAMES protoc REQUIRED)
-                    # find_program(PROTOC_PROGRAM NAMES protoc HINTS ${Protobuf_BIN_DIRS_RELEASE} ${Protobuf_BIN_DIRS_DEBUG} ${protobuf_BIN_DIRS_RELEASE} ${protobuf_BIN_DIRS_DEBUG})
-                    # if(NOT PROTOC_PROGRAM)
-                    #     set(PROTOC_PROGRAM "${CMAKE_CURRENT_LIST_DIR}/../../../bin/protoc${CMAKE_EXECUTABLE_SUFFIX}")
-                    # endif()
-
-                    # if(NOT PROTOC_PROGRAM)
-                    #     message(FATAL_ERROR "protoc compiler not found")
-                    # endif()
-
                     get_filename_component(PROTOC_PROGRAM "${PROTOC_PROGRAM}" ABSOLUTE)
                     set(Protobuf_PROTOC_EXECUTABLE ${PROTOC_PROGRAM} CACHE FILEPATH "The protoc compiler")
                     add_executable(protobuf::protoc IMPORTED)
@@ -105,9 +91,7 @@ class ConanRecipe(ConanFile):
                 endif()
             """
         )
-        save(
-            self, os.path.join(self.package_folder, "lib", "cmake", "protobuf", "protobuf-protoc-target.cmake"), content
-        )
+        save(self, os.path.join(cmake_config_folder, "protobuf-protoc-target.cmake"), content)
 
     def package_info(self):
         self.cpp_info.set_property("cpe", "cpe:2.3:a:protobuf:protobuf:*:*:*:*:*:*:*:*")
@@ -125,6 +109,7 @@ class ConanRecipe(ConanFile):
             os.path.join(cmake_base_path, "protobuf-options.cmake"),
         ]
         self.cpp_info.set_property("cmake_build_modules", build_modules)
+        self.cpp_info.set_property("cmake_find_package", build_modules)
 
         lib_prefix = "lib" if is_msvc(self) else ""
         lib_suffix = "_d" if self.settings.build_type == "Debug" else ""

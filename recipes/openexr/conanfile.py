@@ -9,7 +9,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "openexr"
-    version = "3.3.5"
+    version = "3.4.3"
     homepage = "https://www.openexr.com"
     description = "OpenEXR is a high dynamic-range (HDR) image file format developed by Industrial Light & Magic for use in computer imaging applications"
     license = "BSD-3-Clause"
@@ -27,7 +27,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="cb0c88710c906c9bfc59027eb147e780d508c7be1a90b43af3ec9e3c2987b70d",
+            sha256="06494da42eb91c47265ffbad02d0c73cf65d8ad7f24683b801f34d842c4ecb6d",
             url=f"https://github.com/AcademySoftwareFoundation/openexr/archive/v{self.version}.tar.gz",
             strip_root=True,
         )

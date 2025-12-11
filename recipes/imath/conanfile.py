@@ -9,7 +9,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "imath"
-    version = "3.2.1"
+    version = "3.2.2"
     homepage = "https://imath.readthedocs.io"
     description = (
         "Imath is a C++ and python library of 2D and 3D vector, matrix, and math operations for computer graphics"
@@ -28,7 +28,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="b2c8a44c3e4695b74e9644c76f5f5480767355c6f98cde58ba0e82b4ad8c63ce",
+            sha256="b4275d83fb95521510e389b8d13af10298ed5bed1c8e13efd961d91b1105e462",
             url=f"https://github.com/AcademySoftwareFoundation/Imath/archive/refs/tags/v{self.version}.tar.gz",
             strip_root=True,
         )

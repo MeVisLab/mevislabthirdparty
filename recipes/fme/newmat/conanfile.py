@@ -11,7 +11,7 @@ class ConanRecipe(ConanFile):
     version = "11"
     homepage = "https://www.robertnz.net/nm_intro.htm"
     description = "A C++ matrix library"
-    license = "LicenseRef-newmat-0BSD-like"
+    license = "LicenseRef-0BSD-like-newmat"
     package_type = "static-library"
     settings = "os", "arch", "compiler", "build_type"
     exports_sources = "LICENSE", "CMakeLists.txt", "patches/*.patch"

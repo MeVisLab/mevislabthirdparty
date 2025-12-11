@@ -49,6 +49,7 @@ class ConanRecipe(ConanFile):
         patch(self, patch_file="patches/004-issue_4358_itkShapedNeighborhoodIterator.patch")
         patch(self, patch_file="patches/005-add_using_in_class_namespace.patch")
         patch(self, patch_file="patches/006-cpp20_replace_result_of_t.patch")
+        patch(self, patch_file="patches/007-system_tiff.patch")
 
         # see https://github.com/InsightSoftwareConsortium/ITK/pull/4066/,
         # will be obsolete in itk 5.4.0

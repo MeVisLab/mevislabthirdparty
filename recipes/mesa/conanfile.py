@@ -11,7 +11,7 @@ required_conan_version = ">=2.0.7"
 class ConanRecipe(ConanFile):
     name = "mesa"
     display_name = "Mesa"
-    version = "25.2.2"
+    version = "25.2.6"
     homepage = "https://mesa3d.org"
     description = "an open source software implementation of OpenGL, Vulkan, and other graphics API specifications"
     license = "MIT"
@@ -60,7 +60,7 @@ class ConanRecipe(ConanFile):
             raise ConanInvalidConfiguration(f"{self.name} is built in release mode only.")
 
     def requirements(self):
-        self.requires("llvm/[>=18.0.0]", visible=False)
+        self.requires("llvm/[>=21.0.0]", visible=False)
 
     def layout(self):
         basic_layout(self, src_folder="src")
@@ -68,7 +68,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="43d7abcd4aa8049d8fd75538344a374104765e81e17b4a6314cee2c0160e4412",
+            sha256="361c97e8afa5fe20141c5362c5b489040751e12861c186a16c621a2fb182fc42",
             url=f"https://mesa.freedesktop.org/archive/mesa-{self.version}.tar.xz",
             strip_root=True,
         )

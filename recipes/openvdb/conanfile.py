@@ -9,7 +9,7 @@ required_conan_version = ">=2.0.8"
 
 class ConanRecipe(ConanFile):
     name = "openvdb"
-    version = "12.1.0"
+    version = "13.0.0"
     homepage = "https://www.openvdb.org"
     description = (
         "A suite of tools for the efficient storage and manipulation "
@@ -34,7 +34,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="ebb9652ad1d67274e2c85e6736cced5f04e313c5671ae1ae548f174cc76e9e64",
+            sha256="4d6a91df5f347017496fe8d22c3dbb7c4b5d7289499d4eb4d53dd2c75bb454e1",
             url=f"https://github.com/AcademySoftwareFoundation/openvdb/archive/v{self.version}.tar.gz",
             strip_root=True,
         )

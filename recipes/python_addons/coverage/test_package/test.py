@@ -7,6 +7,7 @@ if sys.platform == "win32":
             os.add_dll_directory(p)
 
 import coverage
+
 cov = coverage.Coverage()
 cov.start()
 cov.stop()

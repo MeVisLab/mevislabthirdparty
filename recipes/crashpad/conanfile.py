@@ -98,7 +98,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         # self.cpp_info.set_property("cpe", "")  # No CPE yet?
-        self.cpp_info.set_property("purl", f"pkg:github/backtrace-labs/crashpad/archive/refs/tags/v{self.version}")
+        self.cpp_info.set_property("purl", f"pkg:github/backtrace-labs/crashpad@v{self.version}")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "CrashPad")
         self.cpp_info.set_property("cmake_target_name", "CrashPad::CrashPad")

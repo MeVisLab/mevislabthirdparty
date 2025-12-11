@@ -1,6 +1,6 @@
 from conan import ConanFile
 from conan.tools.cmake import CMake, cmake_layout, CMakeToolchain
-from conan.tools.files import copy, get, patch, rmdir
+from conan.tools.files import copy, get, rmdir
 import os
 
 required_conan_version = ">=2.2.2"
@@ -8,7 +8,7 @@ required_conan_version = ">=2.2.2"
 
 class EigenConan(ConanFile):
     name = "eigen"
-    version = "3.4.0"
+    version = "3.4.1"
     homepage = "https://eigen.tuxfamily.org"
     description = "Eigen is a C++ template library for linear algebra: matrices, vectors, numerical solvers, and related algorithms"
     license = "MPL-2.0"
@@ -25,18 +25,22 @@ class EigenConan(ConanFile):
     def source(self):
         get(
             self,
+            sha256="b93c667d1b69265cdb4d9f30ec21f8facbbe8b307cf34c0b9942834c6d4fdbe2",
             url=f"https://gitlab.com/libeigen/eigen/-/archive/{self.version}/eigen-{self.version}.tar.gz",
-            sha256="8586084f71f9bde545ee7fa6d00288b264a2b7ac3607b974e54d13e7162c1c72",
             destination=self.source_folder,
             strip_root=True,
         )
-        patch(self, patch_file="patches/001-improve_configure_time.patch")
 
     def generate(self):
         tc = CMakeToolchain(self)
         tc.variables["BUILD_TESTING"] = False
+        tc.variables["EIGEN_BUILD_DOC"] = False
+        tc.variables["EIGEN_BUILD_DEMOS"] = False
+        tc.variables["EIGEN_BUILD_CMAKE_PACKAGE"] = False
         tc.variables["EIGEN_TEST_NOQT"] = True
         tc.variables["EIGEN_BUILD_PKGCONFIG"] = False
+        tc.variables["EIGEN_BUILD_BLAS"] = False
+        tc.variables["EIGEN_BUILD_LAPACK"] = False
         tc.generate()
 
     def build(self):

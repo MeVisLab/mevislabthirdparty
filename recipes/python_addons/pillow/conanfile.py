@@ -8,7 +8,7 @@ required_conan_version = ">=2.0.0"
 
 class ConanRecipe(ConanFile):
     name = "pillow"
-    version = "11.3.0"
+    version = "12.0.0"
     homepage = "https://python-pillow.github.io/"
     description = "Python Imaging Library (Fork)"
     license = "HPND"
@@ -60,7 +60,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="fa4aca745b1e1c733589ebf0ef19491b145dd4225c4aa06958963b4e7f0734cf",
+            sha256="9d24d8c1197610e63eee5e5cfa60025e4aaaba3f5c3c592e9a62cdf734f0bb13",
             url=f"https://github.com/python-pillow/Pillow/archive/refs/tags/{self.version}.tar.gz",
             strip_root=True,
         )
@@ -90,21 +90,22 @@ class ConanRecipe(ConanFile):
                 )
         with env.vars(self).apply():
             config_settings = [
-                "zlib=enable",
-                "jpeg=disable",
-                "tiff=enable",
+                "avif=disable",
                 "freetype=enable",
-                "raqm=disable",
+                "imagequant=disable",
+                "jpeg=disable",
+                "jpeg2000=disable",
                 "lcms=disable",
+                "raqm=disable",
+                "tiff=enable",
                 "webp=disable",
                 "webpmux=disable",
-                "jpeg2000=disable",
-                "imagequant=disable",
+                "zlib=enable",
                 f"xcb={'disable' if is_win else 'enable'}",
             ]
             self.default_build(config_settings=config_settings)
 
     def package_info(self):
         super().package_info()
-        self.cpp_info.set_property("cpe", "cpe:2.3:a:python:pillow:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("cpe", f"cpe:2.3:a:python:pillow:{self.version}:*:*:*:*:*:*:*")
         self.cpp_info.set_property("purl", f"pkg:github/python-pillow/Pillow@{self.version}")

@@ -9,7 +9,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "sqlite3"
-    version = "3.50.4"
+    version = "3.51.0"
     description = "Self-contained, serverless, in-process SQL database engine."
     license = "Unlicense"
     homepage = "https://www.sqlite.org"
@@ -31,7 +31,7 @@ class ConanRecipe(ConanFile):
         v = Version(self.version)
         get(
             self,
-            sha256="1d3049dd0f830a025a53105fc79fd2ab9431aea99e137809d064d8ee8356b032",
+            sha256="1caf7116f2910600d04473ad69d37ec538fa62fa36adccd37b5e0e43647c98be",
             url=f"https://www.sqlite.org/2025/sqlite-amalgamation-{v.major}{str(v.minor).zfill(2)}{str(v.patch).zfill(2)}00.zip",
             strip_root=True,
         )

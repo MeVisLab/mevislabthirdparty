@@ -8,7 +8,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "pcre2"
-    version = "10.46"
+    version = "10.47"
     homepage = "https://www.pcre.org"
     description = "Perl-compatible regular expression library"
     license = "BSD-3-Clause"
@@ -25,7 +25,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="15fbc5aba6beee0b17aecb04602ae39432393aba1ebd8e39b7cabf7db883299f",
+            sha256="47fe8c99461250d42f89e6e8fdaeba9da057855d06eb7fc08d9ca03fd08d7bc7",
             url=f"https://github.com/PCRE2Project/pcre2/releases/download/pcre2-{self.version}/pcre2-{self.version}.tar.bz2",
             strip_root=True,
         )

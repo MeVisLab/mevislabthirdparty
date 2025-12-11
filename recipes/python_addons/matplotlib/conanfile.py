@@ -11,7 +11,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "matplotlib"
-    version = "3.10.6"
+    version = "3.10.7"
     homepage = "https://matplotlib.org"
     description = "A comprehensive library for creating static, animated, and interactive visualizations in Python"
     license = "Python-2.0"
@@ -52,7 +52,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="b553f599f639a9e19074c7e4f8f4343443483da6cd8819fbfcf6506f155ddf0e",
+            sha256="0678f04e55c839c543a3803a7a13ab427f488ff396d85ffbad7d427f6fdcbbc3",
             url=f"https://github.com/matplotlib/matplotlib/archive/refs/tags/v{self.version}.tar.gz",
             strip_root=True,
         )

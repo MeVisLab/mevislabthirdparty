@@ -8,7 +8,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "libdeflate"
-    version = "1.24"
+    version = "1.25"
     homepage = "https://github.com/ebiggers/libdeflate"
     description = "Heavily optimized DEFLATE/zlib/gzip (de)compression"
     license = "MIT"
@@ -25,7 +25,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="a0dda1c4b804742066db07b9510876edd09cc0ca06cdc32c5dfe1b2016a26463",
+            sha256="fed5cd22f00f30cc4c2e5329f94e2b8a901df9fa45ee255cb70e2b0b42344477",
             url=f"https://github.com/ebiggers/libdeflate/releases/download/v{self.version}/libdeflate-{self.version}.tar.gz",
             strip_root=True,
         )

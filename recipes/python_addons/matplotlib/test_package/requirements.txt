@@ -1,5 +1,5 @@
 cycler==0.12.1
 packaging==25.0
-pyparsing==3.2.3
+pyparsing==3.2.5
 python-dateutil==2.9.0.post0
 pytz==2025.2

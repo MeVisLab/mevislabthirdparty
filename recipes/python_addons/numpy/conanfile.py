@@ -16,7 +16,7 @@ required_conan_version = ">=2.2.2"
 class ConanRecipe(ConanFile):
     name = "numpy"
     mli_name = "Python3__NumPy"
-    version = "2.3.2"
+    version = "2.3.4"
     homepage = "https://numpy.org"
     description = "NumPy is the fundamental package for scientific computing with Python"
     license = "BSD-3-Clause"
@@ -25,6 +25,10 @@ class ConanRecipe(ConanFile):
     exports_sources = "requirements.txt"
     package_type = "shared-library"
 
+    mlab_hooks = {
+        "dependencies.system_libs": ["libflexiblas.so.3"],
+    }
+
     @property
     def license_path(self):
         return "LICENSE.txt"
@@ -32,7 +36,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="e0486a11ec30cdecb53f184d496d1c6a20786c81e55e41640270130056f8ee48",
+            sha256="a7d018bfedb375a8d979ac758b120ba846a7fe764911a64465fd87b8729f4a6a",
             url=f"https://github.com/numpy/numpy/releases/download/v{self.version}/numpy-{self.version}.tar.gz",
             strip_root=True,
         )
