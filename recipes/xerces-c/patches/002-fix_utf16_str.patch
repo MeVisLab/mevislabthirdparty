@@ -1,0 +1,20 @@
+diff --git a/tests/src/Char16Test/Char16Test.cpp b/tests/src/Char16Test/Char16Test.cpp
+index 461bcbc..2e7478f 100644
+--- a/tests/src/Char16Test/Char16Test.cpp
++++ b/tests/src/Char16Test/Char16Test.cpp
+@@ -43,10 +43,13 @@ int main() {
+     }
+     catch (const xercesc::XMLException& toCatch)
+     {
++      char* msg = xercesc::XMLString::transcode(toCatch.getMessage());
++
+       std::cerr << "Error during initialization of xerces-c: "
+-                << toCatch.getMessage()
++                << msg
+                 << std::endl;
+-        return 1;
++      xercesc::XMLString::release(&msg);
++      return 1;
+     }
+
+     const char16_t *ns = u"https://example.com/schema/char16";

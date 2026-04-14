@@ -16,7 +16,7 @@ required_conan_version = ">=2.2.2"
 class ConanRecipe(ConanFile):
     name = "numpy"
     mli_name = "Python3__NumPy"
-    version = "2.3.4"
+    version = "2.4.3"
     homepage = "https://numpy.org"
     description = "NumPy is the fundamental package for scientific computing with Python"
     license = "BSD-3-Clause"
@@ -26,7 +26,7 @@ class ConanRecipe(ConanFile):
     package_type = "shared-library"
 
     mlab_hooks = {
-        "dependencies.system_libs": ["libflexiblas.so.3"],
+        "dependencies.system_libs": ["libflexiblas.so.3", "libopenblas.so.0"],
     }
 
     @property
@@ -36,7 +36,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="a7d018bfedb375a8d979ac758b120ba846a7fe764911a64465fd87b8729f4a6a",
+            sha256="483a201202b73495f00dbc83796c6ae63137a9bdade074f7648b3e32613412dd",
             url=f"https://github.com/numpy/numpy/releases/download/v{self.version}/numpy-{self.version}.tar.gz",
             strip_root=True,
         )
@@ -69,7 +69,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         super().package_info()
-        self.cpp_info.set_property("cpe", "cpe:2.3:a:numpy:numpy:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("cpe", f"cpe:2.3:a:numpy:numpy:{self.version}:*:*:*:*:*:*:*")
         self.cpp_info.set_property("purl", f"pkg:github/numpy/numpy@v{self.version}")
         self.cpp_info.set_property("cmake_target_aliases", ["Python3::NumPy"])  # for use by Python3Config.cmake
         self.cpp_info.set_property("cmake_find_mode", "both")

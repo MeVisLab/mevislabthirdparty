@@ -4,11 +4,10 @@
 
 #include <minizip/zip.h>
 #include <minizip/unzip.h>
-#ifdef _WIN32
-    #include <minizip/iowin32.h>
-#endif
-
 #include <minizip/mztools.h>
+#ifdef _WIN32
+#  include <minizip/iowin32.h>
+#endif
 
 const char text[] = ""
 "Conveying or northward offending admitting perfectly my. Colonel gravity get thought fat smiling add but. Wonder twenty hunted and put income set desire expect. Am cottage calling my is mistake cousins talking up. Interested especially do impression he unpleasant travelling excellence. All few our knew time done draw ask.\n"

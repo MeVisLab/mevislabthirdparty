@@ -53,7 +53,9 @@ class ConanRecipe(ConanFile):
         rm(self, pattern="nlohmann_json.natvis", folder=self.package_folder)
 
     def package_info(self):
-        self.cpp_info.set_property("cpe", "cpe:2.3:a:json-for-modern-cpp_project:json-for-modern-cpp:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property(
+            "cpe", f"cpe:2.3:a:json-for-modern-cpp_project:json-for-modern-cpp:{self.version}:*:*:*:*:*:*:*"
+        )
         self.cpp_info.set_property("purl", f"pkg:github/nlohmann/json@v{self.version}")
         self.cpp_info.set_property("cmake_file_name", "nlohmann_json")
         self.cpp_info.set_property("cmake_target_name", "nlohmann_json::nlohmann_json")

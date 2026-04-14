@@ -1,8 +1,8 @@
 diff --git a/dcmnet/apps/storescp.cc b/dcmnet/apps/storescp.cc
-index 8969c92..1807001 100644
+index 7a69a16..9464b9c 100644
 --- a/dcmnet/apps/storescp.cc
 +++ b/dcmnet/apps/storescp.cc
-@@ -116,6 +116,8 @@ enum E_SortStudyMode
+@@ -166,6 +166,8 @@ static void processCreatedCallback(void *context)
  
  OFBool             opt_showPresentationContexts = OFFalse;
  OFBool             opt_uniqueFilenames = OFFalse;
@@ -11,15 +11,15 @@ index 8969c92..1807001 100644
  OFString           opt_fileNameExtension;
  OFBool             opt_timeNames = OFFalse;
  int                timeNameCounter = -1;   // "serial number" to differentiate between files with same timestamp
-@@ -172,6 +174,7 @@ OFBool             opt_forkMode = OFFalse;
+@@ -222,6 +224,7 @@ OFBool             opt_forkMode = OFFalse;
  
  OFBool             opt_forkedChild = OFFalse;
  OFBool             opt_execSync = OFFalse;            // default: execute in background
 +OFBool             opt_shortInfo = OFFalse;           // default: use standard logging options
+ volatile size_t    numChildren = 0;
+ OFCmdUnsignedInt   opt_maxChildren = OFstatic_cast(OFCmdUnsignedInt, -1);
  
- 
- #ifdef HAVE_WAITPID
-@@ -197,6 +200,99 @@ extern "C" void sigChildHandler(int)
+@@ -255,6 +258,99 @@ extern "C" void sigChildHandler(int)
  #define SHORTCOL 4
  #define LONGCOL 21
  
@@ -119,7 +119,7 @@ index 8969c92..1807001 100644
  int main(int argc, char *argv[])
  {
    T_ASC_Network *net;
-@@ -223,6 +319,7 @@ int main(int argc, char *argv[])
+@@ -281,6 +377,7 @@ int main(int argc, char *argv[])
      cmd.addOption("--version",                             "print version information and exit", OFCommandLine::AF_Exclusive);
      OFLog::addOptions(cmd);
      cmd.addOption("--verbose-pc",               "+v",      "show presentation contexts in verbose mode");
@@ -127,7 +127,7 @@ index 8969c92..1807001 100644
  
  #if defined(HAVE_FORK) || defined(_WIN32)
    cmd.addGroup("multi-process options:", LONGCOL, SHORTCOL + 2);
-@@ -352,6 +449,8 @@ int main(int argc, char *argv[])
+@@ -415,6 +512,8 @@ int main(int argc, char *argv[])
        cmd.addOption("--timenames",              "-tn",     "generate filename from creation time");
        cmd.addOption("--filename-extension",     "-fe",  1, "[e]xtension: string",
                                                             "append e to all filenames");
@@ -136,7 +136,7 @@ index 8969c92..1807001 100644
  
    cmd.addGroup("event options:", LONGCOL, SHORTCOL + 2);
      cmd.addOption("--exec-on-reception",        "-xcr", 1, "[c]ommand: string",
-@@ -478,6 +577,10 @@ int main(int argc, char *argv[])
+@@ -553,6 +652,10 @@ int main(int argc, char *argv[])
        app.checkDependence("--verbose-pc", "verbose mode", storescpLogger.isEnabledFor(OFLogger::INFO_LOG_LEVEL));
        opt_showPresentationContexts = OFTrue;
      }
@@ -147,7 +147,7 @@ index 8969c92..1807001 100644
  
      cmd.beginOptionBlock();
      if (cmd.findOption("--prefer-uncompr"))
-@@ -828,6 +931,8 @@ int main(int argc, char *argv[])
+@@ -910,6 +1013,8 @@ int main(int argc, char *argv[])
      if (cmd.findOption("--default-filenames")) opt_uniqueFilenames = OFFalse;
      if (cmd.findOption("--unique-filenames")) opt_uniqueFilenames = OFTrue;
      cmd.endOptionBlock();
@@ -156,7 +156,7 @@ index 8969c92..1807001 100644
  
      if (cmd.findOption("--timenames")) opt_timeNames = OFTrue;
      if (cmd.findOption("--filename-extension"))
-@@ -1078,6 +1183,8 @@ static OFCondition acceptAssociation(T_ASC_Network *net, DcmAssociationConfigura
+@@ -1183,6 +1288,8 @@ static OFCondition acceptAssociation(T_ASC_Network *net, DcmAssociationConfigura
      goto cleanup;
    }
  
@@ -164,8 +164,8 @@ index 8969c92..1807001 100644
 +
  #if defined(HAVE_FORK) || defined(_WIN32)
    if (opt_forkMode)
-     OFLOG_INFO(storescpLogger, "Association Received in " << (DUL_processIsForkedChild() ? "child" : "parent")
-@@ -1102,6 +1209,11 @@ static OFCondition acceptAssociation(T_ASC_Network *net, DcmAssociationConfigura
+   {
+@@ -1209,6 +1316,11 @@ static OFCondition acceptAssociation(T_ASC_Network *net, DcmAssociationConfigura
      };
  
      OFLOG_INFO(storescpLogger, "Refusing Association (forced via command line)");
@@ -177,7 +177,7 @@ index 8969c92..1807001 100644
      cond = ASC_rejectAssociation(assoc, &rej);
      if (cond.bad())
      {
-@@ -1411,6 +1523,11 @@ static OFCondition acceptAssociation(T_ASC_Network *net, DcmAssociationConfigura
+@@ -1519,6 +1631,11 @@ static OFCondition acceptAssociation(T_ASC_Network *net, DcmAssociationConfigura
      };
  
      OFLOG_INFO(storescpLogger, "Association Rejected: Bad Application Context Name: " << buf);
@@ -189,7 +189,7 @@ index 8969c92..1807001 100644
      cond = ASC_rejectAssociation(assoc, &rej);
      if (cond.bad())
      {
-@@ -1430,6 +1547,11 @@ static OFCondition acceptAssociation(T_ASC_Network *net, DcmAssociationConfigura
+@@ -1538,6 +1655,11 @@ static OFCondition acceptAssociation(T_ASC_Network *net, DcmAssociationConfigura
      };
  
      OFLOG_INFO(storescpLogger, "Association Rejected: No Implementation Class UID provided");
@@ -201,7 +201,7 @@ index 8969c92..1807001 100644
      cond = ASC_rejectAssociation(assoc, &rej);
      if (cond.bad())
      {
-@@ -1448,6 +1570,10 @@ static OFCondition acceptAssociation(T_ASC_Network *net, DcmAssociationConfigura
+@@ -1556,6 +1678,10 @@ static OFCondition acceptAssociation(T_ASC_Network *net, DcmAssociationConfigura
        OFLOG_ERROR(storescpLogger, DimseCondition::dump(temp_str, cond));
        goto cleanup;
      }
@@ -212,7 +212,7 @@ index 8969c92..1807001 100644
      OFLOG_INFO(storescpLogger, "Association Acknowledged (Max Send PDV: " << assoc->sendPDVLength << ")");
      if (ASC_countAcceptedPresentationContexts(assoc->params) == 0)
        OFLOG_INFO(storescpLogger, "    (but no valid presentation contexts)");
-@@ -1552,6 +1678,7 @@ processCommands(T_ASC_Association * assoc)
+@@ -1660,6 +1786,7 @@ processCommands(T_ASC_Association * assoc)
    T_DIMSE_Message msg;
    T_ASC_PresentationContextID presID = 0;
    DcmDataset *statusDetail = NULL;
@@ -220,7 +220,7 @@ index 8969c92..1807001 100644
  
    // start a loop to be able to receive more than one DIMSE command
    while( cond == EC_Normal || cond == DIMSE_NODATAAVAILABLE || cond == DIMSE_OUTOFRESOURCES )
-@@ -1614,15 +1741,27 @@ processCommands(T_ASC_Association * assoc)
+@@ -1722,15 +1849,27 @@ processCommands(T_ASC_Association * assoc)
        {
          case DIMSE_C_ECHO_RQ:
            // process C-ECHO-Request
@@ -248,7 +248,7 @@ index 8969c92..1807001 100644
            cond = DIMSE_BADCOMMANDTYPE;
            OFLOG_ERROR(storescpLogger, "Expected C-ECHO or C-STORE request but received DIMSE command 0x"
                 << STD_NAMESPACE hex << STD_NAMESPACE setfill('0') << STD_NAMESPACE setw(4)
-@@ -1630,6 +1769,11 @@ processCommands(T_ASC_Association * assoc)
+@@ -1738,6 +1877,11 @@ processCommands(T_ASC_Association * assoc)
            OFLOG_DEBUG(storescpLogger, DIMSE_dumpMessage(tempStr, msg, DIMSE_INCOMING, NULL, presID));
            break;
        }
@@ -260,7 +260,7 @@ index 8969c92..1807001 100644
      }
    }
    return cond;
-@@ -1783,7 +1927,7 @@ storeSCPCallback(
+@@ -1891,7 +2035,7 @@ storeSCPCallback(
      // is present and the options opt_bitPreserving and opt_ignore are not set.
      if ((imageDataSet != NULL) && (*imageDataSet != NULL) && !opt_bitPreserving && !opt_ignore)
      {
@@ -269,7 +269,7 @@ index 8969c92..1807001 100644
  
        // in case one of the --sort-xxx options is set, we need to perform some particular steps to
        // determine the actual name of the output file
-@@ -1832,7 +1976,8 @@ storeSCPCallback(
+@@ -1940,7 +2084,8 @@ storeSCPCallback(
          // if this is the first DICOM object that was received or if the study instance UID in the
          // current DICOM object does not equal the last object's study instance UID we need to create
          // a new subdirectory in which the current DICOM object will be stored
@@ -279,7 +279,7 @@ index 8969c92..1807001 100644
          {
            // if lastStudyInstanceUID is non-empty, we have just completed receiving all objects for one
            // study. In such a case, we need to set a certain indicator variable (lastStudySubdirectoryPathAndName),
-@@ -1901,18 +2046,18 @@ storeSCPCallback(
+@@ -2009,18 +2154,18 @@ storeSCPCallback(
              {
                // If the subdirectory already exists, then re-use it. It might have been created by another
                // process receiving images in parallel.
@@ -301,7 +301,7 @@ index 8969c92..1807001 100644
              // all objects of a study have been received, so a new subdirectory is started.
              // ->timename counter can be reset, because the next filename can't cause a duplicate.
              // if no reset would be done, files of a new study (->new directory) would start with a counter in filename
-@@ -1925,6 +2070,13 @@ storeSCPCallback(
+@@ -2033,6 +2178,13 @@ storeSCPCallback(
          // path and file name; however, the path refers to the output directory captured in opt_outputDirectory)
          OFStandard::combineDirAndFilename(fileName, subdirectoryPathAndName, OFStandard::getFilenameFromPath(tmpStr, cbdata->imageFileName));
  
@@ -315,7 +315,7 @@ index 8969c92..1807001 100644
          // update global variable outputFileNameArray
          // (might be used in executeOnReception() and renameOnEndOfStudy)
          outputFileNameArray.push_back(tmpStr);
-@@ -1933,7 +2085,12 @@ storeSCPCallback(
+@@ -2041,7 +2193,12 @@ storeSCPCallback(
        else
        {
          fileName = cbdata->imageFileName;
@@ -329,7 +329,7 @@ index 8969c92..1807001 100644
          // update global variables outputFileNameArray
          // (might be used in executeOnReception() and renameOnEndOfStudy)
          outputFileNameArray.push_back(OFStandard::getFilenameFromPath(tmpStr, fileName));
-@@ -1961,6 +2118,14 @@ storeSCPCallback(
+@@ -2069,6 +2226,14 @@ storeSCPCallback(
          OFStandard::deleteFile(fileName);
        }
  
@@ -344,7 +344,7 @@ index 8969c92..1807001 100644
        // check the image to make sure it is consistent, i.e. that its sopClass and sopInstance correspond
        // to those mentioned in the request. If not, set the status in the response message variable.
        if (rsp->DimseStatus == STATUS_Success)
-@@ -1985,14 +2150,23 @@ storeSCPCallback(
+@@ -2093,14 +2258,23 @@ storeSCPCallback(
      // in case opt_bitPreserving is set, do some other things
      if( opt_bitPreserving )
      {
@@ -370,7 +370,7 @@ index 8969c92..1807001 100644
  static OFCondition storeSCP(
    T_ASC_Association *assoc,
    T_DIMSE_Message *msg,
-@@ -2128,7 +2302,13 @@ static OFCondition storeSCP(
+@@ -2236,7 +2410,13 @@ static OFCondition storeSCP(
    // DIMSE_storeProvider must be called with certain parameters.
    if (opt_bitPreserving)
    {

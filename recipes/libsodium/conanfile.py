@@ -14,7 +14,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "libsodium"
-    version = "1.0.20"
+    version = "1.0.21"
     homepage = "https://libsodium.org"
     description = "A portable fork of NaCl, a higher-level cryptographic library"
     license = "ISC"
@@ -32,7 +32,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="ebb65ef6ca439333c2bb41a0c1990587288da07f6c7fd07cb3a18cc18d30ce19",
+            sha256="9e4285c7a419e82dedb0be63a72eea357d6943bc3e28e6735bf600dd4883feaf",
             url=f"https://download.libsodium.org/libsodium/releases/libsodium-{self.version}.tar.gz",
             strip_root=True,
         )

@@ -61,7 +61,7 @@ class ConanRecipe(ConanFile):
         rmdir(self, os.path.join(self.package_folder, "share"))
 
     def package_info(self):
-        self.cpp_info.set_property("cpe", "cpe:2.3:a:google:brotli:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("cpe", f"cpe:2.3:a:google:brotli:{self.version}:*:*:*:*:*:*:*")
         self.cpp_info.set_property("purl", f"pkg:github/google/brotli@v{self.version}")
 
         incdir = os.path.join("include", "brotli")

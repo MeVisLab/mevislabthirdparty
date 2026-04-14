@@ -1,12 +1,11 @@
 import re
-import textwrap
 import os
 from pathlib import Path
 
 from conan import ConanFile
 from conan.tools.cmake import CMakeToolchain, CMake, CMakeDeps, cmake_layout
 from conan.tools.env import VirtualRunEnv
-from conan.tools.files import get, rmdir, rm, replace_in_file, patch, copy, collect_libs, save
+from conan.tools.files import get, rmdir, rm, replace_in_file, patch, copy, collect_libs
 from conan.tools.microsoft import is_msvc
 from conan.tools.system import package_manager
 
@@ -15,7 +14,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "opencv"
-    version = "4.12.0"
+    version = "4.13.0"
     homepage = "https://opencv.org"
     description = "OpenCV is an open source computer vision and machine learning software library"
     license = "Apache-2.0"
@@ -62,7 +61,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="44c106d5bb47efec04e531fd93008b3fcd1d27138985c5baf4eafac0e1ec9e9d",
+            sha256="1d40ca017ea51c533cf9fd5cbde5b5fe7ae248291ddf2af99d4c17cf8e13017d",
             url=f"https://github.com/opencv/opencv/archive/{self.version}.tar.gz",
             strip_root=True,
         )
@@ -70,39 +69,10 @@ class ConanRecipe(ConanFile):
         [
             rmdir(self, d)
             for d in Path(self.source_folder, "3rdparty").iterdir()
-            if d.is_dir() and d.name != "flatbuffers"
+            if d.is_dir() and d.name not in ["flatbuffers", "dlpack"]  # FIXME
         ]
 
-        patch(
-            self,
-            patch_file="patches/001_opencv411_qt690.patch",
-            patch_type="bugfix",
-            patch_description="short term fix for opencv 4.11.0: https://github.com/opencv/opencv/issues/27223",
-        )
-
-        replace_in_file(
-            self,
-            os.path.join(self.source_folder, "CMakeLists.txt"),
-            'if(" ${CMAKE_SOURCE_DIR}" STREQUAL " ${CMAKE_BINARY_DIR}")',
-            "if(false)",
-        )
-
-        save(
-            self,
-            os.path.join(self.source_folder, "cmake", "OpenCVFindWebP.cmake"),
-            textwrap.dedent(
-                """
-            find_package(WebP CONFIG REQUIRED)
-            set(WEBP_FOUND TRUE)
-            set(WEBP_INCLUDE_DIR ${WebP_INCLUDE_DIR})
-            set(WEBP_INCLUDE_DIRS ${WebP_INCLUDE_DIRS})
-            set(WEBP_LIBRARIES ${WebP_LIBRARIES})
-            set(WEBP_LIBRARY ${WebP_LIBRARIES})
-            include(FindPackageHandleStandardArgs)
-            find_package_handle_standard_args(WebP DEFAULT_MSG WEBP_LIBRARY WEBP_LIBRARIES WEBP_INCLUDE_DIR WEBP_INCLUDE_DIRS)
-        """
-            ),
-        )
+        patch(self, patch_file="patches/001_find_webp.patch")
 
         replace_in_file(
             self,
@@ -374,7 +344,7 @@ class ConanRecipe(ConanFile):
             os.remove(setup_vars_path)
 
     def package_info(self):
-        self.cpp_info.set_property("cpe", "cpe:2.3:a:opencv:opencv:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("cpe", f"cpe:2.3:a:opencv:opencv:{self.version}:*:*:*:*:*:*:*")
         self.cpp_info.set_property("purl", f"pkg:github/opencv/opencv@{self.version}")
         self.cpp_info.set_property("cmake_file_name", "OpenCV")
         self.cpp_info.set_property("cmake_target_name", "OpenCV::OpenCV")

@@ -9,7 +9,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "libpng"
-    version = "1.6.50"
+    version = "1.6.55"
     homepage = "http://www.libpng.org/pub/png/libpng.html"
     description = "Portable Network Graphics library"
     license = "Libpng"
@@ -30,7 +30,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="708f4398f996325819936d447f982e0db90b6b8212b7507e7672ea232210949a",
+            sha256="4b0abab6d219e95690ebe4db7fc9aa95f4006c83baaa022373c0c8442271283d",
             url=f"https://download.sourceforge.net/libpng/libpng-{self.version}.tar.gz",
             strip_root=True,
         )
@@ -75,7 +75,7 @@ class ConanRecipe(ConanFile):
         rmdir(self, os.path.join(self.package_folder, "share"))
 
     def package_info(self):
-        self.cpp_info.set_property("cpe", "cpe:2.3:a:libpng:libpng:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("cpe", f"cpe:2.3:a:libpng:libpng:{self.version}:*:*:*:*:*:*:*")
         self.cpp_info.set_property("purl", f"pkg:github/pnggroup/libpng@v{self.version}")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "PNG")

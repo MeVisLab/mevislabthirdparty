@@ -76,7 +76,7 @@ class ConanRecipe(ConanFile):
         rmdir(self, os.path.join(self.package_folder, "share"))
 
     def package_info(self):
-        self.cpp_info.set_property("cpe", "cpe:2.3:a:webmproject:libwebp:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("cpe", f"cpe:2.3:a:webmproject:libwebp:{self.version}:*:*:*:*:*:*:*")
         self.cpp_info.set_property("purl", f"pkg:github/webmproject/libwebp@v{self.version}")
 
         libname = lambda name: ("lib" if self.settings.os == "Windows" else "") + (

@@ -11,7 +11,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "harfbuzz"
-    version = "12.2.0"
+    version = "13.1.1"
     homepage = "http://harfbuzz.org"
     description = "An OpenType text shaping engine"
     license = "MIT"
@@ -25,7 +25,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="ecb603aa426a8b24665718667bda64a84c1504db7454ee4cadbd362eea64e545",
+            sha256="e7f3b8bac3fdcc529985be8e84fbd65c675ac47ee58512b15a5dd620c79ffe2a",
             url=f"https://github.com/harfbuzz/harfbuzz/releases/download/{self.version}/harfbuzz-{self.version}.tar.xz",
             strip_root=True,
         )
@@ -36,19 +36,23 @@ class ConanRecipe(ConanFile):
         tc = MesonToolchain(self)
         tc.project_options.update(
             {
-                "glib": "disabled",
-                "icu": "disabled",
-                "gdi": "enabled",
-                "directwrite": "disabled",
-                "gobject": "disabled",
-                "introspection": "disabled",
-                "cairo": "disabled",
-                "tests": "disabled",
-                "docs": "disabled",
                 "benchmark": "disabled",
-                "icu_builtin": "false",
-                "utilities": "disabled",
+                "cairo": "disabled",
+                "directwrite": "disabled",
+                "docs": "disabled",
                 "freetype": "disabled",
+                "gdi": "enabled",
+                "glib": "disabled",
+                "gobject": "disabled",
+                "icu_builtin": "false",
+                "icu": "disabled",
+                "introspection": "disabled",
+                "png": "disabled",
+                "tests": "disabled",
+                "utilities": "disabled",
+                "zlib": "disabled",
+                "raster": "disabled",
+                "vector": "disabled",
             }
         )
 
@@ -71,7 +75,7 @@ class ConanRecipe(ConanFile):
         rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
 
     def package_info(self):
-        self.cpp_info.set_property("cpe", "cpe:2.3:a:harfbuzz_project:harfbuzz:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("cpe", f"cpe:2.3:a:harfbuzz_project:harfbuzz:{self.version}:*:*:*:*:*:*:*")
         self.cpp_info.set_property("purl", f"pkg:github/harfbuzz/harfbuzz@{self.version}")
         self.cpp_info.set_property("cmake_file_name", "harfbuzz")
         self.cpp_info.set_property("cmake_target_name", "harfbuzz::harfbuzz")

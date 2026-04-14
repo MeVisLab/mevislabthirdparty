@@ -1,8 +1,8 @@
 diff --git a/dcmdata/libsrc/dcuid.cc b/dcmdata/libsrc/dcuid.cc
-index 93eeeba..09142f9 100644
+index be463a8..80f8a74 100644
 --- a/dcmdata/libsrc/dcuid.cc
 +++ b/dcmdata/libsrc/dcuid.cc
-@@ -1855,9 +1855,20 @@ static long gethostid(void)
+@@ -1864,9 +1864,20 @@ static long gethostid(void)
      /* concatenate the host specific elements and compute a 32-bit checksum */
      crc.addBlock(&result /*ip address*/, OFstatic_cast(unsigned long, sizeof(result)));
      // add the MAC addresses of all adapters

@@ -10,8 +10,8 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "libaec"
-    version = "1.1.4"
-    homepage = "https://gitlab.dkrz.de/k202009/libaec"
+    version = "1.1.6"
+    homepage = "https://gitlab.dkrz.de/dkrz-sw/libaec"
     description = "Adaptive Entropy Coding library"
     license = "BSD-2-Clause"
     package_type = "shared-library"
@@ -27,15 +27,13 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="b910e47d526ecbfb802ba6cdc6d262420f6ca436e87edfb57a32966f5148f762",
-            url=f"https://gitlab.dkrz.de/k202009/libaec/-/archive/v{self.version}/libaec-v{self.version}.tar.gz",
+            sha256="e50f323418eb451587891102b6014730e1aa936e763c47f2ae166a4745d1bed2",
+            url=f"https://gitlab.dkrz.de/dkrz-sw/libaec/-/archive/v{self.version}/libaec-v{self.version}.tar.gz",
             strip_root=True,
         )
 
     def generate(self):
         tc = CMakeToolchain(self)
-        tc.cache_variables["CMAKE_POLICY_DEFAULT_CMP0077"] = "NEW"
-
         tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
         tc.variables["BUILD_TESTING"] = False
         tc.variables["BUILD_STATIC_LIBS"] = False
@@ -44,12 +42,10 @@ class ConanRecipe(ConanFile):
         tc.variables["CMAKE_CXX_VISIBILITY_PRESET"] = "default"
         tc.variables["CMAKE_VISIBILITY_INLINES_HIDDEN"] = False
         tc.variables["CMAKE_INSTALL_RPATH"] = "$ORIGIN;$ORIGIN/../lib"
-
         tc.variables["SKIP_INSTALL_ALL"] = False
         tc.variables["SKIP_INSTALL_LIBRARIES"] = False
         tc.variables["SKIP_INSTALL_HEADERS"] = False
         tc.variables["SKIP_INSTALL_FILES"] = True
-
         tc.generate()
 
     def build(self):
@@ -96,6 +92,7 @@ class ConanRecipe(ConanFile):
         content = textwrap.dedent(
             f"""\
             set(libaec_FOUND TRUE)
+            set(libsz_FOUND TRUE)
             set(SZIP_FOUND TRUE)
             set(libaec_VERSION "{self.version}")
             set(SZIP_VERSION "{self.version}")

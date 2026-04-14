@@ -7,7 +7,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "threejs"
-    version = "176"
+    version = "182"
     homepage = "https://threejs.org"
     description = "JavaScript 3D library"
     package_type = "build-scripts"
@@ -19,7 +19,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="c28d0e11c281684f4c72356926e8fe374c99176eafad45cda56551fee25e803a",
+            sha256="673391cdef119543ed8637fddc102256fdf0525fa3a22746bf4ce8a195e7ac11",
             url=f"https://github.com/mrdoob/three.js/archive/r{self.version}.zip",
             strip_root=True,
         )
@@ -34,7 +34,7 @@ class ConanRecipe(ConanFile):
         copy(self, "LICENSE", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
 
     def package_info(self):
-        self.cpp_info.set_property("cpe", "cpe:2.3:a:three_project:three:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("cpe", f"cpe:2.3:a:three_project:three:{self.version}:*:*:*:*:*:*:*")
         self.cpp_info.set_property("purl", f"pkg:github/mrdoob/three.js@r{self.version}")
         self.cpp_info.includedirs.clear()
         self.cpp_info.set_property("cmake_find_mode", "none")

@@ -9,7 +9,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "double-conversion"
-    version = "3.3.1"
+    version = "3.4.0"
     homepage = "https://github.com/google/double-conversion"
     description = "Efficient binary-decimal and decimal-binary conversion routines for IEEE doubles"
     license = "BSD-3-Clause"
@@ -22,7 +22,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="fe54901055c71302dcdc5c3ccbe265a6c191978f3761ce1414d0895d6b0ea90e",
+            sha256="42fd4d980ea86426e457b24bdfa835a6f5ad9517ddb01cdb42b99ab9c8dd5dc9",
             url=f"https://github.com/google/double-conversion/archive/v{self.version}.tar.gz",
             strip_root=True,
         )
@@ -54,6 +54,7 @@ class ConanRecipe(ConanFile):
         cmake = CMake(self)
         cmake.install()
         rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
 
     def package_info(self):
         # self.cpp_info.set_property("cpe", "")  # No CPE yet?

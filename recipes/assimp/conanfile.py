@@ -9,7 +9,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "assimp"
-    version = "6.0.2"
+    version = "6.0.4"
     homepage = "https://www.assimp.org"
     description = "library to import and export various 3d-model-formats including scene-post-processing to generate missing render data"
     license = "BSD-3-Clause"
@@ -26,7 +26,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="699b455b92ce2b6b39aa06a957e59f9d83e8652c8b51364e811660a4acb9ee49",
+            sha256="1eeb63f3e6f6c9d820cc52f7d44fa6b6557256330f45ddaa903aa658c47fece5",
             url=f"https://github.com/assimp/assimp/archive/v{self.version}.zip",
             strip_root=True,
         )
@@ -76,7 +76,7 @@ class ConanRecipe(ConanFile):
         rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
 
     def package_info(self):
-        self.cpp_info.set_property("cpe", "cpe:2.3:a:assimp:assimp:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("cpe", f"cpe:2.3:a:assimp:assimp:{self.version}:*:*:*:*:*:*:*")
         self.cpp_info.set_property("purl", f"pkg:github/assimp/assimp@v{self.version}")
         self.cpp_info.set_property("cmake_file_name", "assimp")
         self.cpp_info.set_property("cmake_target_name", "assimp::assimp")

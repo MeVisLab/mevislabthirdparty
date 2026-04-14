@@ -41,6 +41,7 @@ class ConanRecipe(ConanFile):
             strip_root=True,
         )
         patch(self, patch_file="patches/001-boost_no_mpi.patch")
+        patch(self, patch_file="patches/002-find_eigen_version.patch")
         replace_in_file(
             self,
             os.path.join(self.source_folder, "CMakeLists.txt"),

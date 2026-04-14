@@ -10,7 +10,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "7zip"
-    version = "25.01"
+    version = "26.00"
     license = "LGPL-2.1-or-later AND BSD-3-Clause"
     homepage = "https://www.7-zip.org"
     description = "7-Zip is a file archiver with a high compression ratio"
@@ -37,11 +37,11 @@ class ConanRecipe(ConanFile):
         basic_layout(self, src_folder="src")
 
     def source(self):
-        version = "".join(self.version.split("."))
         get(
             self,
-            sha256="ed087f83ee789c1ea5f39c464c55a5c9d4008deb0efe900814f2df262b82c36e",
-            url=f"https://sourceforge.net/projects/sevenzip/files/7-Zip/{self.version}/7z{version}-src.tar.xz",
+            sha256="07eafed75d661282d402dc2a3edf17e1dbb36fb813f4fbf5a2bad4f6b722aed5",
+            url=f"https://github.com/ip7z/7zip/archive/refs/tags/{self.version}.tar.gz",
+            strip_root=True,
         )
 
     def generate(self):
@@ -84,7 +84,7 @@ class ConanRecipe(ConanFile):
         )
 
     def package_info(self):
-        self.cpp_info.set_property("cpe", "cpe:2.3:a:7-zip:7-zip:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("cpe", f"cpe:2.3:a:7-zip:7-zip:{self.version}:*:*:*:*:*:*:*")
         self.cpp_info.set_property("purl", f"pkg:github/ip7z/7zip@{self.version}")
         self.cpp_info.includedirs.clear()
         self.cpp_info.libdirs.clear()

@@ -13,7 +13,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "libiconv"
-    version = "1.18"
+    version = "1.19"
     homepage = "https://www.gnu.org/software/libiconv"
     description = "Internationalization support library"
     license = "LGPL-2.1-or-later"
@@ -36,7 +36,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="3b08f5f4f9b4eb82f151a7040bfd6fe6c6fb922efe4b1659c66ea933276965e8",
+            sha256="88dd96a8c0464eca144fc791ae60cd31cd8ee78321e67397e25fc095c4a19aa6",
             url=f"https://ftp.gnu.org/pub/gnu/libiconv/libiconv-{self.version}.tar.gz",
             strip_root=True,
         )

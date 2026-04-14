@@ -77,7 +77,7 @@ class ConanRecipe(ConanFile):
         rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
 
     def package_info(self):
-        self.cpp_info.set_property("cpe", "cpe:2.3:a:zeromq:libzmq:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("cpe", f"cpe:2.3:a:zeromq:libzmq:{self.version}:*:*:*:*:*:*:*")
         self.cpp_info.set_property("purl", f"pkg:github/zeromq/libzmq@v{self.version}")
         self.cpp_info.set_property("cmake_find_mode", "both")
         # This is how libzmq itself generates the CMake files

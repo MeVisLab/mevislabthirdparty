@@ -1,8 +1,8 @@
 diff --git a/configure b/configure
-index e1b94d6..763ab64 100755
+index e4e8af5..1f3e4c8 100755
 --- a/configure
 +++ b/configure
-@@ -17843,8 +17843,13 @@ linux* | k*bsd*-gnu | kopensolaris*-gnu | gnu*)
+@@ -18093,8 +18093,13 @@ linux* | k*bsd*-gnu | kopensolaris*-gnu | gnu*)
    version_type=linux # correct to gnu/linux during the next big refactor
    need_lib_prefix=no
    need_version=no

@@ -182,7 +182,7 @@ class QtPackage:
             rmdir(self, os.path.join(self.package_folder, "lib", f"objects-{self.settings.build_type}"))
 
     def package_info(self):
-        self.cpp_info.set_property("cpe", "cpe:2.3:a:qt:qt:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("cpe", f"cpe:2.3:a:qt:qt:{self.version}:*:*:*:*:*:*:*")
         self.cpp_info.set_property("purl", f"pkg:github/qt/{self.name}@v{self.version}")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", f"Qt6{self.name}Dummy")

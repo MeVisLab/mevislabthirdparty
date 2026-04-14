@@ -37,5 +37,5 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         super().package_info()
-        self.cpp_info.set_property("cpe", "cpe:2.3:a:pycryptodome:pycryptodomex:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("cpe", f"cpe:2.3:a:pycryptodome:pycryptodomex:{self.version}:*:*:*:*:*:*:*")
         self.cpp_info.set_property("purl", f"pkg:github/Legrandin/pycryptodome@v{self.version}x")

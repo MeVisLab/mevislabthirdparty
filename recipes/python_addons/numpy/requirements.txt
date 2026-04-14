@@ -1,4 +1,4 @@
-cython==3.2.1
+cython==3.2.4
 meson-python==0.18.0
 packaging==25.0
-pyproject-metadata==0.9.1
+pyproject-metadata==0.10.0

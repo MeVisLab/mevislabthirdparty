@@ -1,8 +1,8 @@
 diff --git a/src/meson.build b/src/meson.build
-index 44c858c..2fa9f1a 100644
+index a92e46f..ad57375 100644
 --- a/src/meson.build
 +++ b/src/meson.build
-@@ -647,7 +647,14 @@ endif
+@@ -653,7 +653,14 @@ endif
  
  darwin_versions = [hb_version_int, '@0@.0.0'.format(hb_version_int)]
  
@@ -18,16 +18,16 @@ index 44c858c..2fa9f1a 100644
    include_directories: incconfig,
    dependencies: harfbuzz_deps,
    cpp_args: cpp_args + extra_hb_cpp_args,
-@@ -671,7 +678,7 @@ harfbuzz_subset_def = custom_target('harfbuzz-subset.def',
-     output: 'harfbuzz-subset.def')
- defs_list += [harfbuzz_subset_def]
+@@ -679,7 +686,7 @@ if not get_option('subset').disabled()
+       output: 'harfbuzz-subset.def')
+   defs_list += [harfbuzz_subset_def]
  
--libharfbuzz_subset = library('harfbuzz-subset', hb_subset_sources,
-+libharfbuzz_subset = library('harfbuzz-subset' + suffix, hb_subset_sources,
-   include_directories: incconfig,
-   dependencies: [m_dep],
-   link_with: [libharfbuzz],
-@@ -712,7 +719,7 @@ if conf.get('HAVE_CAIRO', 0) == 1
+-  libharfbuzz_subset = library('harfbuzz-subset', hb_subset_sources,
++  libharfbuzz_subset = library('harfbuzz-subset' + suffix, hb_subset_sources,
+     include_directories: incconfig,
+     dependencies: common_harfbuzz_deps,
+     link_with: [libharfbuzz],
+@@ -865,7 +872,7 @@ if conf.get('HAVE_CAIRO', 0) == 1
  
    cairo_dep = dependency('cairo')
  
@@ -36,7 +36,7 @@ index 44c858c..2fa9f1a 100644
      include_directories: incconfig,
      dependencies: [m_dep, cairo_dep],
      link_with: [libharfbuzz],
-@@ -830,7 +837,7 @@ if have_icu and not have_icu_builtin
+@@ -986,7 +993,7 @@ if have_icu and not have_icu_builtin
      output: 'harfbuzz-icu.def')
    defs_list += [harfbuzz_icu_def]
  
@@ -45,7 +45,7 @@ index 44c858c..2fa9f1a 100644
      include_directories: incconfig,
      dependencies: icu_dep,
      link_with: [libharfbuzz],
-@@ -994,7 +1001,7 @@ if have_gobject
+@@ -1150,7 +1157,7 @@ if have_gobject
      output: 'harfbuzz-gobject.def')
    defs_list += [harfbuzz_gobject_def]
  

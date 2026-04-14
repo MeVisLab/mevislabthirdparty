@@ -18,12 +18,15 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "python"
-    version = "3.13.9"
+    version = "3.13.12"
     homepage = "https://www.python.org"
     description = "An interpreted, interactive, object-oriented programming language"
     license = "Python-2.0"
     package_type = "shared-library"
     settings = "os", "arch", "compiler", "build_type"
+    package_id_embed_mode = "full_mode"
+    package_id_non_embed_mode = "full_mode"
+    package_id_unknown_mode = "full_mode"
     exports_sources = ["patches/*.patch"]
 
     # fmt: off
@@ -67,7 +70,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="c4c066af19c98fb7835d473bebd7e23be84f6e9874d47db9e39a68ee5d0ce35c",
+            sha256="12e7cb170ad2d1a69aee96a1cc7fc8de5b1e97a2bdac51683a3db016ec9a2996",
             url=f"https://www.python.org/ftp/python/{self.version}/Python-{self.version}.tgz",
             strip_root=True,
         )
@@ -309,7 +312,7 @@ class ConanRecipe(ConanFile):
             print("Did not find 'command/build_ext.py'")
 
     def package_info(self):
-        self.cpp_info.set_property("cpe", "cpe:2.3:a:python:python:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("cpe", f"cpe:2.3:a:python:python:{self.version}:*:*:*:*:*:*:*")
         self.cpp_info.set_property("purl", f"pkg:github/python/cpython@v{self.version}")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "Python3")

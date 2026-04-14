@@ -10,7 +10,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "dcmtk"
-    version = "3.6.9"
+    version = "3.7.0"
     description = "The DICOM Toolkit"
     license = "BSD-3-Clause"
     homepage = "https://dicom.offis.de/dcmtk.php.en"
@@ -23,7 +23,6 @@ class ConanRecipe(ConanFile):
         self.requires("libpng/[>=1.6]")
         self.requires("libxml2/[>=2.9]")
         self.requires("tiff/[>=4.1]")
-        # self.requires("openssl/[>=3.2]")
         self.requires("libjpeg-turbo/[>=2.1]")
         self.requires("libiconv/[>=1.16]")
 
@@ -34,7 +33,7 @@ class ConanRecipe(ConanFile):
         v = Version(self.version)
         get(
             self,
-            sha256="b93ff5561244916a6e1e7e3ecccf2e26e6932c4edb5961268401cea7d4ab9c16",
+            sha256="f103df876040a4f904f01d2464f7868b4feb659d8cd3f46a5f1f61aa440be415",
             url=f"https://dicom.offis.de/download/dcmtk/dcmtk{v.major}{v.minor}{v.patch}/dcmtk-{self.version}.tar.gz",
             strip_root=True,
         )
@@ -106,7 +105,6 @@ class ConanRecipe(ConanFile):
         )
         patch(self, patch_file="patches/013-find_libcharset.patch", patch_description="find libcharset debug library")
         patch(self, patch_file="patches/014-libiconv.patch", patch_description="disable libiconv configure test")
-        patch(self, patch_file="patches/015-disable_nsl_test.patch", patch_description="disable test for nsl socket")
 
     def generate(self):
         cd = CMakeDeps(self)
@@ -119,6 +117,7 @@ class ConanRecipe(ConanFile):
         tc.variables["BUILD_APPS"] = True
         tc.variables["DCMTK_USE_FIND_PACKAGE"] = True
         tc.variables["DCMTK_ENABLE_PRIVATE_TAGS"] = True
+        tc.variables["DCMTK_ENABLE_STL"] = True
         tc.variables["DCMTK_ENABLE_CXX11"] = True
         tc.variables["DCMTK_DEFAULT_DICT"] = "builtin"
         tc.variables["DCMTK_USE_DCMDICTPATH"] = False
@@ -137,6 +136,9 @@ class ConanRecipe(ConanFile):
         tc.variables["DCMTK_WITH_SNDFILE"] = True if "sndfile" in self.dependencies else False
         tc.variables["DCMTK_WITH_WRAP"] = False
         tc.variables["DCMTK_WITH_ICONV"] = True if "libiconv" in self.dependencies else False
+        tc.variables["DCMTK_NO_TRY_RUN"] = False
+        tc.variables["DCMTK_ICONV_FLAGS_ANALYZED"] = True
+        tc.variables["DCMTK_FIXED_ICONV_CONVERSION_FLAGS"] = "AbortTranscodingOnIllegalSequence"
         tc.generate()
 
     def build(self):

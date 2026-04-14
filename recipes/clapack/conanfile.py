@@ -40,12 +40,12 @@ class ConanRecipe(ConanFile):
         tc = CMakeToolchain(self)
         tc.preprocessor_definitions["BUILD_CLAPACK"] = 1
         tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
+        tc.variables["CMAKE_C_STANDARD"] = 90
         tc.variables["BUILD_SHARED_LIBS"] = False
         tc.variables["CMAKE_POSITION_INDEPENDENT_CODE"] = True
         tc.variables["CMAKE_C_VISIBILITY_PRESET"] = "hidden"
-        tc.cache_variables["CMAKE_POLICY_DEFAULT_CMP0063"] = (
-            "NEW"  # don't ignore CMAKE_C_VISIBILITY_PRESET for static libs
-        )
+        # don't ignore CMAKE_C_VISIBILITY_PRESET for static libs
+        tc.cache_variables["CMAKE_POLICY_DEFAULT_CMP0063"] = "NEW"
         tc.generate()
 
     def build(self):
@@ -90,7 +90,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property(
-            "cpe", "cpe:2.3:a:lapack_project:lapack:*:*:*:*:*:*:*:*"
+            "cpe", f"cpe:2.3:a:lapack_project:lapack:{self.version}:*:*:*:*:*:*:*"
         )  # does this refer to the Fortran Lapack?
         self.cpp_info.set_property(
             "purl", f"pkg:github/alphacep/clapack@{self.version}"

@@ -1,8 +1,8 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 116c77d..59982d3 100644
+index bc4be5f..7fe862f 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -402,24 +402,24 @@ set_target_properties(
+@@ -427,24 +427,24 @@ set_target_properties(
      MACHO_CURRENT_VERSION "${LIBXML_MACHO_COMPAT}.${LIBXML_MICRO_VERSION}"
  )
  

@@ -1,5 +1,5 @@
 diff --git a/CMake/3rdparty.cmake b/CMake/3rdparty.cmake
-index 8337323..99c1326 100644
+index a34a9c0..1edc977 100644
 --- a/CMake/3rdparty.cmake
 +++ b/CMake/3rdparty.cmake
 @@ -37,12 +37,12 @@ if(DCMTK_USE_FIND_PACKAGE)
@@ -19,13 +19,11 @@ index 8337323..99c1326 100644
        endif()
      endif()
    endif()
-@@ -57,8 +57,8 @@ if(DCMTK_USE_FIND_PACKAGE)
-     else()
+@@ -58,7 +58,7 @@ if(DCMTK_USE_FIND_PACKAGE)
        message(STATUS "Info: DCMTK PNG support will be enabled")
        set(WITH_LIBPNG 1)
--      include_directories(${PNG_INCLUDE_DIR})
--      set(LIBPNG_LIBS ${PNG_LIBRARY})
-+      include_directories(${PNG_INCLUDE_DIRS})
+       include_directories(${PNG_INCLUDE_DIR})
+-      set(LIBPNG_LIBS ${PNG_LIBRARY} ${LIBPNG_EXTRA_LIBS_STATIC})
 +      set(LIBPNG_LIBS PNG::PNG)
      endif()
    endif()

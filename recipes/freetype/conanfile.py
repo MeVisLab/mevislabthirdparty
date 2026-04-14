@@ -15,7 +15,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "freetype"
-    version = "2.14.1"
+    version = "2.14.2"
     homepage = "https://www.freetype.org"
     description = "A high-quality and portable font engine"
     license = "FTL"
@@ -44,7 +44,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="174d9e53402e1bf9ec7277e22ec199ba3e55a6be2c0740cb18c0ee9850fc8c34",
+            sha256="752c2671f85c54a84b7f0dd2b5cd26b6b741117033886ffbc5ac89a68464b848",
             url=f"https://download.savannah.gnu.org/releases/freetype/freetype-{self.version}.tar.gz",
             strip_root=True,
         )
@@ -126,7 +126,7 @@ class ConanRecipe(ConanFile):
         rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
 
     def package_info(self):
-        self.cpp_info.set_property("cpe", "cpe:2.3:a:freetype:freetype:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("cpe", f"cpe:2.3:a:freetype:freetype:{self.version}:*:*:*:*:*:*:*")
         self.cpp_info.set_property("purl", f"pkg:github/freetype/freetype@VER-{self.version.replace('.','-')}")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "Freetype")

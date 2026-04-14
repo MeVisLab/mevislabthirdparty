@@ -1,0 +1,29 @@
+diff --git a/cmake/XercesDLL.cmake b/cmake/XercesDLL.cmake
+index 8ebb8aa..b779887 100644
+--- a/cmake/XercesDLL.cmake
++++ b/cmake/XercesDLL.cmake
+@@ -22,12 +22,6 @@
+ 
+ set(BUILD_SHARED_LIBS ON CACHE BOOL "Build shared libraries")
+ 
+-# Add a d postfix to Debug libraries on Windows
+-
+-if(MSVC)
+-  set(CMAKE_DEBUG_POSTFIX "d")
+-endif()
+-
+ # DLL export and import macros
+ 
+ set(XERCES_PLATFORM_EXPORT)
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index fe336ba..171b1f1 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -1289,7 +1289,6 @@ if(MSVC)
+   # compatibility with the existing project files.
+   set_target_properties(xerces-c PROPERTIES OUTPUT_NAME "xerces-c_${INTERFACE_VERSION_MAJOR}")
+   set_target_properties(xerces-c PROPERTIES RUNTIME_OUTPUT_NAME "xerces-c_${INTERFACE_VERSION_U}")
+-  set_target_properties(xerces-c PROPERTIES DEBUG_POSTFIX "D")
+ elseif(UNIX)
+   # For strict libtool compatibility on Unix.  It's a horrible hack to
+   # set the version in the filename, and create the symlink at install

@@ -1,0 +1,15 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index c338b31..526ea26 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -149,10 +149,6 @@ set(ZLIB_SRCS
+     uncompr.c
+     zutil.c)
+ 
+-if(WIN32)
+-    set(zlib_static_suffix "s")
+-endif(WIN32)
+-
+ if(ZLIB_BUILD_SHARED)
+     add_library(
+         zlib SHARED ${ZLIB_SRCS} ${ZLIB_PUBLIC_HDRS} ${ZLIB_PRIVATE_HDRS}

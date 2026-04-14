@@ -8,7 +8,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "expat"
-    version = "2.7.3"
+    version = "2.7.5"
     homepage = "https://libexpat.github.io"
     description = "Fast stream-oriented XML parser library"
     license = "MIT"
@@ -25,7 +25,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="71df8f40706a7bb0a80a5367079ea75d91da4f8c65c58ec59bcdfbf7decdab9f",
+            sha256="1032dfef4ff17f70464827daa28369b20f6584d108bc36f17ab1676e1edd2f91",
             url=f"https://github.com/libexpat/libexpat/releases/download/R_{self.version.replace('.', '_')}/expat-{self.version}.tar.xz",
             strip_root=True,
         )
@@ -64,7 +64,7 @@ class ConanRecipe(ConanFile):
         rmdir(self, os.path.join(self.package_folder, "share"))
 
     def package_info(self):
-        self.cpp_info.set_property("cpe", "cpe:2.3:a:libexpat_project:libexpat:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("cpe", f"cpe:2.3:a:libexpat_project:libexpat:{self.version}:*:*:*:*:*:*:*")
         self.cpp_info.set_property("purl", f"pkg:github/libexpat/libexpat@R_{self.version.replace('.', '_')}")
         self.cpp_info.set_property("cmake_file_name", "EXPAT")
         self.cpp_info.set_property("cmake_target_name", "EXPAT::EXPAT")

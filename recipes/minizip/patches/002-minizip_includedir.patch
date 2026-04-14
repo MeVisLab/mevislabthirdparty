@@ -1,0 +1,31 @@
+diff --git a/contrib/minizip/CMakeLists.txt b/contrib/minizip/CMakeLists.txt
+index 0f36e3c..fd73856 100644
+--- a/contrib/minizip/CMakeLists.txt
++++ b/contrib/minizip/CMakeLists.txt
+@@ -138,7 +138,7 @@ if(MINIZIP_BUILD_SHARED)
+     add_library(MINIZIP::minizip ALIAS libminizip)
+     target_include_directories(
+         libminizip PUBLIC $<BUILD_INTERFACE:${minizip_SOURCE_DIR}>
+-                          $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
++                          $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/minizip>)
+     target_compile_definitions(
+         libminizip
+         PRIVATE $<$<BOOL:${MSVC}>:_CRT_SECURE_NO_WARNINGS>
+@@ -182,7 +182,7 @@ if(MINIZIP_BUILD_STATIC)
+     target_include_directories(
+         libminizipstatic
+         PUBLIC $<BUILD_INTERFACE:${minizip_SOURCE_DIR}>
+-               $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
++               $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/minizip>)
+     target_compile_definitions(
+         libminizipstatic
+         PRIVATE $<$<BOOL:${MSVC}>:_CRT_SECURE_NO_WARNINGS>
+@@ -272,7 +272,7 @@ if(MINIZIP_INSTALL)
+     install(
+         FILES ${LIBMINIZIP_HDRS}
+         COMPONENT Development
+-        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
++        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/minizip")
+ endif(MINIZIP_INSTALL)
+ 
+ if(MINIZIP_BUILD_TESTING)

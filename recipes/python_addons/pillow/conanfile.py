@@ -8,7 +8,7 @@ required_conan_version = ">=2.0.0"
 
 class ConanRecipe(ConanFile):
     name = "pillow"
-    version = "12.0.0"
+    version = "12.1.1"
     homepage = "https://python-pillow.github.io/"
     description = "Python Imaging Library (Fork)"
     license = "HPND"
@@ -60,7 +60,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="9d24d8c1197610e63eee5e5cfa60025e4aaaba3f5c3c592e9a62cdf734f0bb13",
+            sha256="d29fefc0ba637833b59cafc7649e1237186741c31b210178b0a4e9cd9e01ffdf",
             url=f"https://github.com/python-pillow/Pillow/archive/refs/tags/{self.version}.tar.gz",
             strip_root=True,
         )

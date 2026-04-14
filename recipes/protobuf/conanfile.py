@@ -3,7 +3,7 @@ import textwrap
 
 from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
-from conan.tools.files import replace_in_file, copy, get, rmdir, rm, save
+from conan.tools.files import replace_in_file, copy, get, rmdir, rm, save, patch
 from conan.tools.microsoft import is_msvc
 
 required_conan_version = ">=2.2.2"
@@ -11,11 +11,12 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "protobuf"
-    version = "33.0"
+    version = "33.5"
     homepage = "https://protobuf.dev"
     description = "Google's Protocol Buffers are a language-neutral, platform-neutral extensible mechanism for serializing structured data"
     license = "BSD-3-Clause"
     package_type = "static-library"
+    exports_sources = ["patches/*"]
     settings = "os", "arch", "compiler", "build_type"
 
     def layout(self):
@@ -28,9 +29,14 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="cbc536064706b628dcfe507bef386ef3e2214d563657612296f1781aa155ee07",
+            sha256="c6c7c27fadc19d40ab2eaa23ff35debfe01f6494a8345559b9bb285ce4144dd1",
             url=f"https://github.com/protocolbuffers/protobuf/releases/download/v{self.version}/protobuf-{self.version}.tar.gz",
             strip_root=True,
+        )
+        patch(
+            self,
+            patch_file="patches/001-workarround_nvcc_bug.patch",
+            patch_description="workarround nvcc bug, see: https://github.com/protocolbuffers/protobuf/issues/21542",
         )
         replace_in_file(
             self,
@@ -49,7 +55,6 @@ class ConanRecipe(ConanFile):
         tc.cache_variables["protobuf_BUILD_TESTS"] = False
         tc.cache_variables["protobuf_WITH_ZLIB"] = True
         tc.cache_variables["protobuf_BUILD_PROTOC_BINARIES"] = True
-        tc.cache_variables["protobuf_ABSL_PROVIDER"] = "package"
         tc.cache_variables["protobuf_MSVC_STATIC_RUNTIME"] = False
         tc.cache_variables["protobuf_DISABLE_RTTI"] = False
         tc.cache_variables["protobuf_BUILD_LIBUPB"] = True
@@ -94,7 +99,7 @@ class ConanRecipe(ConanFile):
         save(self, os.path.join(cmake_config_folder, "protobuf-protoc-target.cmake"), content)
 
     def package_info(self):
-        self.cpp_info.set_property("cpe", "cpe:2.3:a:protobuf:protobuf:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("cpe", f"cpe:2.3:a:protobuf:protobuf:{self.version}:*:*:*:*:*:*:*")
         self.cpp_info.set_property("purl", f"pkg:github/protocolbuffers/protobuf@v{self.version}")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_module_file_name", "Protobuf")

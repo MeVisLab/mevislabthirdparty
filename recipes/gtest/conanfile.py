@@ -56,7 +56,7 @@ class ConanRecipe(ConanFile):
             pdb.unlink()
 
     def package_info(self):
-        self.cpp_info.set_property("cpe", "cpe:2.3:a:google:google_test:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("cpe", f"cpe:2.3:a:google:google_test:{self.version}:*:*:*:*:*:*:*")
         self.cpp_info.set_property("purl", f"pkg:github/google/googletest@v{self.version}")
         self.cpp_info.set_property("cmake_find_mode", "config")
         self.cpp_info.set_property("cmake_file_name", "GTest")

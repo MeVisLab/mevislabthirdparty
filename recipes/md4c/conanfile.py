@@ -55,7 +55,7 @@ class ConanRecipe(ConanFile):
         rmdir(self, os.path.join(self.package_folder, "share"))
 
     def package_info(self):
-        self.cpp_info.set_property("cpe", "cpe:2.3:a:md4c_project:md4c:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("cpe", f"cpe:2.3:a:md4c_project:md4c:{self.version}:*:*:*:*:*:*:*")
         self.cpp_info.set_property("purl", f"pkg:github/mity/md4c@release-{self.version}")
         suffix = "_d" if self.settings.build_type == "Debug" else ""
         self.cpp_info.set_property("cmake_file_name", "md4c")

@@ -1,7 +1,7 @@
+from pathlib import Path
 from conan import ConanFile
-from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
-from conan.tools.files import collect_libs, copy, get, patch
-from conan.tools.scm import Version
+from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps, cmake_layout
+from conan.tools.files import collect_libs, copy, get, patch, save, rmdir
 import os
 
 required_conan_version = ">=2.2.2"
@@ -9,7 +9,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "xerces-c"
-    version = "2.7.0"
+    version = "3.3.0"
     homepage = "https://xml.apache.org/xerces-c"
     description = "A validating XML parser written in a portable subset of C++"
     license = "Apache-2.0"
@@ -17,53 +17,61 @@ class ConanRecipe(ConanFile):
     settings = "os", "arch", "compiler", "build_type"
     exports_sources = "CMakeLists.txt", "patches/*.patch"
 
+    def requirements(self):
+        self.requires("icu/[>=78.1]")
+
     def layout(self):
         cmake_layout(self, src_folder="src")
 
     def source(self):
-        v = Version(self.version)
         get(
             self,
-            url=f"https://archive.apache.org/dist/xml/xerces-c/Xerces-C_{v.major}_{v.minor}_{v.patch}/source/xerces-c-src_{v.major}_{v.minor}_{v.patch}.tar.gz",
-            sha256="77fae8a1e7aa58007115c939aa68fd5028da79c481fc457dfce546b50c9dfda5",
+            sha256="9555f1d06f82987fbb4658862705515740414fd34b4db6ad2ed76a2dc08d3bde",
+            url=f"https://dlcdn.apache.org/xerces/c/3/sources/xerces-c-{self.version}.tar.gz",
             strip_root=True,
         )
-        patch(self, patch_file="patches/001-macos.patch")
-        patch(self, patch_file="patches/002-windows_64bit.patch")
+        patch(self, patch_file="patches/001-debug_postfix.patch")
+        patch(self, patch_file="patches/002-fix_utf16_str.patch")
+        save(self, path=os.path.join(self.source_folder, "cmake", "XercesWarnings.cmake"), content="")
+        save(self, path=os.path.join(self.source_folder, "doc", "CMakeLists.txt"), content="")
 
     def generate(self):
         tc = CMakeToolchain(self)
-        tc.cache_variables["CONAN_XERCES_VERSION"] = f"{self.version}"
-        tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
         tc.variables["BUILD_SHARED_LIBS"] = True
+        tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
+        tc.variables["NSL_LIBRARY"] = "NSL_LIBRARY-NOTFOUND"
+        tc.variables["network"] = False
         tc.generate()
+        deps = CMakeDeps(self)
+        deps.generate()
 
     def build(self):
         cmake = CMake(self)
-        cmake.configure(build_script_folder=os.path.dirname(self.source_folder))
+        cmake.configure()
         cmake.build()
 
     def package(self):
         copy(self, "LICENSE", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
-        copy(
-            self,
-            "*.pdb",
-            src=self.build_folder,
-            dst=os.path.join(self.package_folder, "bin"),
-            keep_path=False,
-            excludes="*vc???.pdb",
-        )
         cmake = CMake(self)
         cmake.install()
+        bin_folder = os.path.join(self.package_folder, "bin")
+        if self.settings.os == "Windows":
+            [f.unlink() for f in Path(bin_folder).glob("*.exe") if f.is_file()]
+        else:
+            rmdir(self, bin_folder)
+        copy(self, "*.pdb", src=self.build_folder, dst=bin_folder, keep_path=False, excludes="*vc???.pdb")
+        rmdir(self, os.path.join(self.package_folder, "share"))
+        rmdir(self, os.path.join(self.package_folder, "cmake"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
 
     def package_info(self):
-        self.cpp_info.set_property("cpe", "cpe:2.3:a:apache:xerces-c:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("cpe", f"cpe:2.3:a:apache:xerces-c\+\+:{self.version}:*:*:*:*:*:*:*")
         self.cpp_info.set_property("purl", f"pkg:github/apache/xerces-c@v{self.version}")
         self.cpp_info.set_property("cmake_file_name", "XercesC")
         self.cpp_info.set_property("cmake_target_name", "XercesC::XercesC")
         self.cpp_info.set_property("display_name", "Xerces-C++")
+        self.cpp_info.set_property("pkg_config_name", "xerces-c")
         self.cpp_info.libs = collect_libs(self)
-        self.cpp_info.frameworks.extend(["CoreFoundation", "CoreServices"])
-        if self.settings.os == "Windows":
-            self.cpp_info.system_libs.append("advapi32")
-            self.cpp_info.system_libs.append("ws2_32")
+        if self.settings.os == "Linux":
+            self.cpp_info.system_libs.extend(["pthread"])

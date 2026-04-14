@@ -21,7 +21,7 @@ class ConanRecipe(ConanFile):
     name = "boost"
     display_name = "Boost"
     mli_name = "None"
-    version = "1.89.0"
+    version = "1.90.0"
     homepage = "https://www.boost.org"
     description = "Boost provides free peer-reviewed portable C++ source libraries"
     license = "BSL-1.0"
@@ -70,7 +70,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="85a33fa22621b4f314f8e85e1a5e2a9363d22e4f4992925d4bb3bc631b5a0c7a",
+            sha256="49551aff3b22cbc5c5a9ed3dbc92f0e23ea50a0f7325b0d198b705e8ee3fc305",
             url=f"https://archives.boost.io/release/{self.version}/source/boost_{self.version.replace('.','_')}.tar.bz2",
             strip_root=True,
         )
@@ -117,7 +117,7 @@ class ConanRecipe(ConanFile):
         copy(self, pattern="boost*.pdb", dst=os.path.join(self.package_folder, "bin"), src=out_lib_dir, keep_path=False)
 
     def package_info(self):
-        self.cpp_info.set_property("cpe", "cpe:2.3:a:boost:boost:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("cpe", f"cpe:2.3:a:boost:boost:{self.version}:*:*:*:*:*:*:*")
         self.cpp_info.set_property("purl", f"pkg:github/boostorg/boost@boost-{self.version}")
         self.cpp_info.set_property("cmake_file_name", "Boost")
         self.cpp_info.set_property("cmake_target_name", "Boost::boost")
@@ -242,11 +242,9 @@ class ConanRecipe(ConanFile):
         flags.append("-sNO_ZSTD=1")
 
         zlib_info = self.dependencies["zlib"].cpp_info
-        zlib_name = "zlib" if self.settings.os == "Windows" else "z"
-        debug_suffix = "_d" if self.settings.build_type == "Debug" else ""
         flags.append('-sZLIB_INCLUDE="%s"' % zlib_info.includedirs[0].replace("\\", "/"))
         flags.append('-sZLIB_LIBPATH="%s"' % zlib_info.libdirs[0].replace("\\", "/"))
-        flags.append(f"-sZLIB_BINARY={zlib_name}{debug_suffix}")
+        flags.append(f"-sZLIB_BINARY={zlib_info.libs[0]}")
 
         flags.append("boost.locale.iconv=on")
         flags.append("boost.locale.icu=off")

@@ -49,7 +49,7 @@ class ConanRecipe(ConanFile):
         cmake.install()
 
     def package_info(self):
-        self.cpp_info.set_property("cpe", "cpe:2.3:a:hunspell_project:hunspell:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("cpe", f"cpe:2.3:a:hunspell_project:hunspell:{self.version}:*:*:*:*:*:*:*")
         self.cpp_info.set_property("purl", f"pkg:github/hunspell/hunspell@v{self.version}")
         self.cpp_info.set_property("cmake_file_name", "Hunspell")
         self.cpp_info.set_property("cmake_target_name", "Hunspell::Hunspell")

@@ -9,7 +9,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "llvm"
-    version = "21.1.5"
+    version = "22.1.1"
     license = "Apache-2.0"
     homepage = "https://llvm.org"
     description = "Low Level Virtual Machine"
@@ -36,7 +36,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="1794be4bf974e99a3fe1da4b2b9b1456c02ae9479c942f365441d8d207bd650c",
+            sha256="9c6f37f6f5f68d38f435d25f770fc48c62d92b2412205767a16dac2c942f0c95",
             url=f"https://github.com/llvm/llvm-project/releases/download/llvmorg-{self.version}/llvm-project-{self.version}.src.tar.xz",
             strip_root=True,
         )
@@ -48,6 +48,7 @@ class ConanRecipe(ConanFile):
         tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
         # see https://llvm.org/docs/CMake.html#options-and-variables
         tc.variables["CMAKE_VS_PLATFORM_TOOLSET_HOST_ARCHITECTURE"] = "x64"
+        tc.variables["LLVM_ENABLE_PROJECTS"] = "clang;clang-tools-extra"
         tc.variables["CMAKE_DISABLE_FIND_PACKAGE_git"] = True
         tc.variables["CMAKE_DISABLE_FIND_PACKAGE_Git"] = True
         tc.variables["CMAKE_DISABLE_FIND_PACKAGE_OCaml"] = True
@@ -93,7 +94,7 @@ class ConanRecipe(ConanFile):
         rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))
 
     def package_info(self):
-        self.cpp_info.set_property("cpe", "cpe:2.3:a:llvm:llvm:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("cpe", f"cpe:2.3:a:llvm:llvm:{self.version}:*:*:*:*:*:*:*")
         self.cpp_info.set_property("purl", f"pkg:github/llvm/llvm-project@llvmorg-{self.version}")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "LLVM")

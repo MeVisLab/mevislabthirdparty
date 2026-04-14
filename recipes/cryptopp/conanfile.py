@@ -67,7 +67,7 @@ class ConanRecipe(ConanFile):
         rmdir(self, os.path.join(self.package_folder, "share"))
 
     def package_info(self):
-        self.cpp_info.set_property("cpe", "cpe:2.3:a:cryptopp:crypto\\+\\+:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("cpe", f"cpe:2.3:a:cryptopp:crypto\\+\\+:{self.version}:*:*:*:*:*:*:*")
         self.cpp_info.set_property("purl", f"pkg:github/weidai11/cryptopp@CRYPTOPP_{self.version.replace('.', '_')}")
         self.cpp_info.set_property("cmake_file_name", "CryptoPP")
         self.cpp_info.set_property("cmake_target_name", "CryptoPP::CryptoPP")

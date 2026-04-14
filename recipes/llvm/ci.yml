@@ -1,2 +1,3 @@
 timeout:
   build: 120
+  upload: 20

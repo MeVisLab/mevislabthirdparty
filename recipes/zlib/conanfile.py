@@ -4,7 +4,7 @@ import textwrap
 from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
 from conan.tools.files import collect_libs, copy
-from conan.tools.files import get, patch, load, save
+from conan.tools.files import get, rmdir, save, patch
 from conan.tools.scm import Version
 
 required_conan_version = ">=2.2.2"
@@ -12,7 +12,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "zlib"
-    version = "1.3.1"
+    version = "1.3.2"
     homepage = "https://zlib.net"
     license = "Zlib"
     description = "A Massively Spiffy Yet Delicately Unobtrusive Compression Library"
@@ -32,18 +32,20 @@ class ConanRecipe(ConanFile):
         vstr = f"{v.major}.{v.minor}" + ("" if v.patch == 0 else f".{v.patch}")
         get(
             self,
-            sha256="9a93b2b7dfdac77ceba5a558a580e74667dd6fede4585b91eefb60f03b72df23",
+            sha256="bb329a0a2cd0274d05519d61c667c062e06990d72e125ee2dfa8de64f0119d16",
             url=f"https://github.com/madler/zlib/releases/download/v{vstr}/zlib-{vstr}.tar.gz",
             strip_root=True,
         )
-        patch(self, patch_file="patches/001-fix_cmake.patch")
-        patch(self, patch_file="patches/002-windows_nano_server.patch")
+        patch(self, patch_file="patches/001-debug_postfix.patch")
+        patch(self, patch_file="patches/002-win32_static_postfix.patch")
 
     def generate(self):
         tc = CMakeToolchain(self)
         tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
         tc.variables["BUILD_SHARED_LIBS"] = False
-        tc.variables["ZLIB_BUILD_EXAMPLES"] = False
+        tc.variables["ZLIB_BUILD_TESTING"] = False
+        tc.variables["ZLIB_BUILD_SHARED"] = False
+        tc.variables["ZLIB_BUILD_STATIC"] = True
         tc.variables["CMAKE_POSITION_INDEPENDENT_CODE"] = True
         tc.variables["CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS"] = True
         tc.variables["CMAKE_C_VISIBILITY_PRESET"] = "default"
@@ -68,14 +70,17 @@ class ConanRecipe(ConanFile):
         cmake.build()
 
     def package(self):
-        self._write_license_file()
+        copy(self, "LICENSE", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
         copy(self, "*.pdb", src=self.build_folder, dst=os.path.join(self.package_folder, "bin"), keep_path=False)
         cmake = CMake(self)
         cmake.install()
+        rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
+        rmdir(self, os.path.join(self.package_folder, "share"))
         self._cmake_module_file_write()
 
     def package_info(self):
-        self.cpp_info.set_property("cpe", "cpe:2.3:a:zlib:zlib:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("cpe", f"cpe:2.3:a:zlib:zlib:{self.version}:*:*:*:*:*:*:*")
         self.cpp_info.set_property("purl", f"pkg:github/madler/zlib@v{self.version}")
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "ZLIB")
@@ -84,12 +89,6 @@ class ConanRecipe(ConanFile):
         self.cpp_info.set_property("cmake_build_modules", [self._cmake_module_file])
         self.cpp_info.set_property("cmake_find_package", [self._cmake_module_file])
         self.cpp_info.libs = collect_libs(self)
-
-    def _write_license_file(self):
-        license_header = load(self, os.path.join(self.source_folder, "zlib.h"))
-        license_contents = license_header[2 : license_header.find("*/", 1)]
-        license_file = os.path.join(self.package_folder, "licenses", "LICENSE")
-        save(self, license_file, license_contents)
 
     @property
     def _cmake_module_file(self):
@@ -100,6 +99,10 @@ class ConanRecipe(ConanFile):
         file = os.path.join(self.package_folder, self._cmake_module_file)
         content = textwrap.dedent(
             f"""\
+            if(NOT TARGET ZLIB::ZLIBSTATIC)
+                add_library(ZLIB::ZLIBSTATIC ALIAS ZLIB::ZLIB)
+            endif()
+
             set(ZLIB_FOUND TRUE)
             set(ZLIB_LIBRARY ZLIB::ZLIB)
             set(ZLIB_VERSION "{self.version}")

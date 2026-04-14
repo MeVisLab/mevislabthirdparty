@@ -8,7 +8,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "vigra"
-    version = "1.12.2"
+    version = "1.12.3"
     homepage = "https://ukoethe.github.io/vigra"
     description = "a generic C++ library for image analysis"
     license = "MIT"
@@ -30,7 +30,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="e927477a8a0bcdabcaab914e425782f7eba82711dbaca02538dfda79476f6b7e",
+            sha256="04bd9bcf3d5fd694c8fd25d651a56376f2b8bc2623d41b1805fc84ac5bad0512",
             url=f"https://github.com/ukoethe/vigra/archive/refs/tags/Version-{self.version.replace('.', '-')}.tar.gz",
             strip_root=True,
         )
@@ -72,7 +72,14 @@ class ConanRecipe(ConanFile):
         cmake = CMake(self)
         cmake.install()
 
-        copy(self, "*.pdb", src=self.source_folder, dst=os.path.join(self.package_folder, "bin"), keep_path=False, excludes="*vc???.pdb")
+        copy(
+            self,
+            "*.pdb",
+            src=self.source_folder,
+            dst=os.path.join(self.package_folder, "bin"),
+            keep_path=False,
+            excludes="*vc???.pdb",
+        )
         copy(self, "LICENSE.txt", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
         rmdir(self, os.path.join(self.package_folder, "doc"))
         rmdir(self, os.path.join(self.package_folder, "lib", "vigra"))

@@ -211,7 +211,7 @@ class ConanRecipe(ConanFile):
             rmdir(self, pycache_path)
 
     def package_info(self):
-        self.cpp_info.set_property("cpe", "cpe:2.3:a:vtk:vtk:*:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("cpe", f"cpe:2.3:a:vtk:vtk:{self.version}:*:*:*:*:*:*:*")
         self.cpp_info.set_property("purl", f"pkg:github/Kitware/VTK@v{self.version}")  # Official mirror
         self.cpp_info.set_property("cmake_file_name", "VTK")
         self.cpp_info.set_property("cmake_target_name", "VTK::VTK")
