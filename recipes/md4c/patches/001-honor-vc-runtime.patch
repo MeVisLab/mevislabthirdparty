@@ -1,9 +1,9 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index aec8293..4d6e573 100644
+index 3f271ef..428e034 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -52,15 +52,6 @@ elseif(MSVC)
-     add_definitions(/D_CRT_SECURE_NO_WARNINGS)
+@@ -41,15 +41,6 @@ elseif(MSVC)
+     add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
      add_compile_options(/W3)
  
 -    # Specify proper C runtime library:

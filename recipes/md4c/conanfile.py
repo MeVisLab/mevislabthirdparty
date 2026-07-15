@@ -8,7 +8,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "md4c"
-    version = "0.5.2"
+    version = "0.5.3"
     homepage = "https://github.com/mity/md4c"
     description = "C Markdown parser. Fast. SAX-like interface. Compliant to CommonMark specification."
     license = "MIT"
@@ -26,7 +26,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="55d0111d48fb11883aaee91465e642b8b640775a4d6993c2d0e7a8092758ef21",
+            sha256="353c346f376b87c954a13f3415ede2d51264cc61dc5abcd38ff1d2aa0d059b9e",
             url=f"https://github.com/mity/md4c/archive/refs/tags/release-{self.version}.tar.gz",
             strip_root=True,
         )

@@ -8,7 +8,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "embree"
-    version = "4.4.0"
+    version = "4.4.1"
     homepage = "https://github.com/embree/embree"
     description = "Embree is a high-performance ray tracing library"
     license = "Apache-2.0"
@@ -22,7 +22,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="acb517b0ea0f4b442235d5331b69f96192c28da6aca5d5dde0cbe40799638d5c",
+            sha256="dcf338cc61b636c871ccf370e673bfd380c5ecb71ce49ad50f28e1d4ec9995dc",
             url=f"https://github.com/RenderKit/embree/archive/refs/tags/v{self.version}.tar.gz",
             strip_root=True,
         )
@@ -39,6 +39,8 @@ class ConanRecipe(ConanFile):
         tc.variables["BUILD_SHARED_LIBS"] = True
         tc.variables["EMBREE_TUTORIALS"] = False
         tc.variables["EMBREE_ISPC_SUPPORT"] = False
+        tc.variables["EMBREE_ISA_AVX512"] = False
+
         tc.variables["EMBREE_TASKING_SYSTEM"] = "INTERNAL"
         tc.generate()
 

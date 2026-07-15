@@ -8,7 +8,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "hunspell"
-    version = "1.7.2"
+    version = "1.7.3"
     homepage = "http://hunspell.github.io"
     description = "Hunspell spell checker - an improved replacement for myspell"
     license = "MPL-1.1"
@@ -20,7 +20,7 @@ class ConanRecipe(ConanFile):
         cmake_layout(self, src_folder="src")
 
     def source(self):
-        sha256 = "11ddfa39afe28c28539fe65fc4f1592d410c1e9b6dd7d8a91ca25d85e9ec65b8"
+        sha256 = "433274dac0619cb00c2e18b43a3dd3a9d50da5b5613fa9b5c21781e35dd76bc1"
         url = f"https://github.com/hunspell/hunspell/releases/download/v{self.version}/hunspell-{self.version}.tar.gz"
         get(self, sha256=sha256, url=url, strip_root=True)
 

@@ -1,6 +1,6 @@
 from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps, cmake_layout
-from conan.tools.files import get, copy, patch, rmdir, collect_libs, replace_in_file
+from conan.tools.files import get, copy, rmdir, collect_libs, replace_in_file
 from conan.tools.scm import Version
 import os
 
@@ -9,7 +9,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "tiff"
-    version = "4.7.1"
+    version = "4.7.2"
     homepage = "http://simplesystems.org/libtiff"
     description = "Tag Image File Format (TIFF) library"
     license = "libtiff"
@@ -34,12 +34,10 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="f698d94f3103da8ca7438d84e0344e453fe0ba3b7486e04c5bf7a9a3fabe9b69",
+            sha256="672bd7d10aee4606171afb864f3570b83340f6a33e2c186dc0512f7145ffdf6a",
             url=f"https://download.osgeo.org/libtiff/tiff-{self.version}.tar.gz",
             strip_root=True,
         )
-        # work-around for https://github.com/conan-io/conan/issues/12180:
-        patch(self, patch_file="patches/cmake-dependencies.patch")
         replace_in_file(
             self,
             os.path.join(self.source_folder, "cmake", "WindowsSupport.cmake"),
@@ -57,6 +55,8 @@ class ConanRecipe(ConanFile):
         deps = CMakeDeps(self)
         deps.generate()
         tc = CMakeToolchain(self)
+        tc.cache_variables["CMAKE_TRY_COMPILE_CONFIGURATION"] = str(self.settings.build_type)
+
         tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
         tc.variables["BUILD_SHARED_LIBS"] = "ON"
         tc.variables["CMAKE_INSTALL_RPATH"] = "$ORIGIN;$ORIGIN/../lib"

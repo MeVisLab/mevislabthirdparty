@@ -15,7 +15,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "freetype"
-    version = "2.14.2"
+    version = "2.14.3"
     homepage = "https://www.freetype.org"
     description = "A high-quality and portable font engine"
     license = "FTL"
@@ -44,7 +44,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="752c2671f85c54a84b7f0dd2b5cd26b6b741117033886ffbc5ac89a68464b848",
+            sha256="e61b31ab26358b946e767ed7eb7f4bb2e507da1cfefeb7a8861ace7fd5c899a1",
             url=f"https://download.savannah.gnu.org/releases/freetype/freetype-{self.version}.tar.gz",
             strip_root=True,
         )

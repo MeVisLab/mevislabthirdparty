@@ -1,7 +1,13 @@
 diff --git a/PCbuild/_bz2.vcxproj b/PCbuild/_bz2.vcxproj
-index e0dc6ec..5ceeeec 100644
+index 90db6a8..196fac3 100644
 --- a/PCbuild/_bz2.vcxproj
 +++ b/PCbuild/_bz2.vcxproj
+@@ -1,4 +1,4 @@
+-﻿<?xml version="1.0" encoding="utf-8"?>
++<?xml version="1.0" encoding="utf-8"?>
+ <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+   <ItemGroup Label="ProjectConfigurations">
+     <ProjectConfiguration Include="Debug|ARM">
 @@ -99,19 +99,17 @@
        <DisableSpecificWarnings>4244;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
      </ClCompile>
@@ -29,9 +35,15 @@ index e0dc6ec..5ceeeec 100644
    <ItemGroup>
      <ResourceCompile Include="..\PC\python_nt.rc" />
 diff --git a/PCbuild/_ctypes.vcxproj b/PCbuild/_ctypes.vcxproj
-index 63d5fa4..dbe8635 100644
+index 3162ce2..803a0ea 100644
 --- a/PCbuild/_ctypes.vcxproj
 +++ b/PCbuild/_ctypes.vcxproj
+@@ -1,4 +1,4 @@
+-﻿<?xml version="1.0" encoding="utf-8"?>
++<?xml version="1.0" encoding="utf-8"?>
+ <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+   <ItemGroup Label="ProjectConfigurations">
+     <ProjectConfiguration Include="Debug|ARM">
 @@ -94,7 +94,7 @@
    </PropertyGroup>
    <ItemDefinitionGroup>
@@ -42,9 +54,15 @@ index 63d5fa4..dbe8635 100644
      <Link>
        <AdditionalOptions>/EXPORT:DllGetClassObject,PRIVATE /EXPORT:DllCanUnloadNow,PRIVATE %(AdditionalOptions)</AdditionalOptions>
 diff --git a/PCbuild/_decimal.vcxproj b/PCbuild/_decimal.vcxproj
-index ee74214..57859e4 100644
+index d33c350..fbde454 100644
 --- a/PCbuild/_decimal.vcxproj
 +++ b/PCbuild/_decimal.vcxproj
+@@ -1,4 +1,4 @@
+-﻿<?xml version="1.0" encoding="utf-8"?>
++<?xml version="1.0" encoding="utf-8"?>
+ <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+   <ItemGroup Label="ProjectConfigurations">
+     <ProjectConfiguration Include="Debug|ARM">
 @@ -98,7 +98,7 @@
        <PreprocessorDefinitions Condition="'$(Platform)'=='ARM'">CONFIG_32;ANSI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
        <PreprocessorDefinitions Condition="'$(Platform)'=='ARM64'">CONFIG_64;ANSI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -68,9 +86,15 @@ index ee74214..57859e4 100644
      <ClInclude Include="$(mpdecimalDir)\libmpdec\sixstep.h" />
      <ClInclude Include="$(mpdecimalDir)\libmpdec\transpose.h" />
 diff --git a/PCbuild/_lzma.vcxproj b/PCbuild/_lzma.vcxproj
-index 40107d4..36172bd 100644
+index 98e551e..c5d7774 100644
 --- a/PCbuild/_lzma.vcxproj
 +++ b/PCbuild/_lzma.vcxproj
+@@ -1,4 +1,4 @@
+-﻿<?xml version="1.0" encoding="utf-8"?>
++<?xml version="1.0" encoding="utf-8"?>
+ <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+   <ItemGroup Label="ProjectConfigurations">
+     <ProjectConfiguration Include="Debug|ARM">
 @@ -93,11 +93,12 @@
    </PropertyGroup>
    <ItemDefinitionGroup>
@@ -98,9 +122,15 @@ index 40107d4..36172bd 100644
    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
    <ImportGroup Label="ExtensionTargets">
 diff --git a/PCbuild/_sqlite3.vcxproj b/PCbuild/_sqlite3.vcxproj
-index 9ae0a0f..a5ce82d 100644
+index 5a8a850..5d1bf12 100644
 --- a/PCbuild/_sqlite3.vcxproj
 +++ b/PCbuild/_sqlite3.vcxproj
+@@ -1,4 +1,4 @@
+-﻿<?xml version="1.0" encoding="utf-8"?>
++<?xml version="1.0" encoding="utf-8"?>
+ <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+   <ItemGroup Label="ProjectConfigurations">
+     <ProjectConfiguration Include="Debug|ARM">
 @@ -96,6 +96,10 @@
        <AdditionalIncludeDirectories>$(sqlite3Dir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
        <PreprocessorDefinitions>PY_SQLITE_HAVE_SERIALIZE;PY_SQLITE_ENABLE_LOAD_EXTENSION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -124,9 +154,15 @@ index 9ae0a0f..a5ce82d 100644
    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
    <ImportGroup Label="ExtensionTargets">
 diff --git a/PCbuild/_ssl.vcxproj b/PCbuild/_ssl.vcxproj
-index ce21f99..9f1e81f 100644
+index 0283725..9e38c61 100644
 --- a/PCbuild/_ssl.vcxproj
 +++ b/PCbuild/_ssl.vcxproj
+@@ -1,4 +1,4 @@
+-﻿<?xml version="1.0" encoding="utf-8"?>
++<?xml version="1.0" encoding="utf-8"?>
+ <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+   <ItemGroup Label="ProjectConfigurations">
+     <ProjectConfiguration Include="Debug|ARM">
 @@ -94,7 +94,8 @@
    </PropertyGroup>
    <ItemDefinitionGroup>
@@ -138,7 +174,7 @@ index ce21f99..9f1e81f 100644
    </ItemDefinitionGroup>
    <ItemGroup>
 diff --git a/PCbuild/libffi.props b/PCbuild/libffi.props
-index 22c9550..8021f97 100644
+index c14ff06..feedb24 100644
 --- a/PCbuild/libffi.props
 +++ b/PCbuild/libffi.props
 @@ -6,16 +6,7 @@
@@ -161,7 +197,7 @@ index 22c9550..8021f97 100644
  </Project>
 \ No newline at end of file
 diff --git a/PCbuild/openssl.props b/PCbuild/openssl.props
-index 5fd708b..27119fa 100644
+index f071060..cf7ce5b 100644
 --- a/PCbuild/openssl.props
 +++ b/PCbuild/openssl.props
 @@ -5,21 +5,20 @@
@@ -190,9 +226,15 @@ index 5fd708b..27119fa 100644
    <Target Name="_CopySSLDLL"
            Inputs="@(_SSLDLL)"
 diff --git a/PCbuild/pythoncore.vcxproj b/PCbuild/pythoncore.vcxproj
-index 7021290..915a552 100644
+index 2e1437f..490b55a 100644
 --- a/PCbuild/pythoncore.vcxproj
 +++ b/PCbuild/pythoncore.vcxproj
+@@ -1,4 +1,4 @@
+-﻿<?xml version="1.0" encoding="utf-8"?>
++<?xml version="1.0" encoding="utf-8"?>
+ <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+   <ItemGroup Label="ProjectConfigurations">
+     <ProjectConfiguration Include="Debug|ARM">
 @@ -108,7 +108,8 @@
        <PreprocessorDefinitions Condition="'$(UseTIER2)' != '' and '$(UseTIER2)' != '0'">_Py_TIER2=$(UseTIER2);%(PreprocessorDefinitions)</PreprocessorDefinitions>
      </ClCompile>

@@ -1,3 +1,5 @@
-anitya_id: 15084
+version_source:
+  provider: anitya
+  id: 15084
 timeout:
   build: 120

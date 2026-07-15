@@ -1,1 +1,4 @@
-anitya_id: 6845
+version_source:
+  provider: anitya
+  id: 6845
+  strip_suffix: "-*"

@@ -1,0 +1,3 @@
+anitya:
+  id: 15957
+  version_regex: "(?:Version-)?(?P<major>\\d+)[.-](?P<minor>\\d+)[.-](?P<patch>\\d+)"

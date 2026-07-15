@@ -16,7 +16,7 @@ required_conan_version = ">=2.2.2"
 class ConanRecipe(ConanFile):
     name = "numpy"
     mli_name = "Python3__NumPy"
-    version = "2.4.3"
+    version = "2.4.6"
     homepage = "https://numpy.org"
     description = "NumPy is the fundamental package for scientific computing with Python"
     license = "BSD-3-Clause"
@@ -36,7 +36,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="483a201202b73495f00dbc83796c6ae63137a9bdade074f7648b3e32613412dd",
+            sha256="f3a3570c4a2a16746ac2c31a7c7c7b0c186b95ce902e33db6f28094ed7387dda",
             url=f"https://github.com/numpy/numpy/releases/download/v{self.version}/numpy-{self.version}.tar.gz",
             strip_root=True,
         )

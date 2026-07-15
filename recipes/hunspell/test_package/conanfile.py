@@ -22,4 +22,6 @@ class TestPackage(ConanFile):
     def test(self):
         if can_run(self):
             bin_path = os.path.join(self.cpp.build.bindirs[0], "test_package")
-            self.run(bin_path, env="conanrun")
+            aff_file = os.path.join(self.source_folder, "test.aff")
+            dic_file = os.path.join(self.source_folder, "test.dic")
+            self.run(f"{bin_path} {aff_file} {dic_file}", env="conanrun")

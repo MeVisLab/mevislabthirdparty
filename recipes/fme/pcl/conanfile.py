@@ -23,7 +23,7 @@ class ConanRecipe(ConanFile):
     def requirements(self):
         self.requires("boost/[>=1.75.0]", transitive_headers=True)
         self.requires("eigen/[>=3.3.9]", transitive_headers=True)
-        self.requires("flann/[>=1.9.1]")
+        self.requires("flann/[>=1.9.1]", transitive_headers=True)
         self.requires("glew/[>=2.0.0]")
         self.requires("libpng/[>=1.6.37]")
         self.requires("qhull/[>=8.0.2]")
@@ -42,6 +42,7 @@ class ConanRecipe(ConanFile):
         )
         patch(self, patch_file="patches/001-boost_no_mpi.patch")
         patch(self, patch_file="patches/002-find_eigen_version.patch")
+        patch(self, patch_file="patches/003-eigen_alignment.patch")
         replace_in_file(
             self,
             os.path.join(self.source_folder, "CMakeLists.txt"),

@@ -10,7 +10,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "libaec"
-    version = "1.1.6"
+    version = "1.1.7"
     homepage = "https://gitlab.dkrz.de/dkrz-sw/libaec"
     description = "Adaptive Entropy Coding library"
     license = "BSD-2-Clause"
@@ -27,7 +27,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="e50f323418eb451587891102b6014730e1aa936e763c47f2ae166a4745d1bed2",
+            sha256="7b29d2a4871803f10fa4fa66404a4098261e734662f0dcf33ab823f1fb5ba43a",
             url=f"https://gitlab.dkrz.de/dkrz-sw/libaec/-/archive/v{self.version}/libaec-v{self.version}.tar.gz",
             strip_root=True,
         )

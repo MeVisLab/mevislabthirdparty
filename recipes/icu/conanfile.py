@@ -32,8 +32,8 @@ class MeVisMSBuild(MSBuild):
 
 class ConanRecipe(ConanFile):
     name = "icu"
-    version = "78.2"
-    homepage = "https://icu.unicode.org/"
+    version = "78.3"
+    homepage = "https://icu.unicode.org"
     description = "Unicode support, software internationalization, and software globalization"
     license = "Unicode-3.0"
     package_type = "shared-library"
@@ -51,7 +51,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="3e99687b5c435d4b209630e2d2ebb79906c984685e78635078b672e03c89df35",
+            sha256="3a2e7a47604ba702f345878308e6fefeca612ee895cf4a5f222e7955fabfe0c0",
             url=f"https://github.com/unicode-org/icu/releases/download/release-{self.version}/icu4c-{self.version}-sources.tgz",
             strip_root=True,
         )

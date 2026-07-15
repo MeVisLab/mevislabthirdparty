@@ -1,3 +1,6 @@
+version_source:
+  provider: anitya
+  id: 1830
 timeout:
   build: 120
   upload: 20

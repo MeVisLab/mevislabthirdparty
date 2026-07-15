@@ -9,7 +9,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "libpng"
-    version = "1.6.55"
+    version = "1.6.58"
     homepage = "http://www.libpng.org/pub/png/libpng.html"
     description = "Portable Network Graphics library"
     license = "Libpng"
@@ -30,7 +30,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="4b0abab6d219e95690ebe4db7fc9aa95f4006c83baaa022373c0c8442271283d",
+            sha256="8c9b05b675ca7301a458df2c2e46f26e1d41ff36b8863f8c33530bc58c2e6225",
             url=f"https://download.sourceforge.net/libpng/libpng-{self.version}.tar.gz",
             strip_root=True,
         )

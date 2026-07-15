@@ -1,5 +1,5 @@
 diff --git a/setup.py b/setup.py
-index 3a72a07..27f54b8 100644
+index 496c8cb..d9a1b2d 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -249,9 +249,14 @@ def _find_library_file(self: pil_build_ext, library: str) -> str | None:
@@ -20,7 +20,7 @@ index 3a72a07..27f54b8 100644
  
  
  def _find_include_dir(self: pil_build_ext, dirname: str, include: str) -> bool | str:
-@@ -726,20 +731,23 @@ class pil_build_ext(build_ext):
+@@ -724,20 +729,23 @@ class pil_build_ext(build_ext):
          if feature.want("zlib"):
              _dbg("Looking for zlib")
              if _find_include_file(self, "zlib.h"):
@@ -54,7 +54,7 @@ index 3a72a07..27f54b8 100644
  
          feature.set("openjpeg_version", None)
          if feature.want("jpeg2000"):
-@@ -769,52 +777,62 @@ class pil_build_ext(build_ext):
+@@ -767,52 +775,62 @@ class pil_build_ext(build_ext):
                                  (str(best_version), best_path),
                              )
  
@@ -137,7 +137,7 @@ index 3a72a07..27f54b8 100644
                      if subdir:
                          _add_directory(self.compiler.include_dirs, subdir, 0)
  
-@@ -822,10 +840,11 @@ class pil_build_ext(build_ext):
+@@ -820,10 +838,11 @@ class pil_build_ext(build_ext):
              if not feature.want_vendor("raqm"):  # want system Raqm
                  _dbg("Looking for Raqm")
                  if _find_include_file(self, "raqm.h"):
@@ -153,7 +153,7 @@ index 3a72a07..27f54b8 100644
              else:  # want to build Raqm from src/thirdparty
                  _dbg("Looking for HarfBuzz")
                  feature.set("harfbuzz", None)
-@@ -833,8 +852,9 @@ class pil_build_ext(build_ext):
+@@ -831,8 +850,9 @@ class pil_build_ext(build_ext):
                  if hb_dir:
                      if isinstance(hb_dir, str):
                          _add_directory(self.compiler.include_dirs, hb_dir, 0)
@@ -165,7 +165,7 @@ index 3a72a07..27f54b8 100644
                  if feature.get("harfbuzz"):
                      if not feature.want_vendor("fribidi"):  # want system FriBiDi
                          _dbg("Looking for FriBiDi")
-@@ -845,8 +865,9 @@ class pil_build_ext(build_ext):
+@@ -843,8 +863,9 @@ class pil_build_ext(build_ext):
                                  _add_directory(
                                      self.compiler.include_dirs, fribidi_dir, 0
                                  )
@@ -177,7 +177,7 @@ index 3a72a07..27f54b8 100644
                                  feature.set("raqm", True)
                      else:  # want to build FriBiDi shim from src/thirdparty
                          feature.set("raqm", True)
-@@ -854,11 +875,11 @@ class pil_build_ext(build_ext):
+@@ -852,11 +873,11 @@ class pil_build_ext(build_ext):
          if feature.want("lcms"):
              _dbg("Looking for lcms")
              if _find_include_file(self, "lcms2.h"):
@@ -194,7 +194,7 @@ index 3a72a07..27f54b8 100644
  
          if feature.want("webp"):
              _dbg("Looking for webp")
-@@ -872,14 +893,15 @@ class pil_build_ext(build_ext):
+@@ -870,14 +891,15 @@ class pil_build_ext(build_ext):
                          _find_library_file(self, prefix + library)
                          for library in ("webp", "webpmux", "webpdemux")
                      ):
@@ -213,7 +213,7 @@ index 3a72a07..27f54b8 100644
  
          if feature.want("avif"):
              _dbg("Looking for avif")
-@@ -888,8 +910,9 @@ class pil_build_ext(build_ext):
+@@ -886,8 +908,9 @@ class pil_build_ext(build_ext):
                      major_version = int(
                          fp.read().split(b"#define AVIF_VERSION_MAJOR ")[1].split()[0]
                      )
@@ -225,7 +225,7 @@ index 3a72a07..27f54b8 100644
  
          for f in feature:
              if not feature.get(f) and feature.require(f):
-@@ -949,7 +972,7 @@ class pil_build_ext(build_ext):
+@@ -946,7 +969,7 @@ class pil_build_ext(build_ext):
  
          if feature.get("freetype"):
              srcs = []

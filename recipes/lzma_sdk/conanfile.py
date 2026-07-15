@@ -1,8 +1,7 @@
 from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
-from conan.tools.files import get, collect_libs, load, save
+from conan.tools.files import get, collect_libs, copy
 from conan.tools.scm import Version
-from conan.errors import ConanException
 import os
 
 required_conan_version = ">=2.2.2"
@@ -10,7 +9,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "lzma_sdk"
-    version = "25.01"
+    version = "26.02"
     description = "LZMA SDK"
     homepage = "https://7-zip.de/sdk.html"
     license = "LZMA-SDK-9.22"
@@ -30,8 +29,8 @@ class ConanRecipe(ConanFile):
         minor = f"{v.minor}".zfill(2)
         get(
             self,
-            sha256="249d7847ee2932705c8e157552e481cf8b7cd16ec70243ce98184b5d48b7a998",
-            url=f"https://github.com/sisong/lzma/archive/refs/tags/v{v.major}.{minor}.tar.gz",
+            sha256="7e5600ad0b21918bc41803bd84d0c2967e097fb7fbaa2e7aeb90beeb1121e54b",
+            url=f"https://github.com/ip7z/7zip/archive/refs/tags/{v.major}.{minor}.tar.gz",
             strip_root=True,
         )
 
@@ -51,25 +50,16 @@ class ConanRecipe(ConanFile):
     def package(self):
         cmake = CMake(self)
         cmake.install()
-
-        # extract license text:
-        text = load(self, os.path.join(self.source_folder, "DOC", "lzma-sdk.txt"))
-        license_pos = text.find("LICENSE")
-        if license_pos == -1:
-            raise ConanException("License text not found")
-        license_end = text.find("\n\n\n", license_pos)  # two empty lines mark end of license
-        if license_end == -1:
-            # try Windows line end:
-            license_end = text.find("\r\n\r\n\r\n", license_pos)
-        if license_end == -1:
-            raise ConanException("End of license text not found")
-        save(self, os.path.join(self.package_folder, "licenses", "LICENSE"), text[license_pos : license_end + 2])
+        copy(
+            self,
+            "License.txt",
+            src=os.path.join(self.source_folder, "DOC"),
+            dst=os.path.join(self.package_folder, "licenses"),
+        )
 
     def package_info(self):
-        # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
-        self.cpp_info.set_property(
-            "purl", f"pkg:github/sisong/lzma@v{self.version}"
-        )  # Official repository is at https://www.7-zip.org/sdk.html
+        self.cpp_info.set_property("cpe", f"cpe:2.3:a:7-zip:7-zip:{self.version}:*:*:*:*:*:*:*")
+        self.cpp_info.set_property("purl", f"pkg:github/ip7z/7zip@v{self.version}")
         self.cpp_info.set_property("display_name", "LZMA SDK")
         self.cpp_info.libs = collect_libs(self)
         self.cpp_info.includedirs = ["include", "include/C"]

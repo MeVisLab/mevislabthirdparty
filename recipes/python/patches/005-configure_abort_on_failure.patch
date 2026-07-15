@@ -1,8 +1,8 @@
 diff --git a/Tools/build/check_extension_modules.py b/Tools/build/check_extension_modules.py
-index e0c7a92..bff7d8d 100644
+index 668db8d..38dc053 100644
 --- a/Tools/build/check_extension_modules.py
 +++ b/Tools/build/check_extension_modules.py
-@@ -244,6 +244,7 @@ class ModuleChecker:
+@@ -249,6 +249,7 @@ class ModuleChecker:
              )
              print_three_column(self.failed_on_import)
              print()
@@ -10,7 +10,7 @@ index e0c7a92..bff7d8d 100644
  
          if any(
              modinfo.name == "_ssl" for modinfo in self.missing + self.failed_on_import
-@@ -253,6 +254,7 @@ class ModuleChecker:
+@@ -258,6 +259,7 @@ class ModuleChecker:
              if sysconfig.get_config_var("OPENSSL_LDFLAGS"):
                  print("Custom linker flags may require --with-openssl-rpath=auto")
              print()

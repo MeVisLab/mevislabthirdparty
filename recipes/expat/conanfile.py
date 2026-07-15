@@ -8,7 +8,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "expat"
-    version = "2.7.5"
+    version = "2.8.2"
     homepage = "https://libexpat.github.io"
     description = "Fast stream-oriented XML parser library"
     license = "MIT"
@@ -25,7 +25,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="1032dfef4ff17f70464827daa28369b20f6584d108bc36f17ab1676e1edd2f91",
+            sha256="3ad89b8588e6644bd4e49981480d48b21289eebbcd4f0a1a4afb1c29f99b6ab4",
             url=f"https://github.com/libexpat/libexpat/releases/download/R_{self.version.replace('.', '_')}/expat-{self.version}.tar.xz",
             strip_root=True,
         )

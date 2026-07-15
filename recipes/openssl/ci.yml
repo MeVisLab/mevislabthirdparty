@@ -1,1 +1,5 @@
-anitya_id: 2566
+timeout:
+  build: 60
+version_source:
+  provider: anitya
+  id: 2566

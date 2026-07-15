@@ -1,5 +1,6 @@
 from conan import ConanFile
-from conan.tools.files import copy, download
+from conan.tools.files import copy, get
+from conan.tools.layout import basic_layout
 import os
 
 required_conan_version = ">=2.2.2"
@@ -7,7 +8,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "requirejs"
-    version = "2.3.7"
+    version = "2.3.8"
     homepage = "https://requirejs.org"
     description = "RequireJS is a JavaScript file and module loader"
     package_type = "build-scripts"
@@ -17,29 +18,26 @@ class ConanRecipe(ConanFile):
 
     mlab_hooks = {"test_package.skip": True, "folders.skip": True}
 
+    def layout(self):
+        basic_layout(self, src_folder="src")
+
     def source(self):
-        download(
+        get(
             self,
-            sha256="c5a2028a4318d3f21fd23f66167f85b10f332a850578224915041d12550e4f2a",
-            url=f"https://requirejs.org/docs/release/{self.version}/minified/require.js",
-            filename="require-min.js",
-        )
-        download(
-            self,
-            sha256="8215b90000b571bd241d28512c83f59855cecc3158db94b79b2d974c9923b5d2",
-            url=f"https://requirejs.org/docs/release/{self.version}/comments/require.js",
-            filename="require.js",
-        )
-        download(
-            self,
-            sha256="fcb236dc90b5983ecb1a0e31e495a5c55d7087081709947a9731f367f91f81c1",
-            url=f"https://requirejs.org/docs/release/{self.version}/r.js",
-            filename="r.js",
+            sha256="777158e89275e16bd51aec3ef714fbcb5dc45789e7078659933bc814916d7dec",
+            url=f"https://registry.npmjs.org/requirejs/-/requirejs-{self.version}.tgz",
+            strip_root=True,
         )
 
     def package(self):
-        copy(self, "*.js", src=self.source_folder, dst=os.path.join(self.package_folder, "web", self.name))
-        copy(self, "LICENSE", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
+        copy(
+            self,
+            "r.js",
+            src=os.path.join(self.source_folder, "bin"),
+            dst=os.path.join(self.package_folder, "web", self.name),
+        )
+        copy(self, "require.js", src=self.source_folder, dst=os.path.join(self.package_folder, "web", self.name))
+        copy(self, "LICENSE", src=self.export_sources_folder, dst=os.path.join(self.package_folder, "licenses"))
 
     def package_info(self):
         self.cpp_info.set_property("cpe", f"cpe:2.3:a:requirejs:requirejs:{self.version}:*:*:*:*:*:*:*")

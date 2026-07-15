@@ -1,0 +1,4 @@
+version_source:
+  provider: anitya
+  id: 2509
+  exclude_versions: "*.dev*"

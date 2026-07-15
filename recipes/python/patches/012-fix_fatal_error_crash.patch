@@ -1,8 +1,8 @@
 diff --git a/Python/pylifecycle.c b/Python/pylifecycle.c
-index 8cc6bd0..0765c46 100644
+index fbbc38b..99f175e 100644
 --- a/Python/pylifecycle.c
 +++ b/Python/pylifecycle.c
-@@ -3095,6 +3095,10 @@ fatal_output_debug(const char *msg)
+@@ -3097,6 +3097,10 @@ fatal_output_debug(const char *msg)
  
      OutputDebugStringW(L"Fatal Python error: ");
  

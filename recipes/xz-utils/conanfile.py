@@ -10,7 +10,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "xz-utils"
-    version = "5.8.2"
+    version = "5.8.3"
     homepage = "https://tukaani.org/xz"
     description = "XZ Utils is free general-purpose data compression software with a high compression ratio"
     license = "0BSD"
@@ -28,7 +28,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="60345d7c0b9c8d7ffa469e96898c300def3669f5047fc76219b819340839f3d8",
+            sha256="33bf69c0d6c698e83a68f77e6c1f465778e418ca0b3d59860d3ab446f4ac99a6",
             url=f"https://github.com/tukaani-project/xz/releases/download/v{self.version}/xz-{self.version}.tar.bz2",
             strip_root=True,
         )

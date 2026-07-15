@@ -1,0 +1,4 @@
+version_source:
+  provider: anitya
+  id: 10500
+  version_regex: "(?P<major>\\d{4})-?(?P<minor>\\d{2})-?(?P<patch>\\d{2})"

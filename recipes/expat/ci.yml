@@ -1,0 +1,4 @@
+version_source:
+  provider: anitya
+  id: 770
+  exclude_versions: ["V20*", "V19*", "R_*"]

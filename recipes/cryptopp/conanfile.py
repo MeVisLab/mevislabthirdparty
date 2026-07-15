@@ -45,7 +45,7 @@ class ConanRecipe(ConanFile):
         )
 
     def generate(self):
-        tc = CMakeToolchain(self)
+        tc = CMakeToolchain(self, generator="Ninja")
         tc.variables["BUILD_SHARED_LIBS"] = False
         tc.variables["CMAKE_POSITION_INDEPENDENT_CODE"] = True
         tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"

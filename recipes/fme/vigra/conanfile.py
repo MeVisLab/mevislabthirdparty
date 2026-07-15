@@ -8,7 +8,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "vigra"
-    version = "1.12.3"
+    version = "1.12.4"
     homepage = "https://ukoethe.github.io/vigra"
     description = "a generic C++ library for image analysis"
     license = "MIT"
@@ -30,7 +30,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="04bd9bcf3d5fd694c8fd25d651a56376f2b8bc2623d41b1805fc84ac5bad0512",
+            sha256="fa516eeb19f72ae98a6d5a284c033bc0e0070cb73a8c72985696d2ad73a9292a",
             url=f"https://github.com/ukoethe/vigra/archive/refs/tags/Version-{self.version.replace('.', '-')}.tar.gz",
             strip_root=True,
         )

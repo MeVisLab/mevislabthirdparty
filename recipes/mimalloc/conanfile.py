@@ -8,7 +8,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "mimalloc"
-    version = "3.2.8"
+    version = "3.3.2"
     license = "MIT"
     homepage = "https://github.com/microsoft/mimalloc"
     description = "mimalloc is a compact general purpose allocator with excellent performance"
@@ -25,7 +25,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="68163666575518c213a6593850099adce3863b340ca2751103dbd1f253664e05",
+            sha256="ca02384e007f46950598500dfaebde5ff9948c1d231f5a81b058799afa64bbbb",
             url=f"https://github.com/microsoft/mimalloc/archive/v{self.version}.tar.gz",
             strip_root=True,
         )

@@ -18,7 +18,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "python"
-    version = "3.13.12"
+    version = "3.13.14"
     homepage = "https://www.python.org"
     description = "An interpreted, interactive, object-oriented programming language"
     license = "Python-2.0"
@@ -32,6 +32,7 @@ class ConanRecipe(ConanFile):
     # fmt: off
     mlab_hooks = {
         "debug_suffix.skip": True,
+        "crlf.skip": True,
         "folders.exclude": ["DLLs", "libs", "Scripts", "python*.dll", "python*.exe", "MeVisPython*.exe"],
         "dependencies.system_libs": [
             "libb2.so.1",           # required by the _blake2 module - implements fast BLAKE2 hash functions (used by hashlib)
@@ -70,11 +71,10 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="12e7cb170ad2d1a69aee96a1cc7fc8de5b1e97a2bdac51683a3db016ec9a2996",
+            sha256="5ae535a36af0ebca6fca176ecb8197f5db9c1cb8c8f0cd12cdf1787046db1f41",
             url=f"https://www.python.org/ftp/python/{self.version}/Python-{self.version}.tgz",
             strip_root=True,
         )
-        patch(self, patch_file="patches/001-macos_remove_rpath_prefix.patch")
         patch(
             self,
             patch_file="patches/002-win32_multiprocessing_pool_limit.patch",
@@ -219,11 +219,11 @@ class ConanRecipe(ConanFile):
             )
             if self.settings.build_type == "Debug":
                 python_exe = os.path.join(self.package_folder, "python_d.exe")
-                for name in ["MeVisPython_d", "python3", "python"]:
+                for name in ["MeVisPython_d", "python3", "python3_d", "python"]:
                     shutil.copy(src=python_exe, dst=os.path.join(self.package_folder, f"{name}.exe"))
 
                 python_exe = os.path.join(self.package_folder, "pythonw_d.exe")
-                for name in ["MeVisPythonW_d", "python3w", "pythonw"]:
+                for name in ["MeVisPythonW_d", "python3w", "python3w_d", "pythonw"]:
                     shutil.copy(src=python_exe, dst=os.path.join(self.package_folder, f"{name}.exe"))
                 v = Version(self.version)
                 shutil.copy(

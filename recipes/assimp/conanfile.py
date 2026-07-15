@@ -9,7 +9,7 @@ required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     name = "assimp"
-    version = "6.0.4"
+    version = "6.0.5"
     homepage = "https://www.assimp.org"
     description = "library to import and export various 3d-model-formats including scene-post-processing to generate missing render data"
     license = "BSD-3-Clause"
@@ -26,7 +26,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="1eeb63f3e6f6c9d820cc52f7d44fa6b6557256330f45ddaa903aa658c47fece5",
+            sha256="89e477e89df739ecc7dd21874897ac2e70c8944eb1074fbdbbdbf4dd2de6a403",
             url=f"https://github.com/assimp/assimp/archive/v{self.version}.zip",
             strip_root=True,
         )
