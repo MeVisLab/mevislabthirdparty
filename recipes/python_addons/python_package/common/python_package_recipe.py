@@ -104,7 +104,7 @@ class PythonPackageRecipe(PythonPackageBase):
                         try:
                             backend = toml_dict["build-system"]["build-backend"]
                         except KeyError:
-                            raise ConanException(f"Missing build backend in pyproject.toml")
+                            raise ConanException("Missing build backend in pyproject.toml")
 
                 with self.build_environment().vars(self).apply():
                     if use_pyproject:

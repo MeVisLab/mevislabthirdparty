@@ -1,9 +1,10 @@
 import sys
-
+import os
 from conan import ConanFile
 from conan.tools.system import package_manager
+from conan.tools.files import rm, rmdir
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
@@ -25,6 +26,7 @@ class ConanRecipe(ConanFile):
         "widgets": True,
         "xml": True,
         "gtk3": False,
+        "liburing": False,
         "sql_db2": False,
         "sql_ibase": False,
         "sql_mysql": False,
@@ -75,6 +77,7 @@ class ConanRecipe(ConanFile):
             "libresolv.so.2",
             "libudev.so.1",
             "libX11-xcb.so.1",
+            "libwayland-*.so.*",
         ],
     }
 
@@ -106,3 +109,23 @@ class ConanRecipe(ConanFile):
         self.requires("tiff/[>=4.1.0]")
         self.requires("zlib/[>=1.2.11]")
         self.requires("zstd/[>=1.5.0]")
+
+    def source(self):
+        super().source()
+        # Qt's own module can't find our debug version
+        os.remove(os.path.join(self.source_folder, "cmake", "FindPostgreSQL.cmake"))
+
+    def package(self):
+        super().package()
+        rmdir(self, os.path.join(self.package_folder, "share"))
+        # Intentionally removing the Qt Wayland plugin (libqtwayland) because MeVisLab
+        # currently crashes at multiple points when running under Wayland. Forcing Qt to
+        # fall back to X11 avoids these crashes. Sure, users may need to install a bunch
+        # of additional crap (X11 packages, missing libraries, etc.) just to get it
+        # running — but at least it doesn't crash.
+        #
+        # This is only a temporary workaround and should be replaced with a proper fix
+        # once the underlying Wayland-related issues in MeVisLab/Qt have been resolved.
+        rm(self, folder=os.path.join(self.package_folder, "plugins", "platforms"), pattern="libqwayland*")
+        # Also need to remove the corresponding CMake files, otherwise users get an error
+        rm(self, folder=os.path.join(self.package_folder, "lib", "cmake", "Qt6Gui"), pattern="Qt6QWayland*")

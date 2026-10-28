@@ -8,7 +8,7 @@ from conan.tools.gnu import Autotools, AutotoolsToolchain
 from conan.tools.layout import basic_layout
 from conan.tools.microsoft import is_msvc
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
@@ -102,7 +102,6 @@ class ConanRecipe(ConanFile):
         self.cpp_info.set_property("cmake_target_name", "Iconv::Iconv")
         self.cpp_info.set_property("cmake_target_aliases", ["libiconv::libiconv"])
         self.cpp_info.set_property("cmake_build_modules", [self._cmake_module_file])
-        self.cpp_info.set_property("cmake_find_package", [self._cmake_module_file])
         self.cpp_info.libs = collect_libs(self)
 
     @property
@@ -111,8 +110,7 @@ class ConanRecipe(ConanFile):
 
     def _cmake_module_file_write(self):
         file = os.path.join(self.package_folder, self._cmake_module_file)
-        content = textwrap.dedent(
-            """\
+        content = textwrap.dedent("""\
             set(Iconv_IS_BUILT_IN FALSE)
 
             set(LIBICONV_FOUND TRUE)
@@ -126,6 +124,5 @@ class ConanRecipe(ConanFile):
             set(LIBCHARSET_LIBRARIES ${Iconv_LIBRARIES})
             set(LIBCHARSET_INCLUDE_DIR ${Iconv_INCLUDE_DIR})
             set(LIBCHARSET_INCLUDE_DIRS ${Iconv_INCLUDE_DIR})
-            """
-        )
+            """)
         save(self, file, content)

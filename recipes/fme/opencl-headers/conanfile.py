@@ -2,12 +2,12 @@ from conan import ConanFile
 from conan.tools.files import copy, get
 from pathlib import Path
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "opencl-headers"
-    version = "2025.07.22"
+    version = "2026.05.29"
     homepage = "https://github.com/KhronosGroup/OpenCL-Headers"
     description = "C language headers for the OpenCL API"
     license = "Apache-2.0"
@@ -24,7 +24,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="98f0a3ea26b4aec051e533cb1750db2998ab8e82eda97269ed6efe66ec94a240",
+            sha256="d9e6c48357de5002da11ce45de600e0c3ffe6ab4f628a3b9fe2b38603161658a",
             url=f"https://github.com/KhronosGroup/OpenCL-Headers/archive/refs/tags/v{self.version}.tar.gz",
             strip_root=True,
         )
@@ -39,4 +39,3 @@ class ConanRecipe(ConanFile):
         self.cpp_info.set_property("cmake_file_name", "OpenCL")
         self.cpp_info.set_property("cmake_target_name", "OpenCL::OpenCL")
         self.cpp_info.set_property("cmake_config_version_compat", "AnyNewerVersion")
-        self.cpp_info.set_property("mevislab_prosdk_exclude", True)

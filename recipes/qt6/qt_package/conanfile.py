@@ -11,7 +11,7 @@ from conan.tools.files import load, save, copy, get, patch, rmdir
 from conan.tools.gnu import PkgConfigDeps
 from conan.tools.microsoft import is_msvc
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class QtTestPackage:
@@ -124,9 +124,10 @@ class QtPackage:
         tc.variables["FEATURE_cxx20"] = True
         tc.variables["FEATURE_c11"] = True
 
-        tc.variables["QT_UNITY_BUILD"] = (
-            False if self.settings.os == "Windows" else True
-        )  # ~30% faster build (but build problems on windows with 6.8.0)
+        tc.variables["QT_UNITY_BUILD"] = False
+        # tc.variables["QT_UNITY_BUILD"] = (
+        #     False if self.settings.os == "Windows" else True
+        # )  # ~30% faster build (but build problems on windows with 6.8.0)
         tc.variables["QT_DISABLE_DEPRECATED_UP_TO"] = "0x051500"
 
         tc.variables["QT_BUILD_TESTS"] = False
@@ -165,6 +166,12 @@ class QtPackage:
     def build(self):
         cmake = CMake(self)
         cmake.configure()
+        if os.path.exists(os.path.join(self.build_folder, "config.summary")):
+            self.output.highlight("BEGIN config.summary")
+            with open(os.path.join(self.build_folder, "config.summary")) as f:
+                for line in f:
+                    print(line, end="")
+            self.output.highlight("END config.summary")
         cmake.build()
 
     def package(self):

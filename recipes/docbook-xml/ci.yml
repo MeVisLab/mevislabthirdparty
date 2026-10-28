@@ -1,0 +1,4 @@
+version_source:
+  provider: anitya
+  id: 227335
+  exclude_versions: ["5*"]

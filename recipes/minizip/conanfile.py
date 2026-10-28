@@ -4,7 +4,7 @@ from conan.tools.files import collect_libs, get, copy, rmdir, patch
 from conan.tools.scm import Version
 import os
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):

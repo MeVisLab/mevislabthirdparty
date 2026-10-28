@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.27)
+cmake_minimum_required(VERSION 3.31)
 project(EasyBMP VERSION 1.06)
 
 add_library(easybmp "")

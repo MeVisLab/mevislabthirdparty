@@ -7,7 +7,7 @@ from conan.tools.files import copy, get, save, collect_libs
 from conan.tools.microsoft import is_msvc
 from conan.tools.scm import Version
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
@@ -58,8 +58,7 @@ class ConanRecipe(ConanFile):
         self._create_cmake_module_variables(os.path.join(self.package_folder, self._module_file_rel_path))
 
     def _create_cmake_module_variables(self, module_file):
-        content = textwrap.dedent(
-            f"""\
+        content = textwrap.dedent(f"""\
             set(BZIP2_FOUND TRUE)
             set(BZIP2_INCLUDE_DIRS ${{BZip2_INCLUDE_DIR}})
             set(BZIP2_LIBRARIES ${{BZip2_LIBRARIES}})
@@ -67,8 +66,7 @@ class ConanRecipe(ConanFile):
             set(BZIP2_VERSION "{self.version}")
             set(BZIP2_INCLUDE_DIR ${{BZip2_INCLUDE_DIR}})
             set(BZIP2_VERSION_STRING "{self.version}")
-        """
-        )
+        """)
         save(self, module_file, content)
 
     @property

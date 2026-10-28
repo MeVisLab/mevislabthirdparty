@@ -1,5 +1,5 @@
 diff --git a/src/openglwidgets/qopenglwidget.cpp b/src/openglwidgets/qopenglwidget.cpp
-index 71e42733..7fe0a7ab 100644
+index cea1498..10534fc 100644
 --- a/src/openglwidgets/qopenglwidget.cpp
 +++ b/src/openglwidgets/qopenglwidget.cpp
 @@ -743,6 +743,12 @@ void QOpenGLWidgetPrivate::recreateFbos()

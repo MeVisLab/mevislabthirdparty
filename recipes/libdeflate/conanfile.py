@@ -3,12 +3,12 @@ from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
 from conan.tools.files import get, copy, rmdir, collect_libs
 import os
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "libdeflate"
-    version = "1.25"
+    version = "1.26"
     homepage = "https://github.com/ebiggers/libdeflate"
     description = "Heavily optimized DEFLATE/zlib/gzip (de)compression"
     license = "MIT"
@@ -25,7 +25,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="fed5cd22f00f30cc4c2e5329f94e2b8a901df9fa45ee255cb70e2b0b42344477",
+            sha256="125856d4656e0feab660f94842f835923410c9281fedbcee64598c918da42b5a",
             url=f"https://github.com/ebiggers/libdeflate/releases/download/v{self.version}/libdeflate-{self.version}.tar.gz",
             strip_root=True,
         )

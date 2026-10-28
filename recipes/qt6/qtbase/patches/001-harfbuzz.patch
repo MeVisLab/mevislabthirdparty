@@ -1,5 +1,5 @@
 diff --git a/cmake/FindWrapSystemHarfbuzz.cmake b/cmake/FindWrapSystemHarfbuzz.cmake
-index 07b3405b..5350c5e6 100644
+index d989c93..96fbdef 100644
 --- a/cmake/FindWrapSystemHarfbuzz.cmake
 +++ b/cmake/FindWrapSystemHarfbuzz.cmake
 @@ -19,7 +19,7 @@ if(harfbuzz_FOUND AND TARGET "${__harfbuzz_target_name}")

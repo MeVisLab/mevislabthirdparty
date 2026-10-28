@@ -1,16 +1,16 @@
 from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps, cmake_layout
 from conan.tools.env import VirtualRunEnv
-from conan.tools.files import get, patch, copy, rm, rmdir, collect_libs, replace_in_file
+from conan.tools.files import get, patch, copy, rm, rmdir, collect_libs
 import os
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     short_paths = True
     name = "itk"
-    version = "5.3.0"
+    version = "5.4.7"
     homepage = "https://www.itk.org"
     description = (
         "An open-source, cross-platform library that provides developers "
@@ -24,14 +24,15 @@ class ConanRecipe(ConanFile):
     def requirements(self):
         self.requires("dcmtk/[>=3.6.5]")
         self.requires("double-conversion/[>=3.1.5]")
+        self.requires("eigen/[>=3.4.0]", transitive_headers=True)
+        self.requires("expat/[>=2.5.0]")
+        self.requires("gtest/[>=1.17.0]")
         self.requires("hdf5/[>=1.14.2]")
         self.requires("libjpeg-turbo/[>=2.1.5]")
         self.requires("libpng/[>=1.6.37]")
         self.requires("tiff/[>=4.1.0]")
         self.requires("xz-utils/[>=5.2.6]")
         self.requires("zlib/[>=1.2.11]")
-        self.requires("eigen/[>=3.4.0]")
-        self.requires("expat/[>=2.5.0]")
 
     def layout(self):
         cmake_layout(self, src_folder="src")
@@ -39,40 +40,19 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
+            sha256="c953ad7957c481dbb17cfebf03fc61e5252b2be7ccf6757d1234b48ac99914f8",
             url=f"https://github.com/InsightSoftwareConsortium/ITK/archive/v{self.version}.tar.gz",
-            sha256="64e7e8094a5023c8f68ee042459d6319581fadb35e2fe90a4ae230ce36369db1",
             strip_root=True,
         )
         patch(self, patch_file="patches/001-double_conversion.patch")
         patch(self, patch_file="patches/002-ignore_cmake_policy.patch")
         patch(self, patch_file="patches/003-conan_dependencies.patch")
-        patch(self, patch_file="patches/004-issue_4358_itkShapedNeighborhoodIterator.patch")
-        patch(self, patch_file="patches/005-add_using_in_class_namespace.patch")
-        patch(self, patch_file="patches/006-cpp20_replace_result_of_t.patch")
+        patch(self, patch_file="patches/004-add_using_in_class_namespace.patch")
+        patch(self, patch_file="patches/005-libminic_no_abs_rpath.patch")
+        patch(self, patch_file="patches/006-libminc_compile_fix.patch")
         patch(self, patch_file="patches/007-system_tiff.patch")
-
-        # see https://github.com/InsightSoftwareConsortium/ITK/pull/4066/,
-        # will be obsolete in itk 5.4.0
-        replace_in_file(
-            self,
-            os.path.join(
-                self.source_folder,
-                "Modules",
-                "Filtering",
-                "MathematicalMorphology",
-                "src",
-                "itkMathematicalMorphologyEnums.cxx",
-            ),
-            '#include "itkMathematicalMorphologyEnums.h"',
-            '#include "itkIntTypes.h"\n#include "itkMathematicalMorphologyEnums.h"',
-        )
-        # stop libminc from forcing an absolute RPATH
-        replace_in_file(
-            self,
-            os.path.join(self.source_folder, "Modules", "ThirdParty", "MINC", "src", "libminc", "CMakeLists.txt"),
-            "SET(CMAKE_INSTALL_RPATH",
-            "#SET(CMAKE_INSTALL_RPATH",
-        )
+        patch(self, patch_file="patches/008-stderr_flush.patch")
+        patch(self, patch_file="patches/009-remove_unnecessary_warning.patch")
         rm(self, "*.cmake", os.path.join(self.source_folder, "Modules", "Compatibility", "Deprecated"))
 
     def generate(self):
@@ -95,20 +75,29 @@ class ConanRecipe(ConanFile):
         tc.variables["Module_ITKDeprecated"] = False
         tc.variables["Module_ITKFEMRegistration"] = True
 
-        tc.variables["ITK_USE_GPU"] = False  # requires OpenCL on all platforms
-
-        tc.variables["ITK_USE_CONCEPT_CHECKING"] = False
-        tc.variables["ITK_USE_SYSTEM_ZLIB"] = True
-        tc.variables["ITK_USE_SYSTEM_DOUBLECONVERSION"] = True
-        tc.variables["ITK_USE_SYSTEM_HDF5"] = True
-        tc.variables["ITK_USE_SYSTEM_DCMTK"] = True
-        tc.variables["ITK_USE_SYSTEM_JPEG"] = True
-        tc.variables["ITK_USE_SYSTEM_PNG"] = True
-        tc.variables["ITK_USE_SYSTEM_EIGEN"] = True
-        tc.variables["ITK_USE_SYSTEM_TIFF"] = True
-        tc.variables["ITK_USE_SYSTEM_EXPAT"] = True
-        tc.variables["ITK_SKIP_PATH_LENGTH_CHECKS"] = True
         tc.variables["ITK_LEGACY_REMOVE"] = True
+        tc.variables["ITK_USE_GPU"] = False  # requires OpenCL on all platforms
+        tc.variables["ITK_USE_CONCEPT_CHECKING"] = False
+        tc.variables["ITK_SKIP_PATH_LENGTH_CHECKS"] = True
+        tc.variables["ITK_USE_SYSTEM_LIBRARIES"] = True
+        tc.variables["ITK_USE_SYSTEM_DCMTK"] = True
+        tc.variables["ITK_USE_SYSTEM_DOUBLECONVERSION"] = True
+        tc.variables["ITK_USE_SYSTEM_EIGEN"] = True
+        tc.variables["ITK_USE_SYSTEM_EXPAT"] = True
+        tc.variables["ITK_USE_SYSTEM_GDCM"] = False
+        tc.variables["ITK_USE_SYSTEM_GOOGLETEST"] = True
+        tc.variables["ITK_USE_SYSTEM_HDF5"] = True
+        tc.variables["ITK_USE_SYSTEM_JPEG"] = True
+        tc.variables["ITK_USE_SYSTEM_MINC"] = False
+        tc.variables["ITK_USE_SYSTEM_PNG"] = True
+        tc.variables["ITK_USE_SYSTEM_TIFF"] = True
+        tc.variables["ITK_USE_SYSTEM_VXL"] = False
+        tc.variables["ITK_USE_SYSTEM_ZLIB"] = True
+        tc.variables["ITK_USE_SYSTEM_GDCM"] = False
+        tc.variables["ITK_USE_SYSTEM_ICU"] = True
+        tc.variables["ITK_USE_SYSTEM_LIBLBFGS"] = True
+        tc.variables["ITK_USE_SYSTEM_LLVM"] = True
+        tc.variables["ITK_USE_SYSTEM_SWIG"] = True
 
         tc.cache_variables["CMAKE_POLICY_DEFAULT_CMP0091"] = "NEW"
         tc.generate()

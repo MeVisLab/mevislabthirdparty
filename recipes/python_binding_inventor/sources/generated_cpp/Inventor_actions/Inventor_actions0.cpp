@@ -150,7 +150,7 @@ void PythonQtShell_SoCallbackAction::apply(SoNode*  node0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("apply");
+    static PyObject* name = PyUnicode_FromString("apply");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoNode*"};
@@ -172,7 +172,7 @@ void PythonQtShell_SoCallbackAction::apply(SoPath*  path0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("apply");
+    static PyObject* name = PyUnicode_FromString("apply");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoPath*"};
@@ -194,7 +194,7 @@ void PythonQtShell_SoCallbackAction::beginTraversal(SoNode*  node0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("beginTraversal");
+    static PyObject* name = PyUnicode_FromString("beginTraversal");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoNode*"};
@@ -216,7 +216,7 @@ SoNode*  PythonQtShell_SoCallbackAction::getCurPathTail()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getCurPathTail");
+    static PyObject* name = PyUnicode_FromString("getCurPathTail");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoNode*"};
@@ -249,7 +249,7 @@ void PythonQtShell_SoCallbackAction::invalidateState()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("invalidateState");
+    static PyObject* name = PyUnicode_FromString("invalidateState");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={""};
@@ -271,7 +271,7 @@ bool  PythonQtShell_SoCallbackAction::shouldCompactPathLists() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("shouldCompactPathLists");
+    static PyObject* name = PyUnicode_FromString("shouldCompactPathLists");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool"};
@@ -574,7 +574,7 @@ void PythonQtShell_SoGLRenderAction::apply(SoNode*  node0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("apply");
+    static PyObject* name = PyUnicode_FromString("apply");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoNode*"};
@@ -596,7 +596,7 @@ void PythonQtShell_SoGLRenderAction::apply(SoPath*  path0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("apply");
+    static PyObject* name = PyUnicode_FromString("apply");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoPath*"};
@@ -618,7 +618,7 @@ void PythonQtShell_SoGLRenderAction::beginTraversal(SoNode*  node0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("beginTraversal");
+    static PyObject* name = PyUnicode_FromString("beginTraversal");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoNode*"};
@@ -640,7 +640,7 @@ SoNode*  PythonQtShell_SoGLRenderAction::getCurPathTail()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getCurPathTail");
+    static PyObject* name = PyUnicode_FromString("getCurPathTail");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoNode*"};
@@ -673,7 +673,7 @@ void PythonQtShell_SoGLRenderAction::invalidateState()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("invalidateState");
+    static PyObject* name = PyUnicode_FromString("invalidateState");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={""};
@@ -695,7 +695,7 @@ bool  PythonQtShell_SoGLRenderAction::shouldCompactPathLists() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("shouldCompactPathLists");
+    static PyObject* name = PyUnicode_FromString("shouldCompactPathLists");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool"};
@@ -868,7 +868,7 @@ void PythonQtShell_SoGetBoundingBoxAction::apply(SoNode*  node0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("apply");
+    static PyObject* name = PyUnicode_FromString("apply");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoNode*"};
@@ -890,7 +890,7 @@ void PythonQtShell_SoGetBoundingBoxAction::apply(SoPath*  path0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("apply");
+    static PyObject* name = PyUnicode_FromString("apply");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoPath*"};
@@ -912,7 +912,7 @@ void PythonQtShell_SoGetBoundingBoxAction::beginTraversal(SoNode*  node0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("beginTraversal");
+    static PyObject* name = PyUnicode_FromString("beginTraversal");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoNode*"};
@@ -934,7 +934,7 @@ SoNode*  PythonQtShell_SoGetBoundingBoxAction::getCurPathTail()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getCurPathTail");
+    static PyObject* name = PyUnicode_FromString("getCurPathTail");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoNode*"};
@@ -967,7 +967,7 @@ void PythonQtShell_SoGetBoundingBoxAction::invalidateState()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("invalidateState");
+    static PyObject* name = PyUnicode_FromString("invalidateState");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={""};
@@ -989,7 +989,7 @@ bool  PythonQtShell_SoGetBoundingBoxAction::shouldCompactPathLists() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("shouldCompactPathLists");
+    static PyObject* name = PyUnicode_FromString("shouldCompactPathLists");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool"};
@@ -1137,7 +1137,7 @@ void PythonQtShell_SoGetMatrixAction::apply(SoNode*  node0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("apply");
+    static PyObject* name = PyUnicode_FromString("apply");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoNode*"};
@@ -1159,7 +1159,7 @@ void PythonQtShell_SoGetMatrixAction::apply(SoPath*  path0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("apply");
+    static PyObject* name = PyUnicode_FromString("apply");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoPath*"};
@@ -1181,7 +1181,7 @@ void PythonQtShell_SoGetMatrixAction::beginTraversal(SoNode*  node0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("beginTraversal");
+    static PyObject* name = PyUnicode_FromString("beginTraversal");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoNode*"};
@@ -1203,7 +1203,7 @@ SoNode*  PythonQtShell_SoGetMatrixAction::getCurPathTail()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getCurPathTail");
+    static PyObject* name = PyUnicode_FromString("getCurPathTail");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoNode*"};
@@ -1236,7 +1236,7 @@ void PythonQtShell_SoGetMatrixAction::invalidateState()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("invalidateState");
+    static PyObject* name = PyUnicode_FromString("invalidateState");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={""};
@@ -1258,7 +1258,7 @@ bool  PythonQtShell_SoGetMatrixAction::shouldCompactPathLists() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("shouldCompactPathLists");
+    static PyObject* name = PyUnicode_FromString("shouldCompactPathLists");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool"};
@@ -1341,7 +1341,7 @@ void PythonQtShell_SoHandleEventAction::apply(SoNode*  node0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("apply");
+    static PyObject* name = PyUnicode_FromString("apply");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoNode*"};
@@ -1363,7 +1363,7 @@ void PythonQtShell_SoHandleEventAction::apply(SoPath*  path0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("apply");
+    static PyObject* name = PyUnicode_FromString("apply");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoPath*"};
@@ -1385,7 +1385,7 @@ void PythonQtShell_SoHandleEventAction::beginTraversal(SoNode*  node0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("beginTraversal");
+    static PyObject* name = PyUnicode_FromString("beginTraversal");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoNode*"};
@@ -1407,7 +1407,7 @@ SoNode*  PythonQtShell_SoHandleEventAction::getCurPathTail()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getCurPathTail");
+    static PyObject* name = PyUnicode_FromString("getCurPathTail");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoNode*"};
@@ -1440,7 +1440,7 @@ void PythonQtShell_SoHandleEventAction::invalidateState()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("invalidateState");
+    static PyObject* name = PyUnicode_FromString("invalidateState");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={""};
@@ -1462,7 +1462,7 @@ bool  PythonQtShell_SoHandleEventAction::shouldCompactPathLists() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("shouldCompactPathLists");
+    static PyObject* name = PyUnicode_FromString("shouldCompactPathLists");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool"};
@@ -1580,7 +1580,7 @@ void PythonQtShell_SoPickAction::apply(SoNode*  node0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("apply");
+    static PyObject* name = PyUnicode_FromString("apply");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoNode*"};
@@ -1602,7 +1602,7 @@ void PythonQtShell_SoPickAction::apply(SoPath*  path0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("apply");
+    static PyObject* name = PyUnicode_FromString("apply");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoPath*"};
@@ -1624,7 +1624,7 @@ void PythonQtShell_SoPickAction::beginTraversal(SoNode*  node0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("beginTraversal");
+    static PyObject* name = PyUnicode_FromString("beginTraversal");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoNode*"};
@@ -1646,7 +1646,7 @@ SoNode*  PythonQtShell_SoPickAction::getCurPathTail()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getCurPathTail");
+    static PyObject* name = PyUnicode_FromString("getCurPathTail");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoNode*"};
@@ -1679,7 +1679,7 @@ void PythonQtShell_SoPickAction::invalidateState()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("invalidateState");
+    static PyObject* name = PyUnicode_FromString("invalidateState");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={""};
@@ -1701,7 +1701,7 @@ bool  PythonQtShell_SoPickAction::shouldCompactPathLists() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("shouldCompactPathLists");
+    static PyObject* name = PyUnicode_FromString("shouldCompactPathLists");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool"};
@@ -1774,7 +1774,7 @@ void PythonQtShell_SoRayPickAction::apply(SoNode*  node0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("apply");
+    static PyObject* name = PyUnicode_FromString("apply");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoNode*"};
@@ -1796,7 +1796,7 @@ void PythonQtShell_SoRayPickAction::apply(SoPath*  path0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("apply");
+    static PyObject* name = PyUnicode_FromString("apply");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoPath*"};
@@ -1818,7 +1818,7 @@ void PythonQtShell_SoRayPickAction::beginTraversal(SoNode*  node0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("beginTraversal");
+    static PyObject* name = PyUnicode_FromString("beginTraversal");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoNode*"};
@@ -1840,7 +1840,7 @@ SoNode*  PythonQtShell_SoRayPickAction::getCurPathTail()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getCurPathTail");
+    static PyObject* name = PyUnicode_FromString("getCurPathTail");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoNode*"};
@@ -1873,7 +1873,7 @@ void PythonQtShell_SoRayPickAction::invalidateState()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("invalidateState");
+    static PyObject* name = PyUnicode_FromString("invalidateState");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={""};
@@ -1895,7 +1895,7 @@ bool  PythonQtShell_SoRayPickAction::shouldCompactPathLists() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("shouldCompactPathLists");
+    static PyObject* name = PyUnicode_FromString("shouldCompactPathLists");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool"};
@@ -2043,7 +2043,7 @@ void PythonQtShell_SoSearchAction::apply(SoNode*  node0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("apply");
+    static PyObject* name = PyUnicode_FromString("apply");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoNode*"};
@@ -2065,7 +2065,7 @@ void PythonQtShell_SoSearchAction::apply(SoPath*  path0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("apply");
+    static PyObject* name = PyUnicode_FromString("apply");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoPath*"};
@@ -2087,7 +2087,7 @@ void PythonQtShell_SoSearchAction::beginTraversal(SoNode*  node0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("beginTraversal");
+    static PyObject* name = PyUnicode_FromString("beginTraversal");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoNode*"};
@@ -2109,7 +2109,7 @@ SoNode*  PythonQtShell_SoSearchAction::getCurPathTail()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getCurPathTail");
+    static PyObject* name = PyUnicode_FromString("getCurPathTail");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoNode*"};
@@ -2142,7 +2142,7 @@ void PythonQtShell_SoSearchAction::invalidateState()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("invalidateState");
+    static PyObject* name = PyUnicode_FromString("invalidateState");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={""};
@@ -2164,7 +2164,7 @@ bool  PythonQtShell_SoSearchAction::shouldCompactPathLists() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("shouldCompactPathLists");
+    static PyObject* name = PyUnicode_FromString("shouldCompactPathLists");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool"};
@@ -2297,7 +2297,7 @@ void PythonQtShell_SoWriteAction::apply(SoNode*  node0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("apply");
+    static PyObject* name = PyUnicode_FromString("apply");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoNode*"};
@@ -2319,7 +2319,7 @@ void PythonQtShell_SoWriteAction::apply(SoPath*  path0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("apply");
+    static PyObject* name = PyUnicode_FromString("apply");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoPath*"};
@@ -2341,7 +2341,7 @@ void PythonQtShell_SoWriteAction::beginTraversal(SoNode*  node0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("beginTraversal");
+    static PyObject* name = PyUnicode_FromString("beginTraversal");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoNode*"};
@@ -2363,7 +2363,7 @@ SoNode*  PythonQtShell_SoWriteAction::getCurPathTail()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getCurPathTail");
+    static PyObject* name = PyUnicode_FromString("getCurPathTail");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoNode*"};
@@ -2396,7 +2396,7 @@ void PythonQtShell_SoWriteAction::invalidateState()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("invalidateState");
+    static PyObject* name = PyUnicode_FromString("invalidateState");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={""};
@@ -2418,7 +2418,7 @@ bool  PythonQtShell_SoWriteAction::shouldCompactPathLists() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("shouldCompactPathLists");
+    static PyObject* name = PyUnicode_FromString("shouldCompactPathLists");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool"};

@@ -1,7 +1,7 @@
-cmake_minimum_required(VERSION 3.27)
+cmake_minimum_required(VERSION 3.31)
 project(test_package LANGUAGES C)
 
 find_package(WebP REQUIRED CONFIG)
 
 add_executable(${PROJECT_NAME} test_package.c)
-target_link_libraries(${PROJECT_NAME} PRIVATE WebP::webp)
+target_link_libraries(${PROJECT_NAME} PRIVATE WebP::webp WebP::webpdemux WebP::libwebpmux)

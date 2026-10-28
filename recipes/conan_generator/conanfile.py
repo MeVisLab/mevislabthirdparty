@@ -19,7 +19,7 @@ from jinja2 import Environment, FileSystemLoader
 from licenses import spdx_licenses, other_licenses
 from mli import MLI, MLI_Python, MLI_Qt
 
-required_conan_version = ">=2.0"
+required_conan_version = ">=2.32.0"
 
 
 # these packages should neither be installed, nor listed as third-party dependency
@@ -167,22 +167,11 @@ class _ThirdPartyInformationBase:
         top_level_dep = for_dependency or self.conanfile
         deps = {d for d in top_level_dep.dependencies.direct_host.values()}
         optional_dep_names = (top_level_dep.cpp_info.get_property("optional_deps") or "").split(",")
-        top_level_optional_deps = {d for d in deps if d.ref.name in optional_dep_names}
-        optional_deps = set(top_level_optional_deps)
+        optional_deps = set({d for d in deps if d.ref.name in optional_dep_names})
         mandatory_deps = deps - optional_deps
         for d in deps:
             if d not in dependencies:
                 self.collect_all_dependencies(dependencies, for_dependency=d)
-            secondary_deps = dependencies[d]
-            if d in top_level_optional_deps:
-                # all secondary dependencies are initially optional
-                optional_deps |= secondary_deps.optional | secondary_deps.mandatory
-            else:
-                # only secondary optional dependencies are optional
-                mandatory_deps |= secondary_deps.mandatory
-                optional_deps |= secondary_deps.optional
-        # dependencies that are in both groups are mandatory
-        optional_deps -= mandatory_deps
         dependencies[top_level_dep] = PackageDeps(mandatory_deps, optional_deps)
 
 
@@ -247,15 +236,16 @@ class ThirdPartyInformationDeps(_ThirdPartyInformationBase):
             return
 
         license_folder = dependency.package_path / "licenses"
-        license_files = list(license_folder.glob("**/*")) if license_folder.exists() else []
-        license_files = [f for f in license_files if (license_folder / f).is_file()]  # remove pure sub-directories
-        if not license_files:
+        found = False
+        # all licenses are currently stored in the package directly under "licenses"
+        # let's also support subdirectories in case they will be added later
+        for root, _, filenames in license_folder.walk():
+            rel_path = root.relative_to(license_folder)
+            for filename in filenames:
+                contents[f"{base_path}/{rel_path}/{filename}"] = load(self.conanfile, root / filename)
+                found = True
+        if not found:
             self.conanfile.output.error(f"No license found for ThirdPartyInformation of {pkg_name}")
-        else:
-            contents[f"{base_path}/{pkg_name}.license"] = load(self.conanfile, license_folder / license_files[0])
-            # in case there is more than one license file:
-            for num, filename in enumerate(license_files[1:], start=2):
-                contents[f"{base_path}/{pkg_name}.license{num}"] = load(self.conanfile, license_folder / filename)
 
     def generate(self, package_id="MeVis/ThirdParty"):
         dependencies = {}
@@ -479,16 +469,14 @@ class MeVisLabCMakeDeps:
                 package_var_part = self.package_id.replace("/", "_").upper()
                 root_dir_variable = f"MEVISLAB_{pkg_name}_ROOTDIR_{build_type}"
                 if root_dir_variable not in content:  # do not patch twice!
-                    path_statement = textwrap.dedent(
-                        rf"""
+                    path_statement = textwrap.dedent(rf"""
                         if(DEFINED {root_dir_variable})
                             set({pkg_name}_PACKAGE_FOLDER_{build_type} "${{{root_dir_variable}}}")
                         else()
                             include(${{CMAKE_CURRENT_LIST_DIR}}/{package_file_part}Macros.cmake)
                             set({pkg_name}_PACKAGE_FOLDER_{build_type} "${{{package_var_part}_ROOT_DIR}}{subpath}")
                         endif()
-                    """
-                    )
+                    """)
                     content = content[: match.start()] + path_statement + content[match.end() :]
                     save(self.conanfile, filename, content)
 

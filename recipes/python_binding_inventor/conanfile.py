@@ -4,12 +4,12 @@ from conan.tools.env import VirtualRunEnv
 from conan.tools.files import copy, collect_libs, chdir
 import os
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "python_binding_inventor"
-    version = "2024.12.27"
+    version = "2025.11.05"
     homepage = "https://mevislab.de"
     description = "Python binding into Inventor"
     license = "LGPL-2.1-only"
@@ -18,20 +18,16 @@ class ConanRecipe(ConanFile):
     exports_sources = "sources/*", "LICENSE"
     generate_wrappers = os.environ.get("INVENTOR_BINDING_GENERATE_WRAPPERS", "False").lower() in ("1", "true")
 
-    mlab_hooks = {
-        "test_package.skip": True,
-    }
-
     def requirements(self):
         self.requires("glew/[>=2.0.0]")
-        self.requires("numpy/[>=1.17.5]")
+        self.requires("numpy/[>=2.0]")
         self.requires("openinventor/[>=2.5.1]")
-        self.requires("qtbase/[>=6.5]")
-        self.build_requires("pcre2/[>=10.34]")
+        self.requires("qtbase/[>=6.9]")
+        self.tool_requires("pcre2/[>=10.34]")
         self.requires("python/[>=3.13]")
-        self.requires("pythonqt/[>=3.4.2]")
+        self.requires("pythonqt/[>=4.0.0]")
         if self.generate_wrappers:
-            self.build_requires("pythonqt_generator/[>=3.6.0]", package_id_mode="full_mode")
+            self.tool_requires("pythonqt_generator/[>=4.0.0]", package_id_mode="full_mode")
 
     def layout(self):
         cmake_layout(self, src_folder="sources")

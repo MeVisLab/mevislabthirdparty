@@ -1,5 +1,5 @@
 diff --git a/src/opengl/qopenglvertexarrayobject.cpp b/src/opengl/qopenglvertexarrayobject.cpp
-index 98374fb9..28f32b73 100644
+index ad76195..299582c 100644
 --- a/src/opengl/qopenglvertexarrayobject.cpp
 +++ b/src/opengl/qopenglvertexarrayobject.cpp
 @@ -195,7 +195,7 @@ void QOpenGLVertexArrayObjectPrivate::destroy()

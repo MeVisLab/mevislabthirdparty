@@ -1,8 +1,8 @@
 diff --git a/src/opengl/qopenglpaintengine.cpp b/src/opengl/qopenglpaintengine.cpp
-index 972e276..44b4fed 100644
+index ad1249b..d3a24ec 100644
 --- a/src/opengl/qopenglpaintengine.cpp
 +++ b/src/opengl/qopenglpaintengine.cpp
-@@ -2189,7 +2189,14 @@ bool QOpenGL2PaintEngineEx::begin(QPaintDevice *pdev)
+@@ -2198,7 +2198,14 @@ bool QOpenGL2PaintEngineEx::begin(QPaintDevice *pdev)
      d->device->ensureActiveTarget();
  
      if (d->device->context() != QOpenGLContext::currentContext() || !d->device->context()) {
@@ -17,4 +17,4 @@ index 972e276..44b4fed 100644
 +        }
          return false;
      }
-
+ 

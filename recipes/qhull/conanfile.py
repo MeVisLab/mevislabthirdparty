@@ -4,7 +4,7 @@ from conan.tools.files import get, patch, replace_in_file, rmdir, copy, collect_
 from conan.tools.microsoft import is_msvc
 import os
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):

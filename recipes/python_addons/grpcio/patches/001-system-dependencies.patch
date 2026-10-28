@@ -1,0 +1,142 @@
+diff --git a/setup.py b/setup.py
+index 7662934..f49881d 100644
+--- a/setup.py
++++ b/setup.py
+@@ -110,6 +110,17 @@ def _env_bool_value(env_name, default):
+     return os.environ.get(env_name, default).upper() not in ["FALSE", "0", ""]
+ 
+ 
++def _env_list_value(env_name, default=()):
++    value = os.environ.get(env_name)
++    if value:
++        if os.pathsep in value:
++            return tuple(part for part in value.split(os.pathsep) if part)
++        return tuple(shlex.split(value, posix=os.name != "nt"))
++    return default
++
++
++SYSTEM_ABSL_LIBRARIES = _env_list_value("GRPC_PYTHON_SYSTEM_ABSL_LIBRARIES")
++PREBUILT_GRPC_CORE_LIBRARIES = _env_list_value("GRPC_PYTHON_PREBUILT_GRPC_CORE_LIBRARIES")
+ BUILD_WITH_BORING_SSL_ASM = _env_bool_value(
+     "GRPC_BUILD_WITH_BORING_SSL_ASM", "True"
+ )
+@@ -341,25 +352,25 @@ if BUILD_WITH_SYSTEM_OPENSSL:
+         lambda x: "third_party/boringssl" not in x, CORE_C_FILES
+     )
+     CORE_C_FILES = filter(lambda x: "src/boringssl" not in x, CORE_C_FILES)
+-    SSL_INCLUDE = (os.path.join("/usr", "include", "openssl"),)
++    SSL_INCLUDE = _env_list_value("GRPC_PYTHON_SYSTEM_OPENSSL_INCLUDE_DIRS", (os.path.join("/usr", "include", "openssl"),))
+ 
+ if BUILD_WITH_SYSTEM_ZLIB:
+     CORE_C_FILES = filter(lambda x: "third_party/zlib" not in x, CORE_C_FILES)
+-    ZLIB_INCLUDE = (os.path.join("/usr", "include"),)
++    ZLIB_INCLUDE = _env_list_value("GRPC_PYTHON_SYSTEM_ZLIB_INCLUDE_DIRS", (os.path.join("/usr", "include"),))
+ 
+ if BUILD_WITH_SYSTEM_CARES:
+     CORE_C_FILES = filter(lambda x: "third_party/cares" not in x, CORE_C_FILES)
+-    CARES_INCLUDE = (os.path.join("/usr", "include"),)
++    CARES_INCLUDE = _env_list_value("GRPC_PYTHON_SYSTEM_CARES_INCLUDE_DIRS", (os.path.join("/usr", "include"),))
+ 
+ if BUILD_WITH_SYSTEM_RE2:
+     CORE_C_FILES = filter(lambda x: "third_party/re2" not in x, CORE_C_FILES)
+-    RE2_INCLUDE = (os.path.join("/usr", "include", "re2"),)
++    RE2_INCLUDE = _env_list_value("GRPC_PYTHON_SYSTEM_RE2_INCLUDE_DIRS", (os.path.join("/usr", "include", "re2"),))
+ 
+ if BUILD_WITH_SYSTEM_ABSL:
+     CORE_C_FILES = filter(
+         lambda x: "third_party/abseil-cpp" not in x, CORE_C_FILES
+     )
+-    ABSL_INCLUDE = (os.path.join("/usr", "include"),)
++    ABSL_INCLUDE = _env_list_value("GRPC_PYTHON_SYSTEM_ABSL_INCLUDE_DIRS", (os.path.join("/usr", "include"),))
+ 
+ EXTENSION_INCLUDE_DIRECTORIES = (
+     (PYTHON_STEM,)
+@@ -389,22 +400,24 @@ if "win32" in sys.platform:
+         "dbghelp",
+         "ws2_32",
+     )
++if PREBUILT_GRPC_CORE_LIBRARIES:
++    EXTENSION_LIBRARIES += PREBUILT_GRPC_CORE_LIBRARIES
+ if BUILD_WITH_SYSTEM_OPENSSL:
+-    EXTENSION_LIBRARIES += (
+-        "ssl",
+-        "crypto",
+-    )
++    EXTENSION_LIBRARIES += _env_list_value("GRPC_PYTHON_SYSTEM_OPENSSL_LIBRARIES", ("ssl", "crypto"))
+ if BUILD_WITH_SYSTEM_ZLIB:
+-    EXTENSION_LIBRARIES += ("z",)
++    EXTENSION_LIBRARIES += _env_list_value("GRPC_PYTHON_SYSTEM_ZLIB_LIBRARIES", ("z",))
+ if BUILD_WITH_SYSTEM_CARES:
+-    EXTENSION_LIBRARIES += ("cares",)
++    EXTENSION_LIBRARIES += _env_list_value("GRPC_PYTHON_SYSTEM_CARES_LIBRARIES", ("cares",))
+ if BUILD_WITH_SYSTEM_RE2:
+-    EXTENSION_LIBRARIES += ("re2",)
++    EXTENSION_LIBRARIES += _env_list_value("GRPC_PYTHON_SYSTEM_RE2_LIBRARIES", ("re2",))
+ if BUILD_WITH_SYSTEM_ABSL:
+-    EXTENSION_LIBRARIES += tuple(
+-        lib.stem[3:]
+-        for lib in sorted(pathlib.Path("/usr").glob("lib*/libabsl_*.so"))
+-    )
++    if SYSTEM_ABSL_LIBRARIES:
++        EXTENSION_LIBRARIES += SYSTEM_ABSL_LIBRARIES
++    else:
++        EXTENSION_LIBRARIES += tuple(
++            lib.stem[3:]
++            for lib in sorted(pathlib.Path("/usr").glob("lib*/libabsl_*.so"))
++        )
+ 
+ DEFINE_MACROS = (("_WIN32_WINNT", 0x600),)
+ asm_files = []
+@@ -497,6 +510,12 @@ if "linux" in sys.platform or "darwin" in sys.platform:
+     DEFINE_MACROS += (("GRPC_POSIX_FORK_ALLOW_PTHREAD_ATFORK", 1),)
+ 
+ 
++if USE_PREBUILT_GRPC_CORE:
++    ABSL_INITIALIZE_SRCS = []
++else:
++    ABSL_INITIALIZE_SRCS = ["third_party/abseil-cpp/absl/log/initialize.cc"]
++
++
+ def cython_extensions_and_necessity():
+     cython_module_files = [
+         os.path.join(PYTHON_STEM, name.replace(".", "/") + ".pyx")
+@@ -505,12 +524,15 @@ def cython_extensions_and_necessity():
+     config = os.environ.get("CONFIG", "opt")
+     prefix = "libs/" + config + "/"
+     if USE_PREBUILT_GRPC_CORE:
+-        extra_objects = [
+-            prefix + "libares.a",
+-            prefix + "libboringssl.a",
+-            prefix + "libgpr.a",
+-            prefix + "libgrpc.a",
+-        ]
++        if PREBUILT_GRPC_CORE_LIBRARIES:
++            extra_objects = []
++        else:
++            extra_objects = [
++                prefix + "libares.a",
++                prefix + "libboringssl.a",
++                prefix + "libgpr.a",
++                prefix + "libgrpc.a",
++            ]
+         core_c_files = []
+     else:
+         core_c_files = list(CORE_C_FILES)
+@@ -523,7 +545,7 @@ def cython_extensions_and_necessity():
+                 + list(GRPCIO_CC_SRCS)
+                 + core_c_files
+                 + asm_files
+-                + ["third_party/abseil-cpp/absl/log/initialize.cc"]
++                + ABSL_INITIALIZE_SRCS
+             ),
+             include_dirs=list(EXTENSION_INCLUDE_DIRECTORIES),
+             libraries=list(EXTENSION_LIBRARIES),
+@@ -556,7 +578,7 @@ def cython_extensions_and_necessity():
+ 
+ CYTHON_EXTENSION_MODULES, need_cython = cython_extensions_and_necessity()
+ 
+-INSTALL_REQUIRES = ("typing-extensions~=4.12",)
++INSTALL_REQUIRES = ()
+ 
+ EXTRAS_REQUIRES = {
+     "protobuf": "grpcio-tools>={version}".format(version=grpc_version.VERSION),

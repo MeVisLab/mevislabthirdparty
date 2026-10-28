@@ -1,9 +1,9 @@
-cmake_minimum_required(VERSION 3.27)
+cmake_minimum_required(VERSION 3.31)
 project(PythonQt LANGUAGES CXX)
 
 find_package(Python3)
 
-find_package(Qt6 COMPONENTS Core Gui Widgets Network REQUIRED)
+find_package(Qt6 COMPONENTS Core CorePrivate Gui Widgets Network REQUIRED)
 find_package(Threads REQUIRED)
 
 set(CMAKE_AUTOMOC ON)

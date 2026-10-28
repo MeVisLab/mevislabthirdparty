@@ -1,12 +1,12 @@
 from conan import ConanFile
 from conan.tools.files import get
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "coverage"
-    version = "7.14.3"
+    version = "7.16.2"
     homepage = "https://coverage.readthedocs.io"
     description = "Coverage.py is a tool for measuring code coverage of Python programs"
     license = "Apache-2.0"
@@ -27,7 +27,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="31129e0aae04fb00568a24251a5e6a589ddb556321f277ff64125873f05042dd",
+            sha256="d4f5d82461b7ea40a2486ba6b9d48987408edd2bf6fe98cc98966de159333eb9",
             url=f"https://github.com/nedbat/coveragepy/archive/refs/tags/{self.version}.tar.gz",
             strip_root=True,
         )

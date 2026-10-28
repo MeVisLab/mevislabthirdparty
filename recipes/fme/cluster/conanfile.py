@@ -3,7 +3,7 @@ from conan.tools.cmake import cmake_layout, CMakeToolchain, CMake
 from conan.tools.files import copy, collect_libs
 import os
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
@@ -44,5 +44,4 @@ class ConanRecipe(ConanFile):
         self.cpp_info.set_property("cmake_file_name", "Cluster")
         self.cpp_info.set_property("cmake_target_name", "Cluster::Cluster")
         self.cpp_info.set_property("pkg_config_name", "Cluster")
-        self.cpp_info.set_property("mevislab_prosdk_exclude", True)
         self.cpp_info.libs = collect_libs(self)

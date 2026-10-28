@@ -1,0 +1,116 @@
+diff --git a/cuDNN.cmake b/cuDNN.cmake
+index 5570c28..4fcb284 100644
+--- a/cuDNN.cmake
++++ b/cuDNN.cmake
+@@ -33,43 +33,73 @@ endif()
+ if(DEFINED CUTLASS_ENABLE_CUDNN AND NOT CUTLASS_ENABLE_CUDNN)
+   return()
+ endif()
+-  
++
+ message(STATUS "Configuring cuDNN ...")
+ 
+-find_path(
+-    _CUDNN_INCLUDE_DIR cudnn.h
+-    PATHS
+-    $ENV{CUDNN_PATH}
+-    ${CUDA_TOOLKIT_ROOT_DIR}/include
+-    $ENV{CUDNN_PATH}/include
+-    $ENV{CUDA_PATH}/include
+-    ${CUDNN_PATH}/include
+-    /usr/include)
+-
+-find_library(
+-    _CUDNN_LIBRARY cudnn
+-    HINTS
++find_package(CUDAToolkit REQUIRED)
++set(CUDA_SHORT_VERSION "${CUDAToolkit_VERSION_MAJOR}.${CUDAToolkit_VERSION_MINOR}")
++
++set(_CUDNN_HINT_DIRS
++    ${CUDNN_ROOT}
++    $ENV{CUDNN_ROOT}
+     $ENV{CUDNN_PATH}
+-    ${CUDA_TOOLKIT_ROOT_DIR}/lib64
+-    ${CUDA_TOOLKIT_ROOT_DIR}/lib/x64
+-    ${CUDA_TOOLKIT_ROOT_DIR}/lib
+-    $ENV{CUDNN_PATH}/lib64
+-    $ENV{CUDNN_PATH}/lib/x64
+-    $ENV{CUDNN_PATH}/lib
+-    $ENV{CUDA_PATH}/lib64
+-    $ENV{CUDA_PATH}/lib/x64
+-    $ENV{CUDA_PATH}/lib
+-    ${CUDNN_PATH}/lib64
+-    ${CUDNN_PATH}/lib/x64
+-    ${CUDNN_PATH}/lib
+-    /usr/lib/x86_64-linux-gnu
+-    /usr/lib)
++    $ENV{CUDA_PATH}
++    ${CUDAToolkit_ROOT}
++    ${CUDA_TOOLKIT_ROOT_DIR}
++)
++
++if(WIN32)
++    list(APPEND _CUDNN_HINT_DIRS "C:/Program Files/NVIDIA/CUDNN" "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA")
++else()
++    list(APPEND _CUDNN_HINT_DIRS "/usr" "/usr/local" "/usr/local/cuda" "/opt/cuda" "/usr/lib" "/usr/lib/x86_64-linux-gnu")
++endif()
++
++set(_CUDNN_SEARCH_DIRS "")
++foreach(_root IN LISTS _CUDNN_HINT_DIRS)
++    if(EXISTS "${_root}")
++        file(GLOB _dirs "${_root}/v*" "${_root}")
++        foreach(_dir IN LISTS _dirs)
++            list(APPEND _CUDNN_SEARCH_DIRS "${_dir}")
++        endforeach()
++    endif()
++endforeach()
++list(REMOVE_DUPLICATES _CUDNN_SEARCH_DIRS)
++
++foreach(_dir IN LISTS _CUDNN_SEARCH_DIRS)
++    find_path(_CUDNN_INCLUDE_DIR NAMES cudnn.h
++        PATHS "${_dir}"
++        PATH_SUFFIXES
++            include
++            include/${CUDA_SHORT_VERSION}
++            include/cudnn
++    )
++
++    if(_CUDNN_INCLUDE_DIR)
++        break()
++    endif()
++endforeach()
++
++foreach(_dir IN LISTS _CUDNN_SEARCH_DIRS)
++    find_library(_CUDNN_LIBRARY NAMES cudnn
++        PATHS "${_dir}"
++        PATH_SUFFIXES
++            lib
++            lib64
++            lib/x64
++            lib/x86_64-linux-gnu
++            lib/${CUDA_SHORT_VERSION}/x64
++    )
++
++    if(_CUDNN_LIBRARY)
++        break()
++    endif()
++endforeach()
+ 
+ if(_CUDNN_INCLUDE_DIR AND _CUDNN_LIBRARY)
+ 
+     message(STATUS "cuDNN: ${_CUDNN_LIBRARY}")
+     message(STATUS "cuDNN: ${_CUDNN_INCLUDE_DIR}")
+-    
++
+     set(CUDNN_FOUND ON CACHE INTERNAL "cuDNN Library Found")
+ 
+ else()
+@@ -98,7 +128,7 @@ if (CUTLASS_ENABLE_CUDNN AND NOT TARGET cudnn)
+     TARGET cudnn
+     PROPERTY IMPORTED_LOCATION
+     ${CUDNN_LIBRARY})
+-    
++
+   target_include_directories(
+     cudnn
+     INTERFACE

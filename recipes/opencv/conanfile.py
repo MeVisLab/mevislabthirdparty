@@ -9,12 +9,12 @@ from conan.tools.files import get, rmdir, rm, replace_in_file, patch, copy, coll
 from conan.tools.microsoft import is_msvc
 from conan.tools.system import package_manager
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "opencv"
-    version = "4.13.0"
+    version = "5.0.0"
     homepage = "https://opencv.org"
     description = "OpenCV is an open source computer vision and machine learning software library"
     license = "Apache-2.0"
@@ -61,7 +61,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="1d40ca017ea51c533cf9fd5cbde5b5fe7ae248291ddf2af99d4c17cf8e13017d",
+            sha256="b0528f5a1d379d59d4701cb28c36e22214cc51cf64594e5b56f2d3e6c0233095",
             url=f"https://github.com/opencv/opencv/archive/{self.version}.tar.gz",
             strip_root=True,
         )
@@ -69,10 +69,11 @@ class ConanRecipe(ConanFile):
         [
             rmdir(self, d)
             for d in Path(self.source_folder, "3rdparty").iterdir()
-            if d.is_dir() and d.name not in ["flatbuffers", "dlpack"]  # FIXME
+            if d.is_dir() and d.name not in ["flatbuffers", "dlpack"]
         ]
 
         patch(self, patch_file="patches/001_find_webp.patch")
+        patch(self, patch_file="patches/002_remove_caffe_leftovers.patch")
 
         replace_in_file(
             self,
@@ -122,11 +123,31 @@ class ConanRecipe(ConanFile):
         replace_in_file(self, find_openexr, "SET(OPENEXR_LIBSEARCH_SUFFIXES x64/Release x64 x64/Debug)", "")
         replace_in_file(self, find_openexr, "SET(OPENEXR_LIBSEARCH_SUFFIXES Win32/Release Win32 Win32/Debug)", "")
 
+        # Avoid picking up unrelated GNU assemblers from PATH (Strawberry Perl's gcc) in MSVC builds.
+        # Enabling ASM with a GNU tool on Windows makes CMake switch library naming to MinGW-style
+        # lib*.dll / lib*.dll.a even though C and C++ use cl.exe.
+        replace_in_file(
+            self,
+            os.path.join(self.source_folder, "CMakeLists.txt"),
+            "if(CMAKE_ASM_COMPILER)\n  enable_language(ASM)\nendif()",
+            "if(CMAKE_ASM_COMPILER AND NOT MSVC)\n" "  enable_language(ASM)\n" "endif()",
+        )
+
+        # Drop OpenCV's vendored MLAS accelerator. The DNN module has built-in
+        # GEMM fallbacks, and keeping MLAS means carrying platform-specific ASM
+        # build handling for an optional optimization path.
+        replace_in_file(
+            self,
+            os.path.join(self.source_folder, "modules", "dnn", "CMakeLists.txt"),
+            'if(NOT EMSCRIPTEN)\n  add_subdirectory("${OpenCV_SOURCE_DIR}/3rdparty/mlas"',
+            'if(FALSE)\n  add_subdirectory("${OpenCV_SOURCE_DIR}/3rdparty/mlas"',
+        )
+
     def generate(self):
         env = VirtualRunEnv(self)
         env.generate(scope="build")
 
-        tc = CMakeToolchain(self)
+        tc = CMakeToolchain(self, generator="Ninja")
         tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
         tc.variables["CMAKE_TLS_VERIFY"] = False
         tc.variables["BUILD_SHARED_LIBS"] = True
@@ -136,6 +157,7 @@ class ConanRecipe(ConanFile):
 
         tc.variables["OPENCV_ENABLE_NONFREE"] = False
         tc.variables["OPENCV_FORCE_3RDPARTY_BUILD"] = False
+        tc.variables["OPENCV_GENERATE_SETUPVARS"] = False
 
         tc.variables["INSTALL_TO_MANGLED_PATHS"] = False
         tc.variables["INSTALL_TESTS"] = False
@@ -325,7 +347,6 @@ class ConanRecipe(ConanFile):
         if self.settings.os == "Windows":
             # cleanup package root on Windows
             rm(self, pattern="LICENSE", folder=self.package_folder)
-            rm(self, pattern="setup_vars_opencv4.cmd", folder=self.package_folder)
             rm(self, pattern="OpenCVConfig*.cmake", folder=self.package_folder)
             rm(self, pattern="OpenCVConfig*.cmake", folder=os.path.join(self.package_folder, "lib"))
 
@@ -339,9 +360,6 @@ class ConanRecipe(ConanFile):
             cmakefile.unlink()
         for cmakefile in Path(self.package_folder).glob("*.cmake"):
             cmakefile.unlink()
-        setup_vars_path = os.path.join(self.package_folder, "setup_vars_opencv4.cmd")
-        if os.path.exists(setup_vars_path):
-            os.remove(setup_vars_path)
 
     def package_info(self):
         self.cpp_info.set_property("cpe", f"cpe:2.3:a:opencv:opencv:{self.version}:*:*:*:*:*:*:*")
@@ -353,11 +371,11 @@ class ConanRecipe(ConanFile):
         comp_dependencies = {
             "core": [],
             "flann": [],
-            "imgproc": [],
-            "ml": [],
-            "photo": ["imgproc"],
-            "dnn": ["imgproc"],
-            "features2d": ["flann", "imgproc"],
+            "geometry": ["flann"],
+            "imgproc": ["geometry"],
+            "photo": ["imgproc", "geometry"],
+            "dnn": ["imgproc", "geometry"],
+            "features": ["dnn", "flann", "imgproc", "geometry"],
             "imgcodecs": [
                 "imgproc",
                 "libpng::libpng",
@@ -367,12 +385,13 @@ class ConanRecipe(ConanFile):
                 "zlib::zlib",
             ],
             "videoio": ["imgproc", "imgcodecs"],
-            "calib3d": ["flann", "imgproc", "features2d"],
-            "objdetect": ["flann", "imgproc", "features2d", "calib3d"],
+            "calib": ["dnn", "flann", "geometry"],
+            "objdetect": ["features", "dnn", "flann", "imgproc", "geometry"],
             "highgui": ["imgproc", "imgcodecs", "videoio", "qtbase::qtbase"],
-            "stitching": ["flann", "imgproc", "features2d", "calib3d"],
-            "video": ["flann", "imgproc", "features2d", "calib3d"],
-            "gapi": ["imgproc", "calib3d", "video"],
+            "stitching": ["features", "flann", "imgproc", "geometry"],
+            "video": ["dnn", "imgproc", "geometry"],
+            "ptcloud": ["imgproc", "geometry"],
+            "stereo": ["imgproc", "geometry"],
         }
 
         prefix = "opencv_"
@@ -406,7 +425,7 @@ class ConanRecipe(ConanFile):
             if self.settings.os == "Linux":
                 self.cpp_info.components[full_comp].system_libs.extend(["pthread", "m", "dl"])
             if self.settings.os != "Windows":
-                self.cpp_info.components[full_comp].includedirs = ["include", "include/opencv4"]
+                self.cpp_info.components[full_comp].includedirs = ["include", "include/opencv5"]
 
         if self.settings.os == "Windows":
             self.cpp_info.components["opencv_highgui"].system_libs = ["Vfw32"]

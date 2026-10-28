@@ -5,12 +5,12 @@ from conan.tools.files import get, rmdir, copy
 from conan.tools.scm import Version
 import os
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "glfw"
-    version = "3.4"
+    version = "3.5.1"
     homepage = "https://github.com/glfw/glfw"
     description = "A multi-platform library for OpenGL, OpenGL ES, Vulkan, window and input"
     license = "Zlib"
@@ -31,7 +31,7 @@ class ConanRecipe(ConanFile):
         v_str = f"{v.major}.{v.minor}" + (f".{v.patch}" if v.patch and v.patch > 0 else "")
         get(
             self,
-            sha256="c038d34200234d071fae9345bc455e4a8f2f544ab60150765d7704e08f3dac01",
+            sha256="5234f4f29473e9a06bc7847d8371858dd135d38466eeeaa652fdc9f8f9ff0c20",
             url=f"https://github.com/glfw/glfw/archive/{v_str}.tar.gz",
             strip_root=True,
         )

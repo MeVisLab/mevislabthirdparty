@@ -3,20 +3,17 @@ from conan.tools.cmake import CMakeToolchain, CMakeDeps, CMake, cmake_layout
 from conan.tools.files import copy, rmdir, collect_libs, get
 from pathlib import Path
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "opencl-icd-loader"
-    version = "2025.07.22"
+    version = "2026.05.29"
     homepage = "https://github.com/KhronosGroup/OpenCL-ICD-Loader"
     description = "OpenCL ICD Loader"
     license = "Apache-2.0"
     package_type = "shared-library"
     settings = "os", "arch", "compiler", "build_type"
-
-    def layout(self):
-        self.folders.source = "src"
 
     def configure(self):
         self.settings.rm_safe("compiler.libcxx")
@@ -31,7 +28,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="dff7a0b11ad5b63a669358e3476e3dc889a4a361674e5b69b267b944d0794142",
+            sha256="48fd0c5181db7cd046f4f731d5955694892e10998d49d09ee0d997e7e04fd939",
             url=f"https://github.com/KhronosGroup/OpenCL-ICD-Loader/archive/refs/tags/v{self.version}.tar.gz",
             strip_root=True,
         )
@@ -76,6 +73,5 @@ class ConanRecipe(ConanFile):
         self.cpp_info.set_property("cmake_file_name", "OpenCLICDLoader")
         self.cpp_info.set_property("cmake_target_name", "OpenCLICDLoader::OpenCLICDLoader")
         self.cpp_info.set_property("cmake_config_version_compat", "AnyNewerVersion")
-        self.cpp_info.set_property("mevislab_prosdk_exclude", True)
         self.cpp_info.includedirs.clear()
         self.cpp_info.libs = collect_libs(self)

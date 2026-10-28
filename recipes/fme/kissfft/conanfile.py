@@ -3,7 +3,7 @@ from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout
 from conan.tools.files import copy, rmdir, get, collect_libs
 import os
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
@@ -67,7 +67,6 @@ class ConanRecipe(ConanFile):
         self.cpp_info.set_property("cmake_file_name", "kissfft")
         self.cpp_info.set_property("cmake_target_name", "kissfft::kissfft")
         self.cpp_info.set_property("pkg_config_name", "kissfft")
-        self.cpp_info.set_property("mevislab_prosdk_exclude", True)
         self.cpp_info.libs = collect_libs(self)
         self.cpp_info.includedirs.append("include/kissfft")
         if self.settings.os == "Linux":

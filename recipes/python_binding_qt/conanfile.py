@@ -6,12 +6,12 @@ from conan.tools.cmake import cmake_layout, CMakeToolchain, CMakeDeps, CMake
 from conan.tools.env import VirtualRunEnv
 from conan.tools.files import copy, collect_libs, chdir
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "python_binding_qt"
-    version = "6.9.3"  # corresponds to the Qt version which is used for code generation
+    version = "6.11.2"  # corresponds to the Qt version which is used for code generation
     homepage = "https://mevislab.de"
     description = "Python binding into Qt"
     license = "LGPL-2.1-only"
@@ -20,15 +20,15 @@ class ConanRecipe(ConanFile):
     exports_sources = "sources/*", "LICENSE"
 
     def requirements(self):
-        self.requires("qtbase/[>=6.9]")
-        self.requires("qtdeclarative/[>=6.9]")
-        self.requires("qtmultimedia/[>=6.9]")
-        self.requires("qtwebengine/[>=6.9]")
-        self.requires("qtwebview/[>=6.9]")
+        self.requires("qtbase/[>=6.11]")
+        self.requires("qtdeclarative/[>=6.11]")
+        self.requires("qtmultimedia/[>=6.11]")
+        self.requires("qtwebengine/[>=6.11]")
+        self.requires("qtwebview/[>=6.11]")
         self.requires("pcre2/[>=10.34]")
         self.requires("python/[>=3.13]")
-        self.requires("pythonqt/[>=3.6.0]")
-        self.build_requires("pythonqt_generator/[>=3.6.0]", package_id_mode="full_mode")
+        self.requires("pythonqt/[>=4.1.0]")
+        self.tool_requires("pythonqt_generator/[>=4.0.0]", package_id_mode="full_mode")
 
     def validate(self):
         qtbase_version = self.dependencies["qtbase"].ref.version

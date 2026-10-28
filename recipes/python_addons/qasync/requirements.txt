@@ -1,1 +1,1 @@
-poetry-core==2.4.1
+uv-build==0.12.9

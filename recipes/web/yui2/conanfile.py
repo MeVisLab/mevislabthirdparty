@@ -2,7 +2,7 @@ import os
 from conan import ConanFile
 from conan.tools.files import get, copy
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
@@ -15,7 +15,7 @@ class ConanRecipe(ConanFile):
     exports_sources = ["LICENSE"]
     settings = None
 
-    mlab_hooks = {"test_package.skip": True, "folders.skip": True}
+    mlab_hooks = {"folders.skip": True}
 
     def source(self):
         get(

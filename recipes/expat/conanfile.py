@@ -3,12 +3,12 @@ from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
 from conan.tools.files import collect_libs, copy, get, rmdir
 import os
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "expat"
-    version = "2.8.2"
+    version = "2.9.0"
     homepage = "https://libexpat.github.io"
     description = "Fast stream-oriented XML parser library"
     license = "MIT"
@@ -25,7 +25,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="3ad89b8588e6644bd4e49981480d48b21289eebbcd4f0a1a4afb1c29f99b6ab4",
+            sha256="1e6371862cc31999b368c3b89b49994f0677e1bab5f1b2b85ae3741f5d803051",
             url=f"https://github.com/libexpat/libexpat/releases/download/R_{self.version.replace('.', '_')}/expat-{self.version}.tar.xz",
             strip_root=True,
         )
@@ -69,6 +69,7 @@ class ConanRecipe(ConanFile):
         self.cpp_info.set_property("cmake_file_name", "EXPAT")
         self.cpp_info.set_property("cmake_target_name", "EXPAT::EXPAT")
         self.cpp_info.set_property("pkg_config_name", "expat")
+        self.cpp_info.set_property("cmake_extra_variables", {"EXPAT_VERSION": self.version})
         self.cpp_info.libs = collect_libs(self)
         if self.settings.os in ["Linux"]:
             self.cpp_info.system_libs.append("m")

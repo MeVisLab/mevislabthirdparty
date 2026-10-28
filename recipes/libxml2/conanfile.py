@@ -6,12 +6,12 @@ from conan.tools.files import collect_libs
 from conan.tools.files import get, copy, rmdir, patch, save
 from conan.tools.scm import Version
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "libxml2"
-    version = "2.15.3"
+    version = "2.15.4"
     homepage = "http://xmlsoft.org"
     description = "XML C parser and toolkit"
     license = "MIT"
@@ -34,7 +34,7 @@ class ConanRecipe(ConanFile):
         v = Version(self.version)
         get(
             self,
-            sha256="78262a6e7ac170d6528ebfe2efccdf220191a5af6a6cd61ea4a9a9a5042c7a07",
+            sha256="98087fd181d9070724f3fbc65c7377db03038eb92bd882374daff44940138821",
             url=f"https://download.gnome.org/sources/libxml2/{v.major}.{v.minor}/libxml2-{self.version}.tar.xz",
             strip_root=True,
         )
@@ -49,7 +49,7 @@ class ConanRecipe(ConanFile):
         tc.variables["LIBXML2_WITH_ICU"] = True
         tc.variables["LIBXML2_WITH_LZMA"] = False
         tc.variables["LIBXML2_WITH_ZLIB"] = True
-        tc.variables["LIBXML2_WITH_PROGRAMS"] = False
+        tc.variables["LIBXML2_WITH_PROGRAMS"] = True
         tc.variables["LIBXML2_WITH_PYTHON"] = False
         tc.variables["LIBXML2_WITH_TESTS"] = False
         tc.generate()
@@ -81,7 +81,6 @@ class ConanRecipe(ConanFile):
         self.cpp_info.includedirs.append("include/libxml2")
 
         self.cpp_info.set_property("cmake_build_modules", [self._cmake_module_file])
-        self.cpp_info.set_property("cmake_find_package", [self._cmake_module_file])
 
         if self.settings.os == "Linux":
             self.cpp_info.system_libs.extend(["m", "pthread"])
@@ -94,13 +93,11 @@ class ConanRecipe(ConanFile):
 
     def _cmake_module_file_write(self):
         file = os.path.join(self.package_folder, self._cmake_module_file)
-        content = textwrap.dedent(
-            f"""\
+        content = textwrap.dedent("""\
             set(LIBXML2_FOUND TRUE)
-            set(LIBXML2_INCLUDE_DIR ${{LibXml2_INCLUDE_DIR}})
-            set(LIBXML2_INCLUDE_DIRS ${{LibXml2_INCLUDE_DIRS}})
-            set(LIBXML2_LIBRARIES ${{LibXml2_LIBRARIES}})
-            set(LIBXML2_VERSION_STRING ${{LibXml2_VERSION_STRING}})
-            """
-        )
+            set(LIBXML2_INCLUDE_DIR ${LibXml2_INCLUDE_DIR})
+            set(LIBXML2_INCLUDE_DIRS ${LibXml2_INCLUDE_DIRS})
+            set(LIBXML2_LIBRARIES ${LibXml2_LIBRARIES})
+            set(LIBXML2_VERSION_STRING ${LibXml2_VERSION_STRING})
+            """)
         save(self, file, content)

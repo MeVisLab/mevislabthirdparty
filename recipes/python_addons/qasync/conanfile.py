@@ -1,12 +1,12 @@
 from conan import ConanFile
 from conan.tools.files import get, patch
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "qasync"
-    version = "0.27.1"
+    version = "0.28.0"
     homepage = "https://github.com/CabbageDevelopment/qasync"
     description = "Python library for using asyncio in Qt-based applications"
     license = "BSD-2-Clause"
@@ -24,19 +24,30 @@ class ConanRecipe(ConanFile):
         self.settings.rm_safe("compiler.cppstd")
 
     def source(self):
-        get(self,
-            url="https://github.com/CabbageDevelopment/qasync/archive/refs/tags/v0.27.1.tar.gz",
-            sha256="9877cfe413308cfb83e532b624f7b30a4268d194c9a53bfd68a4f5f223a18a96",
-            strip_root=True)
-        patch(self, patch_file="patches/001-mevis_pythonqt_support.patch",
-              patch_type="feature",
-              patch_description="Add PythonQt support")
-        patch(self, patch_file="patches/002-fix_enum_namespace.patch",
-              patch_type="compatibility",
-              patch_description="Do not use enum type name in enum scope, not supported by PythonQt")
-        patch(self, patch_file="patches/003-fix_qsocketnotifier_signal.patch",
-              patch_type="compatibility",
-              patch_description="Use signal connection form supported by PythonQt")
+        get(
+            self,
+            sha256="1b80e2315663350b04c2c780d8ea0c76f5e4cf09fb55347e40cb16540e6411d7",
+            url=f"https://github.com/CabbageDevelopment/qasync/archive/refs/tags/v{self.version}.tar.gz",
+            strip_root=True,
+        )
+        patch(
+            self,
+            patch_file="patches/001-mevis_pythonqt_support.patch",
+            patch_type="feature",
+            patch_description="Add PythonQt support",
+        )
+        patch(
+            self,
+            patch_file="patches/002-fix_enum_namespace.patch",
+            patch_type="compatibility",
+            patch_description="Do not use enum type name in enum scope, not supported by PythonQt",
+        )
+        patch(
+            self,
+            patch_file="patches/003-fix_qsocketnotifier_signal.patch",
+            patch_type="compatibility",
+            patch_description="Use signal connection form supported by PythonQt",
+        )
 
     def package_info(self):
         super().package_info()

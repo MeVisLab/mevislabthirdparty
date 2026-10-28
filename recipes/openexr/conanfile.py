@@ -4,12 +4,12 @@ from conan.tools.files import collect_libs, replace_in_file
 from conan.tools.files import get, copy, rmdir
 import os
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "openexr"
-    version = "3.4.13"
+    version = "3.5.2"
     homepage = "https://www.openexr.com"
     description = "OpenEXR is a high dynamic-range (HDR) image file format developed by Industrial Light & Magic for use in computer imaging applications"
     license = "BSD-3-Clause"
@@ -22,12 +22,13 @@ class ConanRecipe(ConanFile):
     def requirements(self):
         self.requires("libdeflate/[>=1.19]")
         self.requires("zlib/[>=1.2.11]")
+        self.requires("zstd/[>=1.5.0]")
         self.requires("imath/[>=3.1.3]", transitive_headers=True)
 
     def source(self):
         get(
             self,
-            sha256="1ed0cee48ac8c77da235c8ca8ab85d031d43cd790eda36af87fed4cf316cf2df",
+            sha256="85a291b9b8563fabef1aa3f6e912d744ce1d4b9fd5a8f978eda194cd51b15ae9",
             url=f"https://github.com/AcademySoftwareFoundation/openexr/archive/v{self.version}.tar.gz",
             strip_root=True,
         )

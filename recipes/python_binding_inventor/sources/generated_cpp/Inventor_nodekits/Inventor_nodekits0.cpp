@@ -36,7 +36,7 @@ void PythonQtShell_SoBaseKit::GLRender(SoGLRenderAction*  action0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("GLRender");
+    static PyObject* name = PyUnicode_FromString("GLRender");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoGLRenderAction*"};
@@ -58,7 +58,7 @@ void PythonQtShell_SoBaseKit::GLRenderBelowPath(SoGLRenderAction*  action0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("GLRenderBelowPath");
+    static PyObject* name = PyUnicode_FromString("GLRenderBelowPath");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoGLRenderAction*"};
@@ -80,7 +80,7 @@ void PythonQtShell_SoBaseKit::GLRenderInPath(SoGLRenderAction*  action0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("GLRenderInPath");
+    static PyObject* name = PyUnicode_FromString("GLRenderInPath");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoGLRenderAction*"};
@@ -102,7 +102,7 @@ void PythonQtShell_SoBaseKit::GLRenderOffPath(SoGLRenderAction*  action0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("GLRenderOffPath");
+    static PyObject* name = PyUnicode_FromString("GLRenderOffPath");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoGLRenderAction*"};
@@ -124,7 +124,7 @@ bool  PythonQtShell_SoBaseKit::affectsState() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("affectsState");
+    static PyObject* name = PyUnicode_FromString("affectsState");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool"};
@@ -157,7 +157,7 @@ void PythonQtShell_SoBaseKit::callback(SoCallbackAction*  action0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("callback");
+    static PyObject* name = PyUnicode_FromString("callback");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoCallbackAction*"};
@@ -179,7 +179,7 @@ void PythonQtShell_SoBaseKit::createDefaultParts()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("createDefaultParts");
+    static PyObject* name = PyUnicode_FromString("createDefaultParts");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={""};
@@ -201,7 +201,7 @@ void PythonQtShell_SoBaseKit::doAction(SoAction*  action0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("doAction");
+    static PyObject* name = PyUnicode_FromString("doAction");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoAction*"};
@@ -223,7 +223,7 @@ SoNode*  PythonQtShell_SoBaseKit::getAnyPart(const SbName&  partName0, bool  mak
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getAnyPart");
+    static PyObject* name = PyUnicode_FromString("getAnyPart");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoNode*" , "const SbName&" , "bool" , "bool" , "bool"};
@@ -256,7 +256,7 @@ void PythonQtShell_SoBaseKit::getBoundingBox(SoGetBoundingBoxAction*  action0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getBoundingBox");
+    static PyObject* name = PyUnicode_FromString("getBoundingBox");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoGetBoundingBoxAction*"};
@@ -278,7 +278,7 @@ SoField*  PythonQtShell_SoBaseKit::getField(const SbName&  fieldName0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getField");
+    static PyObject* name = PyUnicode_FromString("getField");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoField*" , "const SbName&"};
@@ -311,7 +311,7 @@ void PythonQtShell_SoBaseKit::getMatrix(SoGetMatrixAction*  action0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getMatrix");
+    static PyObject* name = PyUnicode_FromString("getMatrix");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoGetMatrixAction*"};
@@ -333,7 +333,7 @@ SbName  PythonQtShell_SoBaseKit::getName() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getName");
+    static PyObject* name = PyUnicode_FromString("getName");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbName"};
@@ -366,7 +366,7 @@ SoNode*  PythonQtShell_SoBaseKit::getPart(const SbName&  partName0, bool  makeIf
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getPart");
+    static PyObject* name = PyUnicode_FromString("getPart");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoNode*" , "const SbName&" , "bool"};
@@ -399,7 +399,7 @@ void PythonQtShell_SoBaseKit::handleEvent(SoHandleEventAction*  action0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("handleEvent");
+    static PyObject* name = PyUnicode_FromString("handleEvent");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoHandleEventAction*"};
@@ -421,7 +421,7 @@ void PythonQtShell_SoBaseKit::pick(SoPickAction*  action0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pick");
+    static PyObject* name = PyUnicode_FromString("pick");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoPickAction*"};
@@ -443,7 +443,7 @@ void PythonQtShell_SoBaseKit::rayPick(SoRayPickAction*  action0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("rayPick");
+    static PyObject* name = PyUnicode_FromString("rayPick");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoRayPickAction*"};
@@ -465,7 +465,7 @@ void PythonQtShell_SoBaseKit::search(SoSearchAction*  action0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("search");
+    static PyObject* name = PyUnicode_FromString("search");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoSearchAction*"};
@@ -487,7 +487,7 @@ bool  PythonQtShell_SoBaseKit::setAnyPart(const SbName&  partName0, SoNode*  fro
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setAnyPart");
+    static PyObject* name = PyUnicode_FromString("setAnyPart");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SbName&" , "SoNode*" , "bool"};
@@ -520,7 +520,7 @@ void PythonQtShell_SoBaseKit::setDefaultOnNonWritingFields()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setDefaultOnNonWritingFields");
+    static PyObject* name = PyUnicode_FromString("setDefaultOnNonWritingFields");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={""};
@@ -542,7 +542,7 @@ void PythonQtShell_SoBaseKit::setName(const SbName&  name0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setName");
+    static PyObject* name = PyUnicode_FromString("setName");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbName&"};
@@ -564,7 +564,7 @@ bool  PythonQtShell_SoBaseKit::setPart(const SbName&  partName0, SoNode*  from1)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setPart");
+    static PyObject* name = PyUnicode_FromString("setPart");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SbName&" , "SoNode*"};
@@ -597,7 +597,7 @@ bool  PythonQtShell_SoBaseKit::setUpConnections(bool  onOff0, bool  doItAlways1)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setUpConnections");
+    static PyObject* name = PyUnicode_FromString("setUpConnections");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "bool" , "bool"};
@@ -630,7 +630,7 @@ void PythonQtShell_SoBaseKit::startNotify()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("startNotify");
+    static PyObject* name = PyUnicode_FromString("startNotify");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={""};
@@ -652,7 +652,7 @@ void PythonQtShell_SoBaseKit::write(SoWriteAction*  action0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("write");
+    static PyObject* name = PyUnicode_FromString("write");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoWriteAction*"};
@@ -794,7 +794,7 @@ void PythonQtShell_SoInteractionKit::GLRender(SoGLRenderAction*  action0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("GLRender");
+    static PyObject* name = PyUnicode_FromString("GLRender");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoGLRenderAction*"};
@@ -816,7 +816,7 @@ void PythonQtShell_SoInteractionKit::GLRenderBelowPath(SoGLRenderAction*  action
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("GLRenderBelowPath");
+    static PyObject* name = PyUnicode_FromString("GLRenderBelowPath");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoGLRenderAction*"};
@@ -838,7 +838,7 @@ void PythonQtShell_SoInteractionKit::GLRenderInPath(SoGLRenderAction*  action0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("GLRenderInPath");
+    static PyObject* name = PyUnicode_FromString("GLRenderInPath");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoGLRenderAction*"};
@@ -860,7 +860,7 @@ void PythonQtShell_SoInteractionKit::GLRenderOffPath(SoGLRenderAction*  action0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("GLRenderOffPath");
+    static PyObject* name = PyUnicode_FromString("GLRenderOffPath");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoGLRenderAction*"};
@@ -882,7 +882,7 @@ bool  PythonQtShell_SoInteractionKit::affectsState() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("affectsState");
+    static PyObject* name = PyUnicode_FromString("affectsState");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool"};
@@ -915,7 +915,7 @@ void PythonQtShell_SoInteractionKit::callback(SoCallbackAction*  action0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("callback");
+    static PyObject* name = PyUnicode_FromString("callback");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoCallbackAction*"};
@@ -937,7 +937,7 @@ void PythonQtShell_SoInteractionKit::createDefaultParts()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("createDefaultParts");
+    static PyObject* name = PyUnicode_FromString("createDefaultParts");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={""};
@@ -959,7 +959,7 @@ void PythonQtShell_SoInteractionKit::doAction(SoAction*  action0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("doAction");
+    static PyObject* name = PyUnicode_FromString("doAction");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoAction*"};
@@ -981,7 +981,7 @@ SoNode*  PythonQtShell_SoInteractionKit::getAnyPart(const SbName&  partName0, bo
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getAnyPart");
+    static PyObject* name = PyUnicode_FromString("getAnyPart");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoNode*" , "const SbName&" , "bool" , "bool" , "bool"};
@@ -1014,7 +1014,7 @@ void PythonQtShell_SoInteractionKit::getBoundingBox(SoGetBoundingBoxAction*  act
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getBoundingBox");
+    static PyObject* name = PyUnicode_FromString("getBoundingBox");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoGetBoundingBoxAction*"};
@@ -1036,7 +1036,7 @@ SoField*  PythonQtShell_SoInteractionKit::getField(const SbName&  fieldName0) co
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getField");
+    static PyObject* name = PyUnicode_FromString("getField");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoField*" , "const SbName&"};
@@ -1069,7 +1069,7 @@ void PythonQtShell_SoInteractionKit::getMatrix(SoGetMatrixAction*  action0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getMatrix");
+    static PyObject* name = PyUnicode_FromString("getMatrix");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoGetMatrixAction*"};
@@ -1091,7 +1091,7 @@ SbName  PythonQtShell_SoInteractionKit::getName() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getName");
+    static PyObject* name = PyUnicode_FromString("getName");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbName"};
@@ -1124,7 +1124,7 @@ SoNode*  PythonQtShell_SoInteractionKit::getPart(const SbName&  partName0, bool 
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getPart");
+    static PyObject* name = PyUnicode_FromString("getPart");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoNode*" , "const SbName&" , "bool"};
@@ -1157,7 +1157,7 @@ void PythonQtShell_SoInteractionKit::handleEvent(SoHandleEventAction*  action0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("handleEvent");
+    static PyObject* name = PyUnicode_FromString("handleEvent");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoHandleEventAction*"};
@@ -1179,7 +1179,7 @@ void PythonQtShell_SoInteractionKit::pick(SoPickAction*  action0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pick");
+    static PyObject* name = PyUnicode_FromString("pick");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoPickAction*"};
@@ -1201,7 +1201,7 @@ void PythonQtShell_SoInteractionKit::rayPick(SoRayPickAction*  action0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("rayPick");
+    static PyObject* name = PyUnicode_FromString("rayPick");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoRayPickAction*"};
@@ -1223,7 +1223,7 @@ void PythonQtShell_SoInteractionKit::search(SoSearchAction*  action0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("search");
+    static PyObject* name = PyUnicode_FromString("search");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoSearchAction*"};
@@ -1245,7 +1245,7 @@ bool  PythonQtShell_SoInteractionKit::setAnyPart(const SbName&  partName0, SoNod
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setAnyPart");
+    static PyObject* name = PyUnicode_FromString("setAnyPart");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SbName&" , "SoNode*" , "bool"};
@@ -1278,7 +1278,7 @@ bool  PythonQtShell_SoInteractionKit::setAnyPartAsDefault(const SbName&  partNam
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setAnyPartAsDefault");
+    static PyObject* name = PyUnicode_FromString("setAnyPartAsDefault");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SbName&" , "SoNode*" , "bool" , "bool"};
@@ -1311,7 +1311,7 @@ bool  PythonQtShell_SoInteractionKit::setAnyPartAsDefault(const SbName&  partNam
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setAnyPartAsDefault");
+    static PyObject* name = PyUnicode_FromString("setAnyPartAsDefault");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SbName&" , "const SbName&" , "bool" , "bool"};
@@ -1344,7 +1344,7 @@ bool  PythonQtShell_SoInteractionKit::setAnyPartAsPath(const SbName&  partName0,
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setAnyPartAsPath");
+    static PyObject* name = PyUnicode_FromString("setAnyPartAsPath");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SbName&" , "SoPath*" , "bool" , "bool"};
@@ -1377,7 +1377,7 @@ void PythonQtShell_SoInteractionKit::setDefaultOnNonWritingFields()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setDefaultOnNonWritingFields");
+    static PyObject* name = PyUnicode_FromString("setDefaultOnNonWritingFields");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={""};
@@ -1399,7 +1399,7 @@ void PythonQtShell_SoInteractionKit::setName(const SbName&  name0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setName");
+    static PyObject* name = PyUnicode_FromString("setName");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbName&"};
@@ -1421,7 +1421,7 @@ bool  PythonQtShell_SoInteractionKit::setPart(const SbName&  partName0, SoNode* 
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setPart");
+    static PyObject* name = PyUnicode_FromString("setPart");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SbName&" , "SoNode*"};
@@ -1454,7 +1454,7 @@ bool  PythonQtShell_SoInteractionKit::setPartAsDefault(const SbName&  partName0,
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setPartAsDefault");
+    static PyObject* name = PyUnicode_FromString("setPartAsDefault");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SbName&" , "SoNode*" , "bool"};
@@ -1487,7 +1487,7 @@ bool  PythonQtShell_SoInteractionKit::setPartAsDefault(const SbName&  partName0,
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setPartAsDefault");
+    static PyObject* name = PyUnicode_FromString("setPartAsDefault");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SbName&" , "const SbName&" , "bool"};
@@ -1520,7 +1520,7 @@ bool  PythonQtShell_SoInteractionKit::setPartAsPath(const SbName&  partName0, So
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setPartAsPath");
+    static PyObject* name = PyUnicode_FromString("setPartAsPath");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SbName&" , "SoPath*"};
@@ -1553,7 +1553,7 @@ bool  PythonQtShell_SoInteractionKit::setUpConnections(bool  onOff0, bool  doItA
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setUpConnections");
+    static PyObject* name = PyUnicode_FromString("setUpConnections");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "bool" , "bool"};
@@ -1586,7 +1586,7 @@ void PythonQtShell_SoInteractionKit::startNotify()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("startNotify");
+    static PyObject* name = PyUnicode_FromString("startNotify");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={""};
@@ -1608,7 +1608,7 @@ void PythonQtShell_SoInteractionKit::write(SoWriteAction*  action0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("write");
+    static PyObject* name = PyUnicode_FromString("write");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoWriteAction*"};

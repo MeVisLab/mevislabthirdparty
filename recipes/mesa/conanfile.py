@@ -1,17 +1,17 @@
 import os
 from conan import ConanFile
 from conan.errors import ConanInvalidConfiguration
-from conan.tools.files import get, rmdir, copy, replace_in_file
+from conan.tools.files import get, rmdir, copy, replace_in_file, patch
 from conan.tools.layout import basic_layout
 from conan.tools.meson import Meson, MesonToolchain
 
-required_conan_version = ">=2.0.7"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "mesa"
     display_name = "Mesa"
-    version = "25.2.8"
+    version = "26.2.4"
     homepage = "https://mesa3d.org"
     description = "an open source software implementation of OpenGL, Vulkan, and other graphics API specifications"
     license = "MIT"
@@ -20,7 +20,6 @@ class ConanRecipe(ConanFile):
     exports_sources = ["patches/*", "LICENSE"]
 
     mlab_hooks = {
-        "test_package.skip": True,
         "dependencies.system_libs": [
             "libdrm.so.2",
             "libsensors.so.5",
@@ -68,15 +67,17 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="097842f3e49d996868b38688db87b006f7d4541e93ce86d2f341d8b3e7be7c93",
+            sha256="bce5f7fbebb934373b86c999a064d52fb5065878dc57f287f95346648ec832e9",
             url=f"https://mesa.freedesktop.org/archive/mesa-{self.version}.tar.xz",
             strip_root=True,
         )
+        patch(self, patch_file="patches/001-compiler_warning.patch")
 
     def generate(self):
         tc = MesonToolchain(self)
         tc.project_options.update(
             {
+                "werror": "false",
                 "gallium-drivers": "softpipe,llvmpipe",
                 "llvm": "enabled",  # make sure we get the llvmpipe driver, not softpipe
                 "shared-llvm": "disabled",
@@ -134,5 +135,5 @@ class ConanRecipe(ConanFile):
     def package_info(self):
         self.cpp_info.set_property("cpe", f"cpe:2.3:a:mesa3d:mesa:{self.version}:*:*:*:*:*:*:*")
         self.cpp_info.set_property("purl", f"pkg:generic/mesa@{self.version}")
-        self.cpp_info.set_property("vcs_url", f"git+https://gitlab.freedesktop.org/mesa/mesa.git@mesa-26.0.0")
+        self.cpp_info.set_property("vcs_url", f"git+https://gitlab.freedesktop.org/mesa/mesa.git@mesa-{self.version}")
         self.cpp_info.includedirs = []

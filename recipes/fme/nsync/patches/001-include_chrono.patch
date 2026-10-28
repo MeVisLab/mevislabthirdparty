@@ -1,0 +1,12 @@
+diff --git a/platform/c++11/platform.h b/platform/c++11/platform.h
+index 2c80e0b..4fbc6d0 100644
+--- a/platform/c++11/platform.h
++++ b/platform/c++11/platform.h
+@@ -28,6 +28,7 @@
+ 
+ #include <mutex>
+ #include <condition_variable>
++#include <chrono>
+ 
+ #include "nsync_cpp.h"
+ 

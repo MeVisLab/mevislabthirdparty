@@ -1,0 +1,136 @@
+diff --git a/src/main.cc b/src/main.cc
+index 35a234d..e389b96 100644
+--- a/src/main.cc
++++ b/src/main.cc
+@@ -100,7 +100,7 @@ int wmain(int argc, const wchar_t* argv[]) {
+     print_help(file_info);
+     return 0;
+   }
+-
++  int retCode = 0;
+   for (int i = 1; i < argc; ++i) {
+     if (wcscmp(argv[i], L"--set-version-string") == 0 ||
+         wcscmp(argv[i], L"-svs") == 0) {
+@@ -110,7 +110,7 @@ int wmain(int argc, const wchar_t* argv[]) {
+       const wchar_t* key = argv[++i];
+       const wchar_t* value = argv[++i];
+       if (!updater.SetVersionString(key, value))
+-        return print_error("Unable to change version string");
++        retCode = print_error("Unable to change version string");
+ 
+     } else if (wcscmp(argv[i], L"--get-version-string") == 0 ||
+                wcscmp(argv[i], L"-gvs") == 0) {
+@@ -131,13 +131,13 @@ int wmain(int argc, const wchar_t* argv[]) {
+ 
+       unsigned short v1, v2, v3, v4;
+       if (!parse_version_string(argv[++i], &v1, &v2, &v3, &v4))
+-        return print_error("Unable to parse version string for FileVersion");
++        retCode = print_error("Unable to parse version string for FileVersion");
+ 
+       if (!updater.SetFileVersion(v1, v2, v3, v4))
+-        return print_error("Unable to change file version");
++        retCode = print_error("Unable to change file version");
+ 
+       if (!updater.SetVersionString(L"FileVersion", argv[i]))
+-        return print_error("Unable to change FileVersion string");
++        retCode = print_error("Unable to change FileVersion string");
+ 
+     } else if (wcscmp(argv[i], L"--set-product-version") == 0 ||
+                wcscmp(argv[i], L"-spv") == 0) {
+@@ -146,13 +146,13 @@ int wmain(int argc, const wchar_t* argv[]) {
+ 
+       unsigned short v1, v2, v3, v4;
+       if (!parse_version_string(argv[++i], &v1, &v2, &v3, &v4))
+-        return print_error("Unable to parse version string for ProductVersion");
++        retCode = print_error("Unable to parse version string for ProductVersion");
+ 
+       if (!updater.SetProductVersion(v1, v2, v3, v4))
+-        return print_error("Unable to change product version");
++        retCode = print_error("Unable to change product version");
+ 
+       if (!updater.SetVersionString(L"ProductVersion", argv[i]))
+-        return print_error("Unable to change ProductVersion string");
++        retCode = print_error("Unable to change ProductVersion string");
+ 
+     } else if (wcscmp(argv[i], L"--set-icon") == 0 ||
+                wcscmp(argv[i], L"-si") == 0) {
+@@ -160,7 +160,7 @@ int wmain(int argc, const wchar_t* argv[]) {
+         return print_error("--set-icon requires path to the icon");
+ 
+       if (!updater.SetIcon(argv[++i]))
+-        return print_error("Unable to set icon");
++        retCode = print_error("Unable to set icon");
+ 
+     } else if (wcscmp(argv[i], L"--set-requested-execution-level") == 0 ||
+       wcscmp(argv[i], L"-srel") == 0) {
+@@ -171,7 +171,7 @@ int wmain(int argc, const wchar_t* argv[]) {
+         print_warning("--set-requested-execution-level is ignored if --application-manifest is set");
+ 
+       if (!updater.SetExecutionLevel(argv[++i]))
+-        return print_error("Unable to set execution level");
++        retCode = print_error("Unable to set execution level");
+ 
+     } else if (wcscmp(argv[i], L"--application-manifest") == 0 ||
+       wcscmp(argv[i], L"-am") == 0) {
+@@ -182,7 +182,7 @@ int wmain(int argc, const wchar_t* argv[]) {
+         print_warning("--set-requested-execution-level is ignored if --application-manifest is set");
+ 
+       if (!updater.SetApplicationManifest(argv[++i]))
+-        return print_error("Unable to set application manifest");
++        retCode = print_error("Unable to set application manifest");
+ 
+     } else if (wcscmp(argv[i], L"--set-resource-string") == 0 ||
+       wcscmp(argv[i], L"--srs") == 0) {
+@@ -192,11 +192,11 @@ int wmain(int argc, const wchar_t* argv[]) {
+       const wchar_t* key = argv[++i];
+       unsigned int key_id = 0;
+       if (swscanf_s(key, L"%d", &key_id) != 1)
+-        return print_error("Unable to parse id");
++        retCode = print_error("Unable to parse id");
+ 
+       const wchar_t* value = argv[++i];
+       if (!updater.ChangeString(key_id, value))
+-        return print_error("Unable to change string");
++        retCode = print_error("Unable to change string");
+ 
+     } else if (wcscmp(argv[i], L"--set-rcdata") == 0) {
+       if (argc - i < 3)
+@@ -205,11 +205,11 @@ int wmain(int argc, const wchar_t* argv[]) {
+       const wchar_t* key = argv[++i];
+       unsigned int key_id = 0;
+       if (swscanf_s(key, L"%d", &key_id) != 1)
+-        return print_error("Unable to parse id");
++        retCode = print_error("Unable to parse id");
+ 
+       const wchar_t* pathToResource = argv[++i];
+       if (!updater.ChangeRcData(key_id, pathToResource))
+-        return print_error("Unable to change RCDATA");
++        retCode = print_error("Unable to change RCDATA");
+     } else if (wcscmp(argv[i], L"--get-resource-string") == 0 ||
+       wcscmp(argv[i], L"-grs") == 0) {
+       if (argc - i < 2)
+@@ -218,14 +218,14 @@ int wmain(int argc, const wchar_t* argv[]) {
+       const wchar_t* key = argv[++i];
+       unsigned int key_id = 0;
+       if (swscanf_s(key, L"%d", &key_id) != 1)
+-        return print_error("Unable to parse id");
++        retCode = print_error("Unable to parse id");
+ 
+       const wchar_t* result = updater.GetString(key_id);
+       if (!result)
+-        return print_error("Unable to get resource string");
++        retCode = print_error("Unable to get resource string");
+ 
+       fwprintf(stdout, L"%s", result);
+-      return 0;  // no changes made
++      return retCode;  // no changes made
+ 
+     } else {
+       if (loaded) {
+@@ -248,5 +248,5 @@ int wmain(int argc, const wchar_t* argv[]) {
+   if (!updater.Commit())
+     return print_error("Unable to commit changes");
+ 
+-  return 0;
++  return retCode;
+ }

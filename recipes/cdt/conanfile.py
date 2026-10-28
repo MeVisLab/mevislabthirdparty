@@ -3,12 +3,12 @@ from conan import ConanFile
 from conan.tools.files import get, copy
 from conan.tools.layout import basic_layout
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "cdt"
-    version = "1.4.4"
+    version = "2.0.0"
     homepage = "https://github.com/artem-ogre/CDT"
     description = "CDT: Constrained Delaunay Triangulation"
     license = "MPL-2.0"
@@ -21,7 +21,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="97e57bdd1cf8219dcc81634236a502390a20dda3599dd3414a74343b7f03427f",
+            sha256="81ed0c7a8cbdc059b26948a160c3ce68c7a147976334093fe3175c8fa161a447",
             url=f"https://github.com/artem-ogre/CDT/archive/refs/tags/{self.version}.tar.gz",
             strip_root=True,
         )

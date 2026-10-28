@@ -2,7 +2,7 @@ from conan import ConanFile
 from conan.tools.files import copy, get
 import os
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
@@ -34,7 +34,6 @@ class ConanRecipe(ConanFile):
         # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
         self.cpp_info.set_property("purl", f"pkg:github/kazuho/picojson@v{self.version}")
         self.cpp_info.set_property("display_name", "PicoJSON")
-        self.cpp_info.set_property("mevislab_prosdk_exclude", True)
         self.cpp_info.bindirs = []
         self.cpp_info.libdirs = []
         self.cpp_info.resdirs = []

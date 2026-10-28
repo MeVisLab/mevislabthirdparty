@@ -32,7 +32,7 @@ void PythonQtShell_SoAccumulatedElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -54,7 +54,7 @@ SoElement*  PythonQtShell_SoAccumulatedElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -87,7 +87,7 @@ void PythonQtShell_SoAccumulatedElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -109,7 +109,7 @@ bool  PythonQtShell_SoAccumulatedElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -142,7 +142,7 @@ void PythonQtShell_SoAccumulatedElement::pop(SoState*  state0, const SoElement* 
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -164,7 +164,7 @@ void PythonQtShell_SoAccumulatedElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -221,7 +221,7 @@ void PythonQtShell_SoBBoxModelMatrixElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -243,7 +243,7 @@ SoElement*  PythonQtShell_SoBBoxModelMatrixElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -276,7 +276,7 @@ void PythonQtShell_SoBBoxModelMatrixElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -298,7 +298,7 @@ void PythonQtShell_SoBBoxModelMatrixElement::makeEltIdentity()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("makeEltIdentity");
+    static PyObject* name = PyUnicode_FromString("makeEltIdentity");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={""};
@@ -320,7 +320,7 @@ bool  PythonQtShell_SoBBoxModelMatrixElement::matches(const SoElement*  elt0) co
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -353,7 +353,7 @@ void PythonQtShell_SoBBoxModelMatrixElement::multElt(const SbMatrix&  matrix0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("multElt");
+    static PyObject* name = PyUnicode_FromString("multElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbMatrix&"};
@@ -375,7 +375,7 @@ void PythonQtShell_SoBBoxModelMatrixElement::pop(SoState*  state0, const SoEleme
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -397,7 +397,7 @@ void PythonQtShell_SoBBoxModelMatrixElement::popMatrixElt(const SbMatrix&  m0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("popMatrixElt");
+    static PyObject* name = PyUnicode_FromString("popMatrixElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbMatrix&"};
@@ -419,7 +419,7 @@ void PythonQtShell_SoBBoxModelMatrixElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -441,7 +441,7 @@ SbMatrix  PythonQtShell_SoBBoxModelMatrixElement::pushMatrixElt()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pushMatrixElt");
+    static PyObject* name = PyUnicode_FromString("pushMatrixElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbMatrix"};
@@ -474,7 +474,7 @@ void PythonQtShell_SoBBoxModelMatrixElement::rotateEltBy(const SbRotation&  tran
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("rotateEltBy");
+    static PyObject* name = PyUnicode_FromString("rotateEltBy");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbRotation&"};
@@ -496,7 +496,7 @@ void PythonQtShell_SoBBoxModelMatrixElement::scaleEltBy(const SbVec3f&  scaleFac
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("scaleEltBy");
+    static PyObject* name = PyUnicode_FromString("scaleEltBy");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbVec3f&"};
@@ -518,7 +518,7 @@ void PythonQtShell_SoBBoxModelMatrixElement::setElt(const SbMatrix&  matrix0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbMatrix&"};
@@ -540,7 +540,7 @@ void PythonQtShell_SoBBoxModelMatrixElement::translateEltBy(const SbVec3f&  tran
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("translateEltBy");
+    static PyObject* name = PyUnicode_FromString("translateEltBy");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbVec3f&"};
@@ -597,7 +597,7 @@ void PythonQtShell_SoCacheElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -619,7 +619,7 @@ SoElement*  PythonQtShell_SoCacheElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -652,7 +652,7 @@ void PythonQtShell_SoCacheElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -674,7 +674,7 @@ bool  PythonQtShell_SoCacheElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -707,7 +707,7 @@ void PythonQtShell_SoCacheElement::pop(SoState*  state0, const SoElement*  prevT
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -729,7 +729,7 @@ void PythonQtShell_SoCacheElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -796,7 +796,7 @@ void PythonQtShell_SoClipPlaneElement::addToElt(const SbPlane&  plane0, const Sb
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("addToElt");
+    static PyObject* name = PyUnicode_FromString("addToElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbPlane&" , "const SbMatrix&"};
@@ -818,7 +818,7 @@ void PythonQtShell_SoClipPlaneElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -840,7 +840,7 @@ SoElement*  PythonQtShell_SoClipPlaneElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -873,7 +873,7 @@ void PythonQtShell_SoClipPlaneElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -895,7 +895,7 @@ bool  PythonQtShell_SoClipPlaneElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -928,7 +928,7 @@ void PythonQtShell_SoClipPlaneElement::pop(SoState*  state0, const SoElement*  p
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -950,7 +950,7 @@ void PythonQtShell_SoClipPlaneElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -1017,7 +1017,7 @@ void PythonQtShell_SoComplexityElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -1039,7 +1039,7 @@ SoElement*  PythonQtShell_SoComplexityElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -1072,7 +1072,7 @@ void PythonQtShell_SoComplexityElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -1094,7 +1094,7 @@ bool  PythonQtShell_SoComplexityElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -1127,7 +1127,7 @@ void PythonQtShell_SoComplexityElement::pop(SoState*  state0, const SoElement*  
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -1149,7 +1149,7 @@ void PythonQtShell_SoComplexityElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -1171,7 +1171,7 @@ void PythonQtShell_SoComplexityElement::setElt(float  value0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "float"};
@@ -1228,7 +1228,7 @@ void PythonQtShell_SoComplexityTypeElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -1250,7 +1250,7 @@ SoElement*  PythonQtShell_SoComplexityTypeElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -1283,7 +1283,7 @@ void PythonQtShell_SoComplexityTypeElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -1305,7 +1305,7 @@ bool  PythonQtShell_SoComplexityTypeElement::matches(const SoElement*  elt0) con
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -1338,7 +1338,7 @@ void PythonQtShell_SoComplexityTypeElement::pop(SoState*  state0, const SoElemen
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -1360,7 +1360,7 @@ void PythonQtShell_SoComplexityTypeElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -1382,7 +1382,7 @@ void PythonQtShell_SoComplexityTypeElement::setElt(int  value0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "int"};
@@ -1439,7 +1439,7 @@ void PythonQtShell_SoCoordinateElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -1461,7 +1461,7 @@ SoElement*  PythonQtShell_SoCoordinateElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -1494,7 +1494,7 @@ void PythonQtShell_SoCoordinateElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -1516,7 +1516,7 @@ bool  PythonQtShell_SoCoordinateElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -1549,7 +1549,7 @@ void PythonQtShell_SoCoordinateElement::pop(SoState*  state0, const SoElement*  
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -1571,7 +1571,7 @@ void PythonQtShell_SoCoordinateElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -1658,7 +1658,7 @@ void PythonQtShell_SoCreaseAngleElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -1680,7 +1680,7 @@ SoElement*  PythonQtShell_SoCreaseAngleElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -1713,7 +1713,7 @@ void PythonQtShell_SoCreaseAngleElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -1735,7 +1735,7 @@ bool  PythonQtShell_SoCreaseAngleElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -1768,7 +1768,7 @@ void PythonQtShell_SoCreaseAngleElement::pop(SoState*  state0, const SoElement* 
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -1790,7 +1790,7 @@ void PythonQtShell_SoCreaseAngleElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -1812,7 +1812,7 @@ void PythonQtShell_SoCreaseAngleElement::setElt(float  value0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "float"};
@@ -1869,7 +1869,7 @@ void PythonQtShell_SoDrawStyleElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -1891,7 +1891,7 @@ SoElement*  PythonQtShell_SoDrawStyleElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -1924,7 +1924,7 @@ void PythonQtShell_SoDrawStyleElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -1946,7 +1946,7 @@ bool  PythonQtShell_SoDrawStyleElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -1979,7 +1979,7 @@ void PythonQtShell_SoDrawStyleElement::pop(SoState*  state0, const SoElement*  p
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -2001,7 +2001,7 @@ void PythonQtShell_SoDrawStyleElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -2023,7 +2023,7 @@ void PythonQtShell_SoDrawStyleElement::setElt(int  value0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "int"};
@@ -2080,7 +2080,7 @@ void PythonQtShell_SoElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -2102,7 +2102,7 @@ SoElement*  PythonQtShell_SoElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -2135,7 +2135,7 @@ void PythonQtShell_SoElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -2157,7 +2157,7 @@ bool  PythonQtShell_SoElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -2190,7 +2190,7 @@ void PythonQtShell_SoElement::pop(SoState*  state0, const SoElement*  prevTopEle
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -2212,7 +2212,7 @@ void PythonQtShell_SoElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -2369,7 +2369,7 @@ void PythonQtShell_SoFloatElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -2391,7 +2391,7 @@ SoElement*  PythonQtShell_SoFloatElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -2424,7 +2424,7 @@ void PythonQtShell_SoFloatElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -2446,7 +2446,7 @@ bool  PythonQtShell_SoFloatElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -2479,7 +2479,7 @@ void PythonQtShell_SoFloatElement::pop(SoState*  state0, const SoElement*  prevT
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -2501,7 +2501,7 @@ void PythonQtShell_SoFloatElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -2523,7 +2523,7 @@ void PythonQtShell_SoFloatElement::setElt(float  value0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "float"};
@@ -2580,7 +2580,7 @@ void PythonQtShell_SoFocalDistanceElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -2602,7 +2602,7 @@ SoElement*  PythonQtShell_SoFocalDistanceElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -2635,7 +2635,7 @@ void PythonQtShell_SoFocalDistanceElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -2657,7 +2657,7 @@ bool  PythonQtShell_SoFocalDistanceElement::matches(const SoElement*  elt0) cons
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -2690,7 +2690,7 @@ void PythonQtShell_SoFocalDistanceElement::pop(SoState*  state0, const SoElement
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -2712,7 +2712,7 @@ void PythonQtShell_SoFocalDistanceElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -2734,7 +2734,7 @@ void PythonQtShell_SoFocalDistanceElement::setElt(float  value0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "float"};
@@ -2791,7 +2791,7 @@ void PythonQtShell_SoFontNameElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -2813,7 +2813,7 @@ SoElement*  PythonQtShell_SoFontNameElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -2846,7 +2846,7 @@ void PythonQtShell_SoFontNameElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -2868,7 +2868,7 @@ bool  PythonQtShell_SoFontNameElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -2901,7 +2901,7 @@ void PythonQtShell_SoFontNameElement::pop(SoState*  state0, const SoElement*  pr
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -2923,7 +2923,7 @@ void PythonQtShell_SoFontNameElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -2980,7 +2980,7 @@ void PythonQtShell_SoFontSizeElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -3002,7 +3002,7 @@ SoElement*  PythonQtShell_SoFontSizeElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -3035,7 +3035,7 @@ void PythonQtShell_SoFontSizeElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -3057,7 +3057,7 @@ bool  PythonQtShell_SoFontSizeElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -3090,7 +3090,7 @@ void PythonQtShell_SoFontSizeElement::pop(SoState*  state0, const SoElement*  pr
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -3112,7 +3112,7 @@ void PythonQtShell_SoFontSizeElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -3134,7 +3134,7 @@ void PythonQtShell_SoFontSizeElement::setElt(float  value0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "float"};
@@ -3191,7 +3191,7 @@ void PythonQtShell_SoGLCacheContextElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -3213,7 +3213,7 @@ SoElement*  PythonQtShell_SoGLCacheContextElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -3246,7 +3246,7 @@ void PythonQtShell_SoGLCacheContextElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -3268,7 +3268,7 @@ bool  PythonQtShell_SoGLCacheContextElement::matches(const SoElement*  elt0) con
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -3301,7 +3301,7 @@ void PythonQtShell_SoGLCacheContextElement::pop(SoState*  state0, const SoElemen
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -3323,7 +3323,7 @@ void PythonQtShell_SoGLCacheContextElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -3395,7 +3395,7 @@ void PythonQtShell_SoGLClipPlaneElement::addToElt(const SbPlane&  plane0, const 
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("addToElt");
+    static PyObject* name = PyUnicode_FromString("addToElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbPlane&" , "const SbMatrix&"};
@@ -3417,7 +3417,7 @@ void PythonQtShell_SoGLClipPlaneElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -3439,7 +3439,7 @@ SoElement*  PythonQtShell_SoGLClipPlaneElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -3472,7 +3472,7 @@ void PythonQtShell_SoGLClipPlaneElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -3494,7 +3494,7 @@ bool  PythonQtShell_SoGLClipPlaneElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -3527,7 +3527,7 @@ void PythonQtShell_SoGLClipPlaneElement::pop(SoState*  state0, const SoElement* 
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -3549,7 +3549,7 @@ void PythonQtShell_SoGLClipPlaneElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -3596,7 +3596,7 @@ void PythonQtShell_SoGLCoordinateElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -3618,7 +3618,7 @@ SoElement*  PythonQtShell_SoGLCoordinateElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -3651,7 +3651,7 @@ void PythonQtShell_SoGLCoordinateElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -3673,7 +3673,7 @@ bool  PythonQtShell_SoGLCoordinateElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -3706,7 +3706,7 @@ void PythonQtShell_SoGLCoordinateElement::pop(SoState*  state0, const SoElement*
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -3728,7 +3728,7 @@ void PythonQtShell_SoGLCoordinateElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -3775,7 +3775,7 @@ void PythonQtShell_SoGLDrawStyleElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -3797,7 +3797,7 @@ SoElement*  PythonQtShell_SoGLDrawStyleElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -3830,7 +3830,7 @@ void PythonQtShell_SoGLDrawStyleElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -3852,7 +3852,7 @@ bool  PythonQtShell_SoGLDrawStyleElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -3885,7 +3885,7 @@ void PythonQtShell_SoGLDrawStyleElement::pop(SoState*  state0, const SoElement* 
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -3907,7 +3907,7 @@ void PythonQtShell_SoGLDrawStyleElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -3929,7 +3929,7 @@ void PythonQtShell_SoGLDrawStyleElement::setElt(int  style0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "int"};
@@ -3971,7 +3971,7 @@ void PythonQtShell_SoGLLazyElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -3993,7 +3993,7 @@ SoElement*  PythonQtShell_SoGLLazyElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -4026,7 +4026,7 @@ void PythonQtShell_SoGLLazyElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -4048,7 +4048,7 @@ bool  PythonQtShell_SoGLLazyElement::matches(const SoElement*  arg__1) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -4081,7 +4081,7 @@ void PythonQtShell_SoGLLazyElement::pop(SoState*  state0, const SoElement*  prev
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -4103,7 +4103,7 @@ void PythonQtShell_SoGLLazyElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -4195,7 +4195,7 @@ void PythonQtShell_SoGLLightIdElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -4217,7 +4217,7 @@ SoElement*  PythonQtShell_SoGLLightIdElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -4250,7 +4250,7 @@ void PythonQtShell_SoGLLightIdElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -4272,7 +4272,7 @@ bool  PythonQtShell_SoGLLightIdElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -4305,7 +4305,7 @@ void PythonQtShell_SoGLLightIdElement::pop(SoState*  state0, const SoElement*  p
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -4327,7 +4327,7 @@ void PythonQtShell_SoGLLightIdElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -4349,7 +4349,7 @@ void PythonQtShell_SoGLLightIdElement::setElt(int  value0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "int"};
@@ -4411,7 +4411,7 @@ void PythonQtShell_SoGLLinePatternElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -4433,7 +4433,7 @@ SoElement*  PythonQtShell_SoGLLinePatternElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -4466,7 +4466,7 @@ void PythonQtShell_SoGLLinePatternElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -4488,7 +4488,7 @@ bool  PythonQtShell_SoGLLinePatternElement::matches(const SoElement*  elt0) cons
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -4521,7 +4521,7 @@ void PythonQtShell_SoGLLinePatternElement::pop(SoState*  state0, const SoElement
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -4543,7 +4543,7 @@ void PythonQtShell_SoGLLinePatternElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -4565,7 +4565,7 @@ void PythonQtShell_SoGLLinePatternElement::setElt(int  pattern0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "int"};
@@ -4607,7 +4607,7 @@ void PythonQtShell_SoGLLineWidthElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -4629,7 +4629,7 @@ SoElement*  PythonQtShell_SoGLLineWidthElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -4662,7 +4662,7 @@ void PythonQtShell_SoGLLineWidthElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -4684,7 +4684,7 @@ bool  PythonQtShell_SoGLLineWidthElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -4717,7 +4717,7 @@ void PythonQtShell_SoGLLineWidthElement::pop(SoState*  state0, const SoElement* 
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -4739,7 +4739,7 @@ void PythonQtShell_SoGLLineWidthElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -4761,7 +4761,7 @@ void PythonQtShell_SoGLLineWidthElement::setElt(float  width0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "float"};
@@ -4803,7 +4803,7 @@ void PythonQtShell_SoGLModelMatrixElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -4825,7 +4825,7 @@ SoElement*  PythonQtShell_SoGLModelMatrixElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -4858,7 +4858,7 @@ void PythonQtShell_SoGLModelMatrixElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -4880,7 +4880,7 @@ void PythonQtShell_SoGLModelMatrixElement::makeEltIdentity()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("makeEltIdentity");
+    static PyObject* name = PyUnicode_FromString("makeEltIdentity");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={""};
@@ -4902,7 +4902,7 @@ bool  PythonQtShell_SoGLModelMatrixElement::matches(const SoElement*  elt0) cons
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -4935,7 +4935,7 @@ void PythonQtShell_SoGLModelMatrixElement::multElt(const SbMatrix&  matrix0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("multElt");
+    static PyObject* name = PyUnicode_FromString("multElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbMatrix&"};
@@ -4957,7 +4957,7 @@ void PythonQtShell_SoGLModelMatrixElement::pop(SoState*  state0, const SoElement
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -4979,7 +4979,7 @@ void PythonQtShell_SoGLModelMatrixElement::popMatrixElt(const SbMatrix&  m0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("popMatrixElt");
+    static PyObject* name = PyUnicode_FromString("popMatrixElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbMatrix&"};
@@ -5001,7 +5001,7 @@ void PythonQtShell_SoGLModelMatrixElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -5023,7 +5023,7 @@ SbMatrix  PythonQtShell_SoGLModelMatrixElement::pushMatrixElt()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pushMatrixElt");
+    static PyObject* name = PyUnicode_FromString("pushMatrixElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbMatrix"};
@@ -5056,7 +5056,7 @@ void PythonQtShell_SoGLModelMatrixElement::rotateEltBy(const SbRotation&  transl
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("rotateEltBy");
+    static PyObject* name = PyUnicode_FromString("rotateEltBy");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbRotation&"};
@@ -5078,7 +5078,7 @@ void PythonQtShell_SoGLModelMatrixElement::scaleEltBy(const SbVec3f&  scaleFacto
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("scaleEltBy");
+    static PyObject* name = PyUnicode_FromString("scaleEltBy");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbVec3f&"};
@@ -5100,7 +5100,7 @@ void PythonQtShell_SoGLModelMatrixElement::setElt(const SbMatrix&  matrix0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbMatrix&"};
@@ -5122,7 +5122,7 @@ void PythonQtShell_SoGLModelMatrixElement::translateEltBy(const SbVec3f&  transl
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("translateEltBy");
+    static PyObject* name = PyUnicode_FromString("translateEltBy");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbVec3f&"};
@@ -5164,7 +5164,7 @@ void PythonQtShell_SoGLNormalElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -5186,7 +5186,7 @@ SoElement*  PythonQtShell_SoGLNormalElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -5219,7 +5219,7 @@ void PythonQtShell_SoGLNormalElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -5241,7 +5241,7 @@ bool  PythonQtShell_SoGLNormalElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -5274,7 +5274,7 @@ void PythonQtShell_SoGLNormalElement::pop(SoState*  state0, const SoElement*  pr
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -5296,7 +5296,7 @@ void PythonQtShell_SoGLNormalElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -5343,7 +5343,7 @@ void PythonQtShell_SoGLPointSizeElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -5365,7 +5365,7 @@ SoElement*  PythonQtShell_SoGLPointSizeElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -5398,7 +5398,7 @@ void PythonQtShell_SoGLPointSizeElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -5420,7 +5420,7 @@ bool  PythonQtShell_SoGLPointSizeElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -5453,7 +5453,7 @@ void PythonQtShell_SoGLPointSizeElement::pop(SoState*  state0, const SoElement* 
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -5475,7 +5475,7 @@ void PythonQtShell_SoGLPointSizeElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -5497,7 +5497,7 @@ void PythonQtShell_SoGLPointSizeElement::setElt(float  size0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "float"};
@@ -5539,7 +5539,7 @@ void PythonQtShell_SoGLProjectionMatrixElement::captureThis(SoState*  state0) co
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -5561,7 +5561,7 @@ SoElement*  PythonQtShell_SoGLProjectionMatrixElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -5594,7 +5594,7 @@ void PythonQtShell_SoGLProjectionMatrixElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -5616,7 +5616,7 @@ bool  PythonQtShell_SoGLProjectionMatrixElement::matches(const SoElement*  elt0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -5649,7 +5649,7 @@ void PythonQtShell_SoGLProjectionMatrixElement::pop(SoState*  state0, const SoEl
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -5671,7 +5671,7 @@ void PythonQtShell_SoGLProjectionMatrixElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -5693,7 +5693,7 @@ void PythonQtShell_SoGLProjectionMatrixElement::setElt(const SbMatrix&  matrix0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbMatrix&"};
@@ -5735,7 +5735,7 @@ void PythonQtShell_SoGLRenderPassElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -5757,7 +5757,7 @@ SoElement*  PythonQtShell_SoGLRenderPassElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -5790,7 +5790,7 @@ void PythonQtShell_SoGLRenderPassElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -5812,7 +5812,7 @@ bool  PythonQtShell_SoGLRenderPassElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -5845,7 +5845,7 @@ void PythonQtShell_SoGLRenderPassElement::pop(SoState*  state0, const SoElement*
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -5867,7 +5867,7 @@ void PythonQtShell_SoGLRenderPassElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -5919,7 +5919,7 @@ void PythonQtShell_SoGLShapeHintsElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -5941,7 +5941,7 @@ SoElement*  PythonQtShell_SoGLShapeHintsElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -5974,7 +5974,7 @@ void PythonQtShell_SoGLShapeHintsElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -5996,7 +5996,7 @@ bool  PythonQtShell_SoGLShapeHintsElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -6029,7 +6029,7 @@ void PythonQtShell_SoGLShapeHintsElement::pop(SoState*  state0, const SoElement*
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -6051,7 +6051,7 @@ void PythonQtShell_SoGLShapeHintsElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -6073,7 +6073,7 @@ void PythonQtShell_SoGLShapeHintsElement::setElt(SoShapeHintsElement::VertexOrde
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoShapeHintsElement::VertexOrdering" , "SoShapeHintsElement::ShapeType" , "SoShapeHintsElement::FaceType"};
@@ -6115,7 +6115,7 @@ void PythonQtShell_SoGLTextureCoordinateElement::captureThis(SoState*  state0) c
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -6137,7 +6137,7 @@ SoElement*  PythonQtShell_SoGLTextureCoordinateElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -6170,7 +6170,7 @@ SoTextureCoordinateElement::CoordType  PythonQtShell_SoGLTextureCoordinateElemen
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getType");
+    static PyObject* name = PyUnicode_FromString("getType");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoTextureCoordinateElement::CoordType"};
@@ -6203,7 +6203,7 @@ void PythonQtShell_SoGLTextureCoordinateElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -6225,7 +6225,7 @@ bool  PythonQtShell_SoGLTextureCoordinateElement::matches(const SoElement*  elt0
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -6258,7 +6258,7 @@ void PythonQtShell_SoGLTextureCoordinateElement::pop(SoState*  state0, const SoE
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -6280,7 +6280,7 @@ void PythonQtShell_SoGLTextureCoordinateElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -6332,7 +6332,7 @@ void PythonQtShell_SoGLTextureEnabledElement::captureThis(SoState*  state0) cons
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -6354,7 +6354,7 @@ SoElement*  PythonQtShell_SoGLTextureEnabledElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -6387,7 +6387,7 @@ void PythonQtShell_SoGLTextureEnabledElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -6409,7 +6409,7 @@ bool  PythonQtShell_SoGLTextureEnabledElement::matches(const SoElement*  elt0) c
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -6442,7 +6442,7 @@ void PythonQtShell_SoGLTextureEnabledElement::pop(SoState*  state0, const SoElem
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -6464,7 +6464,7 @@ void PythonQtShell_SoGLTextureEnabledElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -6486,7 +6486,7 @@ void PythonQtShell_SoGLTextureEnabledElement::setElt(int  value0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "int"};
@@ -6543,7 +6543,7 @@ void PythonQtShell_SoGLTextureImageElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -6565,7 +6565,7 @@ SoElement*  PythonQtShell_SoGLTextureImageElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -6598,7 +6598,7 @@ void PythonQtShell_SoGLTextureImageElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -6620,7 +6620,7 @@ bool  PythonQtShell_SoGLTextureImageElement::matches(const SoElement*  elt0) con
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -6653,7 +6653,7 @@ void PythonQtShell_SoGLTextureImageElement::pop(SoState*  state0, const SoElemen
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -6675,7 +6675,7 @@ void PythonQtShell_SoGLTextureImageElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -6697,7 +6697,7 @@ void PythonQtShell_SoGLTextureImageElement::setElt(const SbVec2s&  s0, int  nc1,
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbVec2s&" , "int" , "const unsigned char*" , "int" , "int" , "int" , "const SbColor&"};
@@ -6739,7 +6739,7 @@ void PythonQtShell_SoGLTextureMatrixElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -6761,7 +6761,7 @@ SoElement*  PythonQtShell_SoGLTextureMatrixElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -6794,7 +6794,7 @@ void PythonQtShell_SoGLTextureMatrixElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -6816,7 +6816,7 @@ void PythonQtShell_SoGLTextureMatrixElement::makeEltIdentity()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("makeEltIdentity");
+    static PyObject* name = PyUnicode_FromString("makeEltIdentity");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={""};
@@ -6838,7 +6838,7 @@ bool  PythonQtShell_SoGLTextureMatrixElement::matches(const SoElement*  elt0) co
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -6871,7 +6871,7 @@ void PythonQtShell_SoGLTextureMatrixElement::multElt(const SbMatrix&  matrix0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("multElt");
+    static PyObject* name = PyUnicode_FromString("multElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbMatrix&"};
@@ -6893,7 +6893,7 @@ void PythonQtShell_SoGLTextureMatrixElement::pop(SoState*  state0, const SoEleme
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -6915,7 +6915,7 @@ void PythonQtShell_SoGLTextureMatrixElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -6937,7 +6937,7 @@ void PythonQtShell_SoGLTextureMatrixElement::rotateEltBy(const SbRotation&  tran
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("rotateEltBy");
+    static PyObject* name = PyUnicode_FromString("rotateEltBy");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbRotation&"};
@@ -6959,7 +6959,7 @@ void PythonQtShell_SoGLTextureMatrixElement::scaleEltBy(const SbVec3f&  scaleFac
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("scaleEltBy");
+    static PyObject* name = PyUnicode_FromString("scaleEltBy");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbVec3f&"};
@@ -6981,7 +6981,7 @@ void PythonQtShell_SoGLTextureMatrixElement::translateEltBy(const SbVec3f&  tran
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("translateEltBy");
+    static PyObject* name = PyUnicode_FromString("translateEltBy");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbVec3f&"};
@@ -7023,7 +7023,7 @@ void PythonQtShell_SoGLUpdateAreaElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -7045,7 +7045,7 @@ SoElement*  PythonQtShell_SoGLUpdateAreaElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -7078,7 +7078,7 @@ void PythonQtShell_SoGLUpdateAreaElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -7100,7 +7100,7 @@ bool  PythonQtShell_SoGLUpdateAreaElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -7133,7 +7133,7 @@ void PythonQtShell_SoGLUpdateAreaElement::pop(SoState*  state0, const SoElement*
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -7155,7 +7155,7 @@ void PythonQtShell_SoGLUpdateAreaElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -7217,7 +7217,7 @@ void PythonQtShell_SoGLViewingMatrixElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -7239,7 +7239,7 @@ SoElement*  PythonQtShell_SoGLViewingMatrixElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -7272,7 +7272,7 @@ void PythonQtShell_SoGLViewingMatrixElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -7294,7 +7294,7 @@ bool  PythonQtShell_SoGLViewingMatrixElement::matches(const SoElement*  elt0) co
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -7327,7 +7327,7 @@ void PythonQtShell_SoGLViewingMatrixElement::pop(SoState*  state0, const SoEleme
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -7349,7 +7349,7 @@ void PythonQtShell_SoGLViewingMatrixElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -7371,7 +7371,7 @@ void PythonQtShell_SoGLViewingMatrixElement::setElt(const SbMatrix&  matrix0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbMatrix&"};
@@ -7413,7 +7413,7 @@ void PythonQtShell_SoGLViewportRegionElement::captureThis(SoState*  state0) cons
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -7435,7 +7435,7 @@ SoElement*  PythonQtShell_SoGLViewportRegionElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -7468,7 +7468,7 @@ void PythonQtShell_SoGLViewportRegionElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -7490,7 +7490,7 @@ bool  PythonQtShell_SoGLViewportRegionElement::matches(const SoElement*  elt0) c
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -7523,7 +7523,7 @@ void PythonQtShell_SoGLViewportRegionElement::pop(SoState*  state0, const SoElem
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -7545,7 +7545,7 @@ void PythonQtShell_SoGLViewportRegionElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -7567,7 +7567,7 @@ void PythonQtShell_SoGLViewportRegionElement::setElt(const SbViewportRegion&  vp
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbViewportRegion&"};
@@ -7609,7 +7609,7 @@ void PythonQtShell_SoInt32Element::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -7631,7 +7631,7 @@ SoElement*  PythonQtShell_SoInt32Element::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -7664,7 +7664,7 @@ void PythonQtShell_SoInt32Element::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -7686,7 +7686,7 @@ bool  PythonQtShell_SoInt32Element::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -7719,7 +7719,7 @@ void PythonQtShell_SoInt32Element::pop(SoState*  state0, const SoElement*  prevT
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -7741,7 +7741,7 @@ void PythonQtShell_SoInt32Element::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -7763,7 +7763,7 @@ void PythonQtShell_SoInt32Element::setElt(int  value0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "int"};
@@ -7820,7 +7820,7 @@ void PythonQtShell_SoLazyElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -7842,7 +7842,7 @@ SoElement*  PythonQtShell_SoLazyElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -7875,7 +7875,7 @@ void PythonQtShell_SoLazyElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -7897,7 +7897,7 @@ bool  PythonQtShell_SoLazyElement::matches(const SoElement*  arg__1) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -7930,7 +7930,7 @@ void PythonQtShell_SoLazyElement::pop(SoState*  state0, const SoElement*  prevTo
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -7952,7 +7952,7 @@ void PythonQtShell_SoLazyElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -7974,7 +7974,7 @@ void PythonQtShell_SoLazyElement::registerGetDependence(SoState*  arg__1, unsign
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("registerGetDependence");
+    static PyObject* name = PyUnicode_FromString("registerGetDependence");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "unsigned int"};
@@ -7996,7 +7996,7 @@ void PythonQtShell_SoLazyElement::registerRedundantSet(SoState*  arg__1, unsigne
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("registerRedundantSet");
+    static PyObject* name = PyUnicode_FromString("registerRedundantSet");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "unsigned int"};
@@ -8258,7 +8258,7 @@ void PythonQtShell_SoLightAttenuationElement::captureThis(SoState*  state0) cons
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -8280,7 +8280,7 @@ SoElement*  PythonQtShell_SoLightAttenuationElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -8313,7 +8313,7 @@ void PythonQtShell_SoLightAttenuationElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -8335,7 +8335,7 @@ bool  PythonQtShell_SoLightAttenuationElement::matches(const SoElement*  elt0) c
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -8368,7 +8368,7 @@ void PythonQtShell_SoLightAttenuationElement::pop(SoState*  state0, const SoElem
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -8390,7 +8390,7 @@ void PythonQtShell_SoLightAttenuationElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -8447,7 +8447,7 @@ void PythonQtShell_SoLinePatternElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -8469,7 +8469,7 @@ SoElement*  PythonQtShell_SoLinePatternElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -8502,7 +8502,7 @@ void PythonQtShell_SoLinePatternElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -8524,7 +8524,7 @@ bool  PythonQtShell_SoLinePatternElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -8557,7 +8557,7 @@ void PythonQtShell_SoLinePatternElement::pop(SoState*  state0, const SoElement* 
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -8579,7 +8579,7 @@ void PythonQtShell_SoLinePatternElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -8601,7 +8601,7 @@ void PythonQtShell_SoLinePatternElement::setElt(int  value0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "int"};
@@ -8643,7 +8643,7 @@ void PythonQtShell_SoLineWidthElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -8665,7 +8665,7 @@ SoElement*  PythonQtShell_SoLineWidthElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -8698,7 +8698,7 @@ void PythonQtShell_SoLineWidthElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -8720,7 +8720,7 @@ bool  PythonQtShell_SoLineWidthElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -8753,7 +8753,7 @@ void PythonQtShell_SoLineWidthElement::pop(SoState*  state0, const SoElement*  p
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -8775,7 +8775,7 @@ void PythonQtShell_SoLineWidthElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -8797,7 +8797,7 @@ void PythonQtShell_SoLineWidthElement::setElt(float  value0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "float"};
@@ -8854,7 +8854,7 @@ void PythonQtShell_SoLocalBBoxMatrixElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -8876,7 +8876,7 @@ SoElement*  PythonQtShell_SoLocalBBoxMatrixElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -8909,7 +8909,7 @@ void PythonQtShell_SoLocalBBoxMatrixElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -8931,7 +8931,7 @@ bool  PythonQtShell_SoLocalBBoxMatrixElement::matches(const SoElement*  elt0) co
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -8964,7 +8964,7 @@ void PythonQtShell_SoLocalBBoxMatrixElement::pop(SoState*  state0, const SoEleme
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -8986,7 +8986,7 @@ void PythonQtShell_SoLocalBBoxMatrixElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -9078,7 +9078,7 @@ void PythonQtShell_SoMaterialBindingElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -9100,7 +9100,7 @@ SoElement*  PythonQtShell_SoMaterialBindingElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -9133,7 +9133,7 @@ void PythonQtShell_SoMaterialBindingElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -9155,7 +9155,7 @@ bool  PythonQtShell_SoMaterialBindingElement::matches(const SoElement*  elt0) co
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -9188,7 +9188,7 @@ void PythonQtShell_SoMaterialBindingElement::pop(SoState*  state0, const SoEleme
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -9210,7 +9210,7 @@ void PythonQtShell_SoMaterialBindingElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -9232,7 +9232,7 @@ void PythonQtShell_SoMaterialBindingElement::setElt(int  value0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "int"};
@@ -9289,7 +9289,7 @@ void PythonQtShell_SoModelMatrixElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -9311,7 +9311,7 @@ SoElement*  PythonQtShell_SoModelMatrixElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -9344,7 +9344,7 @@ void PythonQtShell_SoModelMatrixElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -9366,7 +9366,7 @@ void PythonQtShell_SoModelMatrixElement::makeEltIdentity()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("makeEltIdentity");
+    static PyObject* name = PyUnicode_FromString("makeEltIdentity");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={""};
@@ -9388,7 +9388,7 @@ bool  PythonQtShell_SoModelMatrixElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -9421,7 +9421,7 @@ void PythonQtShell_SoModelMatrixElement::multElt(const SbMatrix&  matrix0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("multElt");
+    static PyObject* name = PyUnicode_FromString("multElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbMatrix&"};
@@ -9443,7 +9443,7 @@ void PythonQtShell_SoModelMatrixElement::pop(SoState*  state0, const SoElement* 
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -9465,7 +9465,7 @@ void PythonQtShell_SoModelMatrixElement::popMatrixElt(const SbMatrix&  m0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("popMatrixElt");
+    static PyObject* name = PyUnicode_FromString("popMatrixElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbMatrix&"};
@@ -9487,7 +9487,7 @@ void PythonQtShell_SoModelMatrixElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -9509,7 +9509,7 @@ SbMatrix  PythonQtShell_SoModelMatrixElement::pushMatrixElt()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pushMatrixElt");
+    static PyObject* name = PyUnicode_FromString("pushMatrixElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbMatrix"};
@@ -9542,7 +9542,7 @@ void PythonQtShell_SoModelMatrixElement::rotateEltBy(const SbRotation&  translat
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("rotateEltBy");
+    static PyObject* name = PyUnicode_FromString("rotateEltBy");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbRotation&"};
@@ -9564,7 +9564,7 @@ void PythonQtShell_SoModelMatrixElement::scaleEltBy(const SbVec3f&  scaleFactor0
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("scaleEltBy");
+    static PyObject* name = PyUnicode_FromString("scaleEltBy");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbVec3f&"};
@@ -9586,7 +9586,7 @@ void PythonQtShell_SoModelMatrixElement::setElt(const SbMatrix&  matrix0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbMatrix&"};
@@ -9608,7 +9608,7 @@ void PythonQtShell_SoModelMatrixElement::translateEltBy(const SbVec3f&  translat
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("translateEltBy");
+    static PyObject* name = PyUnicode_FromString("translateEltBy");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbVec3f&"};
@@ -9750,7 +9750,7 @@ void PythonQtShell_SoNormalBindingElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -9772,7 +9772,7 @@ SoElement*  PythonQtShell_SoNormalBindingElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -9805,7 +9805,7 @@ void PythonQtShell_SoNormalBindingElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -9827,7 +9827,7 @@ bool  PythonQtShell_SoNormalBindingElement::matches(const SoElement*  elt0) cons
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -9860,7 +9860,7 @@ void PythonQtShell_SoNormalBindingElement::pop(SoState*  state0, const SoElement
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -9882,7 +9882,7 @@ void PythonQtShell_SoNormalBindingElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -9904,7 +9904,7 @@ void PythonQtShell_SoNormalBindingElement::setElt(int  value0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "int"};
@@ -9961,7 +9961,7 @@ void PythonQtShell_SoNormalElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -9983,7 +9983,7 @@ SoElement*  PythonQtShell_SoNormalElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -10016,7 +10016,7 @@ void PythonQtShell_SoNormalElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -10038,7 +10038,7 @@ bool  PythonQtShell_SoNormalElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -10071,7 +10071,7 @@ void PythonQtShell_SoNormalElement::pop(SoState*  state0, const SoElement*  prev
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -10093,7 +10093,7 @@ void PythonQtShell_SoNormalElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -10155,7 +10155,7 @@ void PythonQtShell_SoOverrideElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -10177,7 +10177,7 @@ SoElement*  PythonQtShell_SoOverrideElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -10210,7 +10210,7 @@ void PythonQtShell_SoOverrideElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -10232,7 +10232,7 @@ bool  PythonQtShell_SoOverrideElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -10265,7 +10265,7 @@ void PythonQtShell_SoOverrideElement::pop(SoState*  state0, const SoElement*  pr
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -10287,7 +10287,7 @@ void PythonQtShell_SoOverrideElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -10529,7 +10529,7 @@ void PythonQtShell_SoPickRayElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -10551,7 +10551,7 @@ SoElement*  PythonQtShell_SoPickRayElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -10584,7 +10584,7 @@ void PythonQtShell_SoPickRayElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -10606,7 +10606,7 @@ bool  PythonQtShell_SoPickRayElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -10639,7 +10639,7 @@ void PythonQtShell_SoPickRayElement::pop(SoState*  state0, const SoElement*  pre
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -10661,7 +10661,7 @@ void PythonQtShell_SoPickRayElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -10713,7 +10713,7 @@ void PythonQtShell_SoPickStyleElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -10735,7 +10735,7 @@ SoElement*  PythonQtShell_SoPickStyleElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -10768,7 +10768,7 @@ void PythonQtShell_SoPickStyleElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -10790,7 +10790,7 @@ bool  PythonQtShell_SoPickStyleElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -10823,7 +10823,7 @@ void PythonQtShell_SoPickStyleElement::pop(SoState*  state0, const SoElement*  p
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -10845,7 +10845,7 @@ void PythonQtShell_SoPickStyleElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -10867,7 +10867,7 @@ void PythonQtShell_SoPickStyleElement::setElt(int  value0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "int"};
@@ -10924,7 +10924,7 @@ void PythonQtShell_SoPointSizeElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -10946,7 +10946,7 @@ SoElement*  PythonQtShell_SoPointSizeElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -10979,7 +10979,7 @@ void PythonQtShell_SoPointSizeElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -11001,7 +11001,7 @@ bool  PythonQtShell_SoPointSizeElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -11034,7 +11034,7 @@ void PythonQtShell_SoPointSizeElement::pop(SoState*  state0, const SoElement*  p
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -11056,7 +11056,7 @@ void PythonQtShell_SoPointSizeElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -11078,7 +11078,7 @@ void PythonQtShell_SoPointSizeElement::setElt(float  value0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "float"};
@@ -11135,7 +11135,7 @@ void PythonQtShell_SoProfileCoordinateElement::captureThis(SoState*  state0) con
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -11157,7 +11157,7 @@ SoElement*  PythonQtShell_SoProfileCoordinateElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -11190,7 +11190,7 @@ void PythonQtShell_SoProfileCoordinateElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -11212,7 +11212,7 @@ bool  PythonQtShell_SoProfileCoordinateElement::matches(const SoElement*  elt0) 
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -11245,7 +11245,7 @@ void PythonQtShell_SoProfileCoordinateElement::pop(SoState*  state0, const SoEle
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -11267,7 +11267,7 @@ void PythonQtShell_SoProfileCoordinateElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -11354,7 +11354,7 @@ void PythonQtShell_SoProfileElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -11376,7 +11376,7 @@ SoElement*  PythonQtShell_SoProfileElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -11409,7 +11409,7 @@ void PythonQtShell_SoProfileElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -11431,7 +11431,7 @@ bool  PythonQtShell_SoProfileElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -11464,7 +11464,7 @@ void PythonQtShell_SoProfileElement::pop(SoState*  state0, const SoElement*  pre
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -11486,7 +11486,7 @@ void PythonQtShell_SoProfileElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -11533,7 +11533,7 @@ void PythonQtShell_SoProjectionMatrixElement::captureThis(SoState*  state0) cons
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -11555,7 +11555,7 @@ SoElement*  PythonQtShell_SoProjectionMatrixElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -11588,7 +11588,7 @@ void PythonQtShell_SoProjectionMatrixElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -11610,7 +11610,7 @@ bool  PythonQtShell_SoProjectionMatrixElement::matches(const SoElement*  elt0) c
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -11643,7 +11643,7 @@ void PythonQtShell_SoProjectionMatrixElement::pop(SoState*  state0, const SoElem
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -11665,7 +11665,7 @@ void PythonQtShell_SoProjectionMatrixElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -11687,7 +11687,7 @@ void PythonQtShell_SoProjectionMatrixElement::setElt(const SbMatrix&  matrix0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbMatrix&"};
@@ -11744,7 +11744,7 @@ void PythonQtShell_SoReplacedElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -11766,7 +11766,7 @@ SoElement*  PythonQtShell_SoReplacedElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -11799,7 +11799,7 @@ void PythonQtShell_SoReplacedElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -11821,7 +11821,7 @@ bool  PythonQtShell_SoReplacedElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -11854,7 +11854,7 @@ void PythonQtShell_SoReplacedElement::pop(SoState*  state0, const SoElement*  pr
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -11876,7 +11876,7 @@ void PythonQtShell_SoReplacedElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -11923,7 +11923,7 @@ void PythonQtShell_SoShapeHintsElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -11945,7 +11945,7 @@ SoElement*  PythonQtShell_SoShapeHintsElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -11978,7 +11978,7 @@ void PythonQtShell_SoShapeHintsElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -12000,7 +12000,7 @@ bool  PythonQtShell_SoShapeHintsElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -12033,7 +12033,7 @@ void PythonQtShell_SoShapeHintsElement::pop(SoState*  state0, const SoElement*  
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -12055,7 +12055,7 @@ void PythonQtShell_SoShapeHintsElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -12077,7 +12077,7 @@ void PythonQtShell_SoShapeHintsElement::setElt(SoShapeHintsElement::VertexOrderi
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoShapeHintsElement::VertexOrdering" , "SoShapeHintsElement::ShapeType" , "SoShapeHintsElement::FaceType"};
@@ -12164,7 +12164,7 @@ void PythonQtShell_SoShapeStyleElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -12186,7 +12186,7 @@ SoElement*  PythonQtShell_SoShapeStyleElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -12219,7 +12219,7 @@ void PythonQtShell_SoShapeStyleElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -12241,7 +12241,7 @@ bool  PythonQtShell_SoShapeStyleElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -12274,7 +12274,7 @@ void PythonQtShell_SoShapeStyleElement::pop(SoState*  state0, const SoElement*  
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -12296,7 +12296,7 @@ void PythonQtShell_SoShapeStyleElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -12408,7 +12408,7 @@ void PythonQtShell_SoSwitchElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -12430,7 +12430,7 @@ SoElement*  PythonQtShell_SoSwitchElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -12463,7 +12463,7 @@ void PythonQtShell_SoSwitchElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -12485,7 +12485,7 @@ bool  PythonQtShell_SoSwitchElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -12518,7 +12518,7 @@ void PythonQtShell_SoSwitchElement::pop(SoState*  state0, const SoElement*  prev
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -12540,7 +12540,7 @@ void PythonQtShell_SoSwitchElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -12562,7 +12562,7 @@ void PythonQtShell_SoSwitchElement::setElt(int  value0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "int"};
@@ -12619,7 +12619,7 @@ void PythonQtShell_SoTextureCoordinateBindingElement::captureThis(SoState*  stat
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -12641,7 +12641,7 @@ SoElement*  PythonQtShell_SoTextureCoordinateBindingElement::copyMatchInfo() con
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -12674,7 +12674,7 @@ void PythonQtShell_SoTextureCoordinateBindingElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -12696,7 +12696,7 @@ bool  PythonQtShell_SoTextureCoordinateBindingElement::matches(const SoElement* 
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -12729,7 +12729,7 @@ void PythonQtShell_SoTextureCoordinateBindingElement::pop(SoState*  state0, cons
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -12751,7 +12751,7 @@ void PythonQtShell_SoTextureCoordinateBindingElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -12773,7 +12773,7 @@ void PythonQtShell_SoTextureCoordinateBindingElement::setElt(int  value0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "int"};
@@ -12830,7 +12830,7 @@ void PythonQtShell_SoTextureCoordinateElement::captureThis(SoState*  state0) con
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -12852,7 +12852,7 @@ SoElement*  PythonQtShell_SoTextureCoordinateElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -12885,7 +12885,7 @@ SoTextureCoordinateElement::CoordType  PythonQtShell_SoTextureCoordinateElement:
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getType");
+    static PyObject* name = PyUnicode_FromString("getType");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoTextureCoordinateElement::CoordType"};
@@ -12918,7 +12918,7 @@ void PythonQtShell_SoTextureCoordinateElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -12940,7 +12940,7 @@ bool  PythonQtShell_SoTextureCoordinateElement::matches(const SoElement*  elt0) 
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -12973,7 +12973,7 @@ void PythonQtShell_SoTextureCoordinateElement::pop(SoState*  state0, const SoEle
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -12995,7 +12995,7 @@ void PythonQtShell_SoTextureCoordinateElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -13092,7 +13092,7 @@ void PythonQtShell_SoTextureImageElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -13114,7 +13114,7 @@ SoElement*  PythonQtShell_SoTextureImageElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -13147,7 +13147,7 @@ void PythonQtShell_SoTextureImageElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -13169,7 +13169,7 @@ bool  PythonQtShell_SoTextureImageElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -13202,7 +13202,7 @@ void PythonQtShell_SoTextureImageElement::pop(SoState*  state0, const SoElement*
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -13224,7 +13224,7 @@ void PythonQtShell_SoTextureImageElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -13246,7 +13246,7 @@ void PythonQtShell_SoTextureImageElement::setElt(const SbVec2s&  s0, int  nc1, c
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbVec2s&" , "int" , "const unsigned char*" , "int" , "int" , "int" , "const SbColor&"};
@@ -13313,7 +13313,7 @@ void PythonQtShell_SoTextureMatrixElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -13335,7 +13335,7 @@ SoElement*  PythonQtShell_SoTextureMatrixElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -13368,7 +13368,7 @@ void PythonQtShell_SoTextureMatrixElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -13390,7 +13390,7 @@ void PythonQtShell_SoTextureMatrixElement::makeEltIdentity()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("makeEltIdentity");
+    static PyObject* name = PyUnicode_FromString("makeEltIdentity");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={""};
@@ -13412,7 +13412,7 @@ bool  PythonQtShell_SoTextureMatrixElement::matches(const SoElement*  elt0) cons
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -13445,7 +13445,7 @@ void PythonQtShell_SoTextureMatrixElement::multElt(const SbMatrix&  matrix0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("multElt");
+    static PyObject* name = PyUnicode_FromString("multElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbMatrix&"};
@@ -13467,7 +13467,7 @@ void PythonQtShell_SoTextureMatrixElement::pop(SoState*  state0, const SoElement
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -13489,7 +13489,7 @@ void PythonQtShell_SoTextureMatrixElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -13511,7 +13511,7 @@ void PythonQtShell_SoTextureMatrixElement::rotateEltBy(const SbRotation&  transl
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("rotateEltBy");
+    static PyObject* name = PyUnicode_FromString("rotateEltBy");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbRotation&"};
@@ -13533,7 +13533,7 @@ void PythonQtShell_SoTextureMatrixElement::scaleEltBy(const SbVec3f&  scaleFacto
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("scaleEltBy");
+    static PyObject* name = PyUnicode_FromString("scaleEltBy");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbVec3f&"};
@@ -13555,7 +13555,7 @@ void PythonQtShell_SoTextureMatrixElement::translateEltBy(const SbVec3f&  transl
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("translateEltBy");
+    static PyObject* name = PyUnicode_FromString("translateEltBy");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbVec3f&"};
@@ -13652,7 +13652,7 @@ void PythonQtShell_SoTextureQualityElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -13674,7 +13674,7 @@ SoElement*  PythonQtShell_SoTextureQualityElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -13707,7 +13707,7 @@ void PythonQtShell_SoTextureQualityElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -13729,7 +13729,7 @@ bool  PythonQtShell_SoTextureQualityElement::matches(const SoElement*  elt0) con
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -13762,7 +13762,7 @@ void PythonQtShell_SoTextureQualityElement::pop(SoState*  state0, const SoElemen
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -13784,7 +13784,7 @@ void PythonQtShell_SoTextureQualityElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -13806,7 +13806,7 @@ void PythonQtShell_SoTextureQualityElement::setElt(float  value0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "float"};
@@ -13863,7 +13863,7 @@ void PythonQtShell_SoUnitsElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -13885,7 +13885,7 @@ SoElement*  PythonQtShell_SoUnitsElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -13918,7 +13918,7 @@ void PythonQtShell_SoUnitsElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -13940,7 +13940,7 @@ bool  PythonQtShell_SoUnitsElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -13973,7 +13973,7 @@ void PythonQtShell_SoUnitsElement::pop(SoState*  state0, const SoElement*  prevT
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -13995,7 +13995,7 @@ void PythonQtShell_SoUnitsElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -14017,7 +14017,7 @@ void PythonQtShell_SoUnitsElement::setElt(int  value0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "int"};
@@ -14074,7 +14074,7 @@ void PythonQtShell_SoViewVolumeElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -14096,7 +14096,7 @@ SoElement*  PythonQtShell_SoViewVolumeElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -14129,7 +14129,7 @@ void PythonQtShell_SoViewVolumeElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -14151,7 +14151,7 @@ bool  PythonQtShell_SoViewVolumeElement::matches(const SoElement*  elt0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -14184,7 +14184,7 @@ void PythonQtShell_SoViewVolumeElement::pop(SoState*  state0, const SoElement*  
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -14206,7 +14206,7 @@ void PythonQtShell_SoViewVolumeElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -14258,7 +14258,7 @@ void PythonQtShell_SoViewingMatrixElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -14280,7 +14280,7 @@ SoElement*  PythonQtShell_SoViewingMatrixElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -14313,7 +14313,7 @@ void PythonQtShell_SoViewingMatrixElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -14335,7 +14335,7 @@ bool  PythonQtShell_SoViewingMatrixElement::matches(const SoElement*  elt0) cons
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -14368,7 +14368,7 @@ void PythonQtShell_SoViewingMatrixElement::pop(SoState*  state0, const SoElement
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -14390,7 +14390,7 @@ void PythonQtShell_SoViewingMatrixElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -14412,7 +14412,7 @@ void PythonQtShell_SoViewingMatrixElement::setElt(const SbMatrix&  matrix0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbMatrix&"};
@@ -14469,7 +14469,7 @@ void PythonQtShell_SoViewportRegionElement::captureThis(SoState*  state0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("captureThis");
+    static PyObject* name = PyUnicode_FromString("captureThis");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -14491,7 +14491,7 @@ SoElement*  PythonQtShell_SoViewportRegionElement::copyMatchInfo() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copyMatchInfo");
+    static PyObject* name = PyUnicode_FromString("copyMatchInfo");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoElement*"};
@@ -14524,7 +14524,7 @@ void PythonQtShell_SoViewportRegionElement::init(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("init");
+    static PyObject* name = PyUnicode_FromString("init");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -14546,7 +14546,7 @@ bool  PythonQtShell_SoViewportRegionElement::matches(const SoElement*  elt0) con
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("matches");
+    static PyObject* name = PyUnicode_FromString("matches");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoElement*"};
@@ -14579,7 +14579,7 @@ void PythonQtShell_SoViewportRegionElement::pop(SoState*  state0, const SoElemen
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("pop");
+    static PyObject* name = PyUnicode_FromString("pop");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*" , "const SoElement*"};
@@ -14601,7 +14601,7 @@ void PythonQtShell_SoViewportRegionElement::push(SoState*  state0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("push");
+    static PyObject* name = PyUnicode_FromString("push");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoState*"};
@@ -14623,7 +14623,7 @@ void PythonQtShell_SoViewportRegionElement::setElt(const SbViewportRegion&  vpRe
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setElt");
+    static PyObject* name = PyUnicode_FromString("setElt");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbViewportRegion&"};

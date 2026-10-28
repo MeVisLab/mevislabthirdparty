@@ -1,5 +1,5 @@
 diff --git a/src/tri/_tri.h b/src/tri/_tri.h
-index cfdfd82..7cc0ed9 100644
+index 994b1f4..b49ea08 100644
 --- a/src/tri/_tri.h
 +++ b/src/tri/_tri.h
 @@ -63,6 +63,15 @@

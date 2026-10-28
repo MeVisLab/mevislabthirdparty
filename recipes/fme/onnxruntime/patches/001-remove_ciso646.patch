@@ -1,0 +1,17 @@
+diff --git a/onnxruntime/core/providers/cuda/cuda_common.h b/onnxruntime/core/providers/cuda/cuda_common.h
+index f90eb28..d29e96d 100644
+--- a/onnxruntime/core/providers/cuda/cuda_common.h
++++ b/onnxruntime/core/providers/cuda/cuda_common.h
+@@ -5,12 +5,6 @@
+ 
+ #ifndef BUILD_CUDA_EP_AS_PLUGIN
+ 
+-// The following three lines were copied from ABSL
+-// cutlass needs them, because cutlass uses "and"/"or" keywords
+-#ifdef __cplusplus
+-#include <ciso646>
+-#endif
+-
+ #if defined(ENABLE_FP4) && !defined(DISABLE_FLOAT4_TYPES)
+ 
+ #if defined(_MSC_VER)

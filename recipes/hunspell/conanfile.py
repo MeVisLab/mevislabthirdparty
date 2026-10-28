@@ -3,12 +3,12 @@ from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
 from conan.tools.files import collect_libs, get, copy
 import os
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "hunspell"
-    version = "1.7.3"
+    version = "1.7.5"
     homepage = "http://hunspell.github.io"
     description = "Hunspell spell checker - an improved replacement for myspell"
     license = "MPL-1.1"
@@ -20,7 +20,7 @@ class ConanRecipe(ConanFile):
         cmake_layout(self, src_folder="src")
 
     def source(self):
-        sha256 = "433274dac0619cb00c2e18b43a3dd3a9d50da5b5613fa9b5c21781e35dd76bc1"
+        sha256 = "2e559f0c2a592ba48e421477f58e9bf7e01062277a4a7821afb52fc9401010ae"
         url = f"https://github.com/hunspell/hunspell/releases/download/v{self.version}/hunspell-{self.version}.tar.gz"
         get(self, sha256=sha256, url=url, strip_root=True)
 

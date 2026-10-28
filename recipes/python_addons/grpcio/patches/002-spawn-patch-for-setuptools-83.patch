@@ -1,0 +1,20 @@
+diff --git a/src/python/grpcio/_spawn_patch.py b/src/python/grpcio/_spawn_patch.py
+index 92dbe81..360a8c0 100644
+--- a/src/python/grpcio/_spawn_patch.py
++++ b/src/python/grpcio/_spawn_patch.py
+@@ -27,7 +27,8 @@ import tempfile
+ 
+ MAX_COMMAND_LENGTH = 8191
+ 
+-_classic_spawn = ccompiler.CCompiler.spawn
++_SPAWN_METHOD = "call" if hasattr(ccompiler.CCompiler, "call") else "spawn"
++_classic_spawn = getattr(ccompiler.CCompiler, _SPAWN_METHOD)
+ 
+ 
+ def escape_arg(arg):
+@@ -120,4 +121,4 @@ def _commandfile_spawn(self, command, **kwargs):
+ def monkeypatch_spawn():
+     """Monkeypatching is dumb, but it's either that or we become maintainers of
+     something much, much bigger."""
+-    ccompiler.CCompiler.spawn = _commandfile_spawn
++    setattr(ccompiler.CCompiler, _SPAWN_METHOD, _commandfile_spawn)

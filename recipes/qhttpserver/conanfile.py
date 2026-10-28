@@ -4,7 +4,7 @@ from conan.tools.files import patch, collect_libs, copy, get
 from conan.tools.env import VirtualRunEnv
 import os
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
@@ -27,7 +27,7 @@ class ConanRecipe(ConanFile):
         get(
             self,
             sha256="49628e859a6aea81ada25b9b51630808cb6d7e9042b017b6514cdfd9dabb65dd",
-            url=f"https://github.com/nikhilm/qhttpserver/archive/30ac5715d123030b01bbac7383fb73d1d00d932b.tar.gz",
+            url="https://github.com/nikhilm/qhttpserver/archive/30ac5715d123030b01bbac7383fb73d1d00d932b.tar.gz",
             destination="src",
             strip_root=True,
         )
@@ -64,7 +64,7 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
-        self.cpp_info.set_property("purl", f"pkg:github/nikhilm/qhttpserver@30ac5715d123030b01bbac7383fb73d1d00d932b")
+        self.cpp_info.set_property("purl", "pkg:github/nikhilm/qhttpserver@30ac5715d123030b01bbac7383fb73d1d00d932b")
         self.cpp_info.set_property("cmake_file_name", "QHttpServer")
         self.cpp_info.set_property("cmake_target_name", "QHttpServer::QHttpServer")
         self.cpp_info.set_property("cmake_config_version_compat", "AnyNewerVersion")

@@ -2,7 +2,7 @@ import os
 from conan import ConanFile
 from conan.tools.files import copy, get
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
@@ -13,7 +13,7 @@ class ConanRecipe(ConanFile):
     license = "OFL-1.1"
     package_type = "build-scripts"
 
-    mlab_hooks = {"test_package.skip": True, "folders.exclude": ["fonts"]}
+    mlab_hooks = {"folders.exclude": ["fonts"]}
 
     def source(self):
         get(

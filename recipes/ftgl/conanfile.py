@@ -3,7 +3,7 @@ from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps, cmake_layout
 from conan.tools.files import copy, get, patch, collect_libs
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
@@ -56,8 +56,20 @@ class ConanRecipe(ConanFile):
     def package(self):
         cmake = CMake(self)
         cmake.install()
-        copy(self, "*.pdb", src=self.build_folder, dst=os.path.join(self.package_folder, "bin"), keep_path=False, excludes="*vc???.pdb")
-        copy(self, "license.txt", src=os.path.join(self.source_folder, "src"), dst=os.path.join(self.package_folder, "licenses"))
+        copy(
+            self,
+            "*.pdb",
+            src=self.build_folder,
+            dst=os.path.join(self.package_folder, "bin"),
+            keep_path=False,
+            excludes="*vc???.pdb",
+        )
+        copy(
+            self,
+            "license.txt",
+            src=os.path.join(self.source_folder, "src"),
+            dst=os.path.join(self.package_folder, "licenses"),
+        )
 
     def package_info(self):
         # self.cpp_info.set_property("cpe", "")  # No CPE yet?

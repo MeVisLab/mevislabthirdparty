@@ -1,8 +1,10 @@
-cmake_minimum_required(VERSION 3.27)
+cmake_minimum_required(VERSION 3.31)
 project(test_package LANGUAGES CXX)
 
 find_package(absl REQUIRED)
 
 add_executable(test_package test_package.cpp)
-
 target_link_libraries(test_package PRIVATE absl::strings absl::flat_hash_map absl::flat_hash_set absl::int128 absl::time)
+
+add_executable(test_package2 test_package.cpp)
+target_link_libraries(test_package2 PRIVATE abseil::abseil)

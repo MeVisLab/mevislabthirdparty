@@ -1,0 +1,25 @@
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -562,10 +562,21 @@
+     FetchContent_MakeAvailable(nanobind)
+   endif()
+ 
++  execute_process(
++    COMMAND "${Python_EXECUTABLE}" -c "import sys; print(hasattr(sys, 'gettotalrefcount'))"
++    OUTPUT_VARIABLE onnx_python_is_debug
++    OUTPUT_STRIP_TRAILING_WHITESPACE
++    COMMAND_ERROR_IS_FATAL ANY)
++  if(onnx_python_is_debug STREQUAL "True")
++    set(onnx_stable_abi "")
++  else()
++    set(onnx_stable_abi STABLE_ABI)
++  endif()
++
+   # Configure nanobind: https://nanobind.readthedocs.io/en/latest/api_cmake.html
+   nanobind_add_module(
+     onnx_cpp2py_export
+-    NB_STATIC NB_DOMAIN onnx STABLE_ABI FREE_THREADED LTO
++    NB_STATIC NB_DOMAIN onnx ${onnx_stable_abi} FREE_THREADED LTO
+     "${ONNX_ROOT}/onnx/cpp2py_export.cc")
+   # Force-load the whole (static) archive so the operator schemas' static
+   # initializers are not dropped as apparently-unused. $<LINK_LIBRARY:WHOLE_ARCHIVE,...>

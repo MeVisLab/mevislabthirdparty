@@ -4,12 +4,12 @@ from conan.tools.env import VirtualRunEnv
 from conan.tools.files import collect_libs, copy, get, chdir
 import os
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "pythonqt"
-    version = "3.6.0"
+    version = "4.2.0"
     homepage = "https://mevislab.github.io/pythonqt"
     description = "PythonQt is a dynamic Python binding for Qt"
     license = "LGPL-2.1-only"
@@ -21,15 +21,15 @@ class ConanRecipe(ConanFile):
         cmake_layout(self, src_folder="src")
 
     def requirements(self):
-        self.requires("qtbase/[>=6.9]")
+        self.requires("qtbase/[>=6.10]")
         self.requires("python/[>=3.13]", transitive_headers=True)
-        self.build_requires("pythonqt_generator/[>=3.6.0]")
+        self.tool_requires("pythonqt_generator/[>=4.0.1]")
 
     def source(self):
         get(
             self,
-            sha256="7c3629cd4b97412ee6f6ffecb8a4b7e0b326d7c1ad0d095445b93605b31f97d0",
-            url=f"https://github.com/MeVisLab/pythonqt/archive/refs/tags/v{self.version}.zip",
+            sha256="74ee1a7605e29af95c443724c58132c4a147e56c89f6354c5e216ac0310f782f",
+            url=f"https://github.com/mevislab/pythonqt/archive/refs/tags/v{self.version}.zip",
             strip_root=True,
         )
         copy(self, "**", src=os.path.join(self.export_sources_folder, "sources"), dst=self.source_folder)
@@ -43,6 +43,7 @@ class ConanRecipe(ConanFile):
         tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
         tc.variables["BUILD_SHARED_LIBS"] = True
         tc.variables["CMAKE_INSTALL_RPATH"] = "$ORIGIN;$ORIGIN/../lib"
+        tc.variables["QT_NO_PRIVATE_MODULE_WARNING"] = True
         python_version = self.dependencies["python"].ref.version
         tc.variables["python_VERSION_MAJOR"] = python_version.major
         tc.variables["python_VERSION_MINOR"] = python_version.minor

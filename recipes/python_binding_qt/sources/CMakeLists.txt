@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.27)
+cmake_minimum_required(VERSION 3.31)
 project(PythonBindingQt LANGUAGES CXX)
 
 find_package(Python3 REQUIRED)

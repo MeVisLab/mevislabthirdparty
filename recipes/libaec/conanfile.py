@@ -5,7 +5,7 @@ from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
 from conan.tools.files import get, collect_libs, copy, rmdir, save
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
@@ -27,8 +27,9 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="7b29d2a4871803f10fa4fa66404a4098261e734662f0dcf33ab823f1fb5ba43a",
-            url=f"https://gitlab.dkrz.de/dkrz-sw/libaec/-/archive/v{self.version}/libaec-v{self.version}.tar.gz",
+            sha256="ebe1078cf6f19e81878c67329b2ded0d6eeda0b33df9279bb2d4ccd6893878b6",
+            url=f"https://gitlab.dkrz.de/api/v4/projects/117/repository/archive.tar.gz?sha=v{self.version}",
+            filename=f"libaec-{self.version}.tar.gz",
             strip_root=True,
         )
 
@@ -89,14 +90,12 @@ class ConanRecipe(ConanFile):
 
     def _cmake_module_file_write(self):
         file = os.path.join(self.package_folder, self._cmake_module_file)
-        content = textwrap.dedent(
-            f"""\
+        content = textwrap.dedent(f"""\
             set(libaec_FOUND TRUE)
             set(libsz_FOUND TRUE)
             set(SZIP_FOUND TRUE)
             set(libaec_VERSION "{self.version}")
             set(SZIP_VERSION "{self.version}")
             set(SZIP_LIBRARIES "libaec::libaec")
-            """
-        )
+            """)
         save(self, file, content)

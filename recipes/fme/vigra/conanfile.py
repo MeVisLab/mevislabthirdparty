@@ -3,7 +3,7 @@ from conan.tools.cmake import CMakeToolchain, CMakeDeps, CMake, cmake_layout
 from conan.tools.files import get, patch, copy, rmdir, collect_libs
 import os
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
@@ -88,6 +88,5 @@ class ConanRecipe(ConanFile):
         # self.cpp_info.set_property("cpe", "")  # No CPE (yet)?
         self.cpp_info.set_property("purl", f"pkg:github/ukoethe/vigra@Version-{self.version.replace('.', '-')}")
         self.cpp_info.set_property("display_name", "VIGRA Computer Vision Library")
-        self.cpp_info.set_property("mevislab_prosdk_exclude", True)
         self.cpp_info.defines += ["HasHDF5"]
         self.cpp_info.libs = collect_libs(self)

@@ -14,14 +14,14 @@ from conan.tools.microsoft import is_msvc
 from conan.tools.layout import basic_layout
 from conan.tools.microsoft.visual import msvc_version_to_toolset_version
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "boost"
     display_name = "Boost"
     mli_name = "None"
-    version = "1.90.0"
+    version = "1.92.0"
     homepage = "https://www.boost.org"
     description = "Boost provides free peer-reviewed portable C++ source libraries"
     license = "BSL-1.0"
@@ -55,7 +55,6 @@ class ConanRecipe(ConanFile):
         "random",
         "regex",
         "serialization",
-        "system",
         "thread",
         "timer",
         "type_erasure",
@@ -70,7 +69,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="49551aff3b22cbc5c5a9ed3dbc92f0e23ea50a0f7325b0d198b705e8ee3fc305",
+            sha256="5c1d40cb8e19adbf740a4ec2da35b3e58f3f5804b1dce44deb53df72193cbc6c",
             url=f"https://archives.boost.io/release/{self.version}/source/boost_{self.version.replace('.','_')}.tar.bz2",
             strip_root=True,
         )
@@ -129,6 +128,9 @@ class ConanRecipe(ConanFile):
         if is_msvc(self):
             # Avoid WINAPI mismatch in boost::log:
             self.cpp_info.components["headers"].defines.append("BOOST_ALL_NO_LIB")
+
+        if self.settings.os == "Windows":
+            self.cpp_info.components["headers"].defines.append("BOOST_USE_WINAPI_VERSION=0x0A00")
 
         # Boost::boost is an alias of Boost::headers
         self.cpp_info.components["_boost_cmake"].requires = ["headers"]
@@ -252,6 +254,9 @@ class ConanRecipe(ConanFile):
         if is_msvc(self):
             # Avoid WINAPI mismatch in boost::log:
             flags.append("runtime-link=shared")
+
+        if self.settings.os == "Windows":
+            flags.append("define=BOOST_USE_WINAPI_VERSION=0x0A00")
 
         flags.append("threading=multi")
         flags.append("link=shared")

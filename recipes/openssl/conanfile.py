@@ -15,13 +15,14 @@ from conan.tools.files import chdir, copy, get, patch, replace_in_file, rmdir, s
 from conan.tools.gnu import AutotoolsToolchain
 from conan.tools.layout import basic_layout
 from conan.tools.microsoft import is_msvc, msvc_runtime_flag, unix_path
+from conan.tools.scm import Version
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class OpenSSLConan(ConanFile):
     name = "openssl"
-    version = "3.5.7"
+    version = "3.5.9"
     homepage = "https://www.openssl.org"
     license = "Apache-2.0"
     description = "full-strength general purpose cryptography library (including SSL and TLS)"
@@ -48,7 +49,7 @@ class OpenSSLConan(ConanFile):
     def source(self):
         get(
             self,
-            sha256="a8c0d28a529ca480f9f36cf5792e2cd21984552a3c8e4aa11a24aa31aeac98e8",
+            sha256="603f5602e2eef00d77fbd429d34dcd5822bb301757a1bc9cdb24c670f1eb859a",
             url=f"https://www.openssl.org/source/openssl-{self.version}.tar.gz",
             destination=self.source_folder,
             strip_root=True,
@@ -119,8 +120,7 @@ class OpenSSLConan(ConanFile):
         defines = f'defines => add("{defines}"),' if defines else ""
         lflags = " ".join(ldflags)
         targets = "my %targets"
-        config = textwrap.dedent(
-            f"""\
+        config = textwrap.dedent(f"""\
             {targets} = (
                 "{self._target}" => {{
                     inherit_from => [ "{self._ancestor_target}" ],
@@ -130,8 +130,7 @@ class OpenSSLConan(ConanFile):
                     lflags => add("{lflags}"),
                 }},
             );
-        """
-        )
+        """)
 
         self.output.info(f"using target: {self._target} -> {self._ancestor_target}")
         self.output.info(config)
@@ -211,7 +210,9 @@ class OpenSSLConan(ConanFile):
                 os.unlink(os.path.join(libdir, file))
 
         if self.settings.os == "Linux":
-            self.run("patchelf --set-rpath '$ORIGIN/../lib' " + os.path.join(self.package_folder, "lib", "libssl.so.3"))
+            # the SONAME major matches OpenSSL's SHLIB_VERSION, which tracks the major version
+            soname = f"libssl.so.{Version(self.version).major}"
+            self.run("patchelf --set-rpath '$ORIGIN/../lib' " + os.path.join(self.package_folder, "lib", soname))
 
         if True:  # fips support?
             provdir = os.path.join(self.source_folder, "providers")
@@ -228,8 +229,7 @@ class OpenSSLConan(ConanFile):
         self._create_cmake_module_variables(os.path.join(self.package_folder, self._module_file_rel_path))
 
     def _create_cmake_module_variables(self, module_file):
-        content = textwrap.dedent(
-            """\
+        content = textwrap.dedent("""\
             set(OPENSSL_FOUND TRUE)
             if(DEFINED OpenSSL_INCLUDE_DIR)
                 set(OPENSSL_INCLUDE_DIR ${OpenSSL_INCLUDE_DIR})
@@ -266,9 +266,7 @@ class OpenSSLConan(ConanFile):
             if(DEFINED OpenSSL_VERSION)
                 set(OPENSSL_VERSION ${OpenSSL_VERSION})
             endif()
-        """
-            % {"config": str(self.settings.build_type).upper()}
-        )
+        """ % {"config": str(self.settings.build_type).upper()})
         save(self, module_file, content)
 
     @property

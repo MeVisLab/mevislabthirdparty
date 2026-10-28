@@ -25,3 +25,4 @@ class TestPackage(ConanFile):
             bin_path = os.path.join(self.cpp.build.bindirs[0], "test_package")
             arg_path = os.path.join(self.recipe_folder, "test.dcm")
             self.run(f"{bin_path} {arg_path}", env="conanrun")
+            self.run("dcmdump --version", env="conanrun")

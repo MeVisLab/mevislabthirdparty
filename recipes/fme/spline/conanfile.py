@@ -3,7 +3,7 @@ from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout
 from conan.tools.files import copy, collect_libs
 import os
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
@@ -46,5 +46,4 @@ class ConanRecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property("display_name", "SPLINE")
-        self.cpp_info.set_property("mevislab_prosdk_exclude", True)
         self.cpp_info.libs = collect_libs(self)

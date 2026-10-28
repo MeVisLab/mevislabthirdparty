@@ -3,7 +3,7 @@ from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout
 from conan.tools.files import rmdir, copy, get, collect_libs, patch
 import os
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
@@ -63,6 +63,5 @@ class ConanRecipe(ConanFile):
         self.cpp_info.set_property("purl", f"pkg:github/openigtlink/OpenIGTLink@{self.version}")  # no actual tag!
         self.cpp_info.set_property("display_name", "OpenIGTLink")
         self.cpp_info.set_property("cmake_config_version_compat", "AnyNewerVersion")
-        self.cpp_info.set_property("mevislab_prosdk_exclude", True)
         self.cpp_info.libs = collect_libs(self)
         self.cpp_info.includedirs.append("include/igtl")

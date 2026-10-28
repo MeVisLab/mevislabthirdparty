@@ -4,12 +4,12 @@ from conan.tools.files import copy, rmdir, collect_libs, get
 import os
 
 # honor cpp_info.set_property("cmake_package_version_compat" , "AnyNewerVersion") in onetbb:
-required_conan_version = ">=2.0.8"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "openvdb"
-    version = "13.0.0"
+    version = "13.1.0"
     homepage = "https://www.openvdb.org"
     description = (
         "A suite of tools for the efficient storage and manipulation "
@@ -34,7 +34,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="4d6a91df5f347017496fe8d22c3dbb7c4b5d7289499d4eb4d53dd2c75bb454e1",
+            sha256="21659ef2330a06805519dd8d4369375f181a0dfee205b0180da69b4edd3329ae",
             url=f"https://github.com/AcademySoftwareFoundation/openvdb/archive/v{self.version}.tar.gz",
             strip_root=True,
         )

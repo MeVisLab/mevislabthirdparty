@@ -1,10 +1,10 @@
-cmake_minimum_required(VERSION 3.27)
+cmake_minimum_required(VERSION 3.31)
 
 project(PythonQtGenerator)
 
 include(CTestUseLaunchers OPTIONAL)
 
-find_package(Qt6 COMPONENTS Core Xml Core5Compat REQUIRED)
+find_package(Qt6 COMPONENTS Core CorePrivate Xml REQUIRED)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -118,7 +118,6 @@ target_link_libraries(${PROJECT_NAME}
     Qt6::Core
     Qt6::Xml
     Qt6::CorePrivate
-    Qt6::Core5Compat
 )
 
 #-----------------------------------------------------------------------------

@@ -1,17 +1,18 @@
 diff --git a/lib/matplotlib/backends/backend_qt.py b/lib/matplotlib/backends/backend_qt.py
-index d0aded5..467eb01 100644
+index 3a18ff5..a336f0c 100644
 --- a/lib/matplotlib/backends/backend_qt.py
 +++ b/lib/matplotlib/backends/backend_qt.py
-@@ -14,7 +14,7 @@ from matplotlib.backend_bases import (
+@@ -14,7 +14,8 @@ from matplotlib.backend_bases import (
  import matplotlib.backends.qt_editor.figureoptions as figureoptions
  from . import qt_compat
  from .qt_compat import (
--    QtCore, QtGui, QtWidgets, __version__, QT_API, _to_int, _isdeleted)
-+    QtCore, QtGui, QtWidgets, __version__, QT_API, _to_int, _isdeleted, _qt_property, _getSaveFileName)
+-    QtCore, QtGui, QtWidgets, QtSvg, __version__, QT_API, _to_int, _isdeleted)
++    QtCore, QtGui, QtWidgets, QtSvg, __version__, QT_API, _to_int, _isdeleted,
++    _qt_property, _getSaveFileName)
  
  
  # SPECIAL_KEYS are Qt::Key that do *not* return their Unicode name
-@@ -103,7 +103,7 @@ def _create_qApp():
+@@ -103,7 +104,7 @@ def _create_qApp():
  
          # Check to make sure a QApplication from a different major version
          # of Qt is not instantiated in the process
@@ -20,7 +21,7 @@ index d0aded5..467eb01 100644
              other_bindings = ('PyQt5', 'PySide2')
              qt_version = 6
          elif QT_API in {'PyQt5', 'PySide2'}:
-@@ -251,7 +251,7 @@ class FigureCanvasQT(FigureCanvasBase, QtWidgets.QWidget):
+@@ -251,7 +252,7 @@ class FigureCanvasQT(FigureCanvasBase, QtWidgets.QWidget):
              # The easiest way to resize the canvas is to emit a resizeEvent
              # since we implement all the logic for resizing the canvas for
              # that event.
@@ -29,7 +30,7 @@ index d0aded5..467eb01 100644
              self.resizeEvent(event)
  
      @QtCore.Slot(QtGui.QScreen)
-@@ -265,7 +265,7 @@ class FigureCanvasQT(FigureCanvasBase, QtWidgets.QWidget):
+@@ -265,7 +266,7 @@ class FigureCanvasQT(FigureCanvasBase, QtWidgets.QWidget):
      def eventFilter(self, source, event):
          if event.type() == QtCore.QEvent.Type.DevicePixelRatioChange:
              self._update_pixel_ratio()
@@ -38,7 +39,7 @@ index d0aded5..467eb01 100644
  
      def showEvent(self, event):
          # Set up correct pixel ratio, and connect to any signal changes for it,
-@@ -488,7 +488,7 @@ class FigureCanvasQT(FigureCanvasBase, QtWidgets.QWidget):
+@@ -488,7 +489,7 @@ class FigureCanvasQT(FigureCanvasBase, QtWidgets.QWidget):
          if self._is_drawing:
              return
          with cbook._setattr_cm(self, _is_drawing=True):
@@ -47,7 +48,7 @@ index d0aded5..467eb01 100644
          self.update()
  
      def draw_idle(self):
-@@ -517,7 +517,7 @@ class FigureCanvasQT(FigureCanvasBase, QtWidgets.QWidget):
+@@ -517,7 +518,7 @@ class FigureCanvasQT(FigureCanvasBase, QtWidgets.QWidget):
              if not self._draw_pending:
                  return
              self._draw_pending = False
@@ -56,7 +57,7 @@ index d0aded5..467eb01 100644
                  return
              try:
                  self.draw()
-@@ -564,7 +564,7 @@ class MainWindow(QtWidgets.QMainWindow):
+@@ -564,7 +565,7 @@ class MainWindow(QtWidgets.QMainWindow):
  
      def closeEvent(self, event):
          self.closing.emit()
@@ -65,7 +66,7 @@ index d0aded5..467eb01 100644
  
  
  class FigureManagerQT(FigureManagerBase):
-@@ -595,13 +595,13 @@ class FigureManagerQT(FigureManagerBase):
+@@ -595,13 +596,13 @@ class FigureManagerQT(FigureManagerBase):
  
          if self.toolbar:
              self.window.addToolBar(self.toolbar)
@@ -81,7 +82,7 @@ index d0aded5..467eb01 100644
          cs_height = cs.height()
          height = cs_height + tbs_height
          self.window.resize(cs.width(), height)
-@@ -645,8 +645,8 @@ class FigureManagerQT(FigureManagerBase):
+@@ -645,8 +646,8 @@ class FigureManagerQT(FigureManagerBase):
          # rescale from physical to logical pixels.
          width = int(width / self.canvas.device_pixel_ratio)
          height = int(height / self.canvas.device_pixel_ratio)
@@ -92,8 +93,8 @@ index d0aded5..467eb01 100644
          self.canvas.resize(width, height)
          self.window.resize(width + extra_width, height + extra_height)
  
-@@ -676,7 +676,7 @@ class FigureManagerQT(FigureManagerBase):
-         self.window.close()
+@@ -677,7 +678,7 @@ class FigureManagerQT(FigureManagerBase):
+         super().destroy()
  
      def get_window_title(self):
 -        return self.window.windowTitle()
@@ -101,7 +102,26 @@ index d0aded5..467eb01 100644
  
      def set_window_title(self, title):
          self.window.setWindowTitle(title)
-@@ -706,9 +706,9 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
+@@ -697,7 +698,8 @@ class _IconEngine(QtGui.QIconEngine):
+         self.toolbar = toolbar
+ 
+     def _is_dark_mode(self):
+-        return self.toolbar.palette().color(self.toolbar.backgroundRole()).value() < 128
++        return _qt_property(_qt_property(self.toolbar.palette)
++                           .color(self.toolbar.backgroundRole()).value) < 128
+ 
+     def paint(self, painter, rect, mode, state):
+         """Paint the icon at the requested size and state."""
+@@ -792,7 +794,7 @@ class _IconEngine(QtGui.QIconEngine):
+             # On some platforms (e.g., macOS with Qt5 in dark mode), this may
+             # incorrectly return a black color instead of a light one.
+             # See issue #27590 for details.
+-            icon_color = self.toolbar.palette().color(self.toolbar.foregroundRole())
++            icon_color = _qt_property(self.toolbar.palette).color(self.toolbar.foregroundRole())
+             mask = scaled_pixmap.createMaskFromColor(
+                 QtGui.QColor('black'),
+                 QtCore.Qt.MaskMode.MaskOutColor)
+@@ -826,9 +828,9 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
              else:
                  slot = getattr(self, callback)
                  # https://bugreports.qt.io/browse/PYSIDE-2512
@@ -114,18 +134,7 @@ index d0aded5..467eb01 100644
                  a = self.addAction(self._icon(image_file + '.png'),
                                     text, slot)
                  self._actions[callback] = a
-@@ -750,8 +750,8 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
-         pm = QtGui.QPixmap(filename)
-         pm.setDevicePixelRatio(
-             self.devicePixelRatioF() or 1)  # rarely, devicePixelRatioF=0
--        if self.palette().color(self.backgroundRole()).value() < 128:
--            icon_color = self.palette().color(self.foregroundRole())
-+        if _qt_property(_qt_property(self.palette).color(self.backgroundRole()).value) < 128:
-+            icon_color = _qt_property(self.palette).color(self.foregroundRole())
-             mask = pm.createMaskFromColor(
-                 QtGui.QColor('black'),
-                 QtCore.Qt.MaskMode.MaskOutColor)
-@@ -781,11 +781,17 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
+@@ -892,11 +894,17 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
              for i, ax in enumerate(axes):
                  if titles[i] in duplicate_titles:
                      titles[i] += f" (id: {id(ax):#x})"  # Deduplicate titles.
@@ -146,7 +155,7 @@ index d0aded5..467eb01 100644
              ax = axes[titles.index(item)]
          figureoptions.figure_edit(ax, self)
  
-@@ -797,11 +803,11 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
+@@ -908,11 +916,11 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
              self._actions['zoom'].setChecked(self.mode.name == 'ZOOM')
  
      def pan(self, *args):
@@ -160,7 +169,7 @@ index d0aded5..467eb01 100644
          self._update_buttons_checked()
  
      def set_message(self, s):
-@@ -846,7 +852,7 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
+@@ -957,7 +965,7 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
              filters.append(filter)
          filters = ';;'.join(filters)
  
@@ -169,7 +178,7 @@ index d0aded5..467eb01 100644
              self.canvas.parent(), "Choose a filename to save to", start,
              filters, selectedFilter)
          if fname:
-@@ -873,7 +879,7 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
+@@ -984,7 +992,7 @@ class NavigationToolbar2QT(NavigationToolbar2, QtWidgets.QToolBar):
  
  class SubplotToolQt(QtWidgets.QDialog):
      def __init__(self, targetfig, parent):
@@ -178,7 +187,7 @@ index d0aded5..467eb01 100644
          self.setWindowIcon(QtGui.QIcon(
              str(cbook._get_data_path("images/matplotlib.png"))))
          self.setObjectName("SubplotTool")
-@@ -888,7 +894,7 @@ class SubplotToolQt(QtWidgets.QDialog):
+@@ -999,7 +1007,7 @@ class SubplotToolQt(QtWidgets.QDialog):
                   ["hspace", "wspace"],
                   [("Tight layout", self._tight_layout),
                    ("Reset", self._reset),
@@ -187,7 +196,7 @@ index d0aded5..467eb01 100644
              layout = QtWidgets.QVBoxLayout()
              main_layout.addLayout(layout)
              box = QtWidgets.QGroupBox(group)
-@@ -931,13 +937,13 @@ class SubplotToolQt(QtWidgets.QDialog):
+@@ -1042,13 +1050,13 @@ class SubplotToolQt(QtWidgets.QDialog):
          text.setReadOnly(True)
          layout.addWidget(text)
          text.setPlainText(
@@ -204,7 +213,7 @@ index d0aded5..467eb01 100644
              .size(0, text.toPlainText()).height() + 20)
          text.setMaximumSize(size)
          self._export_values_dialog.show()
-@@ -946,10 +952,10 @@ class SubplotToolQt(QtWidgets.QDialog):
+@@ -1057,10 +1065,10 @@ class SubplotToolQt(QtWidgets.QDialog):
          spinboxes = self._spinboxes
          # Set all mins and maxes, so that this can also be used in _reset().
          for lower, higher in [("bottom", "top"), ("left", "right")]:
@@ -218,7 +227,7 @@ index d0aded5..467eb01 100644
          self._figure.canvas.draw_idle()
  
      def _tight_layout(self):
-@@ -969,6 +975,12 @@ class SubplotToolQt(QtWidgets.QDialog):
+@@ -1080,6 +1088,12 @@ class SubplotToolQt(QtWidgets.QDialog):
          self._on_value_changed()
  
  
@@ -267,7 +276,7 @@ index 72eb2dc..3161576 100644
      def paintEvent(self, event):
          width = int(self.device_pixel_ratio * self.width())
 diff --git a/lib/matplotlib/backends/qt_compat.py b/lib/matplotlib/backends/qt_compat.py
-index b57a98b..cc27917 100644
+index 8f666c7..9cb886c 100644
 --- a/lib/matplotlib/backends/qt_compat.py
 +++ b/lib/matplotlib/backends/qt_compat.py
 @@ -24,16 +24,19 @@ QT_API_PYQT6 = "PyQt6"
@@ -303,12 +312,12 @@ index b57a98b..cc27917 100644
 @@ -65,7 +68,7 @@ else:
  
  def _setup_pyqt5plus():
-     global QtCore, QtGui, QtWidgets, __version__
+     global QtCore, QtGui, QtWidgets, QtSvg, __version__
 -    global _isdeleted, _to_int
 +    global _isdeleted, _to_int, _qt_property, _getSaveFileName
  
      if QT_API == QT_API_PYQT6:
-         from PyQt6 import QtCore, QtGui, QtWidgets, sip
+         from PyQt6 import QtCore, QtGui, QtWidgets, sip, QtSvg
 @@ -74,11 +77,16 @@ def _setup_pyqt5plus():
          QtCore.Slot = QtCore.pyqtSlot
          QtCore.Property = QtCore.pyqtProperty
@@ -317,7 +326,7 @@ index b57a98b..cc27917 100644
          _to_int = operator.attrgetter('value')
 +        _getSaveFileName = QtWidgets.QFileDialog.getSaveFileName
      elif QT_API == QT_API_PYSIDE6:
-         from PySide6 import QtCore, QtGui, QtWidgets, __version__
+         from PySide6 import QtCore, QtGui, QtWidgets, QtSvg, __version__
          import shiboken6
 -        def _isdeleted(obj): return not shiboken6.isValid(obj)
 +        def _qt_property(p): return p()
@@ -336,8 +345,8 @@ index b57a98b..cc27917 100644
 +        _getSaveFileName = QtWidgets.QFileDialog.getSaveFileName
          _to_int = int
      elif QT_API == QT_API_PYSIDE2:
-         from PySide2 import QtCore, QtGui, QtWidgets, __version__
-@@ -98,14 +108,29 @@ def _setup_pyqt5plus():
+         from PySide2 import QtCore, QtGui, QtWidgets, QtSvg, __version__
+@@ -98,14 +108,33 @@ def _setup_pyqt5plus():
              from PySide2 import shiboken2
          except ImportError:
              import shiboken2
@@ -345,13 +354,17 @@ index b57a98b..cc27917 100644
          def _isdeleted(obj):
              return not shiboken2.isValid(obj)
 +        _getSaveFileName = QtWidgets.QFileDialog.getSaveFileName
-+        _to_int = int
+         _to_int = int
 +    elif QT_API == QT_API_PYTHONQT:
 +        from PythonQt import QtCore, QtGui
++        try:
++            from PythonQt import QtSvg
++        except ImportError:
++            QtSvg = None
 +        __version__ = "2.0"
 +        # For backwards compatibility (with Qt4) QtWidgets is contained in QtGui:
 +        QtWidgets = QtGui
-         _to_int = int
++        _to_int = int
 +        def _isdeleted(obj):
 +            return not bool(obj)
 +        def _qt_property(p):
@@ -368,7 +381,7 @@ index b57a98b..cc27917 100644
      _setup_pyqt5plus()
  elif QT_API is None:  # See above re: dict.__getitem__.
      if _QT_FORCE_QT5_BINDING:
-@@ -119,6 +144,7 @@ elif QT_API is None:  # See above re: dict.__getitem__.
+@@ -119,6 +148,7 @@ elif QT_API is None:  # See above re: dict.__getitem__.
              (_setup_pyqt5plus, QT_API_PYSIDE6),
              (_setup_pyqt5plus, QT_API_PYQT5),
              (_setup_pyqt5plus, QT_API_PYSIDE2),
@@ -376,7 +389,7 @@ index b57a98b..cc27917 100644
          ]
      for _setup, QT_API in _candidates:
          try:
-@@ -128,8 +154,9 @@ elif QT_API is None:  # See above re: dict.__getitem__.
+@@ -128,8 +158,9 @@ elif QT_API is None:  # See above re: dict.__getitem__.
          break
      else:
          raise ImportError(

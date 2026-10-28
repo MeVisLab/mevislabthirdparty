@@ -4,12 +4,12 @@ from conan.tools.env import VirtualRunEnv
 from conan.tools.files import copy, get
 import os
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "pythonqt_generator"
-    version = "3.6.1"
+    version = "4.2.0"
     homepage = "https://mevislab.github.io/pythonqt"
     description = "PythonQtGenerator creates source files from Qt Python binding for Qt"
     license = "LGPL-2.1-only"
@@ -21,14 +21,13 @@ class ConanRecipe(ConanFile):
         cmake_layout(self, src_folder="src")
 
     def requirements(self):
-        self.requires("qtbase/[>=6.9]")
-        self.requires("qt5compat/[>=6.9]")
+        self.requires("qtbase/[>=6.10]")
 
     def source(self):
         get(
             self,
-            sha256="22691217991a36692155006ff875bf6408bfaad9fee8d8153511bf25e98a5e73",
-            url=f"https://github.com/MeVisLab/pythonqt/archive/refs/tags/v{self.version}.zip",
+            sha256="74ee1a7605e29af95c443724c58132c4a147e56c89f6354c5e216ac0310f782f",
+            url=f"https://github.com/mevislab/pythonqt/archive/refs/tags/v{self.version}.zip",
             pattern="*/generator/*",
             strip_root=True,
         )
@@ -38,6 +37,7 @@ class ConanRecipe(ConanFile):
         env = VirtualRunEnv(self)
         env.generate(scope="build")
         tc = CMakeToolchain(self)
+        tc.variables["QT_NO_PRIVATE_MODULE_WARNING"] = True
         tc.generate()
 
     def build(self):

@@ -4,7 +4,7 @@ index 135c1d3..7e63296 100644
 +++ b/Modules/ThirdParty/DoubleConversion/CMakeLists.txt
 @@ -7,9 +7,9 @@ option(ITK_USE_SYSTEM_DOUBLECONVERSION
  mark_as_advanced(ITK_USE_SYSTEM_DOUBLECONVERSION)
-
+ 
  if(ITK_USE_SYSTEM_DOUBLECONVERSION)
 -  find_package(double-conversion 3.1.6 REQUIRED)
 +  find_package(double-conversion REQUIRED)

@@ -4,20 +4,18 @@ from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
 from conan.tools.files import copy, rmdir, get, collect_libs
 import os
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "llvm"
-    version = "22.1.8"
+    version = "23.1.2"
     license = "Apache-2.0"
     homepage = "https://llvm.org"
     description = "Low Level Virtual Machine"
     settings = "os", "arch", "compiler", "build_type"
     package_type = "shared-library"
     exports_sources = "CMakeLists.txt"
-
-    mlab_hooks = {"test_package.skip": True}
 
     def validate_build(self):
         if self.settings.build_type != "Release":
@@ -36,7 +34,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="922f1817a0df7b1489272d18134ee0087a8b068828f87ac63b9861b1a9965888",
+            sha256="c98bbef08a2b4c2613cd50e9aa9ae7b69b1fe6c16b2c40373bc0ab6116fdf78a",
             url=f"https://github.com/llvm/llvm-project/releases/download/llvmorg-{self.version}/llvm-project-{self.version}.src.tar.xz",
             strip_root=True,
         )

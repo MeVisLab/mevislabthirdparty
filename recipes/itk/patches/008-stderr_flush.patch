@@ -1,0 +1,12 @@
+diff --git a/Modules/Core/Common/src/itkOutputWindow.cxx b/Modules/Core/Common/src/itkOutputWindow.cxx
+index b689004..bfccd73 100644
+--- a/Modules/Core/Common/src/itkOutputWindow.cxx
++++ b/Modules/Core/Common/src/itkOutputWindow.cxx
+@@ -98,6 +98,7 @@ OutputWindow::DisplayText(const char * txt)
+ {
+   const std::lock_guard<std::mutex> lockGuard(m_cerrMutex);
+   std::cerr << txt;
++  std::flush(std::cerr);
+   if (m_PromptUser)
+   {
+     char c = 'n';

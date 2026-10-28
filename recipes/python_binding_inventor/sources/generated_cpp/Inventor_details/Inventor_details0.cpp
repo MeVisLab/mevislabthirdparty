@@ -16,7 +16,7 @@ SoDetail*  PythonQtShell_SoConeDetail::copy() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copy");
+    static PyObject* name = PyUnicode_FromString("copy");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoDetail*"};
@@ -74,7 +74,7 @@ SoDetail*  PythonQtShell_SoCubeDetail::copy() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copy");
+    static PyObject* name = PyUnicode_FromString("copy");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoDetail*"};
@@ -132,7 +132,7 @@ SoDetail*  PythonQtShell_SoCylinderDetail::copy() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copy");
+    static PyObject* name = PyUnicode_FromString("copy");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoDetail*"};
@@ -207,7 +207,7 @@ SoDetail*  PythonQtShell_SoFaceDetail::copy() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copy");
+    static PyObject* name = PyUnicode_FromString("copy");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoDetail*"};
@@ -300,7 +300,7 @@ SoDetail*  PythonQtShell_SoLineDetail::copy() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copy");
+    static PyObject* name = PyUnicode_FromString("copy");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoDetail*"};
@@ -388,7 +388,7 @@ SoDetail*  PythonQtShell_SoPointDetail::copy() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copy");
+    static PyObject* name = PyUnicode_FromString("copy");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoDetail*"};
@@ -476,7 +476,7 @@ SoDetail*  PythonQtShell_SoTextDetail::copy() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copy");
+    static PyObject* name = PyUnicode_FromString("copy");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoDetail*"};

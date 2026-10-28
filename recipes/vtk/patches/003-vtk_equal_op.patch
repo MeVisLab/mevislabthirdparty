@@ -1,0 +1,13 @@
+diff --git a/Wrapping/Python/vtkmodules/util/data_model.py b/Wrapping/Python/vtkmodules/util/data_model.py
+index 1d0a77e..37177e8 100644
+--- a/Wrapping/Python/vtkmodules/util/data_model.py
++++ b/Wrapping/Python/vtkmodules/util/data_model.py
+@@ -741,6 +741,8 @@ class DataSet(object):
+ 
+         for attr in self._numpy_attrs:
+             if hasattr(self, attr):
++                if not hasattr(other, attr):
++                    return False
+                 if not numpy.array_equal(getattr(self, attr), getattr(other, attr)):
+                     return False
+ 

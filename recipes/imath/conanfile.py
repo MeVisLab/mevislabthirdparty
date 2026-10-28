@@ -4,12 +4,12 @@ from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
 from conan.tools.files import collect_libs, copy, get, rmdir
 import os
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "imath"
-    version = "3.2.2"
+    version = "3.2.3"
     homepage = "https://imath.readthedocs.io"
     description = (
         "Imath is a C++ and python library of 2D and 3D vector, matrix, and math operations for computer graphics"
@@ -28,7 +28,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="b4275d83fb95521510e389b8d13af10298ed5bed1c8e13efd961d91b1105e462",
+            sha256="e10c12b3f21f45bf08e09d4215d9c7691368d747beebd840de0b6fefed2df9f8",
             url=f"https://github.com/AcademySoftwareFoundation/Imath/archive/refs/tags/v{self.version}.tar.gz",
             strip_root=True,
         )

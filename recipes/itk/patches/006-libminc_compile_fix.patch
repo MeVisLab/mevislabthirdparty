@@ -1,0 +1,13 @@
+diff --git a/Modules/ThirdParty/MINC/src/libminc/libcommon/minc_error.c b/Modules/ThirdParty/MINC/src/libminc/libcommon/minc_error.c
+index 64752e8..8ffa749 100644
+--- a/Modules/ThirdParty/MINC/src/libminc/libcommon/minc_error.c
++++ b/Modules/ThirdParty/MINC/src/libminc/libcommon/minc_error.c
+@@ -425,7 +425,7 @@ void MI2_log_pkg_error3 ( int p1, char *p2, char *p3 )
+ 
+ void MI2_log_sys_error1 ( char *p1 )
+ {
+-  MI2_log_sys_error1(p1);
++  MI_log_sys_error1(p1);
+ }
+ 
+ 

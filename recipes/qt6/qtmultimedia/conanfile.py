@@ -1,8 +1,7 @@
 from conan import ConanFile
 from conan.tools.system import package_manager
 
-
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
@@ -47,10 +46,5 @@ class ConanRecipe(ConanFile):
         super().system_requirements()
         apt = package_manager.Apt(self)
         apt.install(
-            [
-                "libgstreamer1.0-dev",
-                "libgstreamer-plugins-base1.0-dev",
-                "libgstreamer-plugins-bad1.0-dev"
-            ],
-            update=True
+            ["libgstreamer1.0-dev", "libgstreamer-plugins-base1.0-dev", "libgstreamer-plugins-bad1.0-dev"], update=True
         )

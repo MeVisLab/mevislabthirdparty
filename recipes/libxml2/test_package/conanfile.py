@@ -3,6 +3,7 @@ from conan.tools.build import can_run
 from conan.tools.cmake import CMake, cmake_layout
 import os
 
+
 class TestPackage(ConanFile):
     settings = "os", "arch", "compiler", "build_type"
     generators = "CMakeToolchain", "CMakeDeps", "VirtualRunEnv"
@@ -23,3 +24,4 @@ class TestPackage(ConanFile):
             bin_path = os.path.join(self.cpp.build.bindirs[0], "test_package")
             arg_path = os.path.join(self.source_folder, "books.xml")
             self.run(f"{bin_path} {arg_path}", env="conanrun")
+            self.run(f"xmllint --noout {arg_path}", env="conanrun")

@@ -1,61 +1,53 @@
 from conan import ConanFile
-from conan.tools.files import copy, get, replace_in_file
-from conan.tools.layout import basic_layout
-from conan.tools.microsoft import NMakeToolchain
-from conan.errors import ConanInvalidConfiguration
+from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
+from conan.tools.files import copy, get, collect_libs
 import os
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "7zip"
-    version = "26.02"
+    version = "26.04"
     license = "LGPL-2.1-or-later AND BSD-3-Clause"
     homepage = "https://www.7-zip.org"
-    description = "7-Zip is a file archiver with a high compression ratio"
+    description = "7-Zip file archiver and LZMA SDK"
+    package_type = "static-library"
     settings = "os", "arch", "compiler", "build_type"
-    package_type = "application"
-
-    def package_id(self):
-        self.info.settings.rm_safe("build_type")
-        self.info.settings.rm_safe("compiler.runtime_type")
+    exports_sources = "CMakeLists.txt"
 
     def configure(self):
-        if self.settings.os != "Windows":
-            raise ConanInvalidConfiguration(f"{self.name} is only supported on Windows")
-
-    def validate(self):
-        if self.settings.os != "Windows":
-            raise ConanInvalidConfiguration(f"{self.name} is only supported on Windows")
-
-    def validate_build(self):
-        if self.settings.build_type != "Release":
-            raise ConanInvalidConfiguration(f"{self.name} is built in release mode only.")
+        self.settings.rm_safe("compiler.libcxx")
+        self.settings.rm_safe("compiler.cppstd")
 
     def layout(self):
-        basic_layout(self, src_folder="src")
+        cmake_layout(self, src_folder="src")
 
     def source(self):
         get(
             self,
-            sha256="7e5600ad0b21918bc41803bd84d0c2967e097fb7fbaa2e7aeb90beeb1121e54b",
+            sha256="48fdc6dfe879ee2db867bb07f19c4a9406bfea01d51f48785b6c7a137881e25c",
             url=f"https://github.com/ip7z/7zip/archive/refs/tags/{self.version}.tar.gz",
             strip_root=True,
         )
 
     def generate(self):
-        tc = NMakeToolchain(self)
+        tc = CMakeToolchain(self)
+        tc.variables["CMAKE_DEBUG_POSTFIX"] = "_d"
+        tc.variables["BUILD_SHARED_LIBS"] = False
+        tc.variables["CMAKE_POSITION_INDEPENDENT_CODE"] = True
+        tc.cache_variables["CONAN_LZMA_VERSION"] = f"{self.version}"
         tc.generate()
 
     def build(self):
-        make_file = os.path.join(self.source_folder, "CPP", "Build.mak")
-        os.chmod(make_file, 0o644)
-        replace_in_file(self, make_file, "-MT", f"-{self.settings.compiler.runtime}")
-        replace_in_file(self, make_file, "-MD", f"-{self.settings.compiler.runtime}")
-        self.run(f"nmake /f makefile PLATFORM=x64", cwd=os.path.join(self.source_folder, "CPP", "7zip"))
+        cmake = CMake(self)
+        cmake.configure(build_script_folder=os.path.dirname(self.source_folder))
+        cmake.build()
 
     def package(self):
+        cmake = CMake(self)
+        cmake.install()
+
         copy(
             self,
             "License.txt",
@@ -68,23 +60,12 @@ class ConanRecipe(ConanFile):
             dst=os.path.join(self.package_folder, "licenses"),
             src=os.path.join(self.source_folder, "DOC"),
         )
-        copy(
-            self,
-            "*/7z.exe",
-            dst=os.path.join(self.package_folder, "bin"),
-            src=os.path.join(self.source_folder, "CPP", "7zip"),
-            keep_path=False,
-        )
-        copy(
-            self,
-            "*/7z.dll",
-            dst=os.path.join(self.package_folder, "bin"),
-            src=os.path.join(self.source_folder, "CPP", "7zip"),
-            keep_path=False,
-        )
 
     def package_info(self):
         self.cpp_info.set_property("cpe", f"cpe:2.3:a:7-zip:7-zip:{self.version}:*:*:*:*:*:*:*")
         self.cpp_info.set_property("purl", f"pkg:github/ip7z/7zip@{self.version}")
-        self.cpp_info.includedirs.clear()
-        self.cpp_info.libdirs.clear()
+        self.cpp_info.set_property("display_name", "7-Zip")
+        self.cpp_info.set_property("cmake_file_name", "lzma_sdk")
+        self.cpp_info.set_property("cmake_target_name", "lzma_sdk::lzma_sdk")
+        self.cpp_info.libs = collect_libs(self)
+        self.cpp_info.includedirs = ["include", "include/C"]

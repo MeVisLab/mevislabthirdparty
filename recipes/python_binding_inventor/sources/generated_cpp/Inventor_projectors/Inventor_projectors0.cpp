@@ -15,7 +15,7 @@ SbProjector*  PythonQtShell_SbCylinderPlaneProjector::copy() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copy");
+    static PyObject* name = PyUnicode_FromString("copy");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbProjector*"};
@@ -48,7 +48,7 @@ SbRotation  PythonQtShell_SbCylinderPlaneProjector::getRotation(const SbVec3f&  
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getRotation");
+    static PyObject* name = PyUnicode_FromString("getRotation");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbRotation" , "const SbVec3f&" , "const SbVec3f&"};
@@ -81,7 +81,7 @@ SbVec3f  PythonQtShell_SbCylinderPlaneProjector::project(const SbVec2f&  point0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("project");
+    static PyObject* name = PyUnicode_FromString("project");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbVec3f" , "const SbVec2f&"};
@@ -114,7 +114,7 @@ void PythonQtShell_SbCylinderPlaneProjector::setViewVolume(const SbViewVolume&  
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setViewVolume");
+    static PyObject* name = PyUnicode_FromString("setViewVolume");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbViewVolume&"};
@@ -136,7 +136,7 @@ void PythonQtShell_SbCylinderPlaneProjector::setWorkingSpace(const SbMatrix&  sp
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setWorkingSpace");
+    static PyObject* name = PyUnicode_FromString("setWorkingSpace");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbMatrix&"};
@@ -158,7 +158,7 @@ void PythonQtShell_SbCylinderPlaneProjector::setupTolerance()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setupTolerance");
+    static PyObject* name = PyUnicode_FromString("setupTolerance");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={""};
@@ -199,7 +199,7 @@ SbProjector*  PythonQtShell_SbCylinderProjector::copy() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copy");
+    static PyObject* name = PyUnicode_FromString("copy");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbProjector*"};
@@ -232,7 +232,7 @@ SbRotation  PythonQtShell_SbCylinderProjector::getRotation(const SbVec3f&  point
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getRotation");
+    static PyObject* name = PyUnicode_FromString("getRotation");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbRotation" , "const SbVec3f&" , "const SbVec3f&"};
@@ -265,7 +265,7 @@ SbVec3f  PythonQtShell_SbCylinderProjector::project(const SbVec2f&  point0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("project");
+    static PyObject* name = PyUnicode_FromString("project");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbVec3f" , "const SbVec2f&"};
@@ -298,7 +298,7 @@ void PythonQtShell_SbCylinderProjector::setViewVolume(const SbViewVolume&  vol0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setViewVolume");
+    static PyObject* name = PyUnicode_FromString("setViewVolume");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbViewVolume&"};
@@ -320,7 +320,7 @@ void PythonQtShell_SbCylinderProjector::setWorkingSpace(const SbMatrix&  space0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setWorkingSpace");
+    static PyObject* name = PyUnicode_FromString("setWorkingSpace");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbMatrix&"};
@@ -396,7 +396,7 @@ SbProjector*  PythonQtShell_SbCylinderSectionProjector::copy() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copy");
+    static PyObject* name = PyUnicode_FromString("copy");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbProjector*"};
@@ -429,7 +429,7 @@ SbRotation  PythonQtShell_SbCylinderSectionProjector::getRotation(const SbVec3f&
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getRotation");
+    static PyObject* name = PyUnicode_FromString("getRotation");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbRotation" , "const SbVec3f&" , "const SbVec3f&"};
@@ -462,7 +462,7 @@ SbVec3f  PythonQtShell_SbCylinderSectionProjector::project(const SbVec2f&  point
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("project");
+    static PyObject* name = PyUnicode_FromString("project");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbVec3f" , "const SbVec2f&"};
@@ -495,7 +495,7 @@ void PythonQtShell_SbCylinderSectionProjector::setViewVolume(const SbViewVolume&
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setViewVolume");
+    static PyObject* name = PyUnicode_FromString("setViewVolume");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbViewVolume&"};
@@ -517,7 +517,7 @@ void PythonQtShell_SbCylinderSectionProjector::setWorkingSpace(const SbMatrix&  
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setWorkingSpace");
+    static PyObject* name = PyUnicode_FromString("setWorkingSpace");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbMatrix&"};
@@ -539,7 +539,7 @@ void PythonQtShell_SbCylinderSectionProjector::setupTolerance()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setupTolerance");
+    static PyObject* name = PyUnicode_FromString("setupTolerance");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={""};
@@ -595,7 +595,7 @@ SbProjector*  PythonQtShell_SbCylinderSheetProjector::copy() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copy");
+    static PyObject* name = PyUnicode_FromString("copy");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbProjector*"};
@@ -628,7 +628,7 @@ SbRotation  PythonQtShell_SbCylinderSheetProjector::getRotation(const SbVec3f&  
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getRotation");
+    static PyObject* name = PyUnicode_FromString("getRotation");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbRotation" , "const SbVec3f&" , "const SbVec3f&"};
@@ -661,7 +661,7 @@ SbVec3f  PythonQtShell_SbCylinderSheetProjector::project(const SbVec2f&  point0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("project");
+    static PyObject* name = PyUnicode_FromString("project");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbVec3f" , "const SbVec2f&"};
@@ -694,7 +694,7 @@ void PythonQtShell_SbCylinderSheetProjector::setViewVolume(const SbViewVolume&  
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setViewVolume");
+    static PyObject* name = PyUnicode_FromString("setViewVolume");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbViewVolume&"};
@@ -716,7 +716,7 @@ void PythonQtShell_SbCylinderSheetProjector::setWorkingSpace(const SbMatrix&  sp
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setWorkingSpace");
+    static PyObject* name = PyUnicode_FromString("setWorkingSpace");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbMatrix&"};
@@ -738,7 +738,7 @@ void PythonQtShell_SbCylinderSheetProjector::setupPlane()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setupPlane");
+    static PyObject* name = PyUnicode_FromString("setupPlane");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={""};
@@ -779,7 +779,7 @@ SbProjector*  PythonQtShell_SbLineProjector::copy() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copy");
+    static PyObject* name = PyUnicode_FromString("copy");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbProjector*"};
@@ -812,7 +812,7 @@ SbVec3f  PythonQtShell_SbLineProjector::getVector(const SbVec2f&  mousePosition0
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getVector");
+    static PyObject* name = PyUnicode_FromString("getVector");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbVec3f" , "const SbVec2f&"};
@@ -845,7 +845,7 @@ SbVec3f  PythonQtShell_SbLineProjector::getVector(const SbVec2f&  mousePosition1
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getVector");
+    static PyObject* name = PyUnicode_FromString("getVector");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbVec3f" , "const SbVec2f&" , "const SbVec2f&"};
@@ -878,7 +878,7 @@ SbVec3f  PythonQtShell_SbLineProjector::project(const SbVec2f&  point0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("project");
+    static PyObject* name = PyUnicode_FromString("project");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbVec3f" , "const SbVec2f&"};
@@ -911,7 +911,7 @@ void PythonQtShell_SbLineProjector::setViewVolume(const SbViewVolume&  vol0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setViewVolume");
+    static PyObject* name = PyUnicode_FromString("setViewVolume");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbViewVolume&"};
@@ -933,7 +933,7 @@ void PythonQtShell_SbLineProjector::setWorkingSpace(const SbMatrix&  space0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setWorkingSpace");
+    static PyObject* name = PyUnicode_FromString("setWorkingSpace");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbMatrix&"};
@@ -995,7 +995,7 @@ SbProjector*  PythonQtShell_SbPlaneProjector::copy() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copy");
+    static PyObject* name = PyUnicode_FromString("copy");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbProjector*"};
@@ -1028,7 +1028,7 @@ SbVec3f  PythonQtShell_SbPlaneProjector::getVector(const SbVec2f&  mousePosition
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getVector");
+    static PyObject* name = PyUnicode_FromString("getVector");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbVec3f" , "const SbVec2f&"};
@@ -1061,7 +1061,7 @@ SbVec3f  PythonQtShell_SbPlaneProjector::getVector(const SbVec2f&  mousePosition
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getVector");
+    static PyObject* name = PyUnicode_FromString("getVector");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbVec3f" , "const SbVec2f&" , "const SbVec2f&"};
@@ -1094,7 +1094,7 @@ SbVec3f  PythonQtShell_SbPlaneProjector::project(const SbVec2f&  point0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("project");
+    static PyObject* name = PyUnicode_FromString("project");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbVec3f" , "const SbVec2f&"};
@@ -1127,7 +1127,7 @@ void PythonQtShell_SbPlaneProjector::setViewVolume(const SbViewVolume&  vol0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setViewVolume");
+    static PyObject* name = PyUnicode_FromString("setViewVolume");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbViewVolume&"};
@@ -1149,7 +1149,7 @@ void PythonQtShell_SbPlaneProjector::setWorkingSpace(const SbMatrix&  space0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setWorkingSpace");
+    static PyObject* name = PyUnicode_FromString("setWorkingSpace");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbMatrix&"};
@@ -1230,7 +1230,7 @@ SbProjector*  PythonQtShell_SbProjector::copy() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copy");
+    static PyObject* name = PyUnicode_FromString("copy");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbProjector*"};
@@ -1263,7 +1263,7 @@ SbVec3f  PythonQtShell_SbProjector::project(const SbVec2f&  point0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("project");
+    static PyObject* name = PyUnicode_FromString("project");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbVec3f" , "const SbVec2f&"};
@@ -1296,7 +1296,7 @@ void PythonQtShell_SbProjector::setViewVolume(const SbViewVolume&  vol0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setViewVolume");
+    static PyObject* name = PyUnicode_FromString("setViewVolume");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbViewVolume&"};
@@ -1318,7 +1318,7 @@ void PythonQtShell_SbProjector::setWorkingSpace(const SbMatrix&  space0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setWorkingSpace");
+    static PyObject* name = PyUnicode_FromString("setWorkingSpace");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbMatrix&"};
@@ -1385,7 +1385,7 @@ SbProjector*  PythonQtShell_SbSpherePlaneProjector::copy() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copy");
+    static PyObject* name = PyUnicode_FromString("copy");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbProjector*"};
@@ -1418,7 +1418,7 @@ SbRotation  PythonQtShell_SbSpherePlaneProjector::getRotation(const SbVec3f&  po
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getRotation");
+    static PyObject* name = PyUnicode_FromString("getRotation");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbRotation" , "const SbVec3f&" , "const SbVec3f&"};
@@ -1451,7 +1451,7 @@ SbVec3f  PythonQtShell_SbSpherePlaneProjector::project(const SbVec2f&  point0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("project");
+    static PyObject* name = PyUnicode_FromString("project");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbVec3f" , "const SbVec2f&"};
@@ -1484,7 +1484,7 @@ void PythonQtShell_SbSpherePlaneProjector::setViewVolume(const SbViewVolume&  vo
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setViewVolume");
+    static PyObject* name = PyUnicode_FromString("setViewVolume");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbViewVolume&"};
@@ -1506,7 +1506,7 @@ void PythonQtShell_SbSpherePlaneProjector::setWorkingSpace(const SbMatrix&  spac
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setWorkingSpace");
+    static PyObject* name = PyUnicode_FromString("setWorkingSpace");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbMatrix&"};
@@ -1528,7 +1528,7 @@ void PythonQtShell_SbSpherePlaneProjector::setupTolerance()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setupTolerance");
+    static PyObject* name = PyUnicode_FromString("setupTolerance");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={""};
@@ -1569,7 +1569,7 @@ SbProjector*  PythonQtShell_SbSphereProjector::copy() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copy");
+    static PyObject* name = PyUnicode_FromString("copy");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbProjector*"};
@@ -1602,7 +1602,7 @@ SbRotation  PythonQtShell_SbSphereProjector::getRotation(const SbVec3f&  point10
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getRotation");
+    static PyObject* name = PyUnicode_FromString("getRotation");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbRotation" , "const SbVec3f&" , "const SbVec3f&"};
@@ -1635,7 +1635,7 @@ SbVec3f  PythonQtShell_SbSphereProjector::project(const SbVec2f&  point0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("project");
+    static PyObject* name = PyUnicode_FromString("project");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbVec3f" , "const SbVec2f&"};
@@ -1668,7 +1668,7 @@ void PythonQtShell_SbSphereProjector::setViewVolume(const SbViewVolume&  vol0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setViewVolume");
+    static PyObject* name = PyUnicode_FromString("setViewVolume");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbViewVolume&"};
@@ -1690,7 +1690,7 @@ void PythonQtShell_SbSphereProjector::setWorkingSpace(const SbMatrix&  space0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setWorkingSpace");
+    static PyObject* name = PyUnicode_FromString("setWorkingSpace");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbMatrix&"};
@@ -1771,7 +1771,7 @@ SbProjector*  PythonQtShell_SbSphereSectionProjector::copy() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copy");
+    static PyObject* name = PyUnicode_FromString("copy");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbProjector*"};
@@ -1804,7 +1804,7 @@ SbRotation  PythonQtShell_SbSphereSectionProjector::getRotation(const SbVec3f&  
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getRotation");
+    static PyObject* name = PyUnicode_FromString("getRotation");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbRotation" , "const SbVec3f&" , "const SbVec3f&"};
@@ -1837,7 +1837,7 @@ SbVec3f  PythonQtShell_SbSphereSectionProjector::project(const SbVec2f&  point0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("project");
+    static PyObject* name = PyUnicode_FromString("project");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbVec3f" , "const SbVec2f&"};
@@ -1870,7 +1870,7 @@ void PythonQtShell_SbSphereSectionProjector::setViewVolume(const SbViewVolume&  
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setViewVolume");
+    static PyObject* name = PyUnicode_FromString("setViewVolume");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbViewVolume&"};
@@ -1892,7 +1892,7 @@ void PythonQtShell_SbSphereSectionProjector::setWorkingSpace(const SbMatrix&  sp
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setWorkingSpace");
+    static PyObject* name = PyUnicode_FromString("setWorkingSpace");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbMatrix&"};
@@ -1914,7 +1914,7 @@ void PythonQtShell_SbSphereSectionProjector::setupTolerance()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setupTolerance");
+    static PyObject* name = PyUnicode_FromString("setupTolerance");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={""};
@@ -1980,7 +1980,7 @@ SbProjector*  PythonQtShell_SbSphereSheetProjector::copy() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("copy");
+    static PyObject* name = PyUnicode_FromString("copy");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbProjector*"};
@@ -2013,7 +2013,7 @@ SbRotation  PythonQtShell_SbSphereSheetProjector::getRotation(const SbVec3f&  po
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getRotation");
+    static PyObject* name = PyUnicode_FromString("getRotation");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbRotation" , "const SbVec3f&" , "const SbVec3f&"};
@@ -2046,7 +2046,7 @@ SbVec3f  PythonQtShell_SbSphereSheetProjector::project(const SbVec2f&  point0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("project");
+    static PyObject* name = PyUnicode_FromString("project");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbVec3f" , "const SbVec2f&"};
@@ -2079,7 +2079,7 @@ void PythonQtShell_SbSphereSheetProjector::setViewVolume(const SbViewVolume&  vo
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setViewVolume");
+    static PyObject* name = PyUnicode_FromString("setViewVolume");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbViewVolume&"};
@@ -2101,7 +2101,7 @@ void PythonQtShell_SbSphereSheetProjector::setWorkingSpace(const SbMatrix&  spac
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setWorkingSpace");
+    static PyObject* name = PyUnicode_FromString("setWorkingSpace");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbMatrix&"};

@@ -1,4 +1,3 @@
-
 from conan import ConanFile
 from conan.tools.env import VirtualRunEnv
 from conan.tools.build import can_run

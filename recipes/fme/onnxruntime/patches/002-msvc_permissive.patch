@@ -1,0 +1,13 @@
+diff --git a/onnxruntime/core/providers/cuda/math/softmax.cc b/onnxruntime/core/providers/cuda/math/softmax.cc
+index 609f178..9288108 100644
+--- a/onnxruntime/core/providers/cuda/math/softmax.cc
++++ b/onnxruntime/core/providers/cuda/math/softmax.cc
+@@ -28,7 +28,7 @@ Status SoftMaxComputeHelper(
+   auto X_data = reinterpret_cast<const CudaT_IN*>(X);
+   // According to nsight compute profiling, softmax_warp_forward_resource_efficient is better than dispatch_blockwise_softmax_forward when 1024 < D <=2048 and N >= 8192.
+   const bool use_softmax_warp_forward_resource_efficient = 1024 < D && D <= 2048 && D * sizeof(T) <= 4096 && N >= 8192;
+-  if ((D <= 1024 && D * sizeof(T) <= 4096) or use_softmax_warp_forward_resource_efficient) {
++  if ((D <= 1024 && D * sizeof(T) <= 4096) || use_softmax_warp_forward_resource_efficient) {
+     return dispatch_warpwise_softmax_forward<
+         CudaT_IN, CudaT_OUT, AccumulationType_t<CudaT_ACCUM>, is_log_softmax>(
+         stream, Y_data, X_data, gsl::narrow_cast<int>(D), gsl::narrow_cast<int>(D), gsl::narrow_cast<int>(N));

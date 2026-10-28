@@ -1,0 +1,8 @@
+restricted: true
+max_build_jobs: 8
+timeout:
+  build: 360
+  upload: 45
+version_source:
+  provider: anitya
+  id: 388902

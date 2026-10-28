@@ -4,12 +4,12 @@ from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
 from conan.tools.files import rmdir, copy, load, get
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "onetbb"
-    version = "2022.3.0"
+    version = "2023.1.0"
     license = "Apache-2.0"
     homepage = "https://oneapi-src.github.io/oneTBB/"
     description = (
@@ -26,7 +26,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="01598a46c1162c27253a0de0236f520fd8ee8166e9ebb84a4243574f88e6e50a",
+            sha256="191288b52e1e6b17198000b64d77d194bb65e791be46ebc606e9b091781e2070",
             url=f"https://github.com/oneapi-src/oneTBB/archive/refs/tags/v{self.version}.tar.gz",
             strip_root=True,
         )

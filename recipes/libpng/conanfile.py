@@ -4,12 +4,12 @@ from conan.tools.files import collect_libs
 from conan.tools.files import get, copy, rmdir
 import os
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "libpng"
-    version = "1.6.58"
+    version = "1.6.59"
     homepage = "http://www.libpng.org/pub/png/libpng.html"
     description = "Portable Network Graphics library"
     license = "Libpng"
@@ -30,7 +30,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="8c9b05b675ca7301a458df2c2e46f26e1d41ff36b8863f8c33530bc58c2e6225",
+            sha256="86a3e4b501f7f50e392c4e456ea158893e9a595b1c63eb88c7bb9f6cf8772dad",
             url=f"https://download.sourceforge.net/libpng/libpng-{self.version}.tar.gz",
             strip_root=True,
         )

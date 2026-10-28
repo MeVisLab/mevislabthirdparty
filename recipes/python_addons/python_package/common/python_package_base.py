@@ -75,7 +75,7 @@ class PythonPackageBase(ConanFile):
             )
 
     def relative_site_package_folder(self):
-        if sys.platform == "win32":
+        if self.settings.os == "Windows":
             return "Lib/site-packages"
 
         try:

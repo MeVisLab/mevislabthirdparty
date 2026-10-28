@@ -1,8 +1,8 @@
 diff --git a/cmake/QtAutoDetectHelpers.cmake b/cmake/QtAutoDetectHelpers.cmake
-index 01234567..89abcdef 100644
+index 5e30374..c20a1b2 100644
 --- a/cmake/QtAutoDetectHelpers.cmake
 +++ b/cmake/QtAutoDetectHelpers.cmake
-@@ -124,6 +124,7 @@ function(qt_auto_detect_android)
+@@ -164,6 +164,7 @@ function(qt_auto_detect_android)
      if(DEFINED CMAKE_TOOLCHAIN_FILE AND NOT DEFINED QT_AUTODETECT_ANDROID)
          # Peek into the toolchain file and check if it looks like an Android one.
          if(NOT android_detected)

@@ -5,12 +5,12 @@
 
 int main()
 {
-	tutorial::Person p;
-	p.set_id(21);
-	p.set_name("Jane Doe");
-	p.set_email("jane.doe@example.com");
+    tutorial::Person p;
+    p.set_id(21);
+    p.set_name("Jane Doe");
+    p.set_email("jane.doe@example.com");
 
-	std::cout << p.SerializeAsString() << std::endl;
+    std::cout << p.SerializeAsString() << std::endl;
 
-	return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }

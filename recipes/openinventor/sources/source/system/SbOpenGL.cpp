@@ -24,7 +24,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  *  Contact information: MeVis, Center for Medical Diagnostic Systems and
- *  Visualization GmbH, Universitätsallee 29, D-28359 Bremen, GERMANY, or:
+ *  Visualization GmbH, Universitaetsallee 29, D-28359 Bremen, GERMANY, or:
  *
  *  http://www.mevis.de
  *
@@ -37,15 +37,20 @@
 
 #include <Inventor/system/SbOpenGL.h>
 #include <Inventor/errors/SoError.h>
+#include <stdlib.h>
 
 void SbOpenGL::init() {
   static bool initialized = false;
   if (!initialized) {
-    GLenum err = glewInit();
-    if (GLEW_OK != err) {
-      // Problem: glewInit failed, something is seriously wrong.
-      SoError::post("GLEW init failed: %s", glewGetErrorString(err));
-    } else {
+    bool shouldInitialize = getenv("IV_DISABLE_GLEW_INIT")==NULL;
+    if (shouldInitialize) {
+      GLenum err = glewInit();
+      if (GLEW_OK != err) {
+        // Problem: glewInit failed, something is seriously wrong.
+        SoError::post("GLEW init failed: %s", glewGetErrorString(err));
+      }
+      // we still set initialized to true, even if glewInit failed,
+      // because we don't want to keep trying to initialize it every time SbOpenGL::init() is called.
       initialized = true;
     }
   }

@@ -4,7 +4,7 @@ from conan.tools.files import get, patch, rmdir, copy, collect_libs
 import os
 from pathlib import Path
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
@@ -93,7 +93,6 @@ class ConanRecipe(ConanFile):
         self.cpp_info.set_property("cmake_file_name", "FLANN")
         self.cpp_info.set_property("cmake_target_name", "FLANN::FLANN")
         self.cpp_info.set_property("pkg_config_name", "FLANN")
-        self.cpp_info.set_property("mevislab_prosdk_exclude", True)
         self.cpp_info.libs = collect_libs(self)
         if self.settings.os == "Linux":
             self.cpp_info.system_libs.append("m")

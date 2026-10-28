@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Generated on 30/06/2026 for SPDX version v3.28.0
+# Generated on 03/09/2026 for SPDX version v3.28.0
 
 
 spdx_licenses = {

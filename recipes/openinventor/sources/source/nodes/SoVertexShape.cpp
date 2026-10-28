@@ -400,11 +400,21 @@ void SoVertexShape::endVertexArrayRendering( SoGLRenderAction* action, bool vboW
     glDisableVertexAttribArray(SoLazyElement::ATTRIB_NORMAL);
     glDisableVertexAttribArray(SoLazyElement::ATTRIB_COLOR);
     glDisableVertexAttribArray(SoLazyElement::ATTRIB_TEXCOORD);
+    // Set pointers to NULL to release VBO bindings
+    glVertexAttribPointer(SoLazyElement::ATTRIB_VERTEX, 3, GL_FLOAT, false, 0, NULL);
+    glVertexAttribPointer(SoLazyElement::ATTRIB_NORMAL, 3, GL_FLOAT, false, 0, NULL);
+    glVertexAttribPointer(SoLazyElement::ATTRIB_COLOR, 4, GL_UNSIGNED_BYTE, true, 0, NULL);
+    glVertexAttribPointer(SoLazyElement::ATTRIB_TEXCOORD, 2, GL_FLOAT, false, 0, NULL);
   } else {
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
     glDisableClientState(GL_COLOR_ARRAY);
     glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+    // Set pointers to NULL to release VBO bindings
+    glVertexPointer(3, GL_FLOAT, 0, NULL);
+    glNormalPointer(GL_FLOAT, 0, NULL);
+    glColorPointer(4, GL_UNSIGNED_BYTE, 0, NULL);
+    glTexCoordPointer(2, GL_FLOAT, 0, NULL);
   }
   if (_postVertexArrayRenderingCB) {
     (*_postVertexArrayRenderingCB)(this, action, vboWasUsed, vpCache.getNumVertices());

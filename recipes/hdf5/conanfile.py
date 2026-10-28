@@ -4,12 +4,12 @@ from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
 from conan.tools.files import copy, get, rm, rmdir
 from conan.tools.scm import Version
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "hdf5"
-    version = "2.1.1"
+    version = "2.2.0"
     homepage = "https://www.hdfgroup.org/solutions/hdf5/"
     description = "General purpose library and file format for storing scientific data"
     license = "BSD-3-Clause"
@@ -30,7 +30,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="efff93b5a904d66e8f626d7da60b5eedc9faf544be27dbabbaa87967b8ad798b",
+            sha256="1a1ab8209b35586fbc1aa279ba76d102130b95badcb20ca329587219112d8c16",
             url=f"https://github.com/HDFGroup/hdf5/releases/download/{self.version}/hdf5-{self.version}.tar.gz",
             strip_root=True,
         )
@@ -77,6 +77,7 @@ class ConanRecipe(ConanFile):
         cmake = CMake(self)
         cmake.install()
         rmdir(self, os.path.join(self.package_folder, "cmake"))
+        rmdir(self, os.path.join(self.package_folder, "lib", "cmake"))
         rmdir(self, os.path.join(self.package_folder, "lib", "pkgconfig"))
         rm(self, "libhdf5.settings", os.path.join(self.package_folder, "lib"))
 

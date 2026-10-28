@@ -3,12 +3,12 @@ from conan.tools.files import get
 from conan.tools.gnu import PkgConfigDeps
 from conan.tools.meson import MesonToolchain
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "contourpy"
-    version = "1.3.3"
+    version = "1.4.0"
     homepage = "https://contourpy.readthedocs.io"
     description = "Python library for calculating contours of 2D quadrilateral grids"
     license = "BSD-3-Clause"
@@ -34,7 +34,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="c1e4d622e9d4f3081dbdb438b403e50557be7284a41d9a21316414405848ba62",
+            sha256="1d40b8032984dab608eb438a4fa1b075be39209cc02e762458da106082568d95",
             url=f"https://github.com/contourpy/contourpy/archive/refs/tags/v{self.version}.tar.gz",
             strip_root=True,
         )

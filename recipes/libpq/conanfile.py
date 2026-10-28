@@ -7,12 +7,12 @@ from conan.tools.layout import basic_layout
 from conan.tools.files import get, rm, rmdir, copy, patch
 from conan.tools.microsoft import is_msvc
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "libpq"
-    version = "18.4"
+    version = "18.6"
     homepage = "https://www.postgresql.org/docs/current/static/libpq.html"
     description = "The library used by all the standard PostgreSQL tools."
     license = "PostgreSQL"
@@ -34,7 +34,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="81a81ec695fb0c7901407defaa1d2f7973617154cf27ba74e3a7ab8e64436094",
+            sha256="555610c24d53e4316da5b7d3fc25c279d96856d5e0e23ee308c328c5fa881d9f",
             url=f"https://ftp.postgresql.org/pub/source/v{self.version}/postgresql-{self.version}.tar.bz2",
             strip_root=True,
         )

@@ -3409,7 +3409,7 @@ SbName  PythonQtShell_SoPath::getName() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getName");
+    static PyObject* name = PyUnicode_FromString("getName");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SbName"};
@@ -3442,7 +3442,7 @@ void PythonQtShell_SoPath::setName(const SbName&  name0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setName");
+    static PyObject* name = PyUnicode_FromString("setName");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "const SbName&"};
@@ -3464,7 +3464,7 @@ void PythonQtShell_SoPath::startNotify()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("startNotify");
+    static PyObject* name = PyUnicode_FromString("startNotify");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={""};
@@ -3486,7 +3486,7 @@ void PythonQtShell_SoPath::write(SoWriteAction*  writeAction0) const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("write");
+    static PyObject* name = PyUnicode_FromString("write");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoWriteAction*"};
@@ -3826,7 +3826,7 @@ void PythonQtShell_SoSceneManager::activate()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("activate");
+    static PyObject* name = PyUnicode_FromString("activate");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={""};
@@ -3848,7 +3848,7 @@ void PythonQtShell_SoSceneManager::deactivate()
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("deactivate");
+    static PyObject* name = PyUnicode_FromString("deactivate");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={""};
@@ -3870,7 +3870,7 @@ SoNode*  PythonQtShell_SoSceneManager::getSceneGraph() const
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("getSceneGraph");
+    static PyObject* name = PyUnicode_FromString("getSceneGraph");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"SoNode*"};
@@ -3903,7 +3903,7 @@ bool  PythonQtShell_SoSceneManager::processEvent(const SoEvent*  event0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("processEvent");
+    static PyObject* name = PyUnicode_FromString("processEvent");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"bool" , "const SoEvent*"};
@@ -3936,7 +3936,7 @@ void PythonQtShell_SoSceneManager::render(bool  clearWindow0, bool  clearZbuffer
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("render");
+    static PyObject* name = PyUnicode_FromString("render");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "bool" , "bool"};
@@ -3958,7 +3958,7 @@ void PythonQtShell_SoSceneManager::setSceneGraph(SoNode*  newScene0)
 if (_wrapper) {
   PYTHONQT_GIL_SCOPE
   if (Py_REFCNT((PyObject*)_wrapper) > 0) {
-    static PyObject* name = PyString_FromString("setSceneGraph");
+    static PyObject* name = PyUnicode_FromString("setSceneGraph");
     PyObject* obj = PyBaseObject_Type.tp_getattro((PyObject*)_wrapper, name);
     if (obj) {
       static const char* argumentList[] ={"" , "SoNode*"};

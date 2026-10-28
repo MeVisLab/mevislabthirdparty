@@ -1,0 +1,34 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 791e24b..7f1bb1d 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -404,6 +404,7 @@ function(RELATIVE_PROTOBUF_GENERATE_CPP SRCS)
+ 
+     set(OUTPUT_PB_SRC "${OUTPUT_PROTO_DIR}/${GENERATED_FILE_WE}.pb.cc")
+     set(GENERATED_PROTO "${OUTPUT_PROTO_DIR}/${GENERATED_FILE_WE}.proto")
++    set(GENERATED_PROTO3 "${OUTPUT_PROTO_DIR}/${GENERATED_FILE_WE}.proto3")
+     list(APPEND ${SRCS} "${OUTPUT_PB_SRC}")
+ 
+     if(NOT EXISTS "${OUTPUT_PROTO_DIR}")
+@@ -445,10 +446,12 @@ function(RELATIVE_PROTOBUF_GENERATE_CPP SRCS)
+     endif()
+ 
+     add_custom_command(OUTPUT ${_gen_proto_outputs}
++        BYPRODUCTS "${GENERATED_PROTO3}"
+         COMMAND ${ONNX_PYTHON_INTERPRETER} "${GEN_PROTO_PY}" ${GEN_PROTO_ARGS}
+-        DEPENDS ${deps}
++        DEPENDS ${deps}  ${GENERATED_FILES}
+         COMMENT "Running gen_proto.py on ${INFILE}")
+     message("Generated: ${GENERATED_PROTO}")
++    list(APPEND GENERATED_FILES "${GENERATED_PROTO}" "${GENERATED_PROTO3}")
+ 
+     set(PROTOC_ARGS
+         ${GENERATED_PROTO}
+@@ -464,7 +467,6 @@ function(RELATIVE_PROTOBUF_GENERATE_CPP SRCS)
+         list(APPEND PROTOC_ARGS ${CMAKE_CURRENT_BINARY_DIR})
+       endif()
+     endif()
+-    list(APPEND GENERATED_FILES "${GENERATED_PROTO}")
+ 
+     set(_protoc_outputs "${OUTPUT_PB_SRC}")
+     if(ONNX_BUILD_PYTHON)

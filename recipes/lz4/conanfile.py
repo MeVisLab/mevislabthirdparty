@@ -5,7 +5,7 @@ from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
 from conan.tools.files import get, copy, rmdir, save, collect_libs
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
@@ -69,6 +69,7 @@ class ConanRecipe(ConanFile):
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "LZ4")
         self.cpp_info.set_property("cmake_target_name", "lz4::lz4")
+        self.cpp_info.set_property("cmake_target_aliases", ["LZ4::LZ4"])
         self.cpp_info.set_property("pkg_config_name", "liblz4")
         self.cpp_info.set_property("cmake_build_modules", [self._cmake_module_file])
         self.cpp_info.libs = collect_libs(self)
@@ -79,10 +80,8 @@ class ConanRecipe(ConanFile):
 
     def _cmake_module_file_write(self):
         file = os.path.join(self.package_folder, self._cmake_module_file)
-        content = textwrap.dedent(
-            """\
+        content = textwrap.dedent("""\
             set(LZ4_LIBRARY ${LZ4_LIBRARIES})
             set(LZ4_LINK_LIBRARIES ${LZ4_LIBRARIES})
-            """
-        )
+            """)
         save(self, file, content)

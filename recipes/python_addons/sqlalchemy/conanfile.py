@@ -1,14 +1,12 @@
-import os
-
 from conan import ConanFile
-from conan.tools.files import get, replace_in_file
+from conan.tools.files import get
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "sqlalchemy"
-    version = "2.0.51"
+    version = "2.1.3"
     homepage = "https://www.sqlalchemy.org"
     description = (
         "SQLAlchemy is the Python SQL toolkit and Object Relational Mapper "
@@ -32,11 +30,10 @@ class ConanRecipe(ConanFile):
         version = self.version.replace(".", "_")
         get(
             self,
-            sha256="3378f794faabc73ed49359330288eddff6619f0dab2609887c70a99fc6578955",
+            sha256="d22b3162f6e6180baeae1fb54c6568e4730c6e30145ef4dfeb23c0c1a4a08fa3",
             url=f"https://github.com/sqlalchemy/sqlalchemy/archive/refs/tags/rel_{version}.tar.gz",
             strip_root=True,
         )
-        replace_in_file(self, os.path.join(self.source_folder, "setup.cfg"), "tag_build = dev", "")
 
     def package_info(self):
         super().package_info()

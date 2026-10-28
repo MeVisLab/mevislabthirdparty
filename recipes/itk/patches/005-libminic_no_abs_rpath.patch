@@ -1,0 +1,12 @@
+diff --git a/Modules/ThirdParty/MINC/src/libminc/CMakeLists.txt b/Modules/ThirdParty/MINC/src/libminc/CMakeLists.txt
+index 9d7958b..8c99c22 100644
+--- a/Modules/ThirdParty/MINC/src/libminc/CMakeLists.txt
++++ b/Modules/ThirdParty/MINC/src/libminc/CMakeLists.txt
+@@ -456,7 +456,6 @@ ENDIF(LIBMINC_MINC1_SUPPORT)
+ 
+ # Keep this variable for compatibility
+ SET(VOLUME_IO_LIBRARY  ${LIBMINC_EXTERNAL_LIB_PREFIX}minc2)
+-SET(CMAKE_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX})
+ 
+ ADD_LIBRARY(${LIBMINC_LIBRARY} ${LIBRARY_TYPE} ${minc_LIB_SRCS} ${minc_HEADERS} ${volume_io_LIB_SRCS} ${volume_io_HEADERS} )
+ 

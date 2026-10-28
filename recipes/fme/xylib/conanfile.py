@@ -3,7 +3,7 @@ from conan.tools.cmake import CMakeToolchain, CMakeDeps, CMake
 from conan.tools.files import copy, collect_libs, replace_in_file, get
 import os
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
@@ -85,5 +85,4 @@ class ConanRecipe(ConanFile):
         self.cpp_info.set_property("purl", f"pkg:github/wojdyr/xylib@v{major}.{minor}")
         self.cpp_info.set_property("cmake_file_name", "xylib")
         self.cpp_info.set_property("cmake_target_name", "xylib::xylib")
-        self.cpp_info.set_property("mevislab_prosdk_exclude", True)
         self.cpp_info.libs = collect_libs(self)

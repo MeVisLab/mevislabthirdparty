@@ -1,0 +1,13 @@
+diff --git a/Wrapping/Python/vtkmodules/__init__.py.in b/Wrapping/Python/vtkmodules/__init__.py.in
+index b712fb4..5ef572d 100644
+--- a/Wrapping/Python/vtkmodules/__init__.py.in
++++ b/Wrapping/Python/vtkmodules/__init__.py.in
+@@ -53,7 +53,7 @@ class VTKLoader(ExtensionFileLoader):
+ 
+ 
+ # Register our hook for vtk library loader
+-sys.meta_path.insert(0, VTKMetaHook())
++# sys.meta_path.insert(0, VTKMetaHook())
+ 
+ 
+ def _windows_dll_path():

@@ -1,16 +1,21 @@
-#include <QtService>
 #include <QCoreApplication>
+#include <QtService>
 
 
 class TestService : public QtService<QCoreApplication>
 {
-public:
-	explicit TestService(int &argc, char **argv)
+  public:
+    explicit TestService(int &argc, char **argv)
       : QtService<QCoreApplication>(argc, argv, "Test Daemon")
-    {}
+    {
+    }
 
-    void start() override {}
-    void stop() override {}
+    void start() override
+    {
+    }
+    void stop() override
+    {
+    }
 };
 
 int main(int argc, char **argv)

@@ -5,12 +5,12 @@ from conan.tools.scm import Version
 from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
 from conan.tools.files import get, copy, rmdir, save, collect_libs
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "xz-utils"
-    version = "5.8.3"
+    version = "5.8.4"
     homepage = "https://tukaani.org/xz"
     description = "XZ Utils is free general-purpose data compression software with a high compression ratio"
     license = "0BSD"
@@ -28,7 +28,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="33bf69c0d6c698e83a68f77e6c1f465778e418ca0b3d59860d3ab446f4ac99a6",
+            sha256="3340ae48f88665abc78d71dc43446fb3f7e70b48fd59844ac0e14958cef6e00b",
             url=f"https://github.com/tukaani-project/xz/releases/download/v{self.version}/xz-{self.version}.tar.bz2",
             strip_root=True,
         )
@@ -54,8 +54,7 @@ class ConanRecipe(ConanFile):
 
         copy(self, "COPYING", src=self.source_folder, dst=os.path.join(self.package_folder, "licenses"))
 
-        content = textwrap.dedent(
-            f"""\
+        content = textwrap.dedent(f"""\
             if (NOT TARGET LibLZMA::LibLZMA)
                 message(FATAL_ERROR "Target LibZMA missing")
             endif()
@@ -78,8 +77,7 @@ class ConanRecipe(ConanFile):
             set(LIBLZMA_VERSION_MINOR {Version(self.version).minor})
             set(LIBLZMA_VERSION_PATCH {Version(self.version).patch})
             set(LIBLZMA_VERSION_STRING "{self.version}")
-        """
-        )
+        """)
         save(self, os.path.join(self.package_folder, self._module_file_rel_path), content)
 
     @property

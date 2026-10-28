@@ -3,10 +3,11 @@ from pathlib import Path
 
 from conan import ConanFile
 from conan.errors import ConanException
+from conan.tools.env import Environment
 from conan.tools.files import get, copy, rmdir
 from conan.tools.microsoft import MSBuildToolchain
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 # FIXME numpy links to blas/lapack/openblas if found on the system.
 # It's also recommended to use it, since it's way faster than the fallback implementation.
@@ -16,7 +17,7 @@ required_conan_version = ">=2.2.2"
 class ConanRecipe(ConanFile):
     name = "numpy"
     mli_name = "Python3__NumPy"
-    version = "2.4.6"
+    version = "2.5.3"
     homepage = "https://numpy.org"
     description = "NumPy is the fundamental package for scientific computing with Python"
     license = "BSD-3-Clause"
@@ -36,7 +37,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="f3a3570c4a2a16746ac2c31a7c7c7b0c186b95ce902e33db6f28094ed7387dda",
+            sha256="df2d5874ff183595a4ba404edd04f6bd9b5505c1d7708573f6a6c17489a67563",
             url=f"https://github.com/numpy/numpy/releases/download/v{self.version}/numpy-{self.version}.tar.gz",
             strip_root=True,
         )
@@ -46,6 +47,26 @@ class ConanRecipe(ConanFile):
             tc = MSBuildToolchain(self)
             tc.generate()
         super().generate()
+
+    def build(self):
+        if self.settings.build_type == "Debug" and self.settings.os == "Windows":
+            # convince Meson to do the right thing:
+            env = Environment()
+            # Meson tries to link python313_d.lib without providing a lib path
+            # (this was caused by us linking against the Debug MSVC runtime, otherwise it links without problems)
+            # the following seems to be the only way to provide the path:
+            extra_libdirs = self.dependencies["python"].cpp_info.libdirs
+            env.append("LDFLAGS", f'/LIBPATH:"{extra_libdirs[0]}"', separator=" ")
+            with env.vars(self).apply():
+                self.default_build(
+                    # override default values:
+                    config_settings=[
+                        "setup-args=-Dbuildtype=debug",
+                        "setup-args=-Db_vscrt=from_buildtype",
+                    ]
+                )
+        else:
+            self.default_build()
 
     def package(self):
         self.default_package()

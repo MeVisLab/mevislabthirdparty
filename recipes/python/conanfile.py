@@ -13,12 +13,12 @@ from conan.tools.layout import basic_layout
 from conan.tools.microsoft import is_msvc, MSBuildToolchain, MSBuild, MSBuildDeps
 from conan.tools.scm import Version
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "python"
-    version = "3.13.14"
+    version = "3.13.16"
     homepage = "https://www.python.org"
     description = "An interpreted, interactive, object-oriented programming language"
     license = "Python-2.0"
@@ -71,7 +71,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="5ae535a36af0ebca6fca176ecb8197f5db9c1cb8c8f0cd12cdf1787046db1f41",
+            sha256="cfac63bddf956deafb1172ca131ae5dcaafd6f95056086e233fca205593ed427",
             url=f"https://www.python.org/ftp/python/{self.version}/Python-{self.version}.tgz",
             strip_root=True,
         )
@@ -226,10 +226,11 @@ class ConanRecipe(ConanFile):
                 for name in ["MeVisPythonW_d", "python3w", "python3w_d", "pythonw"]:
                     shutil.copy(src=python_exe, dst=os.path.join(self.package_folder, f"{name}.exe"))
                 v = Version(self.version)
-                shutil.copy(
-                    src=os.path.join(self.package_folder, "libs", f"python{v.major}{v.minor}_d.lib"),
-                    dst=os.path.join(self.package_folder, "libs", f"python{v.major}{v.minor}.lib"),
-                )
+                for library in [f"python{v.major}{v.minor}", f"python{v.major}"]:
+                    shutil.copy(
+                        src=os.path.join(self.package_folder, "libs", f"{library}_d.lib"),
+                        dst=os.path.join(self.package_folder, "libs", f"{library}.lib"),
+                    )
             else:
                 python_exe = os.path.join(self.package_folder, "python.exe")
                 for name in ["python3", "MeVisPython"]:
@@ -264,7 +265,7 @@ class ConanRecipe(ConanFile):
                     + os.path.join(self.package_folder, "bin", f"python{mm_version}")
                 )
                 self.run(
-                    f'install_name_tool -add_rpath "@executable_path/../lib" '
+                    'install_name_tool -add_rpath "@executable_path/../lib" '
                     + os.path.join(self.package_folder, "bin", f"python{mm_version}")
                 )
             elif self.settings.os == "Linux":
@@ -333,6 +334,7 @@ class ConanRecipe(ConanFile):
 
         # MEVIS_PYTHON_CMD, the name of the mevislab python executable
         if self.settings.os == "Windows":
+            self.cpp_info.includedirs = ["Include"]
             self.cpp_info.libdirs = ["libs"]
             self.cpp_info.bindirs.append(self.package_folder)
 
@@ -371,8 +373,7 @@ class ConanRecipe(ConanFile):
     def _cmake_module_file_write(self):
         v = Version(self.version)
         file = os.path.join(self.package_folder, self._cmake_module_file)
-        content = textwrap.dedent(
-            f"""\
+        content = textwrap.dedent(f"""\
             set(Python3_VERSION_VERSION {self.version})
             set(Python3_VERSION_MAJOR {v.major})
             set(Python3_VERSION_MINOR {v.minor})
@@ -393,6 +394,5 @@ class ConanRecipe(ConanFile):
                 endif()
                 find_package(numpy ${{_numpy_find_package_Options}})
             endif()
-            """
-        )
+            """)
         save(self, file, content)

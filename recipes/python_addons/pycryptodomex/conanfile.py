@@ -3,13 +3,13 @@ import sys
 from conan import ConanFile
 from conan.tools.files import get
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "pycryptodomex"
     display_name = "PyCryptodome"
-    version = "3.23.0"
+    version = "3.24.0"
     homepage = "https://www.pycryptodome.org"
     description = "PyCryptodome is a self-contained Python package of low-level cryptographic primitives"
     license = "BSD-2-Clause"
@@ -30,7 +30,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="d3e12d349f62a8c3bd2e7056e2eea925abcfcdd9e2b07bff091bcc05837ac869",
+            sha256="7e4a2ba5fe110fea06001faaf4d3fe9ae73d38bddd85c1bd9d4574d30275bf10",
             url=f"https://github.com/Legrandin/pycryptodome/archive/refs/tags/v{self.version}x.tar.gz",
             strip_root=True,
         )

@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include <igtlServerSocket.h>
 #include <igtlCapabilityMessage.h>
+#include <igtlServerSocket.h>
 
 int main()
 {

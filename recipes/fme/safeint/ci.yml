@@ -1,0 +1,5 @@
+version_source:
+  provider: anitya
+  id: 387188
+  version_regex: "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)"
+  exclude_versions: [ "3.20.0", "3.19.2", "3.19.1" ]

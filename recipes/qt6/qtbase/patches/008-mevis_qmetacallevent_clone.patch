@@ -1,105 +1,178 @@
 diff --git a/src/corelib/kernel/qobject.cpp b/src/corelib/kernel/qobject.cpp
-index 938afc7d..c1f4332d 100644
+index c750ccd..8372dcc 100644
 --- a/src/corelib/kernel/qobject.cpp
 +++ b/src/corelib/kernel/qobject.cpp
-@@ -629,6 +629,58 @@ void QMetaCallEvent::placeMetaCall(QObject *object)
+@@ -554,6 +554,125 @@ void QMetaCallEvent::placeMetaCall(QObject *object)
      }
  }
  
-+// MEVIS BEGIN
-+QEvent* mevis_cloneAndClearQMetaCallEvent(QEvent* event)
++[[nodiscard]] QEvent* mevis_cloneAndClearQMetaCallEvent(QEvent* event) noexcept
 +{
-+    if (event->type() == QEvent::MetaCall) {
-+        return static_cast<QMetaCallEvent*>(event)->cloneAndClear();
-+    } else {
++    if (event->type() != QEvent::MetaCall) {
 +        return nullptr;
 +    }
-+}
 +
-+QEvent* QMetaCallEvent::cloneAndClear()
-+{
-+    QMetaCallEvent* newEvent = nullptr;
-+    if (d.nargs_) {
-+        // non-blocking call, arguments need to be copied
-+        if (d.slotObj_) {
-+            auto slotObjPtr = d.slotObj_.release();
-+            newEvent = new QMetaCallEvent(slotObjPtr,
-+                                          sender(), signalId(),
-+                                          d.nargs_);
-+        } else {
-+            newEvent = new QMetaCallEvent(d.method_offset_, d.method_relative_, d.callFunction_,
-+                                          sender(), signalId(),
-+                                          d.nargs_);
++    auto* metaCallEvent = static_cast<QMetaCallEvent*>(event);
++
++    // Blocking calls have nargs_==0
++    if (metaCallEvent->d.nargs_ == 0) {
++        QMetaCallEvent* newEvent = nullptr;
++        if (metaCallEvent->d.slotObj_) {
++            newEvent = new (std::nothrow) QMetaCallEvent(
++                std::move(metaCallEvent->d.slotObj_), metaCallEvent->sender(),
++                metaCallEvent->signalId(), metaCallEvent->d.args_, metaCallEvent->latch);
 +        }
-+        QMetaType *sourceTypeIDs = types();
-+        QMetaType *targetTypeIDs = newEvent->types();
-+        void **targetArgs = newEvent->args();
-+        // move args:
-+        for (int i = 0; i < d.nargs_; ++i) {
-+            targetTypeIDs[i] = sourceTypeIDs[i]; sourceTypeIDs[i] = {};
-+            targetArgs[i] = d.args_[i]; d.args_[i] = nullptr;
++        else {
++            newEvent = new (std::nothrow) QMetaCallEvent(
++                metaCallEvent->d.method_offset_, metaCallEvent->d.method_relative_,
++                metaCallEvent->d.callFunction_, metaCallEvent->sender(),
++                metaCallEvent->signalId(), metaCallEvent->d.args_, metaCallEvent->latch);
 +        }
-+    } else {
-+        // blocking call, arguments stay with sender
-+        if (d.slotObj_) {
-+            auto slotObjPtr = d.slotObj_.release();
-+            newEvent = new QMetaCallEvent(slotObjPtr,
-+                                          sender(), signalId(),
-+                                          d.args_, semaphore_);
-+        } else {
-+            newEvent = new QMetaCallEvent(d.method_offset_, d.method_relative_, d.callFunction_,
-+                                          sender(), signalId(),
-+                                          d.args_, semaphore_);
++
++        if (!newEvent) {
++            return nullptr;
 +        }
-+        // semaphore is moved to new event:
-+        semaphore_ = nullptr;
++
++        metaCallEvent->latch = nullptr;
++        return newEvent;
 +    }
++
++    // This is a QQueuedMetaCallEvent - queued call with copied arguments
++    auto* srcEvent = static_cast<QQueuedMetaCallEvent*>(metaCallEvent);
++    const auto nargs = srcEvent->d.nargs_;
++
++    // Create new event, transferring slotObj_ ownership via std::move
++    QQueuedMetaCallEvent* newEvent = nullptr;
++    if (srcEvent->d.slotObj_) {
++        newEvent = new (std::nothrow) QQueuedMetaCallEvent(
++            std::move(srcEvent->d.slotObj_), srcEvent->sender(),
++            srcEvent->signalId(), 0, nullptr, nullptr);
++    }
++    else {
++        newEvent = new (std::nothrow) QQueuedMetaCallEvent(
++            srcEvent->d.method_offset_, srcEvent->d.method_relative_,
++            srcEvent->d.callFunction_, srcEvent->sender(),
++            srcEvent->signalId(), 0, nullptr, nullptr);
++    }
++
++    if (!newEvent) {
++        return nullptr;
++    }
++
++    // Get type information array (located after args pointers)
++    auto* srcTypes = reinterpret_cast<QMetaType*>(srcEvent->d.args_ + nargs);
++    const bool argsInPrealloc = (static_cast<void*>(srcEvent->d.args_) == static_cast<void*>(srcEvent->prealloc_));
++
++    if (argsInPrealloc) {
++        // Args/types array is in prealloc_ - set up newEvent's prealloc_
++        newEvent->d.args_ = reinterpret_cast<void**>(newEvent->prealloc_);
++        newEvent->d.nargs_ = nargs;
++
++        auto* newTypes = reinterpret_cast<QMetaType*>(newEvent->d.args_ + nargs);
++
++        // Copy arg pointers
++        for (int i = 0; i < nargs; ++i) {
++            newEvent->d.args_[i] = srcEvent->d.args_[i];
++        }
++
++        // Copy-construct QMetaType objects (they are not trivially copyable)
++        for (int i = 0; i < nargs; ++i) {
++            new (&newTypes[i]) QMetaType(srcTypes[i]);
++        }
++    }
++    else {
++        // Args/types array is heap-allocated - transfer ownership directly
++        newEvent->d.args_ = srcEvent->d.args_;
++        newEvent->d.nargs_ = nargs;
++        srcEvent->d.args_ = nullptr;
++        srcEvent->d.nargs_ = 0;
++    }
++
++    // Transfer in-place argument values from valuesPrealloc_
++    int inplaceIndex = 0;
++    for (int i = 0; i < nargs; ++i) {
++        void* argPtr = srcEvent->d.args_[i];
++        if (!argPtr) {
++            continue;
++        }
++
++        const auto* preallocStart = reinterpret_cast<const char*>(&srcEvent->valuesPrealloc_[0]);
++        const auto* preallocEnd = reinterpret_cast<const char*>(&srcEvent->valuesPrealloc_[QQueuedMetaCallEvent::InplaceValuesCapacity]);
++        if (argPtr >= preallocStart && argPtr < preallocEnd) {
++            void* srcWhere = &srcEvent->valuesPrealloc_[inplaceIndex].storage;
++            void* dstWhere = &newEvent->valuesPrealloc_[inplaceIndex].storage;
++
++            if (srcTypes[i].isValid()) {
++                srcTypes[i].construct(dstWhere, srcWhere);
++                srcTypes[i].destruct(srcWhere);
++            }
++
++            newEvent->d.args_[i] = dstWhere;
++            ++inplaceIndex;
++        }
++    }
++
++    // Clear source event to prevent destructor from freeing transferred resources
++    if (argsInPrealloc) {
++        // Destruct QMetaType objects in source (they were copied, not moved)
++        for (int i = 0; i < nargs; ++i) {
++            srcTypes[i].~QMetaType();
++        }
++    }
++    srcEvent->d.args_ = nullptr;
++    srcEvent->d.nargs_ = 0;
++
 +    return newEvent;
 +}
-+// MEVIS END
 +
- QMetaCallEvent* QMetaCallEvent::create_impl(QtPrivate::SlotObjUniquePtr slotObj,
-                                             const QObject *sender, int signal_index,
-                                             size_t argc, const void* const argp[],
+ /*!
+     \internal
+ 
 diff --git a/src/corelib/kernel/qobject.h b/src/corelib/kernel/qobject.h
-index 26cbd80f..15f0bcc1 100644
+index dd0ed4f..e5569e5 100644
 --- a/src/corelib/kernel/qobject.h
 +++ b/src/corelib/kernel/qobject.h
-@@ -63,6 +63,12 @@ Q_CORE_EXPORT QObject *qt_qFindChild_helper(const QObject *parent, const QString
+@@ -64,6 +64,12 @@ Q_CORE_EXPORT QObject *qt_qFindChild_helper(const QObject *parent, const QString
  Q_CORE_EXPORT QObject *qt_qFindChild_helper(const QObject *parent, QAnyStringView name,
                                              const QMetaObject &mo, Qt::FindChildOptions options);
  
 +// MEVIS BEGIN
 +// Method added for MeVisLab to allow to clone and clear a QMetaCallEvent, which is private in Qt
 +#define MEVIS_QMETACALLEVENT_HACK
-+Q_CORE_EXPORT QEvent* mevis_cloneAndClearQMetaCallEvent(QEvent* event);
++[[nodiscard]] Q_CORE_EXPORT QEvent* mevis_cloneAndClearQMetaCallEvent(QEvent* event) noexcept;
 +// MEVIS END
 +
  class Q_CORE_EXPORT QObjectData
  {
      Q_DISABLE_COPY(QObjectData)
 diff --git a/src/corelib/kernel/qobject_p.h b/src/corelib/kernel/qobject_p.h
-index d6dd14a2..91306fa3 100644
+index 1e0e1b5..93bc37a 100644
 --- a/src/corelib/kernel/qobject_p.h
 +++ b/src/corelib/kernel/qobject_p.h
-@@ -361,6 +361,7 @@ public:
- private:
-     int signalId_;
-     const QObject *sender_;
-+protected:  // added by MeVis to allow access from QMetaCallEvent    
- #if QT_CONFIG(thread)
-     QSemaphore *semaphore_;
- #endif
-@@ -422,6 +423,12 @@ public:
- 
-     virtual void placeMetaCall(QObject *object) override;
- 
-+    // MEVIS BEGIN
-+    //! Returns a cloned QMetaCallEvent and clears the data of the original event.
-+    //! Added for MeVis use case, used in mevis_cloneAndClearQMetaCallEvent
-+    QEvent* cloneAndClear();
-+    // MEVIS END
+@@ -332,6 +332,8 @@ bool QObjectPrivate::disconnect(const typename QtPrivate::FunctionPointer< Func1
+ class QLatch;
+ class Q_CORE_EXPORT QAbstractMetaCallEvent : public QEvent
+ {
++    friend Q_CORE_EXPORT QEvent* mevis_cloneAndClearQMetaCallEvent(QEvent* event) noexcept;
 +
- private:
-     static QMetaCallEvent *create_impl(QtPrivate::QSlotObjectBase *slotObj, const QObject *sender,
-                                        int signal_index, size_t argc, const void * const argp[],
+ public:
+     QAbstractMetaCallEvent(const QObject *sender, int signalId, QLatch *latch = nullptr)
+         : QEvent(MetaCall), signalId_(signalId), sender_(sender), latch(latch)
+@@ -351,6 +353,8 @@ private:
+ 
+ class Q_CORE_EXPORT QMetaCallEvent : public QAbstractMetaCallEvent
+ {
++    friend Q_CORE_EXPORT QEvent* mevis_cloneAndClearQMetaCallEvent(QEvent* event) noexcept;
++
+ public:
+     // blocking queued with latch - arguments always remain owned by the caller
+     QMetaCallEvent(ushort method_offset, ushort method_relative,
+@@ -383,6 +387,8 @@ protected:
+ 
+ class Q_CORE_EXPORT QQueuedMetaCallEvent : public QMetaCallEvent
+ {
++    friend Q_CORE_EXPORT QEvent* mevis_cloneAndClearQMetaCallEvent(QEvent* event) noexcept;
++
+ public:
+     // queued - arguments are allocated and copied from argValues by these constructors
+     QQueuedMetaCallEvent(ushort method_offset, ushort method_relative,

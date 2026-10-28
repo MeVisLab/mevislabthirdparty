@@ -1,3 +1,4 @@
 version_source:
   provider: anitya
   id: 1865
+  exclude_versions: [ "test*", "r*", "lz4-r*" ]

@@ -3,7 +3,7 @@ from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
 from conan.tools.files import copy, collect_libs
 import os
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
@@ -29,7 +29,7 @@ class ConanRecipe(ConanFile):
         copy(self, "sources", self.recipe_folder, self.export_sources_folder)
 
     def requirements(self):
-        self.requires("glew/[>=2.0.0]")
+        self.requires("glew/[>=2.0.0]", transitive_headers=True)
         self.requires("libjpeg-turbo/[>=2.1.5]")
 
         if self.settings.os == "Windows":

@@ -1,0 +1,7 @@
+timeout:
+  build: 30
+  upload: 45
+
+version_source:
+  provider: anitya
+  id: 19117

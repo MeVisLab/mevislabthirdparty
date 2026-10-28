@@ -7,7 +7,7 @@ from conan.tools.files import collect_libs, copy
 from conan.tools.files import get, rmdir, save, patch
 from conan.tools.scm import Version
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
@@ -87,7 +87,6 @@ class ConanRecipe(ConanFile):
         self.cpp_info.set_property("cmake_target_name", "ZLIB::ZLIB")
         self.cpp_info.set_property("pkg_config_name", "zlib")
         self.cpp_info.set_property("cmake_build_modules", [self._cmake_module_file])
-        self.cpp_info.set_property("cmake_find_package", [self._cmake_module_file])
         self.cpp_info.libs = collect_libs(self)
 
     @property
@@ -97,8 +96,7 @@ class ConanRecipe(ConanFile):
     def _cmake_module_file_write(self):
         v = Version(self.version)
         file = os.path.join(self.package_folder, self._cmake_module_file)
-        content = textwrap.dedent(
-            f"""\
+        content = textwrap.dedent(f"""\
             if(NOT TARGET ZLIB::ZLIBSTATIC)
                 add_library(ZLIB::ZLIBSTATIC ALIAS ZLIB::ZLIB)
             endif()
@@ -114,6 +112,5 @@ class ConanRecipe(ConanFile):
             set(ZLIB_MAJOR_VERSION {v.major})
             set(ZLIB_MINOR_VERSION {v.minor})
             set(ZLIB_PATCH_VERSION {v.patch})
-            """
-        )
+            """)
         save(self, file, content)

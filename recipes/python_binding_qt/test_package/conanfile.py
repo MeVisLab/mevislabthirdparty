@@ -1,7 +1,9 @@
+import os
+
 from conan import ConanFile
 from conan.tools.build import can_run
 from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
-from conan.tools.env import VirtualRunEnv
+from conan.tools.env import Environment, VirtualRunEnv
 
 
 class TestPackage(ConanFile):
@@ -12,14 +14,27 @@ class TestPackage(ConanFile):
 
     def requirements(self):
         self.requires(self.tested_reference_str)
+        self.requires("pythonqt/[>=4.1.0]")
 
     def generate(self):
         env = VirtualRunEnv(self)
-        env.generate(scope="build")
+        env.generate()
         tc = CMakeToolchain(self, generator="Ninja")
         tc.generate()
         deps = CMakeDeps(self)
         deps.generate()
+
+        python_version = self.dependencies["python"].ref.version
+        if self.settings.os == "Windows":
+            site_packages = os.path.join("Lib", "site-packages")
+        else:
+            site_packages = os.path.join("lib", f"python{python_version.major}.{python_version.minor}", "site-packages")
+        env = Environment()
+        env.prepend_path(
+            "PYTHONPATH", os.path.join(self.dependencies["python_binding_qt"].package_folder, site_packages)
+        )
+        env.define("PYTHONDONTWRITEBYTECODE", "1")
+        env.vars(self, scope="run").save_script("python_binding_qt_env")
 
     def build(self):
         cmake = CMake(self)
@@ -28,5 +43,5 @@ class TestPackage(ConanFile):
 
     def test(self):
         if can_run(self):
-            cmake = CMake(self)
-            cmake.test()
+            bin_path = os.path.join(self.cpp.build.bindirs[0], "test_package")
+            self.run(f'"{bin_path}"', env="conanrun", ignore_errors=(self.settings.os == "Windows"))

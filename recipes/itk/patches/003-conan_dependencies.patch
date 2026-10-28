@@ -1,11 +1,11 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 74f424e6..cf2d4f6d 100644
+index ccbbcf9..f2a64e9 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -51,6 +51,18 @@ project(ITK
-
+@@ -53,6 +53,17 @@ project(
+ 
  set(ITK_CMAKE_DIR "${ITK_SOURCE_DIR}/CMake")
-
+ 
 +find_package(LibLZMA REQUIRED)
 +find_package(ZLIB REQUIRED)
 +find_package(TIFF REQUIRED)
@@ -14,10 +14,9 @@ index 74f424e6..cf2d4f6d 100644
 +find_package(double-conversion REQUIRED)
 +find_package(EXPAT REQUIRED)
 +
-+
 +set(ITKDoubleConversion_LIBRARIES ${double-conversion_LIBRARIES})
 +set(EXPAT_LIBRARY ${EXPAT_LIBRARIES})
 +
- if (APPLE)
+ if(APPLE)
    include(itkApple)
- endif ()
+ endif()

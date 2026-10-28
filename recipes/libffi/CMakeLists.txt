@@ -1,5 +1,11 @@
-cmake_minimum_required(VERSION 3.27)
-project(libffi VERSION ${CONAN_LIBFFI_VERSION} LANGUAGES C ASM)
+cmake_minimum_required(VERSION 3.31)
+project(libffi VERSION ${CONAN_LIBFFI_VERSION} LANGUAGES C)
+
+if(WIN32)
+    enable_language(ASM_MASM)
+else()
+    enable_language(ASM)
+endif()
 
 set(HAVE_LONG_DOUBLE 0)
 if(WIN32)
@@ -23,6 +29,9 @@ else()
 endif()
 
 message(STATUS "Target platform: ${TARGET}")
+
+set(FFI_VERSION_STRING "${CMAKE_PROJECT_VERSION}")
+math(EXPR FFI_VERSION_NUMBER "${CMAKE_PROJECT_VERSION_MAJOR} * 10000 + ${CMAKE_PROJECT_VERSION_MINOR} * 100 + ${CMAKE_PROJECT_VERSION_PATCH}")
 
 set(FFI_CLOSURES 1)
 set(FFI_GO_CLOSURES 1)
@@ -65,8 +74,6 @@ target_sources(ffi PRIVATE
 )
 
 if(WIN32)
-    enable_language(ASM_MASM)
-
     target_sources(ffi PRIVATE src/src/x86/ffiw64.c)
 
     execute_process(

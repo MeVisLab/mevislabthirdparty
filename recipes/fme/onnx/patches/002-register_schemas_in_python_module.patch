@@ -1,0 +1,29 @@
+--- a/onnx/cpp2py_export.cc
++++ b/onnx/cpp2py_export.cc
+@@ -23,6 +23,10 @@
+ 
+ #include "onnx/checker.h"
+ #include "onnx/common/ir_pb_converter.h"
++#include "onnx/defs/operator_sets.h"
++#include "onnx/defs/operator_sets_ml.h"
++#include "onnx/defs/operator_sets_preview.h"
++#include "onnx/defs/operator_sets_training.h"
+ #include "onnx/defs/parser.h"
+ #include "onnx/defs/printer.h"
+ #include "onnx/defs/schema.h"
+@@ -190,6 +194,15 @@
+   // TODO(#7283): Avoid leaks if possible
+   nb::set_leak_warnings(false);
+ 
++  if (IsOnnxStaticRegistrationDisabled()) {
++    RegisterOnnxOperatorSetSchema();
++#ifdef ONNX_ML
++    RegisterOnnxMLOperatorSetSchema();
++#endif
++    RegisterOnnxTrainingOperatorSetSchema();
++    RegisterOnnxPreviewOperatorSetSchema();
++  }
++
+   onnx_cpp2py_export.doc() = "Python interface to ONNX";
+ 
+   onnx_cpp2py_export.attr("ONNX_ML") = nb::bool_(

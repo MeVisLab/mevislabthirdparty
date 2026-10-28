@@ -23,4 +23,4 @@ class TestPackage(ConanFile):
     def test(self):
         if can_run(self):
             bin_path = os.path.join(self.cpp.build.bindirs[0], "test_package")
-            self.run(f"{bin_path} \"[a-zA-Z]\" WordToMatch", env="conanrun")
+            self.run(f'{bin_path} "[a-zA-Z]" WordToMatch', env="conanrun")

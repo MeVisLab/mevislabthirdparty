@@ -3,7 +3,7 @@ from conan.tools.files import copy, get
 from conan.tools.layout import basic_layout
 import os
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
@@ -16,7 +16,7 @@ class ConanRecipe(ConanFile):
     settings = None
     exports_sources = ["LICENSE"]
 
-    mlab_hooks = {"test_package.skip": True, "folders.skip": True}
+    mlab_hooks = {"folders.skip": True}
 
     def layout(self):
         basic_layout(self, src_folder="src")

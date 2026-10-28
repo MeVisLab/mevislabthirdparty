@@ -1,0 +1,3 @@
+version_source:
+  provider: github
+  id: triton-inference-server/common

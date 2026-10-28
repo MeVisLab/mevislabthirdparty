@@ -4,12 +4,12 @@ from conan.tools.files import get, load, save, copy, collect_libs
 from conan.tools.scm import Version
 import os
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "sqlite3"
-    version = "3.53.3"
+    version = "3.53.4"
     description = "Self-contained, serverless, in-process SQL database engine."
     license = "Unlicense"
     homepage = "https://www.sqlite.org"
@@ -24,14 +24,11 @@ class ConanRecipe(ConanFile):
     def layout(self):
         cmake_layout(self, src_folder="src")
 
-    def build_requirements(self):
-        self.build_requires("zlib/[>=1.2.11]")
-
     def source(self):
         v = Version(self.version)
         get(
             self,
-            sha256="646421e12aac110282ef8cc68f1a62d4bb15fc7b8f09da0b53e29ee690500431",
+            sha256="1e71ddf93849c6a6ecf58b827c0692073d2dd7ee40196158068f7b29f422e87d",
             url=f"https://www.sqlite.org/2026/sqlite-amalgamation-{v.major}{str(v.minor).zfill(2)}{str(v.patch).zfill(2)}00.zip",
             strip_root=True,
         )
@@ -76,11 +73,19 @@ class ConanRecipe(ConanFile):
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("cmake_file_name", "SQLite3")
         self.cpp_info.set_property("cmake_module_file_name", "sqlite3")
-        self.cpp_info.set_property("cmake_target_name", "SQLite::SQLite3")
+        self.cpp_info.set_property("cmake_target_name", "SQLite3::SQLite3")
         self.cpp_info.set_property("cmake_module_target_name", "sqlite3::sqlite3")
-        self.cpp_info.set_property("cmake_target_aliases", ["sqlite3::sqlite3"])
+        self.cpp_info.set_property("cmake_target_aliases", ["sqlite3::sqlite3", "SQLite::SQLite3"])
         self.cpp_info.set_property("pkg_config_name", "sqlite3")
         self.cpp_info.libs = collect_libs(self)
+
+        library = os.path.join(
+            self.package_folder,
+            self.cpp_info.libdirs[-1],
+            f"{self.cpp_info.libs[0]}.lib" if self.settings.os == "Windows" else f"lib{self.cpp_info.libs[0]}.so",
+        ).replace("\\", "/")
+        self.cpp_info.set_property("cmake_additional_variables_prefixes", ["SQLITE3"])
+        self.cpp_info.set_property("cmake_extra_variables", {"SQLite3_LIBRARY": library, "SQLITE3_LIBRARY": library})
 
         if self.settings.os == "Linux":
             self.cpp_info.system_libs.extend(["m", "dl", "pthread"])

@@ -6,7 +6,7 @@ from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
 from conan.tools.files import collect_libs
 from conan.tools.files import get, copy, rmdir, save
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
@@ -80,13 +80,11 @@ class ConanRecipe(ConanFile):
 
     def _cmake_module_file_write(self):
         file = os.path.join(self.package_folder, self._cmake_module_file)
-        content = textwrap.dedent(
-            f"""\
+        content = textwrap.dedent("""\
             set(ZSTD_FOUND TRUE)
-            set(ZSTD_LIBRARY ${{zstd_LIBRARIES}})
-            set(ZSTD_LIBRARIES ${{zstd_LIBRARIES}})
-            set(ZSTD_INCLUDE_DIR ${{zstd_INCLUDE_DIR}})
-            set(ZSTD_INCLUDE_DIRS ${{zstd_INCLUDE_DIR}})
-            """
-        )
+            set(ZSTD_LIBRARY ${zstd_LIBRARIES})
+            set(ZSTD_LIBRARIES ${zstd_LIBRARIES})
+            set(ZSTD_INCLUDE_DIR ${zstd_INCLUDE_DIR})
+            set(ZSTD_INCLUDE_DIRS ${zstd_INCLUDE_DIR})
+            """)
         save(self, file, content)

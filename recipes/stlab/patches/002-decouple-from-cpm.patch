@@ -1,0 +1,95 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 42d624a..3f1e287 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1,31 +1,24 @@
+ cmake_minimum_required(VERSION 3.24)
+ 
+ ########################################################
+-# Setup cpp-library for dependency tracking and install support
+-include(cmake/CPM.cmake)
+-
+-# Add cpp-library for dependency auto-discovery (using local development version)
+-# CPMAddPackage(
+-#     NAME cpp-library
+-#     SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../cpp-library"
+-# )
+-CPMAddPackage("gh:stlab/cpp-library@5.2.0")
+-include(${cpp-library_SOURCE_DIR}/cpp-library.cmake)
+-
+-# Enable dependency tracking BEFORE project()
+-cpp_library_enable_dependency_tracking()
+-
+ # Set the default C++ language version BEFORE project() so it is applied
+ set(CMAKE_CXX_STANDARD 20 CACHE STRING "The C++ standard to use")
+ set(CMAKE_CXX_STANDARD_REQUIRED ON)
+ set(CMAKE_CXX_EXTENSIONS OFF)
+ 
+ ########################################################
+-# Project declaration without hardcoded version
++# Project declaration. The version is supplied by the packaging system because
++# the released archives carry no git tags to derive it from.
+ project(stlab LANGUAGES CXX)
+ 
+-# Set version from git tags after project()
+-cpp_library_set_version()
++if(NOT STLAB_VERSION MATCHES "^[0-9]+\\.[0-9]+\\.[0-9]+$")
++  message(FATAL_ERROR "STLAB_VERSION must be set to a x.y.z version number.")
++endif()
++set(PROJECT_VERSION ${STLAB_VERSION})
++string(REPLACE "." ";" STLAB_VERSION_COMPONENTS ${STLAB_VERSION})
++list(GET STLAB_VERSION_COMPONENTS 0 PROJECT_VERSION_MAJOR)
++list(GET STLAB_VERSION_COMPONENTS 1 PROJECT_VERSION_MINOR)
++list(GET STLAB_VERSION_COMPONENTS 2 PROJECT_VERSION_PATCH)
+ 
+ # Ensure C++ exceptions are always enabled (STLab uses them; some presets/toolchains omit them).
+ add_compile_options(
+@@ -156,16 +149,6 @@ add_subdirectory(include/stlab)
+ add_subdirectory(src)
+ 
+ ########################################################
+-# Dependencies (added after project() for dependency tracking)
+-
+-# https://github.com/stlab/stlab-copy-on-write
+-CPMAddPackage("gh:stlab/stlab-copy-on-write@1.1.0")
+-target_link_libraries(stlab INTERFACE $<BUILD_INTERFACE:stlab::copy-on-write>)
+-
+-# https://github.com/stlab/stlab-enum-ops
+-CPMAddPackage("gh:stlab/stlab-enum-ops@1.2.0")
+-target_link_libraries(stlab INTERFACE $<BUILD_INTERFACE:stlab::enum-ops>)
+-
+ # System dependencies
+ if(NOT STLAB_THREAD_SYSTEM STREQUAL "none")
+   target_link_libraries(stlab INTERFACE Threads::Threads)
+@@ -188,25 +171,12 @@ message(STATUS "stlab: Thread System: ${STLAB_THREAD_SYSTEM}")
+ message(STATUS "stlab: Task System: ${STLAB_TASK_SYSTEM}")
+ message(STATUS "stlab: Main Executor: ${STLAB_MAIN_EXECUTOR}")
+ 
+-if(PROJECT_IS_TOP_LEVEL AND BUILD_TESTING)
+-  CPMAddPackage("gh:doctest/doctest@2.4.12")
+-  add_subdirectory(test)
+-endif()
+-
+ ########################################################
+-# Installation Support (using cpp-library dependency auto-discovery)
++# Installation Support
+ if(PROJECT_IS_TOP_LEVEL)
+-  include("${cpp-library_SOURCE_DIR}/cmake/cpp-library-install.cmake")
+-  
+-  # Use cpp-library's install function for automatic dependency discovery
+-  # No manual dependency mappings needed - cpp-library auto-discovers via dependency provider
+-  _cpp_library_setup_install(
+-    NAME "stlab"
+-    PACKAGE_NAME "stlab"
+-    VERSION "${PROJECT_VERSION}"
+-    NAMESPACE "stlab"
+-    HEADERS TRUE  # Indicates the target has a FILE_SET named "headers"
+-  )
+-  
+-  message(STATUS "stlab: Installation support enabled with dependency auto-discovery")
++  install(TARGETS stlab
++    FILE_SET headers DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
++    RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
++    LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
++    ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}")
+ endif()

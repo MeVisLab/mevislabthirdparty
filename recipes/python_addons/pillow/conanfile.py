@@ -3,12 +3,12 @@ from conan import ConanFile
 from conan.tools.env import Environment
 from conan.tools.files import get, patch, replace_in_file
 
-required_conan_version = ">=2.0.0"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "pillow"
-    version = "12.2.0"
+    version = "12.3.0"
     homepage = "https://python-pillow.github.io"
     description = "Python Imaging Library (Fork)"
     license = "HPND"
@@ -60,7 +60,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="15d08a03e16953813045ad24c5818e2909ef2141a0b97b2bd3bc8ec6f222cadb",
+            sha256="d7ce60fdf8b3d3b4370ea213834d7c852b1ca16396d4e75e5046be815b11b2fb",
             url=f"https://github.com/python-pillow/Pillow/archive/refs/tags/{self.version}.tar.gz",
             strip_root=True,
         )

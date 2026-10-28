@@ -18,8 +18,8 @@
 #include <vigra/numerictraits.hxx>
 #include <vigra/polygon.hxx>
 #include <vigra/polynomial.hxx>
-#include <vigra/random_forest_hdf5_impex.hxx>
 #include <vigra/random_forest.hxx>
+#include <vigra/random_forest_hdf5_impex.hxx>
 #include <vigra/splines.hxx>
 #include <vigra/tinyvector.hxx>
 #include <vigra/watersheds.hxx>
@@ -32,16 +32,19 @@ int main(int argc, char **argv)
     {
         ImageImportInfo info(argv[1]);
 
-        if(info.isGrayscale()) {
+        if (info.isGrayscale())
+        {
             MultiArray<2, UInt8> in(info.width(), info.height());
             importImage(info, in);
         }
-        else {
-            MultiArray<2, RGBValue<UInt8> > in(info.width(), info.height());
+        else
+        {
+            MultiArray<2, RGBValue<UInt8>> in(info.width(), info.height());
             importImage(info, in);
         }
     }
-    catch (std::exception & e) {
+    catch (std::exception &e)
+    {
         std::cout << e.what() << std::endl;
         return 1;
     }
@@ -57,7 +60,8 @@ int main(int argc, char **argv)
         // check that HDF5 can be used:
         hc.save("test.txt", "prefix");
     }
-    catch (std::exception & e) {
+    catch (std::exception &e)
+    {
         std::cout << e.what() << std::endl;
         return 1;
     }

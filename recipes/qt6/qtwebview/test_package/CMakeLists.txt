@@ -1,12 +1,12 @@
-cmake_minimum_required(VERSION 3.27)
+cmake_minimum_required(VERSION 3.31)
 project(test_package CXX)
 
 include(CTest)
 enable_testing()
 
-find_package(Qt6 REQUIRED COMPONENTS WebView REQUIRED)
+find_package(Qt6 REQUIRED COMPONENTS Qml WebView REQUIRED)
 qt_standard_project_setup()
 
 qt_add_executable(test_package test_package.cpp)
-target_link_libraries(test_package PRIVATE Qt6::WebView)
+target_link_libraries(test_package PRIVATE Qt6::Qml Qt6::WebView)
 add_test(NAME tst_package COMMAND test_package)

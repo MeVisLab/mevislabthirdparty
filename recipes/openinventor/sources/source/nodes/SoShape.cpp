@@ -1299,6 +1299,7 @@ SoShape::rayPickBoundingBox(SoRayPickAction *action)
 
 SoShape::SimpleVertexArrayCache::SimpleVertexArrayCache():vbo(GL_ARRAY_BUFFER)
 {
+  allocatedBytes = -1;
   numVertices = 0;
   useTexCoords = false;
   useNormals = false;
@@ -1307,6 +1308,17 @@ SoShape::SimpleVertexArrayCache::SimpleVertexArrayCache():vbo(GL_ARRAY_BUFFER)
   normalOffset = NULL;
   texCoordOffset = NULL;
   colorOffset = NULL;
+}
+
+void SoShape::SimpleVertexArrayCache::updateVboData(SoState* state, int bytes, const void* data)
+{
+  if (allocatedBytes != bytes) {
+    vbo.freeGL(state);
+    vbo.setData(bytes, NULL, 0, state);
+    allocatedBytes = bytes;
+  }
+  vbo.bind(state);
+  vbo.updateData(const_cast<void*>(data));
 }
 
 
@@ -1375,26 +1387,38 @@ void SoShape::SimpleVertexArrayCache::enableVertexAttributes(SoState* state)
 void SoShape::SimpleVertexArrayCache::disableVertexAttributes(SoState* state)
 {
   bool useVertexAttributes = SoLazyElement::shouldUseVertexAttributes(state);
+
+  // Clear any VBO binding first so pointer resets are interpreted as client memory pointers.
+  glBindBufferARB(GL_ARRAY_BUFFER, 0);
+
   if (useVertexAttributes) {
+    glVertexAttribPointer(SoLazyElement::ATTRIB_VERTEX, 3, GL_FLOAT, false, 0, NULL);
     glDisableVertexAttribArray(SoLazyElement::ATTRIB_VERTEX);
     if (useNormals) {
+      glVertexAttribPointer(SoLazyElement::ATTRIB_NORMAL, 3, GL_FLOAT, false, 0, NULL);
       glDisableVertexAttribArray(SoLazyElement::ATTRIB_NORMAL);
     }
     if (useTexCoords) {
+      glVertexAttribPointer(SoLazyElement::ATTRIB_TEXCOORD, 2, GL_FLOAT, false, 0, NULL);
       glDisableVertexAttribArray(SoLazyElement::ATTRIB_TEXCOORD);
     }
     if (useColors) {
+      glVertexAttribPointer(SoLazyElement::ATTRIB_COLOR, 4, GL_UNSIGNED_BYTE, true, 0, NULL);
       glDisableVertexAttribArray(SoLazyElement::ATTRIB_COLOR);
     }
   } else {
+    glVertexPointer(3, GL_FLOAT, 0, NULL);
     glDisableClientState(GL_VERTEX_ARRAY);
     if (useNormals) {
+      glNormalPointer(GL_FLOAT, 0, NULL);
       glDisableClientState(GL_NORMAL_ARRAY);
     }
     if (useTexCoords) {
+      glTexCoordPointer(2, GL_FLOAT, 0, NULL);
       glDisableClientState(GL_TEXTURE_COORD_ARRAY);
     }
     if (useColors) {
+      glColorPointer(4, GL_UNSIGNED_BYTE, 0, NULL);
       glDisableClientState(GL_COLOR_ARRAY);
     }
   }

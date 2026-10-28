@@ -7,14 +7,16 @@ from conan.tools.env import VirtualRunEnv
 from conan.tools.files import collect_libs, copy, get, rmdir, chdir, rename, patch
 from conan.tools.scm import Version
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "vtk"
-    version = "9.4.2"
+    version = "9.7.1"
     homepage = "https://www.vtk.org"
-    description = "The Visualization Toolkit (VTK) is open source software for manipulating and displaying scientific data"
+    description = (
+        "The Visualization Toolkit (VTK) is open source software for manipulating and displaying scientific data"
+    )
     license = "MPL-2.0"
     package_type = "shared-library"
     settings = "os", "arch", "compiler", "build_type"
@@ -34,14 +36,14 @@ class ConanRecipe(ConanFile):
 
     def requirements(self):
         self.requires("boost/[>=1.74.0]")
-        self.requires("double-conversion/[>=3.1.5]")
         self.requires("eigen/[>=3.3.9]")
-        self.requires("glew/[>=2.2.0]")
+        self.requires("expat/[>=2.5.0]")
         self.requires("hdf5/[>=1.14.2]")
         self.requires("libjpeg-turbo/[>=2.1.0]")
         self.requires("libpng/[>=1.6.37]")
         self.requires("libxml2/[>=2.9.12]")
         self.requires("lz4/[>=1.9.3]")
+        self.requires("nlohmann_json/[>=3.11.3]", transitive_headers=True)
         self.requires("python/[>=3.6.4]")
         self.requires("qtbase/[>=6.5]")
         self.requires("qtdeclarative/[>=6.5]")
@@ -57,7 +59,7 @@ class ConanRecipe(ConanFile):
         major_minor = ".".join(str(self.version).split(".")[0:2])
         get(
             self,
-            sha256="36c98e0da96bb12a30fe53708097aa9492e7b66d5c3b366e1c8dc251e2856a02",
+            sha256="cae04fd355004cb916a409db79d53a208f1221e975aeacc7540ee67b148ee91a",
             url=f"https://www.vtk.org/files/release/{major_minor}/VTK-{self.version}.tar.gz",
             strip_root=True,
         )
@@ -69,9 +71,15 @@ class ConanRecipe(ConanFile):
         )
         patch(
             self,
-            patch_file="patches/002-vtk_mlab_5907.patch",
+            patch_file="patches/003-vtk_equal_op.patch",
             patch_type="compatibility",
-            patch_description="workaround for qt initialization error",
+            patch_description="fix equal operator for check existence of attributes",
+        )
+        patch(
+            self,
+            patch_file="patches/004-vtk_disable-hook.patch",
+            patch_type="compatibility",
+            patch_description="Disable VTKMetaHook while importing vtkmodules due to conflicting debug/release python.dll",
         )
 
     def generate(self):
@@ -91,25 +99,24 @@ class ConanRecipe(ConanFile):
         tc.variables["VTK_ENABLE_REMOTE_MODULES"] = False
         tc.variables["VTK_FORBID_DOWNLOADS"] = True
         tc.variables["VTK_USE_FUTURE_BOOL"] = True
-        tc.variables["VTK_IGNORE_CMAKE_CXX11_CHECKS"] = True
 
         python_dependency = self.dependencies["python"]
         py_version = python_dependency.ref.version
-        tc.variables["Python_ADDITIONAL_VERSIONS"] = f"{py_version.major}.{py_version.minor}"
-        tc.variables["PythonInterp_ROOT"] = python_dependency.package_folder.replace("\\", "/")
 
         if self.settings.os == "Windows":
             build_suffix = "_d" if self.settings.build_type == "Debug" else ""
             tc.variables["PYTHON_LIBRARY"] = (
-                python_dependency.cpp_info.libdirs[0].replace("\\", "/") + f"/python{py_version.major}{py_version.minor}{build_suffix}.lib"
+                python_dependency.cpp_info.libdirs[0].replace("\\", "/")
+                + f"/python{py_version.major}{py_version.minor}{build_suffix}.lib"
             )
             tc.variables["PYTHON_INCLUDE_DIR"] = python_dependency.cpp_info.includedirs[0].replace("\\", "/")
             tc.variables["VTK_PYTHON_SITE_PACKAGES_SUFFIX"] = "Lib/site-packages"
-            tc.variables["PYTHON_EXECUTABLE"] = python_dependency.package_folder.replace("\\", "/") + f"/python3{build_suffix}.exe"
+            tc.variables["PYTHON_EXECUTABLE"] = (
+                python_dependency.package_folder.replace("\\", "/") + f"/python3{build_suffix}.exe"
+            )
         else:
             tc.variables["PYTHON_EXECUTABLE"] = python_dependency.package_folder + "/bin/python3"
 
-        tc.variables["USE_COMPILER_HIDDEN_VISIBILITY"] = True
         tc.variables["VTK_QT_VERSION"] = 6
         tc.variables["VTK_DISPATCH_AOS_ARRAYS"] = True
 
@@ -121,53 +128,38 @@ class ConanRecipe(ConanFile):
 
         tc.variables["VTK_WRAP_PYTHON"] = True
         tc.variables["VTK_WRAP_JAVA"] = False
-        tc.variables["VTK_WRAP_TCL"] = False
         tc.variables["VTK_USE_TK"] = False
 
         tc.variables["VTK_MODULE_USE_EXTERNAL_VTK_eigen"] = True
+        tc.variables["VTK_MODULE_USE_EXTERNAL_VTK_expat"] = True
         tc.variables["VTK_MODULE_USE_EXTERNAL_VTK_hdf5"] = True
         tc.variables["VTK_MODULE_USE_EXTERNAL_VTK_freetype"] = True
-        tc.variables["VTK_MODULE_USE_EXTERNAL_VTK_glew"] = True
         tc.variables["VTK_MODULE_USE_EXTERNAL_VTK_libxml2"] = True
         tc.variables["VTK_MODULE_USE_EXTERNAL_VTK_lzma"] = True
+        tc.variables["VTK_MODULE_USE_EXTERNAL_VTK_nlohmannjson"] = True
         tc.variables["VTK_MODULE_USE_EXTERNAL_VTK_jpeg"] = True
         tc.variables["VTK_MODULE_USE_EXTERNAL_VTK_png"] = True
         tc.variables["VTK_MODULE_USE_EXTERNAL_VTK_tiff"] = True
         tc.variables["VTK_MODULE_USE_EXTERNAL_VTK_sqlite"] = True
+        tc.variables["VTK_MODULE_USE_EXTERNAL_VTK_lz4"] = True
+        tc.variables["VTK_MODULE_USE_EXTERNAL_VTK_zlib"] = True
 
-        tc.variables["VTK_MODULE_ENABLE_VTK_Addon"] = "NO"
-        tc.variables["VTK_MODULE_ENABLE_VTK_DICOM"] = "NO"
-        tc.variables["VTK_MODULE_ENABLE_VTK_Libproj"] = "NO"
         tc.variables["VTK_MODULE_ENABLE_VTK_FiltersReebGraph"] = "YES"
-        tc.variables["VTK_MODULE_ENABLE_VTK_Glew"] = "NO"
         tc.variables["VTK_MODULE_ENABLE_VTK_GUISupportQt"] = "YES"
         tc.variables["VTK_MODULE_ENABLE_VTK_GUISupportQtQuick"] = "YES"
-        tc.variables["VTK_MODULE_ENABLE_VTK_GUISupportQtOpenGL"] = "YES"
-        tc.variables["VTK_MODULE_ENABLE_VTK_GUISupportQtWebkit"] = "NO"
         tc.variables["VTK_MODULE_ENABLE_VTK_InfovisBoost"] = "YES"
         tc.variables["VTK_MODULE_ENABLE_VTK_InfovisBoostGraphAlgorithms"] = "YES"
-        tc.variables["VTK_MODULE_ENABLE_VTK_IOExportOpenGL2"] = "YES"
         tc.variables["VTK_MODULE_ENABLE_VTK_IOGeoJSON"] = "YES"
         tc.variables["VTK_MODULE_ENABLE_VTK_IOVPIC"] = "YES"
-        tc.variables["VTK_MODULE_ENABLE_VTK_IOIOSS"] = "NO"  # only needed for tests, compiler error with msbuild 17.6/17.7
-        tc.variables["VTK_MODULE_ENABLE_VTK_ParseOGLExt"] = "YES"
+        tc.variables["VTK_MODULE_ENABLE_VTK_IOIOSS"] = (
+            "NO"  # only needed for tests, compiler error with msbuild 17.6/17.7
+        )
         tc.variables["VTK_MODULE_ENABLE_VTK_Python"] = "YES"
         tc.variables["VTK_MODULE_ENABLE_VTK_RenderingExternal"] = "YES"
         tc.variables["VTK_MODULE_ENABLE_VTK_RenderingQt"] = "YES"
         tc.variables["VTK_MODULE_ENABLE_VTK_RenderingSceneGraph"] = "YES"
-        tc.variables["VTK_MODULE_ENABLE_VTK_VPIC"] = "YES"
-        tc.variables["VTK_MODULE_ENABLE_VTK_ViewsGeovis"] = "YES"
         tc.variables["VTK_MODULE_ENABLE_VTK_ViewsQt"] = "YES"
         tc.variables["VTK_MODULE_ENABLE_VTK_WrappingTools"] = "YES"
-
-        sqlite_info = self.dependencies["sqlite3"].cpp_info
-        tc.variables["SQLITE3_INCLUDE_DIR"] = ";".join([d.replace("\\", "/") for d in sqlite_info.includedirs])
-        tc.variables["SQLite3_INCLUDE_DIR"] = tc.variables["SQLITE3_INCLUDE_DIR"]
-        sqlite_libdir = sqlite_info.libdirs[-1].replace("\\", "/")
-        sqlite_lib = f"{sqlite_info.libs[0]}.lib" if self.settings.os == "Windows" else f"lib{sqlite_info.libs[0]}.so"
-        tc.variables["SQLITE3_LIBRARY"] = f"{sqlite_libdir}/{sqlite_lib}"
-        tc.variables["SQLite3_LIBRARIES"] = tc.variables["SQLITE3_LIBRARY"]
-        tc.variables["ZLIB_USE_EXTERNAL"] = True
         tc.variables["HDF5_IS_PARALLEL"] = False
         # make sure libGL is preferred to libOpenGL
         tc.variables["OpenGL_GL_PREFERENCE"] = "LEGACY"
@@ -194,15 +186,29 @@ class ConanRecipe(ConanFile):
                 python_dependency = self.dependencies["python"]
                 py_version = python_dependency.ref.version
                 py_version_str = f"{py_version.major}.{py_version.minor}"
-                with chdir(self, os.path.join(self.package_folder, f"lib/python{py_version_str}/site-packages/vtkmodules")):
+                with chdir(
+                    self, os.path.join(self.package_folder, f"lib/python{py_version_str}/site-packages/vtkmodules")
+                ):
                     for entry in glob.glob("*_d.so"):
                         rename(self, entry, entry[:-5] + ".so")
 
         if self.settings.os == "Windows":
             for dll in pathlib.Path(os.path.join(self.package_folder, "bin")).glob("*.dll"):
-                copy(self, f"*/{dll.stem}.pdb", src=self.build_folder, dst=os.path.join(self.package_folder, "bin"), keep_path=False)
+                copy(
+                    self,
+                    f"*/{dll.stem}.pdb",
+                    src=self.build_folder,
+                    dst=os.path.join(self.package_folder, "bin"),
+                    keep_path=False,
+                )
             for exe in pathlib.Path(os.path.join(self.package_folder, "bin")).glob("*.exe"):
-                copy(self, f"*/{exe.stem}.pdb", src=self.build_folder, dst=os.path.join(self.package_folder, "bin"), keep_path=False)
+                copy(
+                    self,
+                    f"*/{exe.stem}.pdb",
+                    src=self.build_folder,
+                    dst=os.path.join(self.package_folder, "bin"),
+                    keep_path=False,
+                )
 
         rmdir(self, os.path.join(self.package_folder, "cmake"))
         rmdir(self, os.path.join(self.package_folder, "share"))
@@ -219,7 +225,9 @@ class ConanRecipe(ConanFile):
 
         v = Version(self.version)
         self.cpp_info.includedirs = ["include", f"include/vtk-{v.major}.{v.minor}"]
-        self.cpp_info.defines.append("VTK_RENDERING_BACKEND_OPENGL" if self.settings.os == "Macos" else "VTK_RENDERING_BACKEND_OPENGL2")
+        self.cpp_info.defines.append(
+            "VTK_RENDERING_BACKEND_OPENGL" if self.settings.os == "Macos" else "VTK_RENDERING_BACKEND_OPENGL2"
+        )
         # Remove all libs not prefixed with 'vtk' and not containing 'PythonXY'
         py_version = self.dependencies["python"].ref.version
         python_filter = f"Python{py_version.major}{py_version.minor}D"

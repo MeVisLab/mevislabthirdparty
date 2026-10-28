@@ -7,4 +7,3 @@ int main(int argc, char **argv)
     PythonQt::init(PythonQt::IgnoreSiteModule | PythonQt::RedirectStdOut);
     PythonQt::cleanup();
 }
-

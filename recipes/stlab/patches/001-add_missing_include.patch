@@ -1,24 +1,24 @@
-diff --git a/stlab/concurrency/await.hpp b/stlab/concurrency/await.hpp
-index 5b95fc3..62f91ea 100644
---- a/stlab/concurrency/await.hpp
-+++ b/stlab/concurrency/await.hpp
+diff --git a/include/stlab/concurrency/await.hpp b/include/stlab/concurrency/await.hpp
+index 8780d03..096949a 100644
+--- a/include/stlab/concurrency/await.hpp
++++ b/include/stlab/concurrency/await.hpp
 @@ -15,6 +15,7 @@
+ #include <condition_variable>
+ #include <exception>
  #include <mutex>
- #include <type_traits>
- #include <utility>
 +#include <stdexcept>
+ #include <utility>
  
- #include <stlab/concurrency/default_executor.hpp>
  #include <stlab/concurrency/future.hpp>
-diff --git a/stlab/concurrency/future.hpp b/stlab/concurrency/future.hpp
-index 90723a5..d3a84c0 100755
---- a/stlab/concurrency/future.hpp
-+++ b/stlab/concurrency/future.hpp
-@@ -16,6 +16,7 @@
+diff --git a/include/stlab/concurrency/future.hpp b/include/stlab/concurrency/future.hpp
+index 9c5e63f..4ad5da6 100644
+--- a/include/stlab/concurrency/future.hpp
++++ b/include/stlab/concurrency/future.hpp
+@@ -22,6 +22,7 @@
  #include <memory>
  #include <mutex>
- #include <vector>
+ #include <optional>
 +#include <stdexcept>
- 
- #include <stlab/concurrency/executor_base.hpp>
- #include <stlab/concurrency/optional.hpp>
+ #include <utility>
+ #include <variant> // for std::monostate
+ #include <vector>

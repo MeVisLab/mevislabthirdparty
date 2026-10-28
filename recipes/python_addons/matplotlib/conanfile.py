@@ -2,16 +2,16 @@ import glob
 import os
 
 from conan import ConanFile
-from conan.tools.files import get, patch
+from conan.tools.files import get, patch, rm
 from conan.tools.gnu import PkgConfigDeps
 from conan.tools.meson import MesonToolchain
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "matplotlib"
-    version = "3.10.9"
+    version = "3.11.2"
     homepage = "https://matplotlib.org"
     description = "A comprehensive library for creating static, animated, and interactive visualizations in Python"
     license = "Python-2.0"
@@ -38,6 +38,7 @@ class ConanRecipe(ConanFile):
         self.requires("numpy/[>=1.16.4]")
         self.requires("pillow/[>=10.2]")
         self.requires("qhull/[>=8.0.2]")
+        self.requires("raqm/[>=0.11.0]")
         self.requires("zlib/[>=1.2.11]")
         if self.settings.os != "Linux":
             self.requires("freetype/[>=2.10.2]")
@@ -52,22 +53,24 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="55251fcbca725a3b7ed20aefaff07a67560ffb0a7d739ebab0c99eb14f4c2d94",
+            sha256="14b555ae7477ff593d842fba9714b5cbc6ea1db9461d2ea9d6da3ec0dc420f1a",
             url=f"https://github.com/matplotlib/matplotlib/archive/refs/tags/v{self.version}.tar.gz",
             strip_root=True,
         )
         patch(self, patch_file="patches/001-add_support_for_a_PythonQt_backend.patch")
         patch(self, patch_file="patches/002-notice_running_eventloop.patch")
         patch(self, patch_file="patches/003-define_py_debug.patch")
+        rm(self, "*.wrap", os.path.join(self.source_folder, "subprojects"))
 
     def build(self):
         build_type = str(self.settings.build_type).lower()
         self.default_build(
             config_settings=[
                 f"setup-args=-Dbuildtype={build_type}",
-                f"setup-args=-Dsystem-freetype=true",
-                f"setup-args=-Dsystem-qhull=true",
-                f"setup-args=-Db_lto=false",
+                "setup-args=-Dsystem-freetype=true",
+                "setup-args=-Dsystem-libraqm=true",
+                "setup-args=-Dsystem-qhull=true",
+                "setup-args=-Db_lto=false",
             ]
         )
 

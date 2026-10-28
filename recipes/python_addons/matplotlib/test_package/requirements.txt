@@ -1,5 +1,7 @@
 cycler==0.12.1
-packaging==26.2
+fonttools==4.63.0
+packaging==26.3
 pyparsing==3.3.2
 python-dateutil==2.9.0.post0
-pytz==2026.2
+pytz==2026.3.post1
+six==1.17.0

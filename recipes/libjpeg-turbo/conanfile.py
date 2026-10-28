@@ -5,7 +5,7 @@ from conan.tools.files import copy, get, rmdir, patch
 from conan.tools.microsoft import is_msvc
 import os
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):

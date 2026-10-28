@@ -3,12 +3,12 @@ from conan.tools.cmake import CMake, cmake_layout, CMakeToolchain
 from conan.tools.files import copy, get, rmdir
 import os
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class EigenConan(ConanFile):
     name = "eigen"
-    version = "3.4.1"
+    version = "5.0.1"
     homepage = "https://eigen.tuxfamily.org"
     description = "Eigen is a C++ template library for linear algebra: matrices, vectors, numerical solvers, and related algorithms"
     license = "MPL-2.0"
@@ -25,7 +25,7 @@ class EigenConan(ConanFile):
     def source(self):
         get(
             self,
-            sha256="b93c667d1b69265cdb4d9f30ec21f8facbbe8b307cf34c0b9942834c6d4fdbe2",
+            sha256="e9c326dc8c05cd1e044c71f30f1b2e34a6161a3b6ecf445d56b53ff1669e3dec",
             url=f"https://gitlab.com/libeigen/eigen/-/archive/{self.version}/eigen-{self.version}.tar.gz",
             destination=self.source_folder,
             strip_root=True,

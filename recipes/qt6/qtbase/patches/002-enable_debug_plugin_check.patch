@@ -1,8 +1,8 @@
 diff --git a/src/corelib/plugin/qlibrary.cpp b/src/corelib/plugin/qlibrary.cpp
-index ad6e2599..d81b6fd4 100644
+index 498ca56..9890927 100644
 --- a/src/corelib/plugin/qlibrary.cpp
 +++ b/src/corelib/plugin/qlibrary.cpp
-@@ -41,12 +41,8 @@ Q_TRACE_POINT(qtcore, QLibraryPrivate_load_exit, bool success);
+@@ -43,12 +43,8 @@ Q_TRACE_POINT(qtcore, QLibraryPrivate_load_exit, bool success);
  // On Unix systema and on Windows with MinGW, we can mix and match debug and
  // release plugins without problems. (unless compiled in debug-and-release mode
  // - why?)

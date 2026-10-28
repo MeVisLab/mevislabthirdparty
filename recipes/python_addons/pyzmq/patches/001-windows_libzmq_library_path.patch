@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index c5c6537..c79dbe6 100644
+index eabd0c2..3e490c3 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -25,7 +25,11 @@ find_package(
@@ -15,7 +15,7 @@ index c5c6537..c79dbe6 100644
  endif()
  
  # legacy pyzmq env options, no PYZMQ_ prefix
-@@ -179,7 +183,8 @@ elseif (NOT ZMQ_PREFIX STREQUAL "bundled")
+@@ -180,7 +184,8 @@ elseif (NOT ZMQ_PREFIX STREQUAL "bundled")
    )
    find_library(
      LIBZMQ_LIBRARY
@@ -25,7 +25,7 @@ index c5c6537..c79dbe6 100644
      PATHS "${ZMQ_PREFIX}/lib"
      NO_DEFAULT_PATH
    )
-@@ -389,7 +394,11 @@ if (NOT TARGET "${libzmq_target}" AND LIBZMQ_LIBRARY AND LIBZMQ_INCLUDE_DIR)
+@@ -390,7 +395,11 @@ if (NOT TARGET "${libzmq_target}" AND LIBZMQ_LIBRARY AND LIBZMQ_INCLUDE_DIR)
    # construct target from find_library results
    # what if it was static?
    add_library(libzmq SHARED IMPORTED)
@@ -38,7 +38,7 @@ index c5c6537..c79dbe6 100644
    set_property(TARGET libzmq PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${LIBZMQ_INCLUDE_DIR})
  endif()
  
-@@ -459,6 +468,11 @@ if(NOT "${SKBUILD_SABI_COMPONENT}" STREQUAL "")
+@@ -460,6 +469,11 @@ if(NOT "${SKBUILD_SABI_COMPONENT}" STREQUAL "")
    message(STATUS "Building with stable ABI ${Python_SOABI} for ${SKBUILD_SABI_VERSION}")
  endif()
  
@@ -50,3 +50,22 @@ index c5c6537..c79dbe6 100644
  python_add_library(
    ${ZMQ_EXT_NAME} MODULE
    WITH_SOABI
+@@ -467,6 +481,18 @@ python_add_library(
+   ${ZMQ_C}
+ )
+ 
++if (MSVC)
++  # pyconfig.h auto-links pythonXY.lib resp. pythonXY_d.lib through
++  # "#pragma comment(lib, ...)", but CMake only passes the import library by
++  # absolute path, so the linker has no search path for that plain name.
++  if (Python_LIBRARY_DIRS)
++    set(PYZMQ_PYTHON_LIBRARY_DIRS ${Python_LIBRARY_DIRS})
++  else()
++    get_filename_component(PYZMQ_PYTHON_LIBRARY_DIRS "${Python_LIBRARIES}" DIRECTORY)
++  endif()
++  target_link_directories(${ZMQ_EXT_NAME} PRIVATE ${PYZMQ_PYTHON_LIBRARY_DIRS})
++endif()
++
+ if (TARGET ${libzmq_target})
+   message(STATUS "Linking libzmq target ${libzmq_target}")
+   target_link_libraries(${ZMQ_EXT_NAME} PUBLIC ${libzmq_target})

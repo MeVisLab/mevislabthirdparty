@@ -3,12 +3,12 @@ from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
 from conan.tools.files import copy, get, rmdir, replace_in_file
 import os
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "pcre2"
-    version = "10.47"
+    version = "10.49"
     homepage = "https://www.pcre.org"
     description = "Perl-compatible regular expression library"
     license = "BSD-3-Clause"
@@ -25,7 +25,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="47fe8c99461250d42f89e6e8fdaeba9da057855d06eb7fc08d9ca03fd08d7bc7",
+            sha256="53c156e1ba416a20da8e65395daa132da0d80e76910424caca3fcdae7831d384",
             url=f"https://github.com/PCRE2Project/pcre2/releases/download/pcre2-{self.version}/pcre2-{self.version}.tar.bz2",
             strip_root=True,
         )

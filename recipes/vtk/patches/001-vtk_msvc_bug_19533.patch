@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index e9663f0..96e3ec9 100644
+index 9ea94b2..4a0da55 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -2,6 +2,12 @@ cmake_minimum_required(VERSION 3.12...3.21 FATAL_ERROR)

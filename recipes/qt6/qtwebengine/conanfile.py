@@ -1,44 +1,44 @@
 from conan import ConanFile
 from conan.tools.system import package_manager
 
+required_conan_version = ">=2.32.0"
 
-required_conan_version = ">=2.2.2"
 
 class ConanRecipe(ConanFile):
     python_requires = "qt_package/1.0.0"
     python_requires_extend = "qt_package.QtPackage"
 
     mlab_hooks = {
-        'package_size.skip': True,
-        'dependencies.system_libs': [
-            'libasound.so.2',           # alsa-lib
-            'libdbus-1.so.3',           # dbus
-            'libdrm.so.2',              # libdrm
-            'libexpat.so.1',            # expat (FIXME MLAB-2790)
-            'libfontconfig.so.1',       # fontconfig
-            'libfreetype.so.6',         # freetype
-            'libgbm.so.1',              # mesa
-            'libnspr4.so',              # nspr
-            'libnss3.so',               # nss
-            'libnssutil3.so',           # nss
-            'libplc4.so',               # nspr
-            'libplds4.so',              # nspr
-            'libresolv.so.2',           # glibc
-            'libsmime3.so',             # nss
-            'libxcb-dri3.so.0',         # libxcb
-            'libxcb.so.1',              # libxcb
-            'libXcomposite.so.1',
-            'libXdamage.so.1',
-            'libXfixes.so.3',
-            'libXi.so.6',
-            'libxkbcommon.so.0',
-            'libxkbfile.so.1',
-            'libXrandr.so.2',
-            'libXrender.so.1',
-            'libxshmfence.so.1',
-            'libXtst.so.6',
+        "package_size.skip": True,
+        "dependencies.system_libs": [
+            "libasound.so.2",  # alsa-lib
+            "libdbus-1.so.3",  # dbus
+            "libdrm.so.2",  # libdrm
+            "libexpat.so.1",  # expat (FIXME MLAB-2790)
+            "libfontconfig.so.1",  # fontconfig
+            "libfreetype.so.6",  # freetype
+            "libgbm.so.1",  # mesa
+            "libnspr4.so",  # nspr
+            "libnss3.so",  # nss
+            "libnssutil3.so",  # nss
+            "libplc4.so",  # nspr
+            "libplds4.so",  # nspr
+            "libresolv.so.2",  # glibc
+            "libsmime3.so",  # nss
+            "libxcb-dri3.so.0",  # libxcb
+            "libxcb.so.1",  # libxcb
+            "libXcomposite.so.1",
+            "libXdamage.so.1",
+            "libXfixes.so.3",
+            "libXi.so.6",
+            "libxkbcommon.so.0",
+            "libxkbfile.so.1",
+            "libXrandr.so.2",
+            "libXrender.so.1",
+            "libxshmfence.so.1",
+            "libXtst.so.6",
             "libudev.so.1",
-        ]
+        ],
     }
     qt_feature = {
         "qtpdf_build": False,
@@ -67,33 +67,33 @@ class ConanRecipe(ConanFile):
         "webengine_sanitizer": True,
         "webengine_spellchecker": True,
         "webengine_webchannel": True,
-        "webengine_webrtc": True,                   # TODO MLAB-2790
+        "webengine_webrtc": True,  # TODO MLAB-2790
         "webengine_webrtc_pipewire": False,
         "webengine_system_alsa": False,
         "webengine_system_ffmpeg": False,
-        "webengine_system_icu": False,              # TODO MLAB-2790
-        "webengine_system_lcms2": False,            # TODO MLAB-2790
+        "webengine_system_icu": False,  # TODO MLAB-2790
+        "webengine_system_lcms2": False,  # TODO MLAB-2790
         "webengine_system_libevent": False,
-        "webengine_system_libopenjpeg2": False,     # TODO MLAB-2790
+        "webengine_system_libopenjpeg2": False,  # TODO MLAB-2790
         "webengine_system_libpci": False,
         "webengine_system_libpng": True,
-        "webengine_system_libtiff": False,          # TODO MLAB-2790
+        "webengine_system_libtiff": False,  # TODO MLAB-2790
         "webengine_system_libwebp": True,
-        "webengine_system_opus": False,             # TODO MLAB-2790
+        "webengine_system_opus": False,  # TODO MLAB-2790
         "webengine_system_pulseaudio": False,
-        "webengine_system_re2": False,              # TODO MLAB-2790
-        "webengine_system_zlib": False,             # TODO MLAB-2790
+        "webengine_system_re2": False,  # TODO MLAB-2790
+        "webengine_system_zlib": False,  # TODO MLAB-2790
     }
 
     def configure(self):
         super().configure()
-        if self.settings.os == 'Linux':
+        if self.settings.os == "Linux":
             self.qt_feature["webengine_ozone_x11"] = True
             self.qt_feature["webengine_system_alsa"] = True
 
     def system_requirements(self):
         apt = package_manager.Apt(self)
-        apt.install(['libcups2-dev', 'libudev-dev', 'libgbm-dev', 'libxshmfence-dev'], update=True)
+        apt.install(["libcups2-dev", "libudev-dev", "libgbm-dev", "libxshmfence-dev"], update=True)
 
     def requirements(self):
         super().requirements()

@@ -1,0 +1,25 @@
+diff --git a/src/rescle.cc b/src/rescle.cc
+index f540f2c..039ed7c 100644
+--- a/src/rescle.cc
++++ b/src/rescle.cc
+@@ -198,6 +198,10 @@ std::vector<BYTE> VersionInfo::Serialize() const {
+       for (const auto& iString : iTable.strings) {
+         const auto& stringValue = iString.second;
+         auto strLenNullTerminated = stringValue.length() + 1;
++        if (strLenNullTerminated > 1 && stringValue.back() == L'\0')
++        {
++          strLenNullTerminated--;
++        }
+ 
+         VersionStampValue stringRaw;
+         stringRaw.type = 1;
+@@ -354,8 +358,7 @@ OffsetLengthPair VersionInfo::GetChildrenData(const BYTE* entryData) {
+ size_t VersionStampValue::GetLength() const {
+   size_t bytes = sizeof(VS_VERSION_HEADER);
+   bytes += static_cast<size_t>(key.length() + 1) * sizeof(WCHAR);
+-  if (!value.empty())
+-    bytes = round(bytes) + value.size();
++  bytes = round(bytes) + value.size();
+   for (const auto& child : children)
+     bytes = round(bytes) + static_cast<size_t>(child.GetLength());
+   return bytes;

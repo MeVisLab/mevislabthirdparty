@@ -4,7 +4,7 @@ from conan.tools.files import rmdir, collect_libs, copy, get, patch, replace_in_
 from pathlib import Path
 import os
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
@@ -115,7 +115,6 @@ class ConanRecipe(ConanFile):
         self.cpp_info.set_property("cmake_file_name", "PCL")
         self.cpp_info.set_property("cmake_target_name", "PCL::PCL")
         self.cpp_info.set_property("display_name", "Point Cloud Library")
-        self.cpp_info.set_property("mevislab_prosdk_exclude", True)
         self.cpp_info.libs = collect_libs(self)
 
         major, minor = self.version.split(".")[:2]

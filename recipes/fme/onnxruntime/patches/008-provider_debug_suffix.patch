@@ -1,0 +1,30 @@
+diff --git a/onnxruntime/core/session/provider_bridge_ort.cc b/onnxruntime/core/session/provider_bridge_ort.cc
+index c45d216..0429d9b 100644
+--- a/onnxruntime/core/session/provider_bridge_ort.cc
++++ b/onnxruntime/core/session/provider_bridge_ort.cc
+@@ -131,13 +131,25 @@ using EtwRegistrationManager_EtwInternalCallback = EtwRegistrationManager::EtwIn
+ // The filename extension for a shared library is different per platform
+ #ifdef _WIN32
+ #define LIBRARY_PREFIX
++#ifdef NDEBUG
+ #define LIBRARY_EXTENSION ORT_TSTR(".dll")
++#else
++#define LIBRARY_EXTENSION ORT_TSTR("_d.dll")
++#endif
+ #elif defined(__APPLE__)
+ #define LIBRARY_PREFIX "lib"
++#ifdef NDEBUG
+ #define LIBRARY_EXTENSION ".dylib"
+ #else
++#define LIBRARY_EXTENSION "_d.dylib"
++#endif
++#else
+ #define LIBRARY_PREFIX "lib"
++#ifdef NDEBUG
+ #define LIBRARY_EXTENSION ".so"
++#else
++#define LIBRARY_EXTENSION "_d.so"
++#endif
+ #endif
+ 
+ #ifdef __GNUC__

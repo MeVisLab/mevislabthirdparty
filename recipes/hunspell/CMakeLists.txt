@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.27)
+cmake_minimum_required(VERSION 3.31)
 project(hunspell VERSION "${CONAN_PROJECT_VERSION}" LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -6,6 +6,12 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 include(CheckCXXCompilerFlag)
 check_cxx_compiler_flag(-fvisibility=hidden HAVE_VISIBILITY)
 configure_file(src/src/hunspell/hunvisapi.h.in hunvisapi.h @ONLY)
+
+set(HUNSPELL_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
+set(HUNSPELL_VERSION_MINOR ${PROJECT_VERSION_MINOR})
+set(HUNSPELL_VERSION_PATCH ${PROJECT_VERSION_PATCH})
+set(VERSION ${PROJECT_VERSION})
+configure_file(src/src/hunspell/hunversion.h.in hunversion.h @ONLY)
 
 add_library(hunspell)
 
@@ -16,6 +22,7 @@ target_sources(hunspell PRIVATE
     src/src/hunspell/filemgr.cxx
     src/src/hunspell/hashmgr.cxx
     src/src/hunspell/hunspell.cxx
+    src/src/hunspell/hunspelltrace.cxx
     src/src/hunspell/hunzip.cxx
     src/src/hunspell/phonet.cxx
     src/src/hunspell/replist.cxx
@@ -45,6 +52,7 @@ install(FILES
     src/src/hunspell/atypes.hxx
 
     ${PROJECT_BINARY_DIR}/hunvisapi.h
+    ${PROJECT_BINARY_DIR}/hunversion.h
   DESTINATION
     ${CMAKE_INSTALL_INCLUDEDIR}/hunspell
 )

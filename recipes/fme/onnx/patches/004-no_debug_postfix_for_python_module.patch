@@ -1,0 +1,10 @@
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -578,6 +578,7 @@
+     onnx_cpp2py_export
+     NB_STATIC NB_DOMAIN onnx ${onnx_stable_abi} FREE_THREADED LTO
+     "${ONNX_ROOT}/onnx/cpp2py_export.cc")
++  set_target_properties(onnx_cpp2py_export PROPERTIES DEBUG_POSTFIX "")
+   # Force-load the whole (static) archive so the operator schemas' static
+   # initializers are not dropped as apparently-unused. $<LINK_LIBRARY:WHOLE_ARCHIVE,...>
+   # is the portable --whole-archive / -force_load / /WHOLEARCHIVE spelling.

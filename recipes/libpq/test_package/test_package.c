@@ -11,6 +11,6 @@ int main() {
     conn = PQconnectdb("dbname = postgres");
     PQstatus(conn);
     PQfinish(conn);
-    
+
     return EXIT_SUCCESS;
 }

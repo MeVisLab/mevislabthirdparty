@@ -1,12 +1,12 @@
 from conan import ConanFile
 from conan.tools.files import get
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "kiwisolver"
-    version = "1.5.0"
+    version = "1.5.1"
     homepage = "https://github.com/nucleic/kiwi"
     description = "A fast implementation of the Cassowary constraint solver"
     license = "BSD-3-Clause"
@@ -26,7 +26,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="7198347683c88080efb8611dfbff497b381d04f9c3a8ce732e5b42390b5fb245",
+            sha256="dffda5b3207852201ab66f82364ec6cf06c3285eb13cf688ae90b12a99445d9d",
             url=f"https://github.com/nucleic/kiwi/archive/refs/tags/{self.version}.tar.gz",
             strip_root=True,
         )

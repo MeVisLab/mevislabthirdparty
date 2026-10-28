@@ -1,14 +1,14 @@
 #include <flann/flann.hpp>
 #include <flann/io/hdf5.h>
 
-#include <iostream>
 #include <filesystem>
+#include <iostream>
 
 namespace fs = std::filesystem;
 
 using namespace flann;
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
     int nn = 3;
     Matrix<float> dataset;
@@ -17,11 +17,11 @@ int main(int argc, char** argv)
     load_from_file(dataset, fs::path(argv[1]).append("dataset.hdf5").string(), "dataset");
     load_from_file(query, fs::path(argv[1]).append("dataset.hdf5").string(), "query");
 
-    Matrix<int> indices(new int[query.rows*nn], query.rows, nn);
-    Matrix<float> dists(new float[query.rows*nn], query.rows, nn);
+    Matrix<int> indices(new int[query.rows * nn], query.rows, nn);
+    Matrix<float> dists(new float[query.rows * nn], query.rows, nn);
 
     // construct an randomized kd-tree index using 4 kd-trees
-    Index<L2<float> > index(dataset, flann::KDTreeIndexParams(4));
+    Index<L2<float>> index(dataset, flann::KDTreeIndexParams(4));
     index.buildIndex();
 
     // do a knn search, using 128 checks

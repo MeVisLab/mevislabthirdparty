@@ -1,5 +1,5 @@
-#include <openvdb/openvdb.h>
 #include <iostream>
+#include <openvdb/openvdb.h>
 
 int main()
 {
@@ -24,7 +24,8 @@ int main()
 
     std::cout << "Testing sequential access:" << std::endl;
 
-    for (openvdb::FloatGrid::ValueOnCIter iter = grid->cbeginValueOn(); iter; ++iter) {
+    for (openvdb::FloatGrid::ValueOnCIter iter = grid->cbeginValueOn(); iter; ++iter)
+    {
         std::cout << "Grid" << iter.getCoord() << " = " << *iter << std::endl;
     }
 }

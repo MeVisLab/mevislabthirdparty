@@ -898,10 +898,7 @@ void SoCone::GLRenderVertexArray(SoGLRenderAction *action,
       }
     }
 
-    _cache.vbo.freeGL(state);
-    _cache.vbo.setData(numBytes, data, 0, state);
-    // force upload
-    _cache.vbo.bind(state);
+    _cache.updateVboData(state, numBytes, data);
     _cache.vertexOffset = (char*)(vertexOffset - data);
     _cache.normalOffset = (char*)(normalOffset - data);
     _cache.texCoordOffset = (char*)(texCoordOffset - data);

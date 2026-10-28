@@ -5,7 +5,7 @@ from conan.tools.files import copy, get, rmdir, patch
 from conan.tools.scm import Version
 import os
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
@@ -47,12 +47,10 @@ class ConanRecipe(ConanFile):
             self,
             patch_file="patches/003-dcpixel.cc.patch",
             patch_type="feature",
-            patch_description=dedent(
-                """
+            patch_description=dedent("""
                 handles specific case of invalid multi-frame padding (padding byte for each frame)
                 note that the detection of this case is not completely certain:
-                """
-            ),
+                """),
         )
         patch(
             self,
@@ -76,24 +74,20 @@ class ConanRecipe(ConanFile):
             self,
             patch_file="patches/007-storescp.cc.patch",
             patch_type="feature",
-            patch_description=dedent(
-                """
+            patch_description=dedent("""
                 option 'short-info': decreased verbosity, creates standardized one-line descriptions per association
                 option 'flat-study-path': incoming files will be saved top-level regardless of the study
                 option 'tempfile-while-saving': write incoming file into temp file and renames it after completion
-                """
-            ),
+                """),
         )
         patch(
             self,
             patch_file="patches/008-storescu.cc.patch",
             patch_type="feature",
-            patch_description=dedent(
-                """
+            patch_description=dedent("""
                 option 'from-file': read file list to send from file
                 option 'accept-dicom-only': skip files without preamble to avoid long processing times
-                """
-            ),
+                """),
         )
         patch(
             self, patch_file="patches/010-find_3rdparty.patch", patch_description="find and use our conan dependencies"
@@ -105,6 +99,7 @@ class ConanRecipe(ConanFile):
         )
         patch(self, patch_file="patches/013-find_libcharset.patch", patch_description="find libcharset debug library")
         patch(self, patch_file="patches/014-libiconv.patch", patch_description="disable libiconv configure test")
+        # patch(self, patch_file="patches/015-cve_2026_5663.patch", patch_type="bugfix")
 
     def generate(self):
         cd = CMakeDeps(self)

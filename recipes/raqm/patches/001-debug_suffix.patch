@@ -1,0 +1,30 @@
+--- a/src/meson.build
++++ b/src/meson.build
+@@ -44,11 +44,26 @@
+ raqm_dylib_ver_current = '@0@.0.0'.format(raqm_ver_current)
+ raqm_darwin_versions = [raqm_dylib_ver_compat, raqm_dylib_ver_current]
+ 
++if get_option('buildtype') == 'debug'
++    suffix = '_d'
++else
++    suffix = ''
++endif
++
++if host_machine.system() == 'windows'
++    # Meson appends the soversion to the library name (raqm-0.dll), which would
++    # put the debug suffix in the middle of the file name (raqm_d-0.dll).
++    raqm_soversion = ''
++else
++    raqm_soversion = raqm_version[0]
++endif
++
+ libraqm = library(
+-    'raqm',
++    'raqm' + suffix,
+     'raqm.c',
+     'raqm.h',
+     version: meson.project_version(),
++    soversion: raqm_soversion,
+     darwin_versions: raqm_darwin_versions,
+     dependencies: deps,
+     c_args: ['-DHAVE_CONFIG_H'],

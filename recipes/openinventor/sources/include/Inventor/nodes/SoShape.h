@@ -165,6 +165,8 @@ class INVENTOR_API SoShape : public SoNode {
     struct SimpleVertexArrayCache {
       SimpleVertexArrayCache();
 
+      void updateVboData(SoState* state, int bytes, const void* data);
+
       void drawArrays(SoShape* shape, SoGLRenderAction* action, GLenum primitiveType);
 
       void enableVertexAttributes(SoState* state);
@@ -183,6 +185,8 @@ class INVENTOR_API SoShape : public SoNode {
       bool useTexCoords;
       bool useNormals;
       bool useColors;
+
+      int allocatedBytes;
     };
 
   protected:

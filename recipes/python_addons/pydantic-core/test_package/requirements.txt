@@ -1,0 +1,4 @@
+annotated_types==0.8.0
+pydantic==2.13.5
+typing_extensions==4.16.0
+typing_inspection==0.4.4

@@ -1,0 +1,15 @@
+diff --git a/Modules/Segmentation/LevelSets/include/itkNarrowBandLevelSetImageFilter.h b/Modules/Segmentation/LevelSets/include/itkNarrowBandLevelSetImageFilter.h
+index 9eb75d6..425aefd 100644
+--- a/Modules/Segmentation/LevelSets/include/itkNarrowBandLevelSetImageFilter.h
++++ b/Modules/Segmentation/LevelSets/include/itkNarrowBandLevelSetImageFilter.h
+@@ -371,8 +371,8 @@ public:
+   void
+   SetMaximumRMSError(const double) override
+   {
+-    itkWarningMacro("The current implementation of this solver does not compute maximum RMS change. The maximum RMS "
+-                    "error value will not be set or used.");
++    //itkWarningMacro("The current implementation of this solver does not compute maximum RMS change. The maximum RMS "
++    //                "error value will not be set or used.");
+   }
+ 
+ #ifdef ITK_USE_CONCEPT_CHECKING

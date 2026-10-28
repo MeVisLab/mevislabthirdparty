@@ -7,12 +7,12 @@ from conan.errors import ConanException
 from conan.tools.env import Environment
 from conan.tools.files import get, patch, replace_in_file
 
-required_conan_version = ">=2.2.2"
+required_conan_version = ">=2.32.0"
 
 
 class ConanRecipe(ConanFile):
     name = "pyzmq"
-    version = "27.1.0"
+    version = "27.2.0"
     homepage = "https://zguide.zeromq.org/"
     description = "Lightweight and super-fast messaging library built on top of the ZeroMQ library"
     license = ["BSD-3-Clause", "LGPL-3.0"]
@@ -25,7 +25,7 @@ class ConanRecipe(ConanFile):
     parallel_make = False
 
     def python_requirements(self):
-        self.requires(f"libzmq/[>=4.3.2]")
+        self.requires("libzmq/[>=4.3.2]")
 
     @property
     def license_path(self):
@@ -38,7 +38,7 @@ class ConanRecipe(ConanFile):
     def source(self):
         get(
             self,
-            sha256="4fd229c1c7b10e2b578778a8919694186731c69dcb26e9c33239bee67a4dc0be",
+            sha256="25f91f9ea7c0b4a4c1884379463006a383516a47c49c197aba8c5ae67fd3678a",
             url=f"https://github.com/zeromq/pyzmq/archive/refs/tags/v{self.version}.tar.gz",
             strip_root=True,
         )
